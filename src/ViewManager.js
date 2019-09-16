@@ -6,8 +6,8 @@ import VideoApp from "./Video";
 class ViewManager extends Component {
   static Views() {
     return {
-      viewA: <ControlApp />,
-      viewB: <VideoApp />
+      controlWindow: <ControlApp />,
+      videoWindow: <VideoApp />
     };
   }
 

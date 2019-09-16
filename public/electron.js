@@ -1,6 +1,5 @@
 const electron = require("electron");
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
+const { app, BrowserWindow, Menu, ipcMain } = electron;
 
 const path = require("path");
 const isDev = require("electron-is-dev");
@@ -8,11 +7,19 @@ const isDev = require("electron-is-dev");
 let controlWindow;
 let videoWindow;
 
+let width;
+let height;
+
 function createWindows() {
   videoWindow = new BrowserWindow({
-    name: "Video feed",
-    width: 400,
-    height: 300
+    title: "Video feed",
+    width: width / 2,
+    height: height,
+    x: 0,
+    y: 0,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
   videoWindow.loadURL(
     isDev
@@ -20,9 +27,14 @@ function createWindows() {
       : `file://${path.join(__dirname, "../build/index.html?videoWindow")}`
   );
   controlWindow = new BrowserWindow({
-    name: "Controls",
-    width: 400,
-    height: 300
+    title: "Controls",
+    width: width / 2,
+    height: height,
+    x: width - width / 2,
+    y: 0,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
   controlWindow.loadURL(
     isDev
@@ -36,9 +48,20 @@ function createWindows() {
     videoWindow.webContents.openDevTools();
   }
   controlWindow.on("closed", () => (controlWindow = null));
+  videoWindow.on("closed", () => (videoWindow = null));
 }
 
-app.on("ready", createWindows);
+// Finds width and height of screen - for positioning the windows
+function setWidthAndHeight() {
+  const display = electron.screen.getPrimaryDisplay();
+  width = display.bounds.width;
+  height = display.bounds.height;
+}
+
+app.on("ready", () => {
+  setWidthAndHeight();
+  createWindows();
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
