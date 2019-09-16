@@ -5,24 +5,40 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
 
-let mainWindow;
+let controlWindow;
+let videoWindow;
 
-function createWindow() {
-  mainWindow = new BrowserWindow({ width: 900, height: 680 });
-  mainWindow.loadURL(
+function createWindows() {
+  videoWindow = new BrowserWindow({
+    name: "Video feed",
+    width: 400,
+    height: 300
+  });
+  videoWindow.loadURL(
     isDev
-      ? "http://localhost:3000"
-      : `file://${path.join(__dirname, "../build/index.html")}`
+      ? "http://localhost:3000?videoWindow"
+      : `file://${path.join(__dirname, "../build/index.html?videoWindow")}`
+  );
+  controlWindow = new BrowserWindow({
+    name: "Controls",
+    width: 400,
+    height: 300
+  });
+  controlWindow.loadURL(
+    isDev
+      ? "http://localhost:3000?controlWindow"
+      : `file://${path.join(__dirname, "../build/index.html?controlWindow")}`
   );
   if (isDev) {
     // Open the DevTools.
     // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
-    mainWindow.webContents.openDevTools();
+    controlWindow.webContents.openDevTools();
+    videoWindow.webContents.openDevTools();
   }
-  mainWindow.on("closed", () => (mainWindow = null));
+  controlWindow.on("closed", () => (controlWindow = null));
 }
 
-app.on("ready", createWindow);
+app.on("ready", createWindows);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
@@ -31,7 +47,7 @@ app.on("window-all-closed", () => {
 });
 
 app.on("activate", () => {
-  if (mainWindow === null) {
+  if (controlWindow === null) {
     createWindow();
   }
 });
