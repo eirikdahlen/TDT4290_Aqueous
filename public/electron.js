@@ -4,6 +4,8 @@ const { app, BrowserWindow, Menu, ipcMain } = electron;
 const path = require("path");
 const isDev = require("electron-is-dev");
 
+const { menuTemplate } = require("./menuTemplate");
+
 let controlWindow;
 let videoWindow;
 
@@ -53,6 +55,11 @@ function createWindows() {
   //Deferences the windows when the app is closed, to save resources.
   controlWindow.on("closed", () => (controlWindow = null));
   videoWindow.on("closed", () => (videoWindow = null));
+
+  // Sets menu for controlVindow (from public/menuTemplate.js) and removes menu from videoWindow
+  const controlMenu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(controlMenu);
+  videoWindow.setMenu(null);
 }
 
 // Sets the width and height of screen - for positioning the created windows according to screen size
