@@ -1,3 +1,5 @@
+// The App for the VideoWindow. This is where every video-component should go.
+
 import React from "react";
 
 function VideoApp() {
