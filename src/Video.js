@@ -67,10 +67,4 @@ class VideoApp extends React.Component {
   }
 }
 
-/*function VideoApp() {
-  return (
-    
-  );
-}*/
-
 export default VideoApp;
