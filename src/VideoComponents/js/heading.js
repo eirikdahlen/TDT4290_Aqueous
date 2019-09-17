@@ -1,6 +1,6 @@
 function heading_init(context_heading) {
 	// Basic formatting
-	var color_base_heading = "#FFFFFF"
+	const color_base_heading = "#FFFFFF"
 	context_heading.strokeStyle = color_base_heading;
 	context_heading.fillStyle = color_base_heading;
 	context_heading.textAlign = "center";

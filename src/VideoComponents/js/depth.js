@@ -1,6 +1,6 @@
 function depth_init(context_depth) {
 	// Basic formatting
-	var color_base = "#FFFFFF"
+	const color_base = "#FFFFFF"
 	context_depth.strokeStyle = color_base;
 	context_depth.fillStyle = color_base;
 	context_depth.textAlign = "right";
@@ -14,7 +14,7 @@ var offset_depth = 0;
 var offset_depth_mult = -1;
 
 function drawDepth(context_depth) {
-	var num_space = 50;  // Spacing between the numerical labels
+	const num_space = 50;  // Spacing between the numerical labels
 
 	// Clear the canvas every frame (except the rightmost triangle, which is static)
 	context_depth.clearRect(0, 0, 47, 500);
@@ -24,7 +24,7 @@ function drawDepth(context_depth) {
 		var y_position = i * num_space + 250 + offset_depth;  // Calculate y position of each label
 
 		// Enlarge every 5th label
-		if (i % 5 == 0) {
+		if (i % 5 === 0) {
 			context_depth.font = "15px Arial";
 		} else {
 			context_depth.font = "11px Arial";

@@ -4,32 +4,32 @@ var v = 0.3;
 var w = 0.4;
 
 // Color values
-var color_base_bias = "#A0A0A0";
-var color_u = "#FF0000";
-var color_v = "#FFFF00";
-var color_w = "#00FF00";
+const color_base_bias = "#A0A0A0";
+const color_u = "#FF0000";
+const color_v = "#FFFF00";
+const color_w = "#00FF00";
 
 // Center of the widget
-var center_x = 180;
-var center_y = 180;
+const center_x = 180;
+const center_y = 180;
 
 // Start and end positions of the u axis
-var start_u_x = 30;
-var start_u_y = 130;
-var end_u_x = 330;
-var end_u_y = 230;
+const start_u_x = 30;
+const start_u_y = 130;
+const end_u_x = 330;
+const end_u_y = 230;
 
 // Start and end positions of the v axis
-var start_v_x = 30;
-var start_v_y = 230;
-var end_v_x = 330;
-var end_v_y = 130;
+const start_v_x = 30;
+const start_v_y = 230;
+const end_v_x = 330;
+const end_v_y = 130;
 
 // Start and end positions of the w axis
-var start_w_x = 180;
-var start_w_y = 30;
-var end_w_x = 180;
-var end_w_y = 330;
+const start_w_x = 180;
+const start_w_y = 30;
+const end_w_x = 180;
+const end_w_y = 330;
 
 // Variables for dummy animation
 var mult_u = 1;
@@ -38,14 +38,14 @@ var mult_w = 1;
 
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
 	// Do not draw anything if there is no bias
-	if (bias == 0.0) {
+	if (bias === 0.0) {
 		return;
 	}
 
-	var headlen = 10; // Length of head in pixels
-	var dx = tox - fromx;
-	var dy = toy - fromy;
-	var angle = Math.atan2(dy, dx);
+	const headlen = 10; // Length of head in pixels
+	const dx = tox - fromx;
+	const dy = toy - fromy;
+	const angle = Math.atan2(dy, dx);
 
 	// Draw the line itself
 	context_bias.moveTo(fromx, fromy);
