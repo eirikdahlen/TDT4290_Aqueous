@@ -1,0 +1,25 @@
+body {
+    background-color: black;
+}
+
+canvas {
+    position: fixed;
+}
+
+img {
+    position: fixed;
+    opacity: 0.5;
+}
+
+#canvasBias {
+    left: 500px;
+    top: 200px;
+}
+
+#canvasHeading {
+    left: 75px;
+}
+
+#canvasDepth {
+    top: 75px;
+}
