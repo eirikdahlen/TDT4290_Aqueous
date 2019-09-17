@@ -1,25 +1,35 @@
 body {
-    background-color: black;
+  margin: 0;
 }
 
+.VideoApp {
+  background-color: black;
+  width: 100%;
+}
 canvas {
-    position: fixed;
+  position: fixed;
 }
 
 img {
-    position: fixed;
-    opacity: 0.5;
+  position: fixed;
+  opacity: 0.5;
 }
 
 #canvasBias {
-    left: 500px;
-    top: 200px;
+  height: 300px;
+  width: 300px;
+  right: 0;
+  bottom: -50px;
 }
 
 #canvasHeading {
-    left: 75px;
+  left: 75px;
+  width: 100%;
+  height: auto;
 }
 
 #canvasDepth {
-    top: 75px;
+  top: 75px;
+  height: 90%;
+  width: auto;
 }

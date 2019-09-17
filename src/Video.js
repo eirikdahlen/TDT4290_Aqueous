@@ -62,6 +62,7 @@ class VideoApp extends React.Component {
           width={75}
           height={500}
         ></canvas>
+        <VideoFeed />
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import Webcam from "react-webcam";
 import React, { Component } from "react";
 
-// Component for VideoFeed. It can be considered if this should all be in Video.js.
 class VideoFeed extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +35,7 @@ class VideoFeed extends Component {
 
   render() {
     return (
-      <div class="VideoFeed">
+      <div className="VideoFeed">
         <Webcam height={this.state.height} width={this.state.width} />
       </div>
     );
