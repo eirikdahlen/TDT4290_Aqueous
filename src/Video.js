@@ -9,14 +9,17 @@ import './VideoComponents/css/overlay.css';
 class VideoApp extends React.Component {
   componentDidMount() {
     // Get the bias canvas
+    // eslint-disable-next-line
     let canvas_bias = this.refs.canvasBias;
     let context_bias = canvas_bias.getContext('2d');
 
     // Get the heading canvas
+    // eslint-disable-next-line
     let canvas_heading = this.refs.canvasHeading;
     let context_heading = canvas_heading.getContext('2d');
 
     // Get the depth canvas
+    // eslint-disable-next-line
     let canvas_depth = this.refs.canvasDepth;
     let context_depth = canvas_depth.getContext('2d');
 
@@ -40,18 +43,21 @@ class VideoApp extends React.Component {
       <div className="VideoApp">
         <canvas
           id="canvasBias"
+          // eslint-disable-next-line
           ref="canvasBias"
           width={500}
           height={500}
         ></canvas>
         <canvas
           id="canvasHeading"
+          // eslint-disable-next-line
           ref="canvasHeading"
           width={800}
           height={75}
         ></canvas>
         <canvas
           id="canvasDepth"
+          // eslint-disable-next-line
           ref="canvasDepth"
           width={75}
           height={500}
