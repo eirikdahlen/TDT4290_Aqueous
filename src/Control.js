@@ -9,6 +9,7 @@ import ControlBox from './ControlComponents/js/ControlBox';
 import Status from './ControlComponents/js/Status';
 
 import './ControlComponents/css/control.css';
+import GamepadWrapper from './ControlComponents/GamepadWrapper';
 
 function ControlApp() {
   const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
@@ -30,6 +31,7 @@ function ControlApp() {
       <Values values={dummyValues} />
       {/*Should be values={props.values} 
       where props.values is passed from ViewManager?*/}
+      <GamepadWrapper />
     </div>
   );
 }
