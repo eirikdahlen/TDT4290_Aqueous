@@ -60,9 +60,7 @@ function createWindows() {
   controlWindow.on("closed", () => (controlWindow = null));
   videoWindow.on("closed", () => (videoWindow = null));
 
-  // Sets menu for controlVindow (from public/menuTemplate.js) and removes menu from videoWindow
-  const controlMenu = Menu.buildFromTemplate(menuTemplate);
-  Menu.setApplicationMenu(controlMenu);
+  
   videoWindow.setMenu(null);
 }
 
@@ -75,6 +73,9 @@ function setWidthAndHeight() {
 
 // Functions that are run when the app is ready
 app.on("ready", () => {
+  // Sets menu for controlVindow (from public/menuTemplate.js) and removes menu from videoWindow
+  const controlMenu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(controlMenu);
   setWidthAndHeight();
   createWindows();
   setIPCListeners();
