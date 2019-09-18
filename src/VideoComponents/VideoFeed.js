@@ -1,5 +1,5 @@
-import Webcam from "react-webcam";
-import React, { Component } from "react";
+import Webcam from 'react-webcam';
+import React, { Component } from 'react';
 
 class VideoFeed extends Component {
   constructor(props) {
@@ -10,19 +10,15 @@ class VideoFeed extends Component {
   updateDimensions = () => {
     this.setState({
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
     });
   };
-
-  // componentWillMount is a built-in function that is called before rendering the component
-  componentWillMount() {
-    this.updateDimensions();
-  }
 
   // componentDidMount is built-in function that is called after the inital rendering of the component
   // Adds eventlistener on resizing window, and updates width and height in state accordingly.
   componentDidMount() {
-    window.addEventListener("resize", e => {
+    this.updateDimensions();
+    window.addEventListener('resize', e => {
       e.preventDefault();
       this.updateDimensions();
     });
@@ -30,7 +26,7 @@ class VideoFeed extends Component {
 
   // Built in function for when component is removed
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   render() {
