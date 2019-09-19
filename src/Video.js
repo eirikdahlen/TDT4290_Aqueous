@@ -7,20 +7,23 @@ import { drawDepth, depth_init } from './VideoComponents/js/depth.js';
 import './VideoComponents/css/overlay.css';
 
 class VideoApp extends React.Component {
+  constructor(props) {
+    super(props);
+    this.canvas_ref_bias = React.createRef();
+    this.canvas_ref_heading = React.createRef();
+    this.canvas_ref_depth = React.createRef();
+  }
   componentDidMount() {
     // Get the bias canvas
-    // eslint-disable-next-line
-    let canvas_bias = this.refs.canvasBias;
+    let canvas_bias = this.canvas_ref_bias.current;
     let context_bias = canvas_bias.getContext('2d');
 
     // Get the heading canvas
-    // eslint-disable-next-line
-    let canvas_heading = this.refs.canvasHeading;
+    let canvas_heading = this.canvas_ref_heading.current;
     let context_heading = canvas_heading.getContext('2d');
 
     // Get the depth canvas
-    // eslint-disable-next-line
-    let canvas_depth = this.refs.canvasDepth;
+    let canvas_depth = this.canvas_ref_depth.current;
     let context_depth = canvas_depth.getContext('2d');
 
     // Initialize the heading and depth widgets (color, indicators, ...)
@@ -43,22 +46,19 @@ class VideoApp extends React.Component {
       <div className="VideoApp">
         <canvas
           id="canvasBias"
-          // eslint-disable-next-line
-          ref="canvasBias"
+          ref={this.canvas_ref_bias}
           width={500}
           height={500}
         ></canvas>
         <canvas
           id="canvasHeading"
-          // eslint-disable-next-line
-          ref="canvasHeading"
+          ref={this.canvas_ref_heading}
           width={800}
           height={75}
         ></canvas>
         <canvas
           id="canvasDepth"
-          // eslint-disable-next-line
-          ref="canvasDepth"
+          ref={this.canvas_ref_depth}
           width={75}
           height={500}
         ></canvas>
@@ -66,11 +66,5 @@ class VideoApp extends React.Component {
     );
   }
 }
-
-/*function VideoApp() {
-  return (
-    
-  );
-}*/
 
 export default VideoApp;
