@@ -48,17 +48,10 @@ function createWindows() {
       ? "http://localhost:3000?controlWindow"
       : `file://${path.join(__dirname, "../build/index.html?controlWindow")}`
   );
-  // Opens developer tools in both windows on launch.
-  if (isDev) {
-    // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
-    controlWindow.webContents.openDevTools();
-    videoWindow.webContents.openDevTools();
-  }
   //Deferences the windows when the app is closed, to save resources.
   controlWindow.on("closed", () => (controlWindow = null));
   videoWindow.on("closed", () => (videoWindow = null));
 
-  
   videoWindow.setMenu(null);
 }
 
@@ -76,6 +69,11 @@ app.on("ready", () => {
   Menu.setApplicationMenu(controlMenu);
   setWidthAndHeight();
   createWindows();
+  if (isDev) {
+    // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
+    controlWindow.webContents.openDevTools();
+    videoWindow.webContents.openDevTools();
+  }
 });
 
 // Boilerplate code - probably just quits the app when all windows are closed
