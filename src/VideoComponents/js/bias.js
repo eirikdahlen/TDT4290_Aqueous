@@ -1,8 +1,3 @@
-// Bias values
-var u = 0.7;
-var v = 0.3;
-var w = 0.4;
-
 // Color values
 const color_base_bias = '#A0A0A0';
 const color_u = '#FF0000';
@@ -86,7 +81,7 @@ function map_range(old_value, old_min, old_max, new_min, new_max) {
   );
 }
 
-function drawBias(context_bias) {
+function drawBias(context_bias, u, v, w) {
   // Clear the canvas before redrawing
   context_bias.clearRect(0, 0, 500, 500);
 

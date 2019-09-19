@@ -9,11 +9,15 @@ function heading_init(context_heading) {
   draw_indicator_heading(context_heading);
 }
 
-var offset_heading = 0; // Number holding the current offset_heading of the widget
+//var offset_heading = 0; // Number holding the current offset_heading of the widget
 
-function drawHeading(context_heading) {
+function drawHeading(context_heading, degrees) {
   var degree_step = 15; // Number of degrees between each displayed number
   var degree_space = 50; // Spacing between each displayed number
+
+  // Convert degrees to pixel offset
+  var heading =
+    degree_space * (120 / degree_step) - (degrees / degree_step) * degree_space;
 
   // Clear the screen (except the bottom triangle, which does not move!)
   context_heading.clearRect(0, 0, 800, 53);
@@ -57,7 +61,7 @@ function drawHeading(context_heading) {
     }
 
     // Calculate the x position that the label must have
-    x_position = i * degree_space + (offset_heading % max_x_position);
+    x_position = i * degree_space + (heading % max_x_position);
 
     // Wraparound
     if (x_position >= max_x_position) {
@@ -77,7 +81,7 @@ function drawHeading(context_heading) {
   }
 
   // Dummy animation
-  offset_heading -= 3;
+  //offset_heading -= 3;
 }
 
 function draw_indicator_heading(context_heading) {
