@@ -8,6 +8,8 @@ const isDev = require("electron-is-dev");
 
 const { menuTemplate } = require("./menuTemplate");
 
+const { setIPCListeners } = require("./IPC");
+
 let controlWindow;
 let videoWindow;
 
@@ -75,6 +77,7 @@ function setWidthAndHeight() {
 app.on("ready", () => {
   setWidthAndHeight();
   createWindows();
+  setIPCListeners();
 });
 
 // Boilerplate code - probably just quits the app when all windows are closed
