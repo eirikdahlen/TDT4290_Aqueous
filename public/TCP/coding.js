@@ -6,22 +6,16 @@ function encodeData(data) {
 }
 
 // Function for decoding data from bytearray to doubles
-function decodeData(data) {
-  return data;
-  /* Something like this:
+function decodeData(buf) {
+  // buf should be a 48-bit Buffer containing 6 doubles (2 bytes)
+  
+  // Values is in this order
   const values = ["north", "east", "down", "roll", "pitch", "yaw"];
   const result = {};
   values.map((value, i) => {
-    var buf = new ArrayBuffer(8);
-    var view = new DataView(buf);
-    let data = byteArray.slice(i * 8, (i + 1) * 8);
-    data.forEach(function(b, i) {
-      view.setUint8(i, b);
-    });
-    result[value] = view.getFloat32(0);
+    result[value] = buf.readDoubleLE(8*i);
   });
   return result;
-  */
 }
 
 module.exports = { encodeData, decodeData };

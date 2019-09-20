@@ -2,7 +2,7 @@
 // view -> main
 // main -> view
 // view -> main -> view
-const { getConnectedClient, sendData } = require("./TCP/TCPClient");
+const { getConnectedClient, sendDummyDataContinuously } = require("./TCP/TCPClient");
 
 let client;
 
@@ -17,13 +17,9 @@ In some component:
 electron.ipcRenderer.send("key-clicked", tcp);
 */
 function setIPCListeners() {
-  /*
   //For testing purposes: The client should in reality be created right after the simulator is opened
   client = getConnectedClient();
-  for (let i = 0; i < 10; i++) {
-    sendData(client, `Test package ${i}`);
-  }
-  */
+  sendDummyDataContinuously(client, 100);
 }
 
 module.exports = { setIPCListeners };
