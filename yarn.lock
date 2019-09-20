@@ -8412,6 +8412,7 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
+<<<<<<< 55573079ec59486e59165c6af41955bc3dda2728
 prettier-linter-helpers@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/prettier-linter-helpers/-/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
@@ -8420,6 +8421,9 @@ prettier-linter-helpers@^1.0.0:
     fast-diff "^1.1.2"
 
 prettier@^1.18.2:
+=======
+prettier@1.18.2:
+>>>>>>> #13 feature: fixed React.Children error and implemented IPC
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
   integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==
@@ -9244,6 +9248,11 @@ responselike@^1.0.2:
   integrity sha1-kYcg7ztjHFZCvgaPFa3lpG9Loec=
   dependencies:
     lowercase-keys "^1.0.0"
+
+responsive-gamepad@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/responsive-gamepad/-/responsive-gamepad-1.2.1.tgz#35ec6eb2bf84125509f1ea73c6e280ba11844cdd"
+  integrity sha512-UY1VLJFbk5tLD8YU0yo5ijkY7OQwun2HyFaciDMvEtG9cETikhZWgLyko/2v7/zlA8QAbu7Bi2yDq+P7g4iRLw==
 
 restore-cursor@^2.0.0:
   version "2.0.0"

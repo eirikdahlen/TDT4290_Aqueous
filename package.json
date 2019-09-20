@@ -10,7 +10,8 @@
     "react-gamepad": "^1.0.3",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
-    "react-webcam": "^3.0.1"
+    "react-webcam": "^3.0.1",
+    "responsive-gamepad": "^1.2.1"
   },
   "main": "public/electron.js",
   "scripts": {
