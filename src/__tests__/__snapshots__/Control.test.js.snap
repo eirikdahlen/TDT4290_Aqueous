@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="ControlApp"
+>
+  <h1>
+    Hello Controls
+  </h1>
+</div>
+`;

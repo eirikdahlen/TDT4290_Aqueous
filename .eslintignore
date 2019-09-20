@@ -3,3 +3,5 @@ node_modules/*
 public/*
 build/*
 config/*
+src/__tests__/*
+babel.config.js

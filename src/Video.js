@@ -12,6 +12,7 @@ import VideoFeed from './VideoComponents/VideoFeed';
 class VideoApp extends React.Component {
   componentDidMount() {
     // Get the bias canvas
+
     // eslint-disable-next-line
     let canvas_bias = this.refs.canvasBias;
     let context_bias = canvas_bias.getContext('2d');
