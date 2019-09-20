@@ -1,6 +1,8 @@
 const electron = require("electron");
 const { app } = electron;
 const { getSimulatorFile } = require("./simulator/chooseSimulator");
+const { launchSimulator } = require("./simulator/launchSimulator");
+
 
 // Menu template for control window
 let menuTemplate = [
@@ -19,7 +21,17 @@ let menuTemplate = [
     label: "Run",
     submenu: [
       {
-        label: "Start"
+        label: "Start",
+        click() {
+          // Filename of simulator
+          const fileName = getSimulatorFile();
+          
+          // Command to run
+          const startSimulator =
+            "start" + fileName +" && exit";
+
+          launchSimulator(startSimulator);
+        }
       },
       {
         label: "Connect TCP"
