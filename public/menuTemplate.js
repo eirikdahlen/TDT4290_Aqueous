@@ -25,10 +25,10 @@ let menuTemplate = [
         click() {
           // Filename of simulator
           const fileName = getSimulatorFile();
-          
+
           // Command to run
           const startSimulator =
-            "start" + fileName +" && exit";
+            "start " + fileName +" && exit";
 
           launchSimulator(startSimulator);
         }
