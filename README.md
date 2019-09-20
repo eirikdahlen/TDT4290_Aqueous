@@ -1,16 +1,20 @@
 # TDT4290_Aqeous
 
-## Commit messages
+_The project is a part of the course TDT4290 Customer driven project in the autumn of 2019._
 
-types = {feature, docs, bugfix, test, refactor, chore, style}
+During this project, we will be building a graphical user interface for a videofeed, controls and sensors from a simulated or physical ROV.
 
-Commit format:
-#issuenr type: description in imperative form (ex. "add style to component x")
+## Prerequisites
 
-## Branching
+1. [yarn](https://yarnpkg.com/lang/en/)
 
-Every issue needs a seperate branch. All branching is done from the "development"-branch, and merged into the "development"-branch.
+## How to run locally
 
-When an issue is finished, a pull request must be opened and receive at least one code review.
+```bash
+yarn
+yarn electron-dev
+```
 
-TEster2
+## Contributing
+
+Follow the conventions specified in [CONTRIBUTION](./CONTRIBUTING.md).
