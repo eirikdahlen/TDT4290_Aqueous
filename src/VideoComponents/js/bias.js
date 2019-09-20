@@ -1,8 +1,3 @@
-// Bias values
-var u = 0.7;
-var v = 0.3;
-var w = 0.4;
-
 // Color values
 const color_base_bias = '#A0A0A0';
 const color_u = '#FF0000';
@@ -32,9 +27,9 @@ const end_w_x = 180;
 const end_w_y = 330;
 
 // Variables for dummy animation
-var mult_u = 1;
+/*var mult_u = 1;
 var mult_v = 1;
-var mult_w = 1;
+var mult_w = 1;*/
 
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
   // Do not draw anything if there is no bias
@@ -86,7 +81,7 @@ function map_range(old_value, old_min, old_max, new_min, new_max) {
   );
 }
 
-function drawBias(context_bias) {
+function drawBias(context_bias, u, v, w) {
   // Clear the canvas before redrawing
   context_bias.clearRect(0, 0, 500, 500);
 
@@ -160,7 +155,7 @@ function drawBias(context_bias) {
   context_bias.fillText('W+', end_w_x - 8, end_w_y + 20);
 
   // Dummy animation
-  u += 0.01 * mult_u;
+  /*u += 0.01 * mult_u;
   if (u >= 1) {
     mult_u = -1;
   } else if (u <= -1) {
@@ -179,7 +174,7 @@ function drawBias(context_bias) {
     mult_w = -1;
   } else if (w <= -1) {
     mult_w = 1;
-  }
+  }*/
 }
 
 export default drawBias;
