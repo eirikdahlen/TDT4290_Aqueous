@@ -5,6 +5,9 @@ import drawBias from './VideoComponents/js/bias.js';
 import { drawHeading, heading_init } from './VideoComponents/js/heading.js';
 import { drawDepth, depth_init } from './VideoComponents/js/depth.js';
 import './VideoComponents/css/overlay.css';
+import './VideoComponents/css/Video.css';
+import './VideoComponents/css/general.css';
+import VideoFeed from './VideoComponents/VideoFeed';
 
 class VideoApp extends React.Component {
   componentDidMount() {
@@ -62,15 +65,10 @@ class VideoApp extends React.Component {
           width={75}
           height={500}
         ></canvas>
+        <VideoFeed />
       </div>
     );
   }
 }
-
-/*function VideoApp() {
-  return (
-    
-  );
-}*/
 
 export default VideoApp;
