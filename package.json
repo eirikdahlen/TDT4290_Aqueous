@@ -64,7 +64,6 @@
     "electron": "^6.0.9",
     "electron-builder": "^21.2.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^24.8.0",
     "react-test-renderer": "^16.9.0",
     "typescript": "^3.6.3",
     "wait-on": "^3.3.0"
