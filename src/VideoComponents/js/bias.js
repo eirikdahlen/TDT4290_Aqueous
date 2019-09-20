@@ -27,9 +27,9 @@ const end_w_x = 180;
 const end_w_y = 330;
 
 // Variables for dummy animation
-var mult_u = 1;
+/*var mult_u = 1;
 var mult_v = 1;
-var mult_w = 1;
+var mult_w = 1;*/
 
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
   // Do not draw anything if there is no bias
@@ -155,7 +155,7 @@ function drawBias(context_bias, u, v, w) {
   context_bias.fillText('W+', end_w_x - 8, end_w_y + 20);
 
   // Dummy animation
-  u += 0.01 * mult_u;
+  /*u += 0.01 * mult_u;
   if (u >= 1) {
     mult_u = -1;
   } else if (u <= -1) {
@@ -174,7 +174,7 @@ function drawBias(context_bias, u, v, w) {
     mult_w = -1;
   } else if (w <= -1) {
     mult_w = 1;
-  }
+  }*/
 }
 
 export default drawBias;
