@@ -9,9 +9,14 @@ function getSimulatorFile() {
     },
     function(filename) {
       // Store filename somewhere, so we can use it for launching simulator later
-      console.log(filename.toString());
+      let fileName = filename.toString();
+      console.log("Filename: ");
+      console.log(fileName);
+
+      return fileName;
+
     }
   );
 }
-
+  
 module.exports = { getSimulatorFile };

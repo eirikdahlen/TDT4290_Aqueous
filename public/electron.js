@@ -64,7 +64,7 @@ function setWidthAndHeight() {
 
 // Functions that are run when the app is ready
 app.on("ready", () => {
-  // Sets menu for controlVindow (from public/menuTemplate.js) and removes menu from videoWindow
+  // Sets menu for controlWindow (from public/menuTemplate.js) and removes menu from videoWindow
   const controlMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(controlMenu);
   setWidthAndHeight();
