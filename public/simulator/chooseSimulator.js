@@ -1,4 +1,5 @@
 var { dialog } = require("electron");
+const { launchSimulator } = require("./launchSimulator");
 
 function getSimulatorFile() {
   dialog.showOpenDialog(
@@ -13,7 +14,11 @@ function getSimulatorFile() {
       console.log("Filename: ");
       console.log(fileName);
 
-      return fileName;
+      // Command to run file
+      const startSimulator =
+      "start " + fileName +" && exit";
+
+      launchSimulator(startSimulator);
 
     }
   );
