@@ -4,6 +4,7 @@ exports[`renders correctly 1`] = `
 <div
   className="ControlApp"
 >
+<<<<<<< 08c4dcd55473f5dcdb98d0c25895976ca262eba0
   <div
     className="topWindows"
   >
@@ -154,6 +155,10 @@ exports[`renders correctly 1`] = `
         </div>
       </div>
     </div>
+=======
+  <div>
+    <span />
+>>>>>>> #13 feat: add workaround for ipcRenderer
   </div>
 </div>
 `;

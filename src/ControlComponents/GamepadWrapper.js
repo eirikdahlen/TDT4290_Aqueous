@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Gamepad from 'react-gamepad';
-const { ipcRenderer } = window.require('electron');
 
 class GamepadWrapper extends Component {
   connectHandler(gamepadIndex) {
@@ -13,12 +12,14 @@ class GamepadWrapper extends Component {
 
   buttonChangeHandler(buttonName, down) {
     if (down) {
-      ipcRenderer.send('btn-change', { buttonName, value: 1.0 });
+      // window.ipcRenderer is fetched from preload.js
+      window.ipcRenderer.send('btn-change', { buttonName, value: 1.0 });
     }
   }
 
   axisChangeHandler(axisName, value) {
-    ipcRenderer.send('axis-change', { axisName, value });
+    // window.ipcRenderer is fetched from preload.js
+    window.ipcRenderer.send('axis-change', { axisName, value });
   }
 
   render() {
