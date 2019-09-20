@@ -8,6 +8,8 @@ const isDev = require("electron-is-dev");
 
 const { menuTemplate } = require("./menuTemplate");
 
+const { setIPCListeners } = require("./IPC");
+
 let controlWindow;
 let videoWindow;
 
@@ -69,11 +71,15 @@ app.on("ready", () => {
   Menu.setApplicationMenu(controlMenu);
   setWidthAndHeight();
   createWindows();
+
   if (isDev) {
     // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     controlWindow.webContents.openDevTools();
     videoWindow.webContents.openDevTools();
   }
+
+  setIPCListeners();
+
 });
 
 // Boilerplate code - probably just quits the app when all windows are closed

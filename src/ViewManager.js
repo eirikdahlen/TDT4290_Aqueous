@@ -1,15 +1,15 @@
 // Returns the view specified by the search parameter, ex. localhost:3000/?controlWindow loads Control.js
 
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import ControlApp from "./Control";
-import VideoApp from "./Video";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import ControlApp from './Control';
+import VideoApp from './Video';
 
 class ViewManager extends Component {
   static Views() {
     return {
       controlWindow: <ControlApp />,
-      videoWindow: <VideoApp />
+      videoWindow: <VideoApp />,
     };
   }
 
