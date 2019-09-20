@@ -5,7 +5,7 @@ exports[`renders correctly 1`] = `
   className="ControlApp"
 >
   <h1>
-    Hello Controls
+    Hi Controls
   </h1>
 </div>
 `;
