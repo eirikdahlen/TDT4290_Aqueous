@@ -10,7 +10,7 @@ import './VideoComponents/css/overlay.css';
 class VideoApp extends React.Component {
   render() {
     return (
-      <div>
+      <div className="VideoApp">
         <CanvasBias u={0.4} v={0.5} w={0.3} />
         <CanvasHeading heading={60} />
         <CanvasDepth depth={1.5} />
