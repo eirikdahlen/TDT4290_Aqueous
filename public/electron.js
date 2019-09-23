@@ -24,7 +24,7 @@ let yControlWindow;
 let xVideoWindow;
 let yVideoWindow;
 
-//Function for creating the two windows - controls and video
+// Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
   videoWindow = new BrowserWindow({
