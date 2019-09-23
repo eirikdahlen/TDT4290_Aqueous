@@ -1,6 +1,7 @@
 // electron.js is the main process for electron. It handles windows and communication between windows.
 
 const electron = require('electron');
+const localShortcut = require('electron-localshortcut');
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
 const path = require('path');
@@ -59,8 +60,15 @@ function createWindows() {
     // Dereferences the windows when the app is closed, to save resources.
     controlWindow = null;
     videoWindow = null;
+
+    // Quits the app
     app.quit();
   }
+
+  // Unregister all local keyboard shorcuts on the video window
+  videoWindow.on('close', () => {
+    localShortcut.unregisterAll(videoWindow);
+  });
 
   // Close all windows when closing one of then
   controlWindow.on('closed', closeApp);
@@ -92,6 +100,11 @@ app.on('ready', () => {
     controlWindow.webContents.openDevTools();
     videoWindow.webContents.openDevTools();
   }
+
+  // Register a local shortcut that enables toggling of dev tools in the video window
+  localShortcut.register(videoWindow, 'CmdOrCtrl+D', () => {
+    videoWindow.webContents.toggleDevTools();
+  });
 });
 
 // Boilerplate code - probably just quits the app when all windows are closed
