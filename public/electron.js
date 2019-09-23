@@ -29,12 +29,14 @@ function createWindows() {
       nodeIntegration: true,
     },
   });
+
   //Adds a search parameter to the url to be loaded - this is then handled in the index.js/ViewManager.js, which finds the correct .js-file to load.
   videoWindow.loadURL(
     isDev
       ? 'http://localhost:3000?videoWindow'
       : `file://${path.join(__dirname, '../build/index.html?videoWindow')}`,
   );
+
   controlWindow = new BrowserWindow({
     title: 'Controls',
     width: width / 2,
@@ -45,14 +47,24 @@ function createWindows() {
       nodeIntegration: true,
     },
   });
+
   controlWindow.loadURL(
     isDev
       ? 'http://localhost:3000?controlWindow'
       : `file://${path.join(__dirname, '../build/index.html?controlWindow')}`,
   );
-  //Deferences the windows when the app is closed, to save resources.
-  controlWindow.on('closed', () => (controlWindow = null));
-  videoWindow.on('closed', () => (videoWindow = null));
+
+  // Function for closing the entire application when only closing one window
+  function closeApp() {
+    // Dereferences the windows when the app is closed, to save resources.
+    controlWindow = null;
+    videoWindow = null;
+    app.quit();
+  }
+
+  // Close all windows when closing one of then
+  controlWindow.on('closed', closeApp);
+  videoWindow.on('closed', closeApp);
 
   videoWindow.setMenu(null);
 }
