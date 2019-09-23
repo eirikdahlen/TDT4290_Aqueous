@@ -26,6 +26,7 @@ const start_w_y = 30;
 const end_w_x = 180;
 const end_w_y = 330;
 
+// Function for clamping a value between a minimum and maximum value
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
 }
@@ -82,6 +83,7 @@ function map_range(old_value, old_min, old_max, new_min, new_max) {
 }
 
 function drawBias(context_bias, u, v, w) {
+  // Clamp the bias values between -1.0 and 1.0
   u = clamp(u, -1.0, 1.0);
   v = clamp(v, -1.0, 1.0);
   w = clamp(w, -1.0, 1.0);
@@ -150,6 +152,7 @@ function drawBias(context_bias, u, v, w) {
     w,
   );
 
+  // Set formatting for the axis labels
   context_bias.strokeStyle = color_base_bias;
   context_bias.fillStyle = color_base_bias;
   context_bias.lineWidth = 1;
