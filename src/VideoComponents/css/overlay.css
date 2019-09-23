@@ -8,8 +8,6 @@ img {
 }
 
 #canvasBias {
-  /*height: 300px;
-  width: 300px;*/
   right: 50px;
   bottom: 50px;
 }
@@ -18,12 +16,9 @@ img {
   left: 0;
   right: 0;
   margin: auto;
-  /*width: 100%;
-  height: auto;*/
 }
 
 #canvasDepth {
   top: 75px;
-  /*height: 90%;
-  width: auto;*/
+  left: 10px;
 }

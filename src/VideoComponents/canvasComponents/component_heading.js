@@ -16,7 +16,7 @@ class CanvasHeading extends Canvas {
 
 class PureCanvasHeading extends PureCanvas {
   constructor(props) {
-    super(props, 'canvasHeading', 800, 75);
+    super(props, 'canvasHeading', 800, 100);
   }
 }
 
