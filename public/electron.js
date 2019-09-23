@@ -10,6 +10,8 @@ const { menuTemplate } = require('./menuTemplate');
 
 const { setIPCListeners } = require('./IPC');
 
+const { getConnectedClient} = require("./TCP/TCPClient")
+
 let controlWindow;
 let videoWindow;
 
