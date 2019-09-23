@@ -26,6 +26,7 @@ const start_w_y = 30;
 const end_w_x = 180;
 const end_w_y = 330;
 
+// Function for drawing an arrow on the canvas
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
   // Do not draw anything if there is no bias
   if (bias === 0.0) {
@@ -91,16 +92,16 @@ function drawBias(context_bias, u, v, w) {
   context_bias.lineWidth = 3;
 
   // U- to U+
-  canvas_arrow(context_bias, start_u_x, start_u_y, end_u_x, end_u_y);
-  canvas_arrow(context_bias, end_u_x, end_u_y, start_u_x, start_u_y);
+  canvas_arrow(context_bias, center_x, center_y, end_u_x, end_u_y);
+  canvas_arrow(context_bias, center_x, center_y, start_u_x, start_u_y);
 
   // V- to V+
-  canvas_arrow(context_bias, start_v_x, start_v_y, end_v_x, end_v_y);
-  canvas_arrow(context_bias, end_v_x, end_v_y, start_v_x, start_v_y);
+  canvas_arrow(context_bias, center_x, center_y, end_v_x, end_v_y);
+  canvas_arrow(context_bias, center_x, center_y, start_v_x, start_v_y);
 
   // W- to W+
-  canvas_arrow(context_bias, start_w_x, start_w_y, end_w_x, end_w_y);
-  canvas_arrow(context_bias, end_w_x, end_w_y, start_w_x, start_w_y);
+  canvas_arrow(context_bias, center_x, center_y, end_w_x, end_w_y);
+  canvas_arrow(context_bias, center_x, center_y, start_w_x, start_w_y);
 
   // U bias (red)
   reset_color(context_bias);
