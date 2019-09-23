@@ -16,7 +16,7 @@ class VideoApp extends React.Component {
       <div className="VideoApp">
         <CanvasBias u={0.4} v={0.5} w={0.3} />
         <CanvasHeading heading={60} />
-        <CanvasDepth depth={1.5} />
+        <CanvasDepth depth={5} />
         <VideoFeed />
       </div>
     );

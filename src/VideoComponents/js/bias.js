@@ -26,11 +26,6 @@ const start_w_y = 30;
 const end_w_x = 180;
 const end_w_y = 330;
 
-// Variables for dummy animation
-/*var mult_u = 1;
-var mult_v = 1;
-var mult_w = 1;*/
-
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
   // Do not draw anything if there is no bias
   if (bias === 0.0) {
@@ -83,7 +78,12 @@ function map_range(old_value, old_min, old_max, new_min, new_max) {
 
 function drawBias(context_bias, u, v, w) {
   // Clear the canvas before redrawing
-  context_bias.clearRect(0, 0, 500, 500);
+  context_bias.clearRect(
+    0,
+    0,
+    context_bias.canvas.clientWidth,
+    context_bias.canvas.clientHeight,
+  );
 
   // Set the initial color and stroke thickness
   context_bias.strokeStyle = color_base_bias;
@@ -153,28 +153,6 @@ function drawBias(context_bias, u, v, w) {
   context_bias.fillText('V+', end_v_x + 8, end_v_y + 3);
   context_bias.fillText('W-', start_w_x - 8, start_w_y - 8);
   context_bias.fillText('W+', end_w_x - 8, end_w_y + 20);
-
-  // Dummy animation
-  /*u += 0.01 * mult_u;
-  if (u >= 1) {
-    mult_u = -1;
-  } else if (u <= -1) {
-    mult_u = 1;
-  }
-
-  v += 0.01 * mult_v;
-  if (v >= 1) {
-    mult_v = -1;
-  } else if (v <= -1) {
-    mult_v = 1;
-  }
-
-  w += 0.01 * mult_w;
-  if (w >= 1) {
-    mult_w = -1;
-  } else if (w <= -1) {
-    mult_w = 1;
-  }*/
 }
 
 export default drawBias;

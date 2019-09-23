@@ -8,20 +8,22 @@ img {
 }
 
 #canvasBias {
-  height: 300px;
-  width: 300px;
-  right: 0;
-  bottom: -50px;
+  /*height: 300px;
+  width: 300px;*/
+  right: 50px;
+  bottom: 50px;
 }
 
 #canvasHeading {
-  left: 75px;
-  width: 100%;
-  height: auto;
+  left: 0;
+  right: 0;
+  margin: auto;
+  /*width: 100%;
+  height: auto;*/
 }
 
 #canvasDepth {
   top: 75px;
-  height: 90%;
-  width: auto;
+  /*height: 90%;
+  width: auto;*/
 }

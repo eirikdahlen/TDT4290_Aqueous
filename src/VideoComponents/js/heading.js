@@ -20,7 +20,7 @@ function drawHeading(context_heading, degrees) {
     degree_space * (120 / degree_step) - (degrees / degree_step) * degree_space;
 
   // Clear the screen (except the bottom triangle, which does not move!)
-  context_heading.clearRect(0, 0, 800, 53);
+  context_heading.clearRect(0, 0, context_heading.canvas.clientWidth, 47);
 
   // Optional separator line
   /* context_heading.beginPath();
@@ -79,9 +79,6 @@ function drawHeading(context_heading, degrees) {
     context_heading.lineTo(x_position, 53);
     context_heading.stroke();
   }
-
-  // Dummy animation
-  //offset_heading -= 3;
 }
 
 function draw_indicator_heading(context_heading) {

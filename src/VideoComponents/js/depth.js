@@ -9,17 +9,13 @@ function depth_init(context_depth) {
   draw_indicator_depth(context_depth);
 }
 
-// Dummy animation
-/*var offset_depth = 0;
-var offset_depth_mult = -1;*/
-
 function drawDepth(context_depth, depth) {
   const num_space = 50; // Spacing between the numerical labels
 
   var offset_depth = depth;
 
   // Clear the canvas every frame (except the rightmost triangle, which is static)
-  context_depth.clearRect(0, 0, 47, 500);
+  context_depth.clearRect(0, 0, 47, context_depth.canvas.clientHeight);
 
   // Add 200 labels (the ROV never descends more than 200 meters)
   for (var i = 0; i < 201; i++) {
@@ -41,16 +37,6 @@ function drawDepth(context_depth, depth) {
     context_depth.lineTo(47, y_position);
     context_depth.stroke();
   }
-
-  // Dummy animation
-  /*if (y_position <= 250) {
-    offset_depth_mult = 1;
-  } else if (y_position >= 201 * num_space + 250) {
-    offset_depth_mult = -1;
-  }
-
-  // Dummy animation
-  offset_depth += 5 * offset_depth_mult;*/
 }
 
 function draw_indicator_depth(context_depth) {
