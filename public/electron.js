@@ -27,6 +27,7 @@ function createWindows() {
     y: 0,
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
   //Adds a search parameter to the url to be loaded - this is then handled in the index.js/ViewManager.js, which finds the correct .js-file to load.
@@ -43,6 +44,7 @@ function createWindows() {
     y: 0,
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
   controlWindow.loadURL(
