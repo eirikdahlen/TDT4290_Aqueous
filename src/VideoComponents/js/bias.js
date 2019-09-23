@@ -26,6 +26,10 @@ const start_w_y = 30;
 const end_w_x = 180;
 const end_w_y = 330;
 
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
 // Function for drawing an arrow on the canvas
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
   // Do not draw anything if there is no bias
@@ -78,6 +82,10 @@ function map_range(old_value, old_min, old_max, new_min, new_max) {
 }
 
 function drawBias(context_bias, u, v, w) {
+  u = clamp(u, -1.0, 1.0);
+  v = clamp(v, -1.0, 1.0);
+  w = clamp(w, -1.0, 1.0);
+
   // Clear the canvas before redrawing
   context_bias.clearRect(
     0,
