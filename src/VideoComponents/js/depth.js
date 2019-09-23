@@ -1,3 +1,5 @@
+import { clamp } from './tools.js';
+
 function depth_init(context_depth) {
   // Basic formatting
   const color_base = '#FFFFFF';
@@ -9,6 +11,9 @@ function depth_init(context_depth) {
 const num_space = 50; // Spacing between the numerical labels
 
 function drawDepth(context_depth, depth) {
+  // Clamp the depth between 0.0 and 200.0;
+  depth = clamp(depth, 0.0, 200.0);
+
   var offset_depth = depth;
 
   // Clear the canvas every frame (except the rightmost triangle, which is static)

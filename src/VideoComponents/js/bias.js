@@ -1,3 +1,5 @@
+import { clamp } from './tools.js';
+
 // Color values
 const color_base_bias = '#A0A0A0';
 const color_u = '#FF0000';
@@ -25,11 +27,6 @@ const start_w_x = 180;
 const start_w_y = 30;
 const end_w_x = 180;
 const end_w_y = 330;
-
-// Function for clamping a value between a minimum and maximum value
-function clamp(value, min, max) {
-  return Math.min(Math.max(value, min), max);
-}
 
 // Function for drawing an arrow on the canvas
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
