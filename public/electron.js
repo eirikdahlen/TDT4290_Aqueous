@@ -18,8 +18,8 @@ let videoWindow;
 let width;
 let height;
 
-// Global state
-global.toRov = {
+// Global state objects
+global.toROV = {
   surge: 0.0,
   sway: 0.0,
   heave: 0.0,
@@ -29,7 +29,7 @@ global.toRov = {
   autodepth: false,
   autoheading: false,
 };
-global.fromRov = {};
+global.fromROV = {};
 
 //Function for creating the two windows - controls and video
 function createWindows() {

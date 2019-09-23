@@ -29,7 +29,7 @@ function getConnectedClient() {
     data = decodeData(data);
     console.log(`\n[${Date.now()}] Recieved data from server:`);
     console.log(data);
-    global.fromRov = data;
+    global.fromROV = data;
     sendData(client, global.toROV);
   });
   return client;
