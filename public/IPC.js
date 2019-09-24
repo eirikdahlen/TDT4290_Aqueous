@@ -2,11 +2,8 @@
 // view -> main
 // main -> view
 // view -> main -> view
-const { getConnectedClient } = require('./TCP/TCPClient');
 const { ipcMain } = require('electron');
 const { handleClick, setUpOrDown } = require('./xbox/clickHandler');
-
-let client;
 
 // Function for setting up listeners between the main process (electron.js) and the renderer process (Components etc.)
 function setIPCListeners() {

@@ -24,7 +24,7 @@
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "yarn build",
     "electron-pack": "build -mw",
-    "lint": "eslint src -c .eslintrc.json --ext js,jsx"
+    "lint": "eslint . -c .eslintrc.json --ext js,jsx"
   },
   "homepage": "./",
   "author": {

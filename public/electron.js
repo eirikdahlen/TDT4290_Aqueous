@@ -1,7 +1,7 @@
 // electron.js is the main process for electron. It handles windows and communication between windows.
 
 const electron = require('electron');
-const { app, BrowserWindow, Menu, ipcMain } = electron;
+const { app, BrowserWindow, Menu } = electron;
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -9,8 +9,6 @@ const isDev = require('electron-is-dev');
 const { menuTemplate } = require('./menuTemplate');
 
 const { setIPCListeners } = require('./IPC');
-
-const { getConnectedClient } = require('./TCP/TCPClient');
 
 let controlWindow;
 let videoWindow;
