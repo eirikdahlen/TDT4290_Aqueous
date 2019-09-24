@@ -14,7 +14,7 @@
     "react-webcam": "^3.0.1",
     "responsive-gamepad": "^1.2.1"
   },
-  "main": "public/electron.js",
+  "main": "main/electron.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -24,7 +24,7 @@
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "yarn build",
     "electron-pack": "build -mw",
-    "lint": "eslint src -c .eslintrc.json --ext js,jsx"
+    "lint": "eslint . -c .eslintrc.json --ext js,jsx"
   },
   "homepage": "./",
   "author": {

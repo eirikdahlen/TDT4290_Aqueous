@@ -1,51 +1,49 @@
-const electron = require("electron");
+const electron = require('electron');
 const { app } = electron;
-const { getSimulatorFile } = require("./simulator/chooseSimulator");
-
-
+const { getSimulatorFile } = require('./simulator/chooseSimulator');
 
 // Menu template for control window
 let menuTemplate = [
   {
-    label: "File",
+    label: 'File',
     submenu: [
       {
-        label: "Choose simulator file",
+        label: 'Choose simulator file',
         click() {
           getSimulatorFile();
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
   {
-    label: "Run",
+    label: 'Run',
     submenu: [
       {
-        label: "Start",
+        label: 'Start',
         click() {
           getSimulatorFile();
-        }
+        },
       },
       {
-        label: "Connect TCP"
+        label: 'Connect TCP',
       },
       {
-        label: "Serialize"
-      }
-    ]
+        label: 'Serialize',
+      },
+    ],
   },
   {
-    label: "Exit",
+    label: 'Exit',
     click() {
       app.quit();
-    }
+    },
   },
   {
-    label: "DevTools",
+    label: 'DevTools',
     click(item, focusedWindow) {
       focusedWindow.toggleDevTools();
-    }
-  }
+    },
+  },
 ];
 
 module.exports = { menuTemplate };
