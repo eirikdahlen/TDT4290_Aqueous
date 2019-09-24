@@ -1,3 +1,6 @@
+// Function called from IPC.js when xbox-buttons are changed - maps buttons
+// NOTE! bias-values is in the global state variable
+
 // Value config
 const maxThruster = 400;
 const biasIncrease = 20;
@@ -5,13 +8,6 @@ const biasIncrease = 20;
 // Flags
 let autoDepth = false;
 let autoHeading = false;
-
-// Biases
-const bias = {
-  surge: 0.0,
-  sway: 0.0,
-  heave: 0.0,
-};
 
 // Which button is held down
 let buttonDown;
@@ -22,9 +18,11 @@ function handleClick({ button, value }) {
   global.toROV = ROVValues;
 }
 
-//Function for setting the variable
+//Function for setting if X is held down
 function setUpOrDown({ button, down }) {
-  buttonDown = down ? button : undefined;
+  if (button === 'X') {
+    buttonDown = down ? button : '';
+  }
 }
 
 /*
@@ -76,7 +74,7 @@ function convertToROVValues({ button, value }) {
 
     // RIGHT BUTTONS X,Y,A,B
     case 'Y': // Reset all bias
-      Object.keys(bias).forEach(v => (bias[v] = 0.0));
+      Object.keys(global.bias).forEach(v => (global.bias[v] = 0.0));
       break;
     case 'X': // Used in combination with bias button to reset axis bias
       break;
@@ -107,7 +105,7 @@ function convertToROVValues({ button, value }) {
   }
   console.log(`Pressed ${button} ${value}`);
   console.log(
-    `Biases: Surge:${bias.surge} Sway:${bias.sway} Heave:${bias.heave}`,
+    `Biases: Surge:${global.bias.surge} Sway:${global.bias.sway} Heave:${global.bias.heave}`,
   );
   return result;
 }
@@ -115,9 +113,11 @@ function convertToROVValues({ button, value }) {
 // Helper function for checking bias-buttons for combination with X and setting biases.
 function setBias(type, value, positive) {
   if (buttonDown === 'X') {
-    bias[type] = 0.0;
+    global.bias[type] = 0.0;
   } else {
-    bias[type] += positive ? value * biasIncrease : value * -biasIncrease;
+    global.bias[type] += positive
+      ? value * biasIncrease
+      : value * -biasIncrease;
   }
 }
 

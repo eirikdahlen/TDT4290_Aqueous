@@ -28,6 +28,11 @@ global.toROV = {
   autoheading: false,
 };
 global.fromROV = {};
+global.bias = {
+  surge: 0.0,
+  sway: 0.0,
+  heave: 0.0,
+};
 
 //Function for creating the two windows - controls and video
 function createWindows() {
