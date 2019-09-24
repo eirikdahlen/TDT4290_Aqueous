@@ -1,6 +1,5 @@
 # Files that should be ignored by the linter
 node_modules/*
-public/*
 build/*
 config/*
 src/__tests__/*

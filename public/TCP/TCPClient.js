@@ -48,7 +48,7 @@ function sendData(client, data) {
    *  'autoheading': bool
    * }
    */
-  buf = encodeData(data);
+  let buf = encodeData(data);
   console.log(`\n[${Date.now()}] Sending byte array with data:`);
   console.log(data);
   client.write(buf);
