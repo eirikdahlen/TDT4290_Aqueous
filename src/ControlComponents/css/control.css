@@ -29,6 +29,18 @@
    /* border-radius: 10px 10px 10px 10px;*/
 }
 
+.lock {
+    background-color: lightgray;
+    margin: 0px 5% 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.inputFlex {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+}
+
 .valueBox:first-child {
     border-radius: 10px 0px 0px 0px;
 }
@@ -134,11 +146,4 @@ li:hover {
     flex-direction: row;
     height: 15%;
     margin: 5% 0 0 0;
-}
-
-.controlBox {
-    background-color: lightgray;
-    border-radius: 10px 10px 10px 10px;
-    margin: 5px 15px 5px 15px;
-    width: 100%;
 }
