@@ -155,5 +155,8 @@ exports[`renders correctly 1`] = `
       </div>
     </div>
   </div>
+  <div>
+    <span />
+  </div>
 </div>
 `;

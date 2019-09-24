@@ -5,7 +5,7 @@ if (setupEvents.handleSquirrelEvent()) {
 }
 // electron.js is the main process for electron. It handles windows and communication between windows.
 const electron = require('electron');
-const { app, BrowserWindow, Menu, ipcMain } = electron;
+const { app, BrowserWindow, Menu } = electron;
 
 const path = require('path');
 const isDev = require('electron-is-dev');
@@ -20,6 +20,19 @@ let videoWindow;
 let width;
 let height;
 
+// Global state objects
+global.toROV = {
+  surge: 0.0,
+  sway: 0.0,
+  heave: 0.0,
+  roll: 0.0,
+  pitch: 0.0,
+  yaw: 0.0,
+  autodepth: false,
+  autoheading: false,
+};
+global.fromROV = {};
+
 //Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
@@ -31,6 +44,7 @@ function createWindows() {
     y: 0,
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
   //Adds a search parameter to the url to be loaded - this is then handled in the index.js/ViewManager.js, which finds the correct .js-file to load.
@@ -47,6 +61,7 @@ function createWindows() {
     y: 0,
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
   controlWindow.loadURL(

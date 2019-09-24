@@ -2,26 +2,43 @@
 
 // Function for formatting data in a way the simulator understands
 function encodeData(data) {
-  return data;
+  /**
+   * data should be a object with these fields:
+   * {'surge': number,
+   *  'sway': number,
+   *  'heave': number,
+   *  'roll': number,
+   *  'pitch': number,
+   *  'yaw': number,
+   *  'autodepth': bool,
+   *  'autoheading': bool
+   * }
+   */
+  const doublesArray = new Float64Array([
+    data['surge'],
+    data['sway'],
+    data['heave'],
+    data['roll'],
+    data['pitch'],
+    data['yaw'],
+    data['autodepth'] ? 1 : 0,
+    data['autoheading'] ? 1 : 0,
+  ]);
+  const buf = Buffer.from(doublesArray.buffer);
+  return buf;
 }
 
 // Function for decoding data from bytearray to doubles
-function decodeData(data) {
-  return data;
-  /* Something like this:
-  const values = ["north", "east", "down", "roll", "pitch", "yaw"];
+function decodeData(buf) {
+  // buf should be a 48-bit Buffer containing 6 doubles (2 bytes)
+
+  // Values is in this order
+  const values = ['north', 'east', 'down', 'roll', 'pitch', 'yaw'];
   const result = {};
   values.map((value, i) => {
-    var buf = new ArrayBuffer(8);
-    var view = new DataView(buf);
-    let data = byteArray.slice(i * 8, (i + 1) * 8);
-    data.forEach(function(b, i) {
-      view.setUint8(i, b);
-    });
-    result[value] = view.getFloat32(0);
+    result[value] = buf.readDoubleLE(8 * i);
   });
   return result;
-  */
 }
 
 module.exports = { encodeData, decodeData };

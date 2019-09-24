@@ -1,13 +1,13 @@
-const exec = require("child_process").exec;
+const exec = require('child_process').exec;
 
 function execute(command, callback) {
-  exec(command, (error, stdout, stderr) => {
+  exec(command, (error, stdout) => {
     callback(stdout);
   });
 }
 
 function launchSimulator(command) {
-  execute(command, output => console.log("executed successfully"));
+  execute(command, () => console.log('executed successfully'));
 }
 
 module.exports = { launchSimulator };
