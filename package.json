@@ -20,7 +20,7 @@
   "scripts": {
     "start": "rescripts start",
     "build": "rescripts build",
-    "test": "rescripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "lint": "eslint src -c .eslintrc.json --ext js,jsx",
