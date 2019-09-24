@@ -1,5 +1,9 @@
 // Function called from IPC.js when xbox-buttons are changed - maps buttons
-// NOTE! bias-values is in the global state variable
+let bias = {
+  surge: 0.0,
+  sway: 0.0,
+  heave: 0.0,
+};
 
 // Value config
 const maxThruster = 400;
@@ -12,112 +16,88 @@ let autoHeading = false;
 // Which button is held down
 let buttonDown;
 
-// Main function to be run when a click or axis-change has happened
-function handleClick({ button, value }) {
-  const ROVValues = convertToROVValues({ button, value });
-  global.toROV = ROVValues;
-}
-
 //Function for setting if X is held down
 function setUpOrDown({ button, down }) {
-  if (button === 'X') {
-    buttonDown = down ? button : '';
-  }
+  buttonDown = button === 'X' && down ? button : '';
 }
 
-/*
-Converts from {name, value}
-to 
-    {'surge': number,
-   *  'sway': number,
-   *  'heave': number,
-   *  'roll': number,
-   *  'pitch': number,
-   *  'yaw': number,
-   *  'autodepth': bool,
-   *  'autoheading': bool
-   * }
-   * */
-
-/*
-Mappings
-LeftStickY [-1,1]: surge 
-LeftStickX [-1,1]: sway
-LeftTrigger [0,1]: heave up
-RightTrigger [0,1] heave down
-*/
-function convertToROVValues({ button, value }) {
+// Converst from button (buttonname) and value (how much pressed) to values for the ROV
+function handleClick({ button, value }) {
   let result = {
-    surge: 0.0,
-    sway: 0.0,
-    heave: 0.0,
+    surge: bias.surge,
+    sway: bias.sway,
+    heave: bias.heave,
     roll: 0.0,
     pitch: 0.0,
     yaw: 0.0,
-    autodepth: false,
-    autoheading: false,
+    autodepth: autoDepth,
+    autoheading: autoHeading,
   };
   switch (button) {
     // LEFT STICK
     case 'LeftStickY': // Forward+/Backward-
-      result['surge'] = value * maxThruster;
+      result['surge'] += value * maxThruster;
       break;
     case 'LeftStickX': // Right+/Left-
-      result['sway'] = value * maxThruster;
+      result['sway'] += value * maxThruster;
       break;
     case 'LeftTrigger': // Up
-      result['heave'] = value * -maxThruster;
+      result['heave'] += value * -maxThruster;
       break;
     case 'RightTrigger': // Down
-      result['heave'] = value * maxThruster;
+      result['heave'] += value * maxThruster;
       break;
 
     // RIGHT BUTTONS X,Y,A,B
     case 'Y': // Reset all bias
-      Object.keys(global.bias).forEach(v => (global.bias[v] = 0.0));
+      Object.keys(bias).forEach(v => (bias[v] = 0.0));
       break;
     case 'X': // Used in combination with bias button to reset axis bias
       break;
-    case 'A':
+    case 'A': // Toggle autodepth
+      autoDepth = !autoDepth;
+      result['autodepth'] = autoDepth;
       break;
-    case 'B':
+    case 'B': // Toggle autoheading
+      autoHeading = !autoHeading;
+      result['autoheading'] = autoHeading;
       break;
 
     // BIAS BUTTONS - Have to check every case for combination with X
     case 'DPadRight': // positive sway bias
-      setBias('sway', value, true);
+      setBias('sway', true);
       break;
     case 'DPadLeft': // negative sway bias
-      setBias('sway', value, false);
+      setBias('sway', false);
       break;
     case 'DPadUp': // positive surge bias
-      setBias('surge', value, true);
+      setBias('surge', true);
       break;
     case 'DPadDown': // negative surge bias
-      setBias('surge', value, false);
+      setBias('surge', false);
       break;
     case 'RB': // positive heave bias (down)
-      setBias('heave', value, true);
+      setBias('heave', true);
       break;
     case 'LB': // negative heave bias (up)
-      setBias('heave', value, false);
+      setBias('heave', false);
       break;
   }
   console.log(`Pressed ${button} ${value}`);
-  console.log(
-    `Biases: Surge:${global.bias.surge} Sway:${global.bias.sway} Heave:${global.bias.heave}`,
-  );
-  return result;
+  ['surge', 'sway', 'heave'].forEach(v => (result[v] = bias[v]));
+  global.toROV = result;
+  global.bias = bias;
 }
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
-function setBias(type, value, positive) {
+function setBias(type, positive) {
+  // Reset axis if X is held down
   if (buttonDown === 'X') {
-    global.bias[type] = 0.0;
-  } else {
-    global.bias[type] += positive
-      ? value * biasIncrease
-      : value * -biasIncrease;
+    bias[type] = 0.0;
+  }
+  // Increase bias if it isn't maxed out
+  else if (bias[type] > -maxThruster && bias[type] < maxThruster) {
+    bias[type] += positive ? biasIncrease : -biasIncrease;
   }
 }
 
