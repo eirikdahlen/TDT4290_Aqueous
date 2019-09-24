@@ -10,13 +10,26 @@ const { menuTemplate } = require('./menuTemplate');
 
 const { setIPCListeners } = require('./IPC');
 
-const { getConnectedClient} = require("./TCP/TCPClient")
+const { getConnectedClient } = require('./TCP/TCPClient');
 
 let controlWindow;
 let videoWindow;
 
 let width;
 let height;
+
+// Global state objects
+global.toROV = {
+  surge: 0.0,
+  sway: 0.0,
+  heave: 0.0,
+  roll: 0.0,
+  pitch: 0.0,
+  yaw: 0.0,
+  autodepth: false,
+  autoheading: false,
+};
+global.fromROV = {};
 
 //Function for creating the two windows - controls and video
 function createWindows() {

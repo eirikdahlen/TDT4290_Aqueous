@@ -10,16 +10,23 @@ class GamepadWrapper extends Component {
     console.log(`Gamepad ${gamepadIndex} disconnected!`);
   }
 
-  buttonChangeHandler(buttonName, down) {
+  buttonChangeHandler(button, down) {
     if (down) {
       // window.ipcRenderer is fetched from preload.js
-      window.ipcRenderer.send('btn-change', { buttonName, value: 1.0 });
+      window.ipcRenderer.send('xbox-change', { button, value: 1.0 });
     }
   }
 
-  axisChangeHandler(axisName, value) {
-    // window.ipcRenderer is fetched from preload.js
-    window.ipcRenderer.send('axis-change', { axisName, value });
+  axisChangeHandler(button, value) {
+    window.ipcRenderer.send('xbox-change', { button, value });
+  }
+
+  buttonUpHandler(button) {
+    window.ipcRenderer.send('xbox-up-down', { button, down: false });
+  }
+
+  buttonDownHandler(button) {
+    window.ipcRenderer.send('xbox-up-down', { button, down: true });
   }
 
   render() {
@@ -30,6 +37,9 @@ class GamepadWrapper extends Component {
           onDisconnect={this.disconnectHandler}
           onButtonChange={this.buttonChangeHandler}
           onAxisChange={this.axisChangeHandler}
+          onButtonDown={this.buttonDownHandler}
+          onButtonUp={this.buttonUpHandler}
+          deadZone={0.3}
         >
           <span></span>
         </Gamepad>

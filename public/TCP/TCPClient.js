@@ -29,17 +29,8 @@ function getConnectedClient() {
     data = decodeData(data);
     console.log(`\n[${Date.now()}] Recieved data from server:`);
     console.log(data);
-    // TODO: This function should probably update global state somehow
-    sendData(client, {
-      surge: 0.0,
-      sway: 0.0,
-      heave: 200,
-      roll: 0.0,
-      pitch: 0.0,
-      yaw: 100,
-      autodepth: false,
-      autoheading: false,
-    });
+    global.fromROV = data;
+    sendData(client, global.toROV);
   });
   return client;
 }
@@ -63,4 +54,4 @@ function sendData(client, data) {
   client.write(buf);
 }
 
-module.exports = { getConnectedClient, sendData, sendDummyDataContinuously };
+module.exports = { getConnectedClient, sendData };
