@@ -15,7 +15,7 @@ let yVideoWindow;
 // Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
-  videoWindow = new electron.BrowserWindow({
+  let videoWindow = new electron.BrowserWindow({
     title: 'Video feed',
     width: widthVideoWindow,
     height: heightVideoWindow,
@@ -33,7 +33,7 @@ function createWindows() {
       : `file://${join(__dirname, '../build/index.html?videoWindow')}`,
   );
 
-  controlWindow = new electron.BrowserWindow({
+  let controlWindow = new electron.BrowserWindow({
     title: 'Controls',
     width: widthControlWindow,
     height: heightControlWindow,

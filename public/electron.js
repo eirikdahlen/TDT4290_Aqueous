@@ -1,7 +1,7 @@
 // electron.js is the main process for electron. It handles windows and communication between windows.
 
 const electron = require('electron');
-const { app, Menu, ipcMain } = electron;
+const { app, Menu } = electron;
 
 const isDev = require('electron-is-dev');
 
