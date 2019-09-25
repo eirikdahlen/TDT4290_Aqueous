@@ -1,3 +1,5 @@
+import { clamp } from './tools.js';
+
 // Color values
 const color_base_bias = '#A0A0A0';
 const color_u = '#FF0000';
@@ -26,11 +28,7 @@ const start_w_y = 30;
 const end_w_x = 180;
 const end_w_y = 330;
 
-// Variables for dummy animation
-/*var mult_u = 1;
-var mult_v = 1;
-var mult_w = 1;*/
-
+// Function for drawing an arrow on the canvas
 function canvas_arrow(context_bias, fromx, fromy, tox, toy, bias) {
   // Do not draw anything if there is no bias
   if (bias === 0.0) {
@@ -82,8 +80,18 @@ function map_range(old_value, old_min, old_max, new_min, new_max) {
 }
 
 function drawBias(context_bias, u, v, w) {
+  // Clamp the bias values between -1.0 and 1.0
+  u = clamp(u, -1.0, 1.0);
+  v = clamp(v, -1.0, 1.0);
+  w = clamp(w, -1.0, 1.0);
+
   // Clear the canvas before redrawing
-  context_bias.clearRect(0, 0, 500, 500);
+  context_bias.clearRect(
+    0,
+    0,
+    context_bias.canvas.clientWidth,
+    context_bias.canvas.clientHeight,
+  );
 
   // Set the initial color and stroke thickness
   context_bias.strokeStyle = color_base_bias;
@@ -91,16 +99,16 @@ function drawBias(context_bias, u, v, w) {
   context_bias.lineWidth = 3;
 
   // U- to U+
-  canvas_arrow(context_bias, start_u_x, start_u_y, end_u_x, end_u_y);
-  canvas_arrow(context_bias, end_u_x, end_u_y, start_u_x, start_u_y);
+  canvas_arrow(context_bias, center_x, center_y, end_u_x, end_u_y);
+  canvas_arrow(context_bias, center_x, center_y, start_u_x, start_u_y);
 
   // V- to V+
-  canvas_arrow(context_bias, start_v_x, start_v_y, end_v_x, end_v_y);
-  canvas_arrow(context_bias, end_v_x, end_v_y, start_v_x, start_v_y);
+  canvas_arrow(context_bias, center_x, center_y, end_v_x, end_v_y);
+  canvas_arrow(context_bias, center_x, center_y, start_v_x, start_v_y);
 
   // W- to W+
-  canvas_arrow(context_bias, start_w_x, start_w_y, end_w_x, end_w_y);
-  canvas_arrow(context_bias, end_w_x, end_w_y, start_w_x, start_w_y);
+  canvas_arrow(context_bias, center_x, center_y, end_w_x, end_w_y);
+  canvas_arrow(context_bias, center_x, center_y, start_w_x, start_w_y);
 
   // U bias (red)
   reset_color(context_bias);
@@ -141,6 +149,7 @@ function drawBias(context_bias, u, v, w) {
     w,
   );
 
+  // Set formatting for the axis labels
   context_bias.strokeStyle = color_base_bias;
   context_bias.fillStyle = color_base_bias;
   context_bias.lineWidth = 1;
@@ -153,28 +162,6 @@ function drawBias(context_bias, u, v, w) {
   context_bias.fillText('V+', end_v_x + 8, end_v_y + 3);
   context_bias.fillText('W-', start_w_x - 8, start_w_y - 8);
   context_bias.fillText('W+', end_w_x - 8, end_w_y + 20);
-
-  // Dummy animation
-  /*u += 0.01 * mult_u;
-  if (u >= 1) {
-    mult_u = -1;
-  } else if (u <= -1) {
-    mult_u = 1;
-  }
-
-  v += 0.01 * mult_v;
-  if (v >= 1) {
-    mult_v = -1;
-  } else if (v <= -1) {
-    mult_v = 1;
-  }
-
-  w += 0.01 * mult_w;
-  if (w >= 1) {
-    mult_w = -1;
-  } else if (w <= -1) {
-    mult_w = 1;
-  }*/
 }
 
 export default drawBias;

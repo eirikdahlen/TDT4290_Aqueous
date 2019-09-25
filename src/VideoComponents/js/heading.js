@@ -4,23 +4,20 @@ function heading_init(context_heading) {
   context_heading.strokeStyle = color_base_heading;
   context_heading.fillStyle = color_base_heading;
   context_heading.textAlign = 'center';
-
-  // Draw the indicator triangle
-  draw_indicator_heading(context_heading);
 }
 
-//var offset_heading = 0; // Number holding the current offset_heading of the widget
-
 function drawHeading(context_heading, degrees) {
-  var degree_step = 15; // Number of degrees between each displayed number
-  var degree_space = 50; // Spacing between each displayed number
+  const width = context_heading.canvas.clientWidth;
+  const width_half = width / 2;
+
+  const degree_step = 15; // Number of degrees between each displayed number
+  const degree_space = 50; // Spacing between each displayed number
 
   // Convert degrees to pixel offset
-  var heading =
-    degree_space * (120 / degree_step) - (degrees / degree_step) * degree_space;
+  const heading = (degree_space * (120 - degrees)) / degree_step;
 
   // Clear the screen (except the bottom triangle, which does not move!)
-  context_heading.clearRect(0, 0, 800, 53);
+  context_heading.clearRect(0, 0, width, context_heading.canvas.clientHeight);
 
   // Optional separator line
   /* context_heading.beginPath();
@@ -80,17 +77,16 @@ function drawHeading(context_heading, degrees) {
     context_heading.stroke();
   }
 
-  // Dummy animation
-  //offset_heading -= 3;
-}
+  // Draw number showing the numerical value of the heading
+  context_heading.font = '18px Arial';
+  context_heading.fillText(degrees.toFixed(0), width_half, 100);
 
-function draw_indicator_heading(context_heading) {
   // Draw a triangle indicating the heading
   context_heading.beginPath();
-  context_heading.moveTo(400, 58);
-  context_heading.lineTo(403, 68);
-  context_heading.lineTo(397, 68);
-  context_heading.lineTo(400, 58);
+  context_heading.moveTo(width_half, 58);
+  context_heading.lineTo(width_half + 3, 68);
+  context_heading.lineTo(width_half - 3, 68);
+  context_heading.lineTo(width_half, 58);
   context_heading.stroke();
   context_heading.fill();
 }

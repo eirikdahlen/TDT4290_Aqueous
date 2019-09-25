@@ -15,7 +15,7 @@ class CanvasBias extends Canvas {
 
 class PureCanvasBias extends PureCanvas {
   constructor(props) {
-    super(props, 'canvasBias', 500, 500);
+    super(props, 'canvasBias', 360, 360);
   }
 }
 
