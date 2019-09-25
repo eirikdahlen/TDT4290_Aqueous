@@ -14,6 +14,19 @@ const { setIPCListeners } = require('./IPC');
 let controlWindow;
 let videoWindow;
 
+// Global state objects
+global.toROV = {
+  surge: 0.0,
+  sway: 0.0,
+  heave: 0.0,
+  roll: 0.0,
+  pitch: 0.0,
+  yaw: 0.0,
+  autodepth: false,
+  autoheading: false,
+};
+global.fromROV = {};
+
 // Functions that are run when the app is ready
 app.on('ready', () => {
   // Define the size of the windows, and create them
