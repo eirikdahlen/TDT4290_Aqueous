@@ -20,7 +20,6 @@ let menuTemplate = [
     submenu: [
       {
         label: 'Start',
-        accelerator: 'CmdOrCtrl+R',
         click() {
           getSimulatorFile();
         },
@@ -35,14 +34,12 @@ let menuTemplate = [
   },
   {
     label: 'Exit',
-    accelerator: 'CmdOrCtrl+Q',
     click() {
       app.quit();
     },
   },
   {
     label: 'DevTools',
-    accelerator: 'CmdOrCtrl+D',
     click(item, focusedWindow) {
       focusedWindow.toggleDevTools();
     },
