@@ -13,6 +13,10 @@ const biasIncrease = 20;
 let autoDepth = false;
 let autoHeading = false;
 
+// Yaw config
+const PI = 3.14159265359;
+const maxYaw = 2 * PI;
+
 // Which button is held down
 let buttonDown;
 
@@ -23,7 +27,7 @@ function setUpOrDown({ button, down }) {
 
 // Converst from button (buttonname) and value (how much pressed) to values for the ROV
 function handleClick({ button, value }) {
-  let result = {
+  let controls = {
     surge: bias.surge,
     sway: bias.sway,
     heave: bias.heave,
@@ -34,63 +38,72 @@ function handleClick({ button, value }) {
     autoheading: autoHeading,
   };
   switch (button) {
-    // LEFT STICK
+    // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
     case 'LeftStickY': // Forward+/Backward-
-      result['surge'] += value * maxThruster;
+      controls['surge'] += value * maxThruster;
+      fixMaxThruster('surge', controls);
       break;
     case 'LeftStickX': // Right+/Left-
-      result['sway'] += value * maxThruster;
+      controls['sway'] += value * maxThruster;
+      fixMaxThruster('sway', controls);
       break;
     case 'LeftTrigger': // Up
-      result['heave'] += value * -maxThruster;
+      controls['heave'] += value * -maxThruster;
+      fixMaxThruster('heave', controls);
       break;
     case 'RightTrigger': // Down
-      result['heave'] += value * maxThruster;
+      controls['heave'] += value * maxThruster;
+      fixMaxThruster('heave', controls);
       break;
 
-    // RIGHT BUTTONS X,Y,A,B
+    // RIGHT STICK | HEADING/YAW
+    case 'RightStickX': // Yaw
+      controls['yaw'] += value * maxYaw * 100; // Multiply by 100 for faster turning - I have no idea how this works
+      break;
+
+    // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
     case 'Y': // Reset all bias
       Object.keys(bias).forEach(v => (bias[v] = 0.0));
+      ['surge', 'sway', 'heave'].forEach(v => (controls[v] = 0.0));
       break;
     case 'X': // Used in combination with bias button to reset axis bias
       break;
     case 'A': // Toggle autodepth
       autoDepth = !autoDepth;
-      result['autodepth'] = autoDepth;
+      controls['autodepth'] = autoDepth;
       break;
     case 'B': // Toggle autoheading
       autoHeading = !autoHeading;
-      result['autoheading'] = autoHeading;
+      controls['autoheading'] = autoHeading;
       break;
 
-    // BIAS BUTTONS - Have to check every case for combination with X
+    // BIAS BUTTONS | INCREASE/DECREASE BIAS
     case 'DPadRight': // positive sway bias
-      setBias('sway', true);
+      setBias('sway', true, controls);
       break;
     case 'DPadLeft': // negative sway bias
-      setBias('sway', false);
+      setBias('sway', false, controls);
       break;
     case 'DPadUp': // positive surge bias
-      setBias('surge', true);
+      setBias('surge', true, controls);
       break;
     case 'DPadDown': // negative surge bias
-      setBias('surge', false);
+      setBias('surge', false, controls);
       break;
     case 'RB': // positive heave bias (down)
-      setBias('heave', true);
+      setBias('heave', true, controls);
       break;
     case 'LB': // negative heave bias (up)
-      setBias('heave', false);
+      setBias('heave', false, controls);
       break;
   }
   console.log(`Pressed ${button} ${value}`);
-  ['surge', 'sway', 'heave'].forEach(v => (result[v] = bias[v]));
-  global.toROV = result;
+  global.toROV = controls;
   global.bias = bias;
 }
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
-function setBias(type, positive) {
+function setBias(type, positive, controls) {
   // Reset axis if X is held down
   if (buttonDown === 'X') {
     bias[type] = 0.0;
@@ -99,6 +112,18 @@ function setBias(type, positive) {
   else if (bias[type] > -maxThruster && bias[type] < maxThruster) {
     bias[type] += positive ? biasIncrease : -biasIncrease;
   }
+  controls[type] = bias[type];
+}
+
+//Helper function for making sure thrusting force does not exceed maximum
+function fixMaxThruster(type, controls) {
+  let force = controls[type];
+  if (force > maxThruster) {
+    force = maxThruster;
+  } else if (force < -maxThruster) {
+    force = maxThruster;
+  }
+  controls[type] = force;
 }
 
 module.exports = { handleClick, setUpOrDown };
