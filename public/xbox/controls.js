@@ -1,3 +1,9 @@
+// Value config
+const maxThruster = 400;
+const biasIncrease = 20;
+const PI = 3.14159265359;
+const maxYaw = 2 * PI;
+
 // Function called from IPC.js when xbox-buttons are changed - maps buttons
 let bias = {
   surge: 0.0,
@@ -5,17 +11,13 @@ let bias = {
   heave: 0.0,
 };
 
-// Value config
-const maxThruster = 400;
-const biasIncrease = 20;
-
-// Flags
+// Auto settings
 let autoDepth = false;
+let depthReference = 0.0; // Depth in meters
+let depthIncrement = 0.4;
 let autoHeading = false;
-
-// Yaw config
-const PI = 3.14159265359;
-const maxYaw = 2 * PI;
+let headingReference = 0.0; // Degrees
+let headingIncrement = 20.0;
 
 // Which button is held down
 let buttonDown;
@@ -30,7 +32,7 @@ function handleClick({ button, value }) {
   let controls = {
     surge: bias.surge,
     sway: bias.sway,
-    heave: bias.heave,
+    heave: autoDepth ? depthReference : bias.heave,
     roll: 0.0,
     pitch: 0.0,
     yaw: 0.0,
@@ -48,12 +50,20 @@ function handleClick({ button, value }) {
       fixMaxThruster('sway', controls);
       break;
     case 'LeftTrigger': // Up
-      controls['heave'] += value * -maxThruster;
-      fixMaxThruster('heave', controls);
+      if (!autoDepth) {
+        controls['heave'] += value * -maxThruster;
+        fixMaxThruster('heave', controls);
+      } else {
+        depthReference -= value * depthIncrement;
+      }
       break;
     case 'RightTrigger': // Down
-      controls['heave'] += value * maxThruster;
-      fixMaxThruster('heave', controls);
+      if (!autoDepth) {
+        controls['heave'] += value * maxThruster;
+        fixMaxThruster('heave', controls);
+      } else {
+        depthReference += value * depthIncrement;
+      }
       break;
 
     // RIGHT STICK | HEADING/YAW
@@ -71,10 +81,12 @@ function handleClick({ button, value }) {
     case 'A': // Toggle autodepth
       autoDepth = !autoDepth;
       controls['autodepth'] = autoDepth;
+      //depthReference = 0.0; Reset every time?
       break;
     case 'B': // Toggle autoheading
       autoHeading = !autoHeading;
       controls['autoheading'] = autoHeading;
+      //headingReference = 0.0; Reset every time?
       break;
 
     // BIAS BUTTONS | INCREASE/DECREASE BIAS
