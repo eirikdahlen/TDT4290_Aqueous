@@ -1,9 +1,11 @@
-// Value config
+// Function called from IPC.js when xbox-buttons are changed - maps buttons
+
+// Constants
 const maxThruster = 400;
 const biasIncrease = 20;
 const maxYaw = 2 * Math.PI;
 
-// Function called from IPC.js when xbox-buttons are changed - maps buttons
+// Bias values
 let bias = {
   surge: 0.0,
   sway: 0.0,
@@ -138,7 +140,7 @@ function fixMaxThruster(type, controls) {
   if (force > maxThruster) {
     force = maxThruster;
   } else if (force < -maxThruster) {
-    force = maxThruster;
+    force = -maxThruster;
   }
   controls[type] = force;
 }
