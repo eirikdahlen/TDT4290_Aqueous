@@ -1,8 +1,7 @@
 // Value config
 const maxThruster = 400;
 const biasIncrease = 20;
-const PI = 3.14159265359;
-const maxYaw = 2 * PI;
+const maxYaw = 2 * Math.PI;
 
 // Function called from IPC.js when xbox-buttons are changed - maps buttons
 let bias = {
@@ -14,10 +13,11 @@ let bias = {
 // Auto settings
 let autoDepth = false;
 let depthReference = 0.0; // Depth in meters
-let depthIncrement = 0.4;
+let depthIncrement = 0.4; // Meters
+
 let autoHeading = false;
-let headingReference = 0.0; // Degrees
-let headingIncrement = 20.0;
+let headingReference = 0.0; // radians
+let headingIncrement = 0.1; // radians
 
 // Which button is held down
 let buttonDown;
@@ -35,7 +35,7 @@ function handleClick({ button, value }) {
     heave: autoDepth ? depthReference : bias.heave,
     roll: 0.0,
     pitch: 0.0,
-    yaw: 0.0,
+    yaw: autoHeading ? headingReference : 0.0,
     autodepth: autoDepth,
     autoheading: autoHeading,
   };
@@ -55,6 +55,7 @@ function handleClick({ button, value }) {
         fixMaxThruster('heave', controls);
       } else {
         depthReference -= value * depthIncrement;
+        controls['heave'] = depthReference;
       }
       break;
     case 'RightTrigger': // Down
@@ -63,12 +64,19 @@ function handleClick({ button, value }) {
         fixMaxThruster('heave', controls);
       } else {
         depthReference += value * depthIncrement;
+        controls['heave'] = depthReference;
       }
       break;
 
     // RIGHT STICK | HEADING/YAW
     case 'RightStickX': // Yaw
-      controls['yaw'] += value * maxYaw * 100; // Multiply by 100 for faster turning - I have no idea how this works
+      if (!autoHeading) {
+        controls['yaw'] += value * maxYaw * 100; // Multiply by 100 for faster turning - I have no idea how this works
+      } else {
+        headingReference += value * headingIncrement;
+        headingReference = headingReference % maxYaw;
+        controls['yaw'] = headingReference;
+      }
       break;
 
     // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
@@ -81,12 +89,10 @@ function handleClick({ button, value }) {
     case 'A': // Toggle autodepth
       autoDepth = !autoDepth;
       controls['autodepth'] = autoDepth;
-      //depthReference = 0.0; Reset every time?
       break;
     case 'B': // Toggle autoheading
       autoHeading = !autoHeading;
       controls['autoheading'] = autoHeading;
-      //headingReference = 0.0; Reset every time?
       break;
 
     // BIAS BUTTONS | INCREASE/DECREASE BIAS
@@ -109,7 +115,6 @@ function handleClick({ button, value }) {
       setBias('heave', false, controls);
       break;
   }
-  console.log(`Pressed ${button} ${value}`);
   global.toROV = controls;
   global.bias = bias;
 }
