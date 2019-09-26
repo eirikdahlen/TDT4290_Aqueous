@@ -27,7 +27,14 @@ global.toROV = {
   autodepth: false,
   autoheading: false,
 };
-global.fromROV = {};
+global.fromROV = {
+  north: 0.0,
+  east: 0.0,
+  down: 0.0,
+  roll: 0.0,
+  pitch: 0.0,
+  yaw: 0.0,
+};
 global.bias = {
   surge: 0.0,
   sway: 0.0,
