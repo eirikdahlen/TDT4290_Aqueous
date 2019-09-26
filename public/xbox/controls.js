@@ -2,7 +2,8 @@
 
 // Constants
 const maxThruster = 400;
-const biasIncrease = 20;
+const biasIncrease = 10;
+const biasIncreaseTimer = 200;
 const maxYaw = 2 * Math.PI;
 
 // Bias values
@@ -12,21 +13,40 @@ let bias = {
   heave: 0.0,
 };
 
+// Store biasButtons as object for faster checking if a button is a bias-button
+const biasButtons = {
+  DPadRight: 1,
+  DPadLeft: 1,
+  DPadUp: 1,
+  DPadDown: 1,
+  RB: 1,
+  LB: 1,
+};
+
 // Auto settings
 let autoDepth = false;
 let depthReference = 0.0; // Depth in meters
 let depthIncrement = 0.4; // Meters
 
 let autoHeading = false;
-let headingReference = 0.0; // radians
-let headingIncrement = 0.1; // radians
+let headingReference = 0.0; // Radians
+let headingIncrement = 0.1; // Radians
 
 // Which button is held down
 let buttonDown;
 
-//Function for setting if X is held down
+//Interval for increasing bias continously
+setInterval(() => {
+  if (biasButtons[buttonDown]) {
+    handleClick({ button: buttonDown, value: 1 });
+  }
+}, biasIncreaseTimer);
+
+//Function for setting if X or bias-buttons are held down
 function setUpOrDown({ button, down }) {
-  buttonDown = button === 'X' && down ? button : '';
+  if (button === 'X' || biasButtons[button]) {
+    buttonDown = down ? button : '';
+  }
 }
 
 // Converst from button (buttonname) and value (how much pressed) to values for the ROV
@@ -111,10 +131,14 @@ function handleClick({ button, value }) {
       setBias('surge', false, controls);
       break;
     case 'RB': // positive heave bias (down)
-      setBias('heave', true, controls);
+      if (!autoDepth) {
+        setBias('heave', true, controls);
+      }
       break;
     case 'LB': // negative heave bias (up)
-      setBias('heave', false, controls);
+      if (!autoDepth) {
+        setBias('heave', false, controls);
+      }
       break;
   }
   global.toROV = controls;
