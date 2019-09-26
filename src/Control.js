@@ -27,8 +27,11 @@ const remote = window.require('electron').remote;
 function ControlApp() {
   const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
   let toROV = remote.getGlobal('toROV');
+<<<<<<< HEAD
 >>>>>>> #39 #41 feature: Make lock component set toROV-values
 
+=======
+>>>>>>> #39 #41 refactor: Make component only update relevant global state fields
   return (
     <div className="ControlApp">
       <div className="topWindows">

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title.js';
-const { ipcRenderer, remote } = window.require('electron');
+const remote = window.require('electron').remote;
 
 export default function Lock(props) {
   const [active, setActive] = React.useState(props.active);
@@ -35,22 +35,27 @@ export default function Lock(props) {
   function applyReference() {
     //sends new reference to ROV and sets autoflag if it's not active already
     setActive(true);
-    let newToROV = remote.getGlobal('toROV');
+    let heave = remote.getGlobal('toROV').heave;
+    let autodepth = remote.getGlobal('toROV').autodepth;
+    let yaw = remote.getGlobal('toROV').yaw;
+    let autoheading = remote.getGlobal('toROV').autoheading;
     switch (props.title) {
       case 'AutoDepth':
         if (!active) {
-          newToROV.autodepth = true;
+          autodepth = true;
+          remote.getGlobal('toROV').autodepth = autodepth;
         }
-        newToROV.heave = Number(ref);
-        ipcRenderer.send('toROV', newToROV);
+        heave = Number(ref);
+        remote.getGlobal('toROV').heave = heave;
         console.log('applying autodepth:' + ref);
         break;
       case 'AutoHeading':
         if (!active) {
-          newToROV.autoheading = true;
+          autoheading = true;
+          remote.getGlobal('toROV').autoheading = autoheading;
         }
-        newToROV.yaw = Number(ref);
-        ipcRenderer.send('toROV', newToROV);
+        yaw = Number(ref);
+        remote.getGlobal('toROV').yaw = yaw;
         console.log('applying autoheading:' + ref);
         break;
       default:
@@ -64,22 +69,23 @@ export default function Lock(props) {
 
   function lockUnlock(lock) {
     //locks or unlocks autodepth/heading depending on lock parameter
-    let newToROV = remote.getGlobal('toROV');
     setActive(lock);
     switch (props.title) {
       case 'AutoDepth':
-        newToROV.autodepth = lock;
+        remote.getGlobal('toROV').autodepth = lock;
         if (!lock) {
-          newToROV.heave = 0;
+          remote.getGlobal('toROV').heave = 0;
+        } else {
+          remote.getGlobal('toROV').heave = Number(ref);
         } //sets commanded force to 0 if autodepth is deactivated
-        ipcRenderer.send('toROV', newToROV);
         break;
       case 'AutoHeading':
-        newToROV.autoheading = lock;
+        remote.getGlobal('toROV').autoheading = lock;
         if (!lock) {
-          newToROV.yaw = 0;
+          remote.getGlobal('toROV').yaw = 0;
+        } else {
+          remote.getGlobal('toROV').yaw = Number(ref);
         } //sets commanded force to 0 if autoheading is deactivated
-        ipcRenderer.send('toROV', newToROV);
         break;
       default:
         console.log('Unrecognized title');
