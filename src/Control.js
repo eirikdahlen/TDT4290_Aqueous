@@ -10,19 +10,14 @@ import Status from './ControlComponents/js/Status';
 import './ControlComponents/css/control.css';
 import GamepadWrapper from './ControlComponents/GamepadWrapper';
 
+const { remote } = window.require('electron');
+
 function ControlApp() {
-  const [sensorValues, sensorUpdate] = useState({
-    north: 0.0,
-    east: 0.0,
-    down: 0.0,
-    roll: 0.0,
-    pitch: 0.0,
-    yaw: 0.0,
-  });
+  const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
 
   useEffect(() => {
-    window.ipcRenderer.on('data-received', (event, data) => {
-      sensorUpdate(data);
+    window.ipcRenderer.on('data-received', () => {
+      sensorUpdate(remote.getGlobal('fromROV'));
     });
   }, []);
 

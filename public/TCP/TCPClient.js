@@ -1,7 +1,7 @@
 const net = require('net');
 const ROVPort = 5000;
 const { encodeData, decodeData } = require('./coding');
-const { sendDataReceived } = require('./../IPC');
+const { sendReceiveMessage } = require('./../IPC');
 
 // Creates a client that receives and sends data to port 5000
 function getConnectedClient() {
@@ -28,7 +28,7 @@ function getConnectedClient() {
   // Handles receiving data
   client.on('data', function(data) {
     data = decodeData(data);
-    sendDataReceived(data);
+    sendReceiveMessage();
     console.log(`\n[${Date.now()}] Recieved data from server:`);
     console.log(data);
     global.fromROV = data;
