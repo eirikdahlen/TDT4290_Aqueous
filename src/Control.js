@@ -11,11 +11,9 @@ import Lock from './ControlComponents/js/Lock';
 import './ControlComponents/css/control.css';
 import GamepadWrapper from './ControlComponents/GamepadWrapper';
 
-const remote = window.require('electron').remote;
-
 function ControlApp() {
   const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
-  let toROV = remote.getGlobal('toROV');
+  let toROV = window.remote.getGlobal('toROV');
   return (
     <div className="ControlApp">
       <div className="topWindows">
