@@ -11,6 +11,7 @@ import './ControlComponents/css/control.css';
 import GamepadWrapper from './ControlComponents/GamepadWrapper';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { remote } = window.require('electron');
 
 function ControlApp() {
@@ -32,6 +33,11 @@ function ControlApp() {
 
 =======
 >>>>>>> #39 #41 refactor: Make component only update relevant global state fields
+=======
+function ControlApp() {
+  const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
+  let toROV = window.remote.getGlobal('toROV');
+>>>>>>> #39 #41 chore: Add remote to preload to fix error
   return (
     <div className="ControlApp">
       <div className="topWindows">
