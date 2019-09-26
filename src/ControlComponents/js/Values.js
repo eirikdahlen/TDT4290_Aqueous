@@ -19,5 +19,5 @@ export default function Values({ sensorValues }) {
 }
 
 Values.propTypes = {
-  values: PropTypes.array,
+  sensorValues: PropTypes.object,
 };
