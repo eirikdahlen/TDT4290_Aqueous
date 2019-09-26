@@ -75,6 +75,10 @@ function createWindows() {
   videoWindow.on('closed', () => (videoWindow = null));
 
   videoWindow.setMenu(null);
+
+  // Make the windows globally accessible
+  global.videoWindow = videoWindow;
+  global.controlWindow = controlWindow;
 }
 
 // Sets the width and height of screen - for positioning the created windows according to screen size

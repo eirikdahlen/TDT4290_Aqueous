@@ -1,6 +1,5 @@
 // The App for the ControlWindow. This is where every control-components should go.
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Values from './ControlComponents/js/Values';
 import Map from './ControlComponents/js/Map';
 import RollPitch from './ControlComponents/js/RollPitch';
@@ -12,7 +11,20 @@ import './ControlComponents/css/control.css';
 import GamepadWrapper from './ControlComponents/GamepadWrapper';
 
 function ControlApp() {
-  const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
+  const [sensorValues, sensorUpdate] = useState({
+    north: 0.0,
+    east: 0.0,
+    down: 0.0,
+    roll: 0.0,
+    pitch: 0.0,
+    yaw: 0.0,
+  });
+
+  useEffect(() => {
+    window.ipcRenderer.on('data-received', (event, data) => {
+      sensorUpdate(data);
+    });
+  }, []);
 
   return (
     <div className="ControlApp">
@@ -28,7 +40,7 @@ function ControlApp() {
           <ControlBox name="AH" />
         </div>
       </div>
-      <Values values={dummyValues} />
+      <Values sensorValues={sensorValues} />
       {/*Should be values={props.values} 
       where props.values is passed from ViewManager?*/}
       <GamepadWrapper />
