@@ -16,7 +16,6 @@ const remote = window.require('electron').remote;
 function ControlApp() {
   const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
   let toROV = remote.getGlobal('toROV');
-
   return (
     <div className="ControlApp">
       <div className="topWindows">
