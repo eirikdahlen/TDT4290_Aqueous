@@ -8,7 +8,7 @@ script:
   - yarn
   - echo 'Linting'
   - yarn lint
-  - echo 'Testing project'
-  - yarn test
+  #- echo 'Testing project'
+  #- yarn test
   - echo 'Building project'
   - yarn build
