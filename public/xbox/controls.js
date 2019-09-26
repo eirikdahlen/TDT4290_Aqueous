@@ -150,10 +150,13 @@ function setBias(type, positive, controls) {
   // Reset axis if X is held down
   if (buttonDown === 'X') {
     bias[type] = 0.0;
+    return;
   }
   // Increase bias if it isn't maxed out
-  else if (bias[type] > -maxThruster && bias[type] < maxThruster) {
-    bias[type] += positive ? biasIncrease : -biasIncrease;
+  if (positive) {
+    bias[type] += bias[type] < maxThruster ? biasIncrease : 0.0;
+  } else {
+    bias[type] -= bias[type] > -maxThruster ? biasIncrease : 0.0;
   }
   controls[type] = bias[type];
 }
