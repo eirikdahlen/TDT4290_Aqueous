@@ -18,10 +18,10 @@ function setIPCListeners() {
 }
 
 //Sends data to the two renderers/browser windows
-function sendReceiveMessage() {
+function sendReceivedMessage() {
   const { videoWindow, controlWindow } = global;
   videoWindow.webContents.send('data-received');
   controlWindow.webContents.send('data-received');
 }
 
-module.exports = { setIPCListeners, sendReceiveMessage };
+module.exports = { setIPCListeners, sendReceivedMessage };
