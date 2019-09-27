@@ -10,7 +10,7 @@ const { app, Menu } = electron;
 const isDev = require('electron-is-dev');
 
 const { menuTemplate } = require('./menuTemplate.js');
-const { registerHotkeys, unregisterHotkeysOnClose } = require('./hotkeys');
+// const { registerHotkeys, unregisterHotkeysOnClose } = require('./hotkeys');
 const { createWindows, setWidthAndHeight } = require('./windows');
 
 const { setIPCListeners } = require('./IPC');
@@ -63,8 +63,8 @@ app.on('ready', () => {
   }
 
   // Register hotkeys, as well as unregister them when the app closes
-  registerHotkeys(app, videoWindow, controlWindow);
-  unregisterHotkeysOnClose(videoWindow, controlWindow);
+  // registerHotkeys(app, videoWindow, controlWindow);
+  // unregisterHotkeysOnClose(videoWindow, controlWindow);
 
   // Function for closing the entire application when only closing one window
   function closeApp() {
