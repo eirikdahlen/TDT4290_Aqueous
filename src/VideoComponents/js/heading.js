@@ -13,6 +13,9 @@ function drawHeading(context_heading, degrees) {
   const degree_step = 15; // Number of degrees between each displayed number
   const degree_space = 50; // Spacing between each displayed number
 
+  // Handle negative degrees and degrees larger than 360
+  degrees = ((degrees % 360) + 360) % 360;
+
   // Convert degrees to pixel offset
   const heading = (degree_space * (120 - degrees)) / degree_step;
 
