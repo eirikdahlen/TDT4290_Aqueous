@@ -7,10 +7,14 @@ class CanvasDepth extends Canvas {
   }
 
   componentDidMount() {
-    // This widget takes depth as a property
-    const { depth } = this.props;
+    // Convert from radians to degrees
     depth_init(this.ctx);
-    drawDepth(this.ctx, depth);
+    drawDepth(this.ctx, this.props.depth);
+  }
+
+  // Redraw widget
+  componentDidUpdate() {
+    drawDepth(this.ctx, this.props.depth);
   }
 }
 

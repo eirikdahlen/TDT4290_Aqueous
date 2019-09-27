@@ -1,5 +1,6 @@
 import { Canvas, PureCanvas } from './canvas_base.js';
 import drawBias from '../js/bias.js';
+import { mapRange } from '../js/tools.js';
 
 class CanvasBias extends Canvas {
   constructor(props) {
@@ -8,8 +9,19 @@ class CanvasBias extends Canvas {
 
   componentDidMount() {
     // This widget takes u, v, w as properties
-    const { u, v, w } = this.props;
+    var { u, v, w } = this.props;
+
+    // Normalize bias values
+    u = mapRange(u, -400.0, 400.0, -1.0, 1.0);
+    v = mapRange(v, -400.0, 400.0, -1.0, 1.0);
+    w = mapRange(w, -400.0, 400.0, -1.0, 1.0);
+
     drawBias(this.ctx, u, v, w);
+  }
+
+  // Redraw widget
+  componentDidUpdate() {
+    this.componentDidMount();
   }
 }
 
