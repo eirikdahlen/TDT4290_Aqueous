@@ -1,5 +1,9 @@
+const setupEvents = require('../installers/setupEvents');
+if (setupEvents.handleSquirrelEvent()) {
+  // squirrel event handled and app will exit in 1000ms, so don't do anything else
+  return;
+}
 // electron.js is the main process for electron. It handles windows and communication between windows.
-
 const electron = require('electron');
 const { app, BrowserWindow, Menu } = electron;
 

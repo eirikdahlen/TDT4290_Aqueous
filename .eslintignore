@@ -4,4 +4,5 @@ build/*
 config/*
 src/__tests__/*
 babel.config.js
+installers/*
 preload.js
