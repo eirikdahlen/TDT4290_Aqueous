@@ -3,3 +3,4 @@
  * The original work-around worked for running the program, but the tests would fail
  */
 window.ipcRenderer = require('electron').ipcRenderer;
+window.remote = require('electron').remote;

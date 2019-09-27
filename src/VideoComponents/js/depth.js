@@ -1,25 +1,31 @@
+import { clamp } from './tools.js';
+
 function depth_init(context_depth) {
   // Basic formatting
   const color_base = '#FFFFFF';
   context_depth.strokeStyle = color_base;
   context_depth.fillStyle = color_base;
-  context_depth.textAlign = 'right';
   context_depth.textBaseline = 'middle';
-
-  draw_indicator_depth(context_depth);
 }
 
-// Dummy animation
-/*var offset_depth = 0;
-var offset_depth_mult = -1;*/
+const num_space = 50; // Spacing between the numerical labels
 
 function drawDepth(context_depth, depth) {
-  const num_space = 50; // Spacing between the numerical labels
+  // Clamp the depth between 0.0 and 200.0;
+  depth = clamp(depth, 0.0, 200.0);
 
   var offset_depth = depth;
 
   // Clear the canvas every frame (except the rightmost triangle, which is static)
-  context_depth.clearRect(0, 0, 47, 500);
+  context_depth.clearRect(
+    0,
+    0,
+    context_depth.canvas.clientWidth,
+    context_depth.canvas.clientHeight,
+  );
+
+  // Text formatting for the depth labels
+  context_depth.textAlign = 'right';
 
   // Add 200 labels (the ROV never descends more than 200 meters)
   for (var i = 0; i < 201; i++) {
@@ -42,18 +48,12 @@ function drawDepth(context_depth, depth) {
     context_depth.stroke();
   }
 
-  // Dummy animation
-  /*if (y_position <= 250) {
-    offset_depth_mult = 1;
-  } else if (y_position >= 201 * num_space + 250) {
-    offset_depth_mult = -1;
-  }
+  // Draw number showing the numerical value of the depth
+  context_depth.textAlign = 'left';
+  context_depth.font = '18px Arial';
 
-  // Dummy animation
-  offset_depth += 5 * offset_depth_mult;*/
-}
+  context_depth.fillText(depth.toFixed(2), 80, 250);
 
-function draw_indicator_depth(context_depth) {
   // Draw the static indicator triangle
   context_depth.beginPath();
   context_depth.moveTo(50, 250);

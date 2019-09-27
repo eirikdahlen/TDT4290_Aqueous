@@ -1,6 +1,6 @@
 const electron = require('electron');
 const isDev = require('electron-is-dev');
-const { join } = require('path');
+const path = require('path');
 
 let widthControlWindow;
 let heightControlWindow;
@@ -23,6 +23,7 @@ function createWindows() {
     y: yVideoWindow,
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
@@ -30,7 +31,7 @@ function createWindows() {
   videoWindow.loadURL(
     isDev
       ? 'http://localhost:3000?videoWindow'
-      : `file://${join(__dirname, '../build/index.html?videoWindow')}`,
+      : `file://${path.join(__dirname, '../build/index.html?videoWindow')}`,
   );
 
   let controlWindow = new electron.BrowserWindow({
@@ -41,13 +42,14 @@ function createWindows() {
     y: yControlWindow,
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
   controlWindow.loadURL(
     isDev
       ? 'http://localhost:3000?controlWindow'
-      : `file://${join(__dirname, '../build/index.html?controlWindow')}`,
+      : `file://${path.join(__dirname, '../build/index.html?controlWindow')}`,
   );
 
   return [videoWindow, controlWindow];

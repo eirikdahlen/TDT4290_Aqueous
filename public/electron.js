@@ -1,5 +1,9 @@
+const setupEvents = require('../installers/setupEvents');
+if (setupEvents.handleSquirrelEvent()) {
+  // squirrel event handled and app will exit in 1000ms, so don't do anything else
+  return;
+}
 // electron.js is the main process for electron. It handles windows and communication between windows.
-
 const electron = require('electron');
 const { app, Menu } = electron;
 
@@ -25,7 +29,19 @@ global.toROV = {
   autodepth: false,
   autoheading: false,
 };
-global.fromROV = {};
+global.fromROV = {
+  north: 0.0,
+  east: 0.0,
+  down: 0.0,
+  roll: 0.0,
+  pitch: 0.0,
+  yaw: 0.0,
+};
+global.bias = {
+  surge: 0.0,
+  sway: 0.0,
+  heave: 0.0,
+};
 
 // Functions that are run when the app is ready
 app.on('ready', () => {

@@ -16,7 +16,7 @@ class CanvasDepth extends Canvas {
 
 class PureCanvasDepth extends PureCanvas {
   constructor(props) {
-    super(props, 'canvasDepth', 75, 500);
+    super(props, 'canvasDepth', 120, 800);
   }
 }
 

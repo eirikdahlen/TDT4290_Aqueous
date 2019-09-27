@@ -8,20 +8,18 @@ img {
 }
 
 #canvasBias {
-  height: 300px;
-  width: 300px;
-  right: 0;
-  bottom: -50px;
+  right: 50px;
+  bottom: 50px;
 }
 
 #canvasHeading {
-  left: 75px;
-  width: 100%;
-  height: auto;
+  /* This centers the widget, even in the case where the windows becomes too small when resizing */
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
 }
 
 #canvasDepth {
   top: 75px;
-  height: 90%;
-  width: auto;
+  left: 10px;
 }
