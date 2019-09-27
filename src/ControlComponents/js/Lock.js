@@ -36,7 +36,7 @@ export default function Lock(props) {
   function applyReference() {
     //sends new reference to ROV and sets autoflag if it's not active already
     setActive(true);
-    let {heave, yaw} = remote.getGlobal('toROV');
+    let { heave, yaw } = remote.getGlobal('toROV');
     switch (props.title) {
       case 'AutoDepth':
         if (!active) {
