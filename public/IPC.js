@@ -17,4 +17,11 @@ function setIPCListeners() {
   });
 }
 
-module.exports = { setIPCListeners };
+//Sends data to the two renderers/browser windows
+function sendReceivedMessage() {
+  const { videoWindow, controlWindow } = global;
+  videoWindow.webContents.send('data-received');
+  controlWindow.webContents.send('data-received');
+}
+
+module.exports = { setIPCListeners, sendReceivedMessage };

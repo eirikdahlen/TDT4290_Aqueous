@@ -1,153 +1,172 @@
 .ControlApp {
-    background-color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    font-family: 'Segoe UI', sans-serif;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .value {
-    font-size: 60px;
-    padding: 10px;
+  font-size: 30px;
+  padding: 10px;
 }
 
 .title {
-    font-size: 15px;
-    font-weight: bold;
-    padding: 5px 0px 5px 0px;
-    background-color: silver;
-    text-align: center;
-    border-radius: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 5px 0px 5px 0px;
+  background-color: silver;
+  text-align: center;
+  border-radius: inherit;
 }
 
 .valueBox {
-    max-width: max-content;
-    background-color: lightgray;
-    margin: 0px 2px 15px 0px;
-   /* border-radius: 10px 10px 10px 10px;*/
+  width: 100px;
+  background-color: lightgray;
+  margin: 0px 2px 15px 0px;
+  /* border-radius: 10px 10px 10px 10px;*/
 }
 
 .lock {
-    background-color: lightgray;
-    margin: 0px 5% 0px 0px;
-    border-radius: 10px 10px 0px 0px;
+  background-color: lightgray;
+  margin: 0px 5% 0px 0px;
+  border-radius: 10px 10px 0px 0px;
 }
 
 .inputFlex {
-    display: flex;
-    flex-direction: row;
-    padding: 20px;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+.lock {
+  background-color: lightgray;
+  margin: 0px 5% 0px 0px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.inputFlex {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
 }
 
 .valueBox:first-child {
-    border-radius: 10px 0px 0px 0px;
+  border-radius: 10px 0px 0px 0px;
 }
 
 .valueBox:last-child {
-    border-radius: 0px 10px 0px 0px;
+  border-radius: 0px 10px 0px 0px;
 }
 
 .values .valueBox {
-    display: inline-block;
+  display: inline-block;
 }
 
-
 .values {
-    position: absolute;
-    bottom: 0;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
 }
 
 .valuesFlex {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .map {
-    background-color: lightgray;
-    border-radius: 20px 20px 20px 20px;
-    margin: 5px 5px 5px 5px;
-    width: 40%;
+  background-color: lightgray;
+  border-radius: 20px 20px 20px 20px;
+  margin: 5px 5px 5px 5px;
+  width: 40%;
 }
 
 .rollPitch {
-    background-color: lightgray;
-    border-radius: 20px 20px 20px 20px;
-    margin: 5px 5px 5px 5px;
-    width: 30%;
+  background-color: lightgray;
+  border-radius: 20px 20px 20px 20px;
+  margin: 5px 5px 5px 5px;
+  width: 30%;
 }
 
 .status {
-    background-color: lightgray;
-    border-radius: 20px 20px 20px 20px;
-    margin: 5px 5px 5px 5px;
-    width: 30%;
+  background-color: lightgray;
+  border-radius: 20px 20px 20px 20px;
+  margin: 5px 5px 5px 5px;
+  width: 30%;
 }
 
 .topWindows {
-    display: flex;
-    flex-direction: row;
-    height: 40%;
+  display: flex;
+  flex-direction: row;
+  height: 40%;
 }
 
 ul {
-     list-style-type: none;
-     margin: 0;
-     padding: 0;
-     top:45px;
-     background-color: white;
-     font-weight:bold;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  top: 45px;
+  background-color: white;
+  font-weight: bold;
 
-     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-     z-index: 1;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 li {
-     padding: 6%;
-     text-align: center;
-     border-bottom: 1px solid #e5e5e5;
+  padding: 6%;
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 li:hover {
-     background-color: #e5e5e5;
-     color: white;
+  background-color: #e5e5e5;
+  color: white;
 }
 
- .modeMenu {
-     display: flex;
-     flex-direction: column;
-     margin: 5% 5px 5% 10%;
-     width: 30%;
+.modeMenu {
+  display: flex;
+  flex-direction: column;
+  margin: 5% 5px 5% 10%;
+  width: 30%;
 }
 
- .dropdownButton {
-     padding: 6%;
-     text-align: center;
-     background-color:green;
-     border-radius:5px;
-     font-weight:bold;
-     color:white;
+.dropdownButton {
+  padding: 6%;
+  text-align: center;
+  background-color: green;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
 }
 
 .dropdownButton:hover {
-    background-color: lightgreen;
+  background-color: lightgreen;
 }
 
 .autoFlex {
-    display: flex;
-    flex-direction: row;
-    width: 40%;
-    margin: 0 0 0 15%;
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  margin: 0 0 0 15%;
 }
 
 .controlFlex {
-    display: flex;
-    flex-direction: row;
-    height: 15%;
-    margin: 5% 0 0 0;
+  display: flex;
+  flex-direction: row;
+  height: 15%;
+  margin: 5% 0 0 0;
+}
+
+.controlBox {
+  background-color: lightgray;
+  border-radius: 10px 10px 10px 10px;
+  margin: 5px 15px 5px 15px;
+  width: 100%;
 }
 
 .check {
-    text-align: center;
+  text-align: center;
 }
