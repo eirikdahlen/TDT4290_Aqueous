@@ -10,8 +10,6 @@ import Lock from './ControlComponents/js/Lock';
 import './ControlComponents/css/control.css';
 import GamepadWrapper from './ControlComponents/GamepadWrapper';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 const { remote } = window.require('electron');
 
 function ControlApp() {
@@ -22,22 +20,9 @@ function ControlApp() {
       sensorUpdate(remote.getGlobal('fromROV'));
     });
   }, []);
-=======
-const remote = window.require('electron').remote;
 
-function ControlApp() {
-  const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
   let toROV = remote.getGlobal('toROV');
-<<<<<<< HEAD
->>>>>>> #39 #41 feature: Make lock component set toROV-values
 
-=======
->>>>>>> #39 #41 refactor: Make component only update relevant global state fields
-=======
-function ControlApp() {
-  const dummyValues = [2.11, 1.12, 20.89, 0.01, 0.0, 234.59];
-  let toROV = window.remote.getGlobal('toROV');
->>>>>>> #39 #41 chore: Add remote to preload to fix error
   return (
     <div className="ControlApp">
       <div className="topWindows">
@@ -67,13 +52,7 @@ function ControlApp() {
           />
         </div>
       </div>
-<<<<<<< HEAD
       <Values sensorValues={sensorValues} />
-      {/*Should be values={props.values} 
-      where props.values is passed from ViewManager?*/}
-=======
-      <Values values={dummyValues} />
->>>>>>> #39 #41 feature: Make lock component set toROV-values
       <GamepadWrapper />
     </div>
   );

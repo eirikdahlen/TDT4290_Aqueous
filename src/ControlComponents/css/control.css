@@ -142,7 +142,6 @@ li:hover {
 }
 
 .controlFlex {
-<<<<<<< HEAD
   display: flex;
   flex-direction: row;
   height: 15%;
@@ -155,14 +154,7 @@ li:hover {
   margin: 5px 15px 5px 15px;
   width: 100%;
 }
-=======
-    display: flex;
-    flex-direction: row;
-    height: 15%;
-    margin: 5% 0 0 0;
-}
 
 .check {
     text-align: center;
 }
->>>>>>> #39 #41 feature: Make lock component set toROV-values
