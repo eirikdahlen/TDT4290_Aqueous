@@ -4,7 +4,8 @@
 }
 
 .ValueBox {
-  width: 90px;
+  min-width: 90px;
+  width: 16%;
   background-color: lightgray;
   margin: 0 2px;
 }
