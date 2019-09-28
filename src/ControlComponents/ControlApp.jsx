@@ -1,14 +1,14 @@
 // The App for the ControlWindow. This is where every control-components should go.
 import React, { useState, useEffect } from 'react';
-import Values from './ControlComponents/Values';
-import Map from './ControlComponents/Map';
-import RollPitch from './ControlComponents/RollPitch';
-import ModeMenu from './ControlComponents/ModeMenu';
-import Status from './ControlComponents/Status';
-import Lock from './ControlComponents/Lock';
+import Values from './Values';
+import Map from './Map';
+import RollPitch from './RollPitch';
+import ModeMenu from './ModeMenu';
+import Status from './Status';
+import Lock from './Lock';
 
-import './Control.css';
-import GamepadWrapper from './ControlComponents/GamepadWrapper';
+import './css/ControlApp.css';
+import GamepadWrapper from './GamepadWrapper';
 
 const { remote } = window.require('electron');
 

@@ -2,11 +2,11 @@
 // The App for the VideoWindow. This is where every video-component should go.
 
 import React, { useState, useEffect } from 'react';
-import { BiasWidget } from './VideoComponents/BiasWidget';
-import { HeadingWidget } from './VideoComponents/HeadingWidget';
-import { DepthWidget } from './VideoComponents/DepthWidget';
-import './Video.css';
-import VideoFeed from './VideoComponents/VideoFeed';
+import { BiasWidget } from './BiasWidget';
+import { HeadingWidget } from './HeadingWidget';
+import { DepthWidget } from './DepthWidget';
+import './css/VideoApp.css';
+import VideoFeed from './VideoFeed';
 
 const { remote } = window.require('electron');
 
