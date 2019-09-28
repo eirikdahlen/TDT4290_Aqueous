@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Title from './Title.js';
+import Title from './Title';
 
 const { remote } = window.require('electron');
 

@@ -1,8 +1,9 @@
-import { Canvas, PureCanvas } from './canvas_base.js';
-import drawBias from '../js/bias.js';
-import { mapRange } from '../js/tools.js';
+import { CanvasWidget, PureCanvas } from './CanvasWidget';
+import drawBias from './js/bias.js';
+import { mapRange } from './js/tools.js';
+import './css/BiasWidget.css';
 
-class CanvasBias extends Canvas {
+class BiasWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasBias);
   }
@@ -27,8 +28,8 @@ class CanvasBias extends Canvas {
 
 class PureCanvasBias extends PureCanvas {
   constructor(props) {
-    super(props, 'canvasBias', 360, 360);
+    super(props, 'BiasWidget', 360, 360);
   }
 }
 
-export { CanvasBias };
+export { BiasWidget };

@@ -4,5 +4,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ViewManager from './ViewManager';
+import './index.css';
 
 ReactDOM.render(<ViewManager />, document.getElementById('root'));

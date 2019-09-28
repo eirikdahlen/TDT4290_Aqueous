@@ -1,11 +1,11 @@
 // The App for the ControlWindow. This is where every control-components should go.
 import React, { useState, useEffect } from 'react';
-import Values from './ControlComponents/js/Values';
-import Map from './ControlComponents/js/Map';
-import RollPitch from './ControlComponents/js/RollPitch';
-import ModeMenu from './ControlComponents/js/ModeMenu';
-import Status from './ControlComponents/js/Status';
-import Lock from './ControlComponents/js/Lock';
+import Values from './ControlComponents/Values';
+import Map from './ControlComponents/Map';
+import RollPitch from './ControlComponents/RollPitch';
+import ModeMenu from './ControlComponents/ModeMenu';
+import Status from './ControlComponents/Status';
+import Lock from './ControlComponents/Lock';
 
 import './ControlComponents/css/control.css';
 import GamepadWrapper from './ControlComponents/GamepadWrapper';

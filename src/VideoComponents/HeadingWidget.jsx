@@ -1,9 +1,10 @@
-import { Canvas, PureCanvas } from './canvas_base.js';
-import { heading_init, drawHeading } from '../js/heading.js';
+import { CanvasWidget, PureCanvas } from './CanvasWidget';
+import { heading_init, drawHeading } from './js/heading.js';
+import './css/HeadingWidget.css';
 
-import { radiansToDegrees } from '../js/tools.js';
+import { radiansToDegrees } from './js/tools.js';
 
-class CanvasHeading extends Canvas {
+class HeadingWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasHeading);
   }
@@ -26,8 +27,8 @@ class CanvasHeading extends Canvas {
 
 class PureCanvasHeading extends PureCanvas {
   constructor(props) {
-    super(props, 'canvasHeading', 800, 100);
+    super(props, 'HeadingWidget', 800, 100);
   }
 }
 
-export { CanvasHeading };
+export { HeadingWidget };
