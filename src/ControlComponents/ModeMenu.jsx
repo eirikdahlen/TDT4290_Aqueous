@@ -16,7 +16,7 @@ export default function ModeMenu(props) {
   }
 
   return (
-    <div className="modeMenu">
+    <div className="ModeMenu">
       <div className="dropdownButton" onClick={showMenu}>
         Mode: {currentMode}
       </div>

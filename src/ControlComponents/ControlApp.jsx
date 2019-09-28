@@ -25,35 +25,39 @@ function ControlApp() {
 
   return (
     <div className="ControlApp">
-      <div className="topWindows">
-        <Map />
-        <RollPitch />
-        <Status />
-      </div>
       <div className="controlFlex">
-        <ModeMenu mode="Manual" /> {/*Start in mode Manual*/}
-        <div className="autoFlex">
-          <Lock
-            title="AutoDepth"
-            active={toROV.autodepth}
-            value={toROV.heave}
-            min={0}
-            max={200}
-            step={0.1}
-          />
-          <Lock
-            title="AutoHeading"
-            active={toROV.autoheading}
-            value={toROV.yaw}
-            min={0}
-            max={360}
-            step={0.5}
-            loop={true}
-          />
+        <div className="topWindow">
+          <Map />
+          <RollPitch />
+          <Status />
+        </div>
+        <div className="middleWindow">
+          <ModeMenu mode="Manual" /> {/*Start in mode Manual*/}
+          <div className="lockFlex">
+            <Lock
+              title="AutoDepth"
+              active={toROV.autodepth}
+              value={toROV.heave}
+              min={0}
+              max={200}
+              step={0.1}
+            />
+            <Lock
+              title="AutoHeading"
+              active={toROV.autoheading}
+              value={toROV.yaw}
+              min={0}
+              max={360}
+              step={0.5}
+              loop={true}
+            />
+          </div>
+        </div>
+        <div className="bottomWindow">
+          <Values sensorValues={sensorValues} />
         </div>
       </div>
-      <Values sensorValues={sensorValues} />
-      <GamepadWrapper />
+      <GamepadWrapper className="GamepadWrapper" />
     </div>
   );
 }

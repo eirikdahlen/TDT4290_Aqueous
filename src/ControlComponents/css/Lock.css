@@ -1,13 +1,18 @@
 .Lock {
   background-color: lightgray;
-  margin: 0px 5% 0px 0px;
+  margin: 5px;
   border-radius: 10px 10px 0px 0px;
+  width: 50%;
+  height: 50%;
 }
 
 .inputFlex {
   display: flex;
   flex-direction: row;
   padding: 20px;
+}
+.inputFlex > input {
+  width: 70%;
 }
 
 .check {

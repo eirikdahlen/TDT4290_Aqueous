@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Title from './Title.jsx';
 import './css/ValueBox.css';
 
-export default function ValueBox(props) {
+export default function ValueBox({ title, value }) {
   return (
     <div className="ValueBox">
-      <Title>{props.title}</Title>
-      <Value>{props.value}</Value>
+      <Title>{title}</Title>
+      <Value>{value}</Value>
     </div>
   );
 }
@@ -18,9 +18,9 @@ function Value(props) {
 
 ValueBox.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.number,
+  value: PropTypes.string,
 };
 
 Value.propTypes = {
-  children: PropTypes.number,
+  children: PropTypes.string,
 };

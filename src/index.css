@@ -2,3 +2,9 @@ body {
   margin: 0;
   overflow: hidden;
 }
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
+}
