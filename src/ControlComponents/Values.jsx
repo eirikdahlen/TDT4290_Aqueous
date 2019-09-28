@@ -1,11 +1,12 @@
 import React from 'react';
 import ValueBox from './ValueBox';
 import PropTypes from 'prop-types';
+import './css/Values.css';
 
 export default function Values({ sensorValues }) {
   return (
     <div className="valuesFlex">
-      <div className="values">
+      <div className="Values">
         {Object.keys(sensorValues).map(sensor => (
           <ValueBox
             key={sensor}

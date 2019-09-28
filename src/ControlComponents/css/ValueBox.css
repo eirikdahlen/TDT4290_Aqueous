@@ -1,0 +1,19 @@
+.Value {
+  font-size: 30px;
+  padding: 10px;
+}
+
+.ValueBox {
+  width: 100px;
+  background-color: lightgray;
+  margin: 0px 2px 15px 0px;
+  /* border-radius: 10px 10px 10px 10px;*/
+}
+
+.ValueBox:first-child {
+  border-radius: 10px 0px 0px 0px;
+}
+
+.ValueBox:last-child {
+  border-radius: 0px 10px 0px 0px;
+}

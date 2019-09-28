@@ -1,0 +1,14 @@
+.valuesFlex {
+  display: flex;
+  justify-content: center;
+}
+
+.Values .ValueBox {
+  display: inline-block;
+}
+
+.Values {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}

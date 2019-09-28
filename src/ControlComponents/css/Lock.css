@@ -1,0 +1,15 @@
+.Lock {
+  background-color: lightgray;
+  margin: 0px 5% 0px 0px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.inputFlex {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+}
+
+.check {
+  text-align: center;
+}

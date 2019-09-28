@@ -7,7 +7,7 @@ import ModeMenu from './ControlComponents/ModeMenu';
 import Status from './ControlComponents/Status';
 import Lock from './ControlComponents/Lock';
 
-import './ControlComponents/css/control.css';
+import './Control.css';
 import GamepadWrapper from './ControlComponents/GamepadWrapper';
 
 const { remote } = window.require('electron');

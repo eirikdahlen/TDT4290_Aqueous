@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title.jsx';
+import './css/ValueBox.css';
 
 export default function ValueBox(props) {
   return (
-    <div className="valueBox">
+    <div className="ValueBox">
       <Title>{props.title}</Title>
       <Value>{props.value}</Value>
     </div>
@@ -12,7 +13,7 @@ export default function ValueBox(props) {
 }
 
 function Value(props) {
-  return <div className="value">{props.children}</div>;
+  return <div className="Value">{props.children}</div>;
 }
 
 ValueBox.propTypes = {

@@ -1,0 +1,29 @@
+.ControlApp {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.topWindows {
+  display: flex;
+  flex-direction: row;
+  height: 40%;
+}
+
+.autoFlex {
+  display: flex;
+  flex-direction: row;
+  width: 40%;
+  margin: 0 0 0 15%;
+}
+
+.controlFlex {
+  display: flex;
+  flex-direction: row;
+  height: 15%;
+  margin: 5% 0 0 0;
+}
