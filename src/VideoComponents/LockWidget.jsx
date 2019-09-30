@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import './css/LockWidget.css';
 import ImageLock from './images/lock.png';
 
-// const ImageLock = require('./images/lock.png');
-
 class LockWidget extends Component {
   constructor(props) {
     super(props);
