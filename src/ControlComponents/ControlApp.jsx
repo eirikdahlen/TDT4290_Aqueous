@@ -48,7 +48,7 @@ function ControlApp() {
               value={toROV.yaw}
               min={0}
               max={360}
-              step={0.5}
+              step={1}
               loop={true}
             />
           </div>
