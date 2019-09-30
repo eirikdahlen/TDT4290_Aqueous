@@ -10,6 +10,7 @@ During this project, we will build a graphical user interface for controlling a 
 
 We recommend [Visual Studio Code](https://code.visualstudio.com/) as IDE/text editor.
 
+
 ### Windows
 
 We recommend Git Bash, which can be downloaded [here](https://git-scm.com/downloads), as shell/command promt.
@@ -39,3 +40,4 @@ yarn electron-dev
 ## Contributing
 
 Follow the conventions specified in [CONTRIBUTION](./CONTRIBUTING.md).
+
