@@ -9,31 +9,24 @@ import { radiansToDegrees } from './js/tools.js';
 class HeadingWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasHeading);
+    this.lockedValue = 0;
   }
 
   componentDidMount() {
-    // This widget takes heading as a property
-
-    const heading_degrees = radiansToDegrees(this.props.heading);
-
     heading_init(this.ctx);
-    drawHeading(
-      this.ctx,
-      heading_degrees,
-      this.props.isLocked,
-      this.props.lockedValue,
-    );
+    this.componentDidUpdate();
   }
 
   // Redraw widget
   componentDidUpdate() {
     const heading_degrees = radiansToDegrees(this.props.heading);
+    this.lockedValue = radiansToDegrees(this.props.lockedValue);
 
     drawHeading(
       this.ctx,
       heading_degrees,
       this.props.isLocked,
-      this.props.lockedValue,
+      this.lockedValue, // Do not perform .toFixed on this :)
     );
   }
 
@@ -44,7 +37,7 @@ class HeadingWidget extends CanvasWidget {
         {canvas}
         <LockWidget
           id="LockWidgetHeading"
-          value={this.props.lockedValue}
+          value={this.lockedValue.toFixed(0)}
           isLocked={this.props.isLocked}
         />
       </div>

@@ -12,7 +12,7 @@ class LockWidget extends Component {
   static get propTypes() {
     return {
       id: PropTypes.string,
-      value: PropTypes.number,
+      value: PropTypes.string,
       isLocked: PropTypes.bool,
     };
   }
