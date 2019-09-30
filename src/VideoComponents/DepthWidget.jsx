@@ -12,12 +12,7 @@ class DepthWidget extends CanvasWidget {
   componentDidMount() {
     // Convert from radians to degrees
     depth_init(this.ctx);
-    drawDepth(
-      this.ctx,
-      this.props.depth,
-      this.props.isLocked,
-      this.props.lockedValue,
-    );
+    this.componentDidUpdate();
   }
 
   // Redraw widget
@@ -26,7 +21,7 @@ class DepthWidget extends CanvasWidget {
       this.ctx,
       this.props.depth,
       this.props.isLocked,
-      this.props.lockedValue,
+      this.props.lockedValue, // Do not perform .toFixed on this :)
     );
   }
 
@@ -38,7 +33,7 @@ class DepthWidget extends CanvasWidget {
         {canvas}
         <LockWidget
           id="LockWidgetDepth"
-          value={this.props.lockedValue}
+          value={this.props.lockedValue.toFixed(2)}
           isLocked={this.props.isLocked}
         />
       </div>
