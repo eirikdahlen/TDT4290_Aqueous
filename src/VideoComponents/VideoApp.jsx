@@ -7,7 +7,6 @@ import HeadingWidget from './HeadingWidget';
 import DepthWidget from './DepthWidget';
 import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
-import LockWidget from './LockWidget';
 
 const { remote } = window.require('electron');
 
@@ -31,19 +30,17 @@ function VideoApp() {
         v={biasValues['sway']}
         w={biasValues['heave']}
       />
-      <HeadingWidget heading={sensorValues['yaw']} />
-      <DepthWidget depth={sensorValues['down']} />
-      <VideoFeed />
-      <LockWidget
-        id="LockWidgetHeading"
-        value={0}
+      <HeadingWidget
+        heading={sensorValues['yaw']}
         isLocked={settingsValues['autoheading']}
+        lockedValue={17}
       />
-      <LockWidget
-        id="LockWidgetDepth"
-        value={200}
+      <DepthWidget
+        depth={sensorValues['down']}
         isLocked={settingsValues['autodepth']}
+        lockedValue={1.3}
       />
+      <VideoFeed />
     </div>
   );
 }
