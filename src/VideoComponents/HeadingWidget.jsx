@@ -31,4 +31,4 @@ class PureCanvasHeading extends PureCanvas {
   }
 }
 
-export { HeadingWidget };
+export default HeadingWidget;

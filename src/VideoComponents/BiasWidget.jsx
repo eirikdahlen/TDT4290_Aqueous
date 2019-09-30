@@ -32,4 +32,4 @@ class PureCanvasBias extends PureCanvas {
   }
 }
 
-export { BiasWidget };
+export default BiasWidget;
