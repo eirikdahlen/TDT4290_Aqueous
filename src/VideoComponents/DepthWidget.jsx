@@ -25,4 +25,4 @@ class PureCanvasDepth extends PureCanvas {
   }
 }
 
-export { DepthWidget };
+export default DepthWidget;
