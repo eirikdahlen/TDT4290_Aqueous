@@ -37,7 +37,7 @@ class HeadingWidget extends CanvasWidget {
         {canvas}
         <LockWidget
           id="LockWidgetHeading"
-          value={this.lockedValue.toFixed(0)}
+          value={this.lockedValue.toFixed(0) + '\xB0'}
           isLocked={this.props.isLocked}
         />
       </div>

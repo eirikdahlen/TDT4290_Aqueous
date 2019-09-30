@@ -110,7 +110,7 @@ function drawHeading(context_heading, degrees, isLocked, lockedValue) {
 
   // Draw number showing the numerical value of the heading
   context_heading.font = '18px Arial';
-  context_heading.fillText(degrees.toFixed(0), width_half, 100);
+  context_heading.fillText(degrees.toFixed(0) + '\xB0', width_half, 100);
 
   // Draw a triangle indicating the heading
   context_heading.beginPath();
