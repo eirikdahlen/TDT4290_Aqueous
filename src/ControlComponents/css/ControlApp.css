@@ -1,0 +1,32 @@
+.ControlApp {
+  font-family: 'Segoe UI', sans-serif;
+  height: 100%;
+}
+
+.controlFlex {
+  height: 100%;
+}
+
+.topWindow {
+  display: flex;
+  flex-direction: row;
+  height: 40%;
+}
+.middleWindow {
+  display: flex;
+  flex-direction: row;
+  height: 40%;
+}
+
+.bottomWindow {
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lockFlex {
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+}

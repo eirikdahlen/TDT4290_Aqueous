@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - '8'
+cache: yarn
+script:
+  - echo 'Build starts'
+  - echo 'Installing Dependencies'
+  - yarn
+  - echo 'Linting'
+  - yarn lint
+  #- echo 'Testing project'
+  #- yarn test
+  - echo 'Building project'
+  - yarn build
