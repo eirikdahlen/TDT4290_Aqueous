@@ -72,7 +72,7 @@ function drawDepth(context_depth, depth, isLocked, lockedValue) {
   context_depth.textAlign = 'left';
   context_depth.font = '18px Arial';
 
-  context_depth.fillText(depth.toFixed(2), 80, 250);
+  context_depth.fillText(depth.toFixed(2) + ' m', 75, 250);
 
   // Draw the static indicator triangle
   context_depth.beginPath();
