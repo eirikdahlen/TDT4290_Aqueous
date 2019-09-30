@@ -1,7 +1,7 @@
 {
   "name": "aqeous",
   "description": "Awesome project",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "babel-jest": "^24.9.0",
