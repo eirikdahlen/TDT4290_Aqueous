@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './css/ModeMenu.css';
 
 export default function ModeMenu(props) {
   const [displayMenu, setDisplayMenu] = React.useState(false); //Dropdownmenu starts hidden
@@ -15,17 +16,24 @@ export default function ModeMenu(props) {
   }
 
   return (
-    <div className="modeMenu">
+    <div className="ModeMenu">
       <div className="dropdownButton" onClick={showMenu}>
         Mode: {currentMode}
       </div>
       {displayMenu ? ( //If menu should be visible, show list of options
-        <ul>
-          <li onClick={() => updateMode('Manual')}>Manual</li>
-          <li onClick={() => updateMode('Dynamic Positioning')}>
+        <ul className="modeList">
+          <li className="modeItem" onClick={() => updateMode('Manual')}>
+            Manual
+          </li>
+          <li
+            className="modeItem"
+            onClick={() => updateMode('Dynamic Positioning')}
+          >
             Dynamic Positioning
           </li>
-          <li onClick={() => updateMode('Net Following')}>Net Following</li>
+          <li className="modeItem" onClick={() => updateMode('Net Following')}>
+            Net Following
+          </li>
         </ul>
       ) : null}
     </div>

@@ -1,0 +1,8 @@
+canvas {
+  position: fixed;
+}
+
+img {
+  position: fixed;
+  opacity: 0.5;
+}

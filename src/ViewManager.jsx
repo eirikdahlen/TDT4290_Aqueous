@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import ControlApp from './Control';
-import VideoApp from './Video';
+import ControlApp from './ControlComponents/ControlApp';
+import VideoApp from './VideoComponents/VideoApp';
 
 class ViewManager extends Component {
   static Views() {

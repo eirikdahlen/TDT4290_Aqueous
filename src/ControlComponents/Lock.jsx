@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Title from './Title.js';
+import Title from './Title';
+import './css/Lock.css';
 
 const { remote } = window.require('electron');
 
@@ -89,7 +90,7 @@ export default function Lock(props) {
   }
 
   return (
-    <div className="lock">
+    <div className="Lock">
       <Title>{props.title}</Title>
       <div className="inputFlex">
         <input

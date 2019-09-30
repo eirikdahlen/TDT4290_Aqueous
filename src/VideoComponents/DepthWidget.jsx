@@ -1,7 +1,8 @@
-import { Canvas, PureCanvas } from './canvas_base.js';
-import { depth_init, drawDepth } from '../js/depth.js';
+import { CanvasWidget, PureCanvas } from './CanvasWidget';
+import { depth_init, drawDepth } from './js/depth.js';
+import './css/DepthWidget.css';
 
-class CanvasDepth extends Canvas {
+class DepthWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasDepth);
   }
@@ -20,8 +21,8 @@ class CanvasDepth extends Canvas {
 
 class PureCanvasDepth extends PureCanvas {
   constructor(props) {
-    super(props, 'canvasDepth', 120, 800);
+    super(props, 'DepthWidget', 120, 800);
   }
 }
 
-export { CanvasDepth };
+export { DepthWidget };

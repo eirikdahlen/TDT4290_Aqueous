@@ -2,13 +2,11 @@
 // The App for the VideoWindow. This is where every video-component should go.
 
 import React, { useState, useEffect } from 'react';
-import { CanvasBias } from './VideoComponents/canvasComponents/component_bias.js';
-import { CanvasHeading } from './VideoComponents/canvasComponents/component_heading.js';
-import { CanvasDepth } from './VideoComponents/canvasComponents/component_depth.js';
-import './VideoComponents/css/overlay.css';
-import './VideoComponents/css/Video.css';
-import './VideoComponents/css/general.css';
-import VideoFeed from './VideoComponents/VideoFeed';
+import { BiasWidget } from './BiasWidget';
+import { HeadingWidget } from './HeadingWidget';
+import { DepthWidget } from './DepthWidget';
+import './css/VideoApp.css';
+import VideoFeed from './VideoFeed';
 
 const { remote } = window.require('electron');
 
@@ -25,13 +23,13 @@ function VideoApp() {
 
   return (
     <div className="VideoApp">
-      <CanvasBias
+      <BiasWidget
         u={biasValues['surge']}
         v={biasValues['sway']}
         w={biasValues['heave']}
       />
-      <CanvasHeading heading={sensorValues['yaw']} />
-      <CanvasDepth depth={sensorValues['down']} />
+      <HeadingWidget heading={sensorValues['yaw']} />
+      <DepthWidget depth={sensorValues['down']} />
       <VideoFeed />
     </div>
   );

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './css/CanvasWidget.css';
 
 // The canvas classes are split into two main types: Canvases and PureCanvases.
 // The higher-level Canvas classes handle the context and drawing. The lower-level PureCanvas classes
@@ -7,7 +8,7 @@ import PropTypes from 'prop-types';
 // as specify that the Canvas React element should not be removed and re-added, as
 // would happen in animation.
 
-class Canvas extends React.Component {
+class CanvasWidget extends Component {
   // Base class for all higher-level elements
   constructor(props, purewidget) {
     super(props);
@@ -29,7 +30,7 @@ class Canvas extends React.Component {
   }
 }
 
-class PureCanvas extends React.Component {
+class PureCanvas extends Component {
   // Base class for all the lower-level canvas elements
   constructor(props, id, width, height) {
     super(props);
@@ -55,7 +56,7 @@ class PureCanvas extends React.Component {
   render() {
     return (
       <canvas
-        id={this.id}
+        className={this.id}
         width={this.width}
         height={this.height}
         ref={node =>
@@ -66,4 +67,4 @@ class PureCanvas extends React.Component {
   }
 }
 
-export { Canvas, PureCanvas };
+export { CanvasWidget, PureCanvas };
