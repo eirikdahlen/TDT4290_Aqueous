@@ -17,10 +17,6 @@ class LockWidget extends Component {
     };
   }
 
-  componentDidUpdate() {
-    console.log(this.props.isLocked);
-  }
-
   render() {
     return (
       <div

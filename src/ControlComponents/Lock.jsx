@@ -51,7 +51,7 @@ export default function Lock(props) {
         if (!active) {
           remote.getGlobal('toROV').autoheading = true;
         }
-        yaw = Number(ref);
+        yaw = Number(ref) * (Math.PI / 180);
         remote.getGlobal('toROV').yaw = yaw;
         console.log('applying autoheading:' + ref);
         break;
@@ -81,7 +81,7 @@ export default function Lock(props) {
         if (!lock) {
           remote.getGlobal('toROV').yaw = 0;
         } else {
-          remote.getGlobal('toROV').yaw = Number(ref);
+          remote.getGlobal('toROV').yaw = Number(ref) * (Math.PI / 180);
         } //sets commanded force to 0 if autoheading is deactivated
         break;
       default:
