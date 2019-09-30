@@ -33,12 +33,12 @@ function VideoApp() {
       <HeadingWidget
         heading={sensorValues['yaw']}
         isLocked={settingsValues['autoheading']}
-        lockedValue={17}
+        lockedValue={settingsValues['yaw']}
       />
       <DepthWidget
         depth={sensorValues['down']}
         isLocked={settingsValues['autodepth']}
-        lockedValue={1.3}
+        lockedValue={settingsValues['heave']}
       />
       <VideoFeed />
     </div>
