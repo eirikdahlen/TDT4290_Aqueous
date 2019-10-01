@@ -26,11 +26,11 @@ const biasButtons = {
 // Auto settings
 let autoDepth = false;
 let depthReference = 0.0; // Depth in meters
-let depthIncrement = 0.4; // Meters
+let depthIncrement = 0.2; // Meters
 
 let autoHeading = false;
 let headingReference = 0.0; // Radians
-let headingIncrement = 0.5; // Radians
+let headingIncrement = 0.2; // Radians
 
 // Which button is held down
 let buttonDown;
@@ -51,8 +51,6 @@ function setUpOrDown({ button, down }) {
 
 // Converst from button (buttonname) and value (how much pressed) to values for the ROV
 function handleClick({ button, value }) {
-  headingReference = global.fromROV.yaw;
-  depthReference = global.fromROV.down;
   let controls = {
     surge: bias.surge,
     sway: bias.sway,
@@ -113,11 +111,13 @@ function handleClick({ button, value }) {
     case 'A': // Toggle autodepth
       autoDepth = !autoDepth;
       controls['autodepth'] = autoDepth;
+      depthReference = global.fromROV.down;
       controls['heave'] = autoDepth ? depthReference : 0.0;
       break;
     case 'B': // Toggle autoheading
       autoHeading = !autoHeading;
       controls['autoheading'] = autoHeading;
+      headingReference = global.fromROV.yaw;
       controls['yaw'] = autoHeading ? headingReference : 0.0;
       break;
 
