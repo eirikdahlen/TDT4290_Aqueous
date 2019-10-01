@@ -2,26 +2,24 @@ var { dialog } = require('electron');
 const { launchSimulator } = require('./launchSimulator');
 const { getConnectedClient } = require('./../TCP/TCPClient');
 
-function getSimulatorFile() {
+// Opens browing window for choosing file - when file is chosen, simulator is launched and tcp client is created
+function getSimulatorFileAndLaunch() {
   dialog.showOpenDialog(
     {
       properties: ['openFile'],
-      // Only possible to choose .bat-files
       filters: [{ name: 'Simulators', extensions: ['bat'] }],
     },
     function(filename) {
-      // Store filename somewhere, so we can use it for launching simulator later
-      let fileName = filename.toString();
-      console.log('Filename: ');
-      console.log(fileName);
-
-      // Command to run file
-      const startSimulator = 'start ' + fileName + ' && exit';
-
-      launchSimulator(startSimulator);
+      filename = filename.toString();
+      if (!filename) {
+        return;
+      }
+      console.log(`Launching ${filename}`);
+      const startSimulatorCommand = `start ${filename} && exit`;
+      launchSimulator(startSimulatorCommand);
       getConnectedClient();
     },
   );
 }
 
-module.exports = { getSimulatorFile };
+module.exports = { getSimulatorFileAndLaunch };

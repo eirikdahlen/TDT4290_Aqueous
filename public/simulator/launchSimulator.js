@@ -7,7 +7,7 @@ function execute(command, callback) {
 }
 
 function launchSimulator(command) {
-  execute(command, () => console.log('executed successfully'));
+  execute(command, () => {});
 }
 
 module.exports = { launchSimulator };
