@@ -1,6 +1,6 @@
 const electron = require('electron');
 const { app } = electron;
-const { getSimulatorFile } = require('./simulator/chooseSimulator');
+const { getSimulatorFileAndLaunch } = require('./simulator/chooseSimulator');
 
 // Menu template for control window
 let menuTemplate = [
@@ -10,7 +10,7 @@ let menuTemplate = [
       {
         label: 'Choose simulator file',
         click() {
-          getSimulatorFile();
+          getSimulatorFileAndLaunch();
         },
       },
     ],
@@ -21,7 +21,7 @@ let menuTemplate = [
       {
         label: 'Start',
         click() {
-          getSimulatorFile();
+          getSimulatorFileAndLaunch();
         },
       },
       {
