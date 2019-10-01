@@ -30,7 +30,7 @@ let depthIncrement = 0.4; // Meters
 
 let autoHeading = false;
 let headingReference = 0.0; // Radians
-let headingIncrement = 0.1; // Radians
+let headingIncrement = 0.5; // Radians
 
 // Which button is held down
 let buttonDown;
@@ -51,6 +51,8 @@ function setUpOrDown({ button, down }) {
 
 // Converst from button (buttonname) and value (how much pressed) to values for the ROV
 function handleClick({ button, value }) {
+  headingReference = global.fromROV.yaw;
+  depthReference = global.fromROV.down;
   let controls = {
     surge: bias.surge,
     sway: bias.sway,
@@ -93,7 +95,7 @@ function handleClick({ button, value }) {
     // RIGHT STICK | HEADING/YAW
     case 'RightStickX': // Yaw
       if (!autoHeading) {
-        controls['yaw'] += value * maxYaw * 100; // Multiply by 100 for faster turning - I have no idea how this works
+        controls['yaw'] += value * maxYaw;
       } else {
         headingReference += value * headingIncrement;
         headingReference = headingReference % maxYaw;
@@ -111,10 +113,12 @@ function handleClick({ button, value }) {
     case 'A': // Toggle autodepth
       autoDepth = !autoDepth;
       controls['autodepth'] = autoDepth;
+      controls['heave'] = autoDepth ? depthReference : 0.0;
       break;
     case 'B': // Toggle autoheading
       autoHeading = !autoHeading;
       controls['autoheading'] = autoHeading;
+      controls['yaw'] = autoHeading ? headingReference : 0.0;
       break;
 
     // BIAS BUTTONS | INCREASE/DECREASE BIAS
