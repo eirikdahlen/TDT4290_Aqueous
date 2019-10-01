@@ -3,9 +3,6 @@ const ROVPort = 5000;
 const { encodeData, decodeData } = require('./coding');
 const { sendReceivedMessage } = require('./../IPC');
 
-// Variable for keeping track of connection status - used to handle ECONNREFUSED error
-let connected = false;
-
 // Creates a client that receives and sends data to port 5000
 function getConnectedClient() {
   console.log('Attempting to create TCP client and connect to server..');
@@ -42,12 +39,9 @@ function getConnectedClient() {
   // Tries to connect again if server is not opened yet
   client.on('error', function(err) {
     const { code } = err;
-    if (code === 'ECONNREFUSED' && !connected) {
+    if (code === 'ECONNREFUSED') {
       console.log('Attempt failed :( Trying again in 500ms..');
       setTimeout(getConnectedClient, 500);
-    } else if (code === 'ECONNREFUSED' && connected) {
-      console.log('ROV server closed');
-      connected = false;
     }
   });
   return client;
