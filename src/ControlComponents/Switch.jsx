@@ -1,7 +1,7 @@
 import React from 'react';
 import './css/Switch.css';
 
-const Switch = ({ isOn, handleToggle, id }) => {
+const Switch = ({ isOn, handleToggle, id, currentValue }) => {
   return (
     <>
       <input
@@ -12,11 +12,12 @@ const Switch = ({ isOn, handleToggle, id }) => {
         type="checkbox"
       />
       <label
-        style={{ background: isOn && '#06D6A0' }}
+        style={{ background: isOn && '#4ac276' }}
         className="react-switch-label"
         htmlFor={id}
       >
-        <span className={`react-switch-button`} />
+        <span className="currentValue">{currentValue}</span>
+        <span className={`react-switch-button`}></span>
       </label>
     </>
   );

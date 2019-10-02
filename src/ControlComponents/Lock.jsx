@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title';
 import Switch from './Switch';
@@ -7,27 +7,20 @@ import './css/Lock.css';
 const { remote } = window.require('electron');
 
 export default function Lock({ title, active, value, min, max, step, loop }) {
-  const [reference, setReference] = useState(value);
-  const [updatedReference, setUpdatedReference] = useState(value);
+  const [input, changeInput] = useState(0.0);
+  const [reference, setReference] = useState(0.0);
+  const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
 
-  console.log(title, active, value, min, max, step, loop);
-
-  const updateClicked = () => {
-    setUpdatedReference(reference);
+  const updateValue = value => {
+    setReference(value);
     if (active) {
-      updateLock(); //Change to updatevalue or something
+      remote.getGlobal('toROV')[type] = Number(value);
     }
   };
 
-  const toggled = () => {
-    updateLock();
-  };
-
-  const updateLock = () => {
-    const type = { autoheading: 'yaw', autodepth: 'heading' }[title];
+  const toggle = () => {
     remote.getGlobal('toROV')[title] = !active;
-    remote.getGlobal('toROV')[type] = active ? updatedReference : value;
-    console.log(active);
+    remote.getGlobal('toROV')[type] = active ? 0.0 : Number(reference);
   };
 
   return (
@@ -39,17 +32,21 @@ export default function Lock({ title, active, value, min, max, step, loop }) {
           step={step}
           min={min}
           max={max}
-          onChange={e => setReference(e.target.value)}
+          onChange={e => changeInput(Number(e.target.value))}
         />
-        <button className="applyButton" onClick={() => updateClicked()}>
-          Update
+        <button className="updateButton" onClick={() => updateValue(input)}>
+          &#x21bb;
         </button>
       </div>
-      <div>
-        {title}: {updatedReference}
-      </div>
       <div className="check">
-        <Switch isOn={active} onClick={() => toggled()} id={`${title}Switch`} />
+        <Switch
+          isOn={active}
+          handleToggle={() => {
+            toggle();
+          }}
+          id={`${title}Switch`}
+          currentValue={value}
+        />
       </div>
     </div>
   );
