@@ -46,7 +46,6 @@ function ControlApp() {
               min={0}
               max={200}
               step={0.1}
-              loop={false}
             />
             <Lock
               title="autoheading"
@@ -55,7 +54,6 @@ function ControlApp() {
               min={0}
               max={360}
               step={1}
-              loop={true}
             />
           </div>
         </div>

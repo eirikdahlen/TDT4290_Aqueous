@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title';
 import Switch from './Switch';
@@ -6,7 +6,7 @@ import './css/Lock.css';
 
 const { remote } = window.require('electron');
 
-export default function Lock({ title, active, value, min, max, step, loop }) {
+export default function Lock({ title, active, value, min, max, step }) {
   const [input, changeInput] = useState(0.0);
   const [reference, setReference] = useState(0.0);
   const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
@@ -31,9 +31,13 @@ export default function Lock({ title, active, value, min, max, step, loop }) {
         value = Math.max(value, 0.0);
         return value;
       }
+      default: {
+        console.log('Unrecognized title');
+      }
     }
   };
 
+  // Function that is run when the update-button is clicked
   const updateValue = value => {
     setReference(value);
     if (active) {
@@ -41,6 +45,7 @@ export default function Lock({ title, active, value, min, max, step, loop }) {
     }
   };
 
+  // Function that is run when toggle is clicked
   const toggle = () => {
     remote.getGlobal('toROV')[title] = !active;
     remote.getGlobal('toROV')[type] = active ? 0.0 : fixValue(reference, true);
