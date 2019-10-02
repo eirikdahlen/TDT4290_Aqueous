@@ -10,17 +10,35 @@ export default function Lock({ title, active, value, min, max, step, loop }) {
   const [input, changeInput] = useState(0.0);
   const [reference, setReference] = useState(0.0);
   const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
+  const unit = type === 'yaw' ? '°' : ' m';
+
+  const fixValue = (value, toRadians) => {
+    if (title === 'autoheading') {
+      if (toRadians) {
+        return (Number(value) * (Math.PI / 180)) % (2 * Math.PI);
+      } else {
+        return (Number(value) * (180 / Math.PI)) % 360;
+      }
+    } else {
+      if (value > 200) {
+        return 200;
+      } else if (value < 0) {
+        return 0.0;
+      }
+      return value;
+    }
+  };
 
   const updateValue = value => {
     setReference(value);
     if (active) {
-      remote.getGlobal('toROV')[type] = Number(value);
+      remote.getGlobal('toROV')[type] = fixValue(value, true);
     }
   };
 
   const toggle = () => {
     remote.getGlobal('toROV')[title] = !active;
-    remote.getGlobal('toROV')[type] = active ? 0.0 : Number(reference);
+    remote.getGlobal('toROV')[type] = active ? 0.0 : fixValue(reference, true);
   };
 
   return (
@@ -45,7 +63,7 @@ export default function Lock({ title, active, value, min, max, step, loop }) {
             toggle();
           }}
           id={`${title}Switch`}
-          currentValue={value}
+          currentValue={`${fixValue(value, false).toFixed(1)}${unit}`}
         />
       </div>
     </div>
