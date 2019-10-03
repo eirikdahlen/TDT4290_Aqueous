@@ -42,6 +42,7 @@
   cursor: pointer;
   text-align: left;
   outline: none;
+  line-height: 20px;
 }
 
 /* Change color of dropdown links on hover */
@@ -58,4 +59,11 @@
 .dropdown:hover .dropbtn {
   background-color: white;
   width: 200px;
+}
+
+.selectedFeed::after {
+  content: '\2713';
+  float: right;
+  font-weight: bold;
+  font-size: 20px;
 }
