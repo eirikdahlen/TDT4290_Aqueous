@@ -7,7 +7,7 @@
   left: -9999px;
   right: -9999px;
   margin: auto;
-  bottom: 50px;
+  bottom: 20px;
 
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
@@ -15,10 +15,7 @@
 }
 
 .ModeWidget canvas {
-  display: inline-block;
-  left: -9999px;
-  right: -9999px;
-  margin: auto;
+  position: relative;
 }
 
 .ModeWidget p {
