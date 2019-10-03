@@ -14,9 +14,29 @@ class VideoFeed extends Component {
     });
   };
 
+  setDeviceId = () => {
+    navigator.mediaDevices.enumerateDevices().then(devices => {
+      const videoFeeds = devices.filter(el => {
+        return el.kind === 'videoinput';
+      });
+      console.log(videoFeeds);
+      let chosenFeedId = '';
+      if (videoFeeds.length === 1) {
+        chosenFeedId = videoFeeds[0].deviceId;
+      } else {
+        const camLinkFeed = videoFeeds.filter(feed => {
+          return feed.label.indexOf('Cam Link') >= 0;
+        });
+        chosenFeedId = camLinkFeed.deviceId;
+      }
+      this.setState({ deviceId: chosenFeedId });
+    });
+  };
+
   // componentDidMount is built-in function that is called after the inital rendering of the component
   // Adds eventlistener on resizing window, and updates width and height in state accordingly.
   componentDidMount() {
+    this.setDeviceId();
     this.updateDimensions();
     window.addEventListener('resize', e => {
       e.preventDefault();
@@ -32,7 +52,11 @@ class VideoFeed extends Component {
   render() {
     return (
       <div className="VideoFeed">
-        <Webcam height={this.state.height} width={this.state.width} />
+        <Webcam
+          videoConstraints={{ deviceId: this.state.deviceId }}
+          height={this.state.height}
+          width={this.state.width}
+        />
       </div>
     );
   }
