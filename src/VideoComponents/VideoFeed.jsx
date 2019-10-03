@@ -42,8 +42,8 @@ class VideoFeed extends Component {
   };
 
   populateDropdown = () => {
-    console.log('hei');
     const dropdown = document.getElementById('video-dropdown-content');
+    dropdown.innerHTML = '';
     Object.keys(this.state.videoFeeds).forEach(key => {
       const btn = document.createElement('button');
       btn.onclick = this.switchFeed;
