@@ -3,15 +3,21 @@
   position: absolute;
   z-index: 1;
   display: inline-block;
+  top: -3px;
 }
 
 /* Dropdown Button */
 .dropbtn {
-  background-color: #4caf50;
   color: white;
-  padding: 16px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 10px;
   border: none;
+  background-color: transparent;
+  background-image: url('../images/camera.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+  transition: all 0.2s;
+  outline: none;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -19,21 +25,27 @@
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
 /* Links inside the dropdown */
-#video-dropdown-content a {
+#video-dropdown-content button {
   color: black;
-  padding: 12px 16px;
+  background-color: rgb(241, 236, 210);
+  padding: 12px 8px;
   text-decoration: none;
   display: block;
+  width: 200px;
+  border: solid black;
+  border-width: 1px 0 0 0;
+  cursor: pointer;
+  text-align: left;
+  outline: none;
 }
 
 /* Change color of dropdown links on hover */
-#video-dropdown-content a:hover {
+#video-dropdown-content button:hover {
   background-color: #ddd;
 }
 
@@ -44,5 +56,6 @@
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
-  background-color: #3e8e41;
+  background-color: white;
+  width: 200px;
 }
