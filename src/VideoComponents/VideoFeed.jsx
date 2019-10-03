@@ -5,7 +5,13 @@ import './css/VideoFeed.css';
 class VideoFeed extends Component {
   constructor(props) {
     super(props);
-    this.state = { videoFeeds: {}, deviceId: '', width: 0, height: 0 };
+    this.state = {
+      videoFeeds: {},
+      deviceId: '',
+      deviceLabel: '',
+      width: 0,
+      height: 0,
+    };
   }
   // Function for updating size - is called when window is resized to make webcam fit window properly
   updateDimensions = () => {
@@ -18,7 +24,12 @@ class VideoFeed extends Component {
   switchFeed = event => {
     const label = event.target.innerHTML;
     const clickedFeed = this.state.videoFeeds[label];
-    this.setState({ deviceId: clickedFeed });
+    this.setState({ deviceId: clickedFeed, deviceLabel: label });
+    var buttons = document.querySelectorAll('.videoButton');
+    buttons.forEach(btn => {
+      btn.classList.remove('selectedFeed');
+    });
+    event.target.classList.add('selectedFeed');
   };
 
   setVideoObject = videoFeeds => {
@@ -31,12 +42,27 @@ class VideoFeed extends Component {
     this.setState({ videoFeeds: feeds });
   };
 
+  setDefaultId = () => {
+    let { videoFeeds } = this.state;
+    const keys = Object.keys(videoFeeds);
+    let ID = videoFeeds[keys[0]].deviceId;
+    let label = keys[0];
+    keys.forEach(key => {
+      if (key.includes('Cam Link')) {
+        ID = videoFeeds[key];
+        label = key;
+      }
+    });
+    this.setState({ deviceId: ID, deviceLabel: label });
+  };
+
   init = () => {
     navigator.mediaDevices.enumerateDevices().then(devices => {
       const videoFeeds = devices.filter(feed => {
         return feed.kind === 'videoinput';
       });
       this.setVideoObject(videoFeeds);
+      this.setDefaultId();
       this.populateDropdown();
     });
   };
@@ -48,6 +74,10 @@ class VideoFeed extends Component {
       const btn = document.createElement('button');
       btn.onclick = this.switchFeed;
       btn.innerHTML = key;
+      btn.classList.add('videoButton');
+      if (key === this.state.deviceLabel) {
+        btn.classList.add('selectedFeed');
+      }
       dropdown.appendChild(btn);
     });
   };
