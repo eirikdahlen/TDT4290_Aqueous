@@ -12,6 +12,7 @@ class VideoFeed extends Component {
       width: 0,
       height: 0,
     };
+    this.loaded = false;
   }
 
   // Function for updating size - is called when window is resized to make webcam fit window properly
@@ -68,8 +69,11 @@ class VideoFeed extends Component {
         return feed.kind === 'videoinput';
       });
       this.setVideoObject(feeds);
-      this.setDefaultID();
+      if (!this.loaded) {
+        this.setDefaultID();
+      }
       this.populateDropdown();
+      this.loaded = true;
     });
   };
 
@@ -92,7 +96,7 @@ class VideoFeed extends Component {
   // componentDidMount is built-in function that is called after the inital rendering of the component
   // Adds eventlistener on resizing window, and updates width and height in state accordingly.
   componentDidMount() {
-    this.init();
+    navigator.mediaDevices.ondevicechange = this.init;
     this.updateDimensions();
     window.addEventListener('resize', e => {
       e.preventDefault();
