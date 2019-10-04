@@ -37,7 +37,11 @@ function ControlApp() {
           <Status />
         </div>
         <div className="middleWindow">
-          <ModeMenu mode="Manual" /> {/*Start in mode Manual*/}
+          {/*Start in mode Manual*/}
+          <ModeMenu
+            mode="Manual"
+            netfollowingAvailable={false} // TODO: This should be fetched from the ROV somehow
+          />
           <div className="lockFlex">
             <Lock
               title="autodepth"

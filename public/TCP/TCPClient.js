@@ -23,6 +23,7 @@ function getConnectedClient() {
       yaw: 0.0,
       autodepth: false,
       autoheading: false,
+      netfollowing: false,
     });
   });
 
@@ -58,7 +59,8 @@ function sendData(client, data) {
    *  'pitch': number,
    *  'yaw': number,
    *  'autodepth': bool,
-   *  'autoheading': bool
+   *  'autoheading': bool,
+   *  'netfollowing': bool
    * }
    */
   let buf = encodeData(data);

@@ -11,6 +11,14 @@ export default function ModeMenu(props) {
   }
 
   function updateMode(mode) {
+    switch (mode) {
+      case 'Net Following':
+        break;
+      case 'Dynamic Positioning':
+        break;
+      case 'Manual':
+        break;
+    }
     setCurrentMode(mode);
     showMenu();
   }
@@ -31,7 +39,18 @@ export default function ModeMenu(props) {
           >
             Dynamic Positioning
           </li>
-          <li className="modeItem" onClick={() => updateMode('Net Following')}>
+          <li
+            className="modeItem"
+            style={{
+              color: props.netfollowingAvailable ? 'black' : '#9e9e9e',
+              cursor: props.netfollowingAvailable ? 'pointer' : 'not-allowed',
+            }}
+            onClick={
+              props.netfollowingAvailable
+                ? () => updateMode('Net Following')
+                : () => console.log('Cannot activate NF at this point')
+            }
+          >
             Net Following
           </li>
         </ul>
@@ -42,4 +61,5 @@ export default function ModeMenu(props) {
 
 ModeMenu.propTypes = {
   mode: PropTypes.string,
+  netfollowingAvailable: PropTypes.bool,
 };
