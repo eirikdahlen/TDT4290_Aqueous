@@ -53,6 +53,15 @@ export default function ModeMenu({
     showMenu();
   }
 
+  // update mode globally & with setCurrentMode for this file
+  function setMode_onClick(mode) {
+    updateMode(mode)
+    global.mode = {
+      name: mode,
+    }
+  }
+
+
   return (
     <div className="ModeMenu">
       <div className="dropdownButton" onClick={showMenu}>
