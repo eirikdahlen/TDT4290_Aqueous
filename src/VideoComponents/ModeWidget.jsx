@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './css/ModeWidget.css';
 import NetFollowingWidget from './NetFollowingWidget';
+import './css/ModeWidget.css';
 
 const ModeEnum = {
   MANUAL: 0,
@@ -13,7 +13,7 @@ class ModeWidget extends Component {
   constructor(props) {
     super(props);
     this.modeLabel = 'INVALID';
-    this.canvas = <canvas width={150} height={150}></canvas>;
+    this.canvas = <canvas width={195} height={195}></canvas>;
     this.componentDidMount();
   }
 
@@ -25,7 +25,7 @@ class ModeWidget extends Component {
       case ModeEnum.NETFOLLOWING:
         this.modeLabel = 'NET FOLLOWING';
         this.canvas = (
-          <NetFollowingWidget distance={5.2} depth={2.2} velocity={0} />
+          <NetFollowingWidget distance={7} depth={9} velocity={2} />
         );
         break;
       case ModeEnum.DYNAMICPOSITIONING:
