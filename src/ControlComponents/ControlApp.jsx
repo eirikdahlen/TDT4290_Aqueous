@@ -15,6 +15,9 @@ const { remote } = window.require('electron');
 function ControlApp() {
   const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
   const [controlValues, controlUpdate] = useState(remote.getGlobal('toROV'));
+  const [netfollowing, netfollowingUpdate] = useState(
+    remote.getGlobal('netfollowing'),
+  );
 
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
@@ -25,6 +28,7 @@ function ControlApp() {
   useEffect(() => {
     window.ipcRenderer.on('data-sent', () => {
       controlUpdate(remote.getGlobal('toROV'));
+      netfollowingUpdate(remote.getGlobal('netfollowing'));
     });
   }, []);
 
@@ -36,11 +40,15 @@ function ControlApp() {
           <RollPitch />
           <Status />
         </div>
-        <div className="middleWindow">
+        <div
+          className="middleWindow"
+          onClick={() => console.log({ netfollowing })}
+        >
           {/*Start in mode Manual*/}
           <ModeMenu
             mode="Manual"
-            netfollowingAvailable={false} // TODO: This should be fetched from the ROV somehow
+            netfollowingActive={netfollowing.active} // TODO: This should be fetched from the ROV somehow
+            netfollowingAvailable={netfollowing.available}
           />
           <div className="lockFlex">
             <Lock

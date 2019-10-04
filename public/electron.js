@@ -30,7 +30,6 @@ global.toROV = {
   yaw: 0.0,
   autodepth: false,
   autoheading: false,
-  netfollowing: false,
 };
 global.fromROV = {
   north: 0.0,
@@ -44,6 +43,19 @@ global.bias = {
   surge: 0.0,
   sway: 0.0,
   heave: 0.0,
+};
+
+/**
+ * In IMC, positive and negative values of velocity is also indicating port/starbord direction
+ * Positive velocity values: Starbord / styrbord
+ * Negative velocity values: Port / babord
+ * Direction property is therefore not needed
+ */
+global.netfollowing = {
+  distance: 0,
+  velocity: 0,
+  active: false,
+  available: true,
 };
 
 //Function for creating the two windows - controls and video

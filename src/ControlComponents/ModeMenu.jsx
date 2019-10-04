@@ -1,22 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeMenu.css';
 
-export default function ModeMenu(props) {
-  const [displayMenu, setDisplayMenu] = React.useState(false); //Dropdownmenu starts hidden
-  const [currentMode, setCurrentMode] = React.useState(props.mode);
+const { remote } = window.require('electron');
+
+export default function ModeMenu({
+  mode,
+  netfollowingActive,
+  netfollowingAvailable,
+}) {
+  const [displayMenu, setDisplayMenu] = useState(false); //Dropdownmenu starts hidden
+  const [currentMode, setCurrentMode] = useState(mode);
 
   function showMenu() {
     displayMenu ? setDisplayMenu(false) : setDisplayMenu(true); //Show menu if it's hidden, hide menu if it's visible
   }
 
   function updateMode(mode) {
+    console.log({ netfollowingAvailable });
     switch (mode) {
       case 'Net Following':
+        remote.getGlobal('netfollowing')['netfollowingActive'] = true;
         break;
       case 'Dynamic Positioning':
+        /**
+         * TODO: Implement activation of DP here
+         */
         break;
-      case 'Manual':
+      default:
         break;
     }
     setCurrentMode(mode);
@@ -42,16 +53,17 @@ export default function ModeMenu(props) {
           <li
             className="modeItem"
             style={{
-              color: props.netfollowingAvailable ? 'black' : '#9e9e9e',
-              cursor: props.netfollowingAvailable ? 'pointer' : 'not-allowed',
+              color: netfollowingAvailable ? 'black' : '#9e9e9e',
+              cursor: netfollowingAvailable ? 'pointer' : 'not-allowed',
             }}
             onClick={
-              props.netfollowingAvailable
+              netfollowingAvailable
                 ? () => updateMode('Net Following')
                 : () => console.log('Cannot activate NF at this point')
             }
           >
             Net Following
+            {netfollowingActive}
           </li>
         </ul>
       ) : null}
@@ -62,4 +74,5 @@ export default function ModeMenu(props) {
 ModeMenu.propTypes = {
   mode: PropTypes.string,
   netfollowingAvailable: PropTypes.bool,
+  netfollowingActive: PropTypes.bool,
 };
