@@ -15,6 +15,7 @@ function setIPCListeners() {
   ipcMain.on('xbox-up-down', (event, { button, down }) => {
     setUpOrDown({ button, down });
   });
+
 }
 
 //Sends data to the two renderers/browser windows

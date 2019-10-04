@@ -15,6 +15,15 @@ export default function ModeMenu(props) {
     showMenu();
   }
 
+  // update mode globally & with setCurrentMode for this file
+  function setMode_onClick(mode) {
+    updateMode(mode)
+    global.mode = {
+      name: mode,
+    }
+  }
+
+
   return (
     <div className="ModeMenu">
       <div className="dropdownButton" onClick={showMenu}>
@@ -22,16 +31,16 @@ export default function ModeMenu(props) {
       </div>
       {displayMenu ? ( //If menu should be visible, show list of options
         <ul className="modeList">
-          <li className="modeItem" onClick={() => updateMode('Manual')}>
+          <li className="modeItem" onClick={() => setMode_onClick('Manual')}>
             Manual
           </li>
           <li
             className="modeItem"
-            onClick={() => updateMode('Dynamic Positioning')}
+            onClick={() => setMode_onClick('Dynamic Positioning')}
           >
             Dynamic Positioning
           </li>
-          <li className="modeItem" onClick={() => updateMode('Net Following')}>
+          <li className="modeItem" onClick={() => setMode_onClick('Net Following')}>
             Net Following
           </li>
         </ul>

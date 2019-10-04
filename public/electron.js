@@ -45,6 +45,11 @@ global.bias = {
   heave: 0.0,
 };
 
+global.mode = {
+  name: "Manual",
+  settings: "",
+};
+
 //Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
