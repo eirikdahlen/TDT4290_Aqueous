@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeMenu.css';
 
@@ -12,22 +12,35 @@ export default function ModeMenu({
   const [displayMenu, setDisplayMenu] = useState(false); //Dropdownmenu starts hidden
   const [currentMode, setCurrentMode] = useState(mode);
 
+  useEffect(() => {
+    window.ipcRenderer.on('data-sent', () => {
+      setCurrentMode(remote.getGlobal('netfollowing'));
+    });
+  }, []);
+
   function showMenu() {
     displayMenu ? setDisplayMenu(false) : setDisplayMenu(true); //Show menu if it's hidden, hide menu if it's visible
   }
 
   function updateMode(mode) {
-    console.log({ netfollowingAvailable });
     switch (mode) {
       case 'Net Following':
-        remote.getGlobal('netfollowing')['netfollowingActive'] = true;
+        if (currentMode !== 'Net Following') {
+          remote.getGlobal('netfollowing')['active'] = true;
+        }
         break;
       case 'Dynamic Positioning':
         /**
          * TODO: Implement activation of DP here
          */
+        if (currentMode === 'Net Following') {
+          remote.getGlobal('netfollowing')['active'] = false;
+        }
         break;
       default:
+        if (currentMode === 'Net Following') {
+          remote.getGlobal('netfollowing')['active'] = false;
+        }
         break;
     }
     setCurrentMode(mode);
@@ -57,9 +70,7 @@ export default function ModeMenu({
               cursor: netfollowingAvailable ? 'pointer' : 'not-allowed',
             }}
             onClick={
-              netfollowingAvailable
-                ? () => updateMode('Net Following')
-                : () => console.log('Cannot activate NF at this point')
+              netfollowingAvailable ? () => updateMode('Net Following') : null
             }
           >
             Net Following

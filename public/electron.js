@@ -46,8 +46,8 @@ global.bias = {
 };
 
 /**
- * In IMC, positive and negative values of velocity is also indicating port/starbord direction
- * Positive velocity values: Starbord / styrbord
+ * In IMC, positive and negative values of velocity is also indicating port/starboard direction
+ * Positive velocity values: Starboard / styrbord
  * Negative velocity values: Port / babord
  * Direction property is therefore not needed
  */
