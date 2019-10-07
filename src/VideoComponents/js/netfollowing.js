@@ -53,7 +53,7 @@ function drawNetFollowing(context, distance, velocity) {
   const offsetDistance = clamp(
     distance * 10,
     0,
-    canvasWidth - globalOffsetWidth + 1,
+    canvasWidth - rovWidth - globalOffsetWidth,
   );
 
   context.fillStyle = '#FFFF00';
@@ -62,8 +62,8 @@ function drawNetFollowing(context, distance, velocity) {
   context.beginPath();
   context.moveTo(globalOffsetWidth + 20, 0);
   context.lineTo(globalOffsetWidth, 40);
-  context.lineTo(globalOffsetWidth, 110);
-  context.lineTo(globalOffsetWidth + 20, 150);
+  context.lineTo(globalOffsetWidth, canvasHeight - 40);
+  context.lineTo(globalOffsetWidth + 20, canvasHeight);
   context.stroke();
 
   const rovTopLeftX = globalOffsetWidth + offsetDistance;
@@ -87,8 +87,33 @@ function drawNetFollowing(context, distance, velocity) {
   context.moveTo(globalOffsetWidth, canvasHeight / 2 - measureWidth / 2);
   context.lineTo(globalOffsetWidth, canvasHeight / 2 + measureWidth / 2);
   context.stroke();
+
   // Body
   context.moveTo(globalOffsetWidth, canvasHeight / 2);
+
+  if (distance * 10 > offsetDistance) {
+    console.log('HEYYYYY');
+    context.lineTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
+    context.stroke();
+
+    //context.moveTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
+    context.beginPath();
+    context.setLineDash([4, 4]);
+    context.moveTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
+    context.lineTo(
+      globalOffsetWidth + offsetDistance * (2 / 3),
+      canvasHeight / 2,
+    );
+    context.stroke();
+
+    context.beginPath();
+    context.setLineDash([]);
+    context.moveTo(
+      globalOffsetWidth + offsetDistance * (2 / 3),
+      canvasHeight / 2,
+    );
+  }
+
   context.lineTo(globalOffsetWidth + offsetDistance, canvasHeight / 2);
   context.stroke();
   // Second leg
@@ -133,49 +158,42 @@ function drawNetFollowing(context, distance, velocity) {
     arrowStartY = canvasHeight / 2 - rovHeight / 2 - 5;
     arrowCurveY = arrowStartY - 15;
     arrowEndY = arrowStartY - 35;
-    speedLabelY = arrowStartY - 30;
+    speedLabelY = arrowStartY - 50;
   } else if (velocity < 0) {
     arrowStartY = canvasHeight / 2 + rovHeight / 2 + 5;
     arrowCurveY = arrowStartY + 15;
     arrowEndY = arrowStartY + 35;
-    speedLabelY = arrowStartY + 40;
+    speedLabelY = arrowStartY + 55;
   } else {
     return;
   }
 
+  const arrowEndX = rovTopLeftX + 20;
+
   context.beginPath();
   context.moveTo(rovTopLeftX, arrowStartY);
-  context.quadraticCurveTo(
-    rovTopLeftX,
-    arrowCurveY,
-    rovTopLeftX + 20,
-    arrowEndY,
-  );
+  context.quadraticCurveTo(rovTopLeftX, arrowCurveY, arrowEndX, arrowEndY);
   context.stroke();
 
-  const arrowAngle = findAngle(
-    rovTopLeftX,
-    arrowCurveY,
-    rovTopLeftX + 20,
-    arrowEndY,
-  );
+  const arrowAngle = findAngle(rovTopLeftX, arrowCurveY, arrowEndX, arrowEndY);
 
   const arrowSize = clamp(mapRange(Math.abs(velocity), 0, 5, 6, 15), 6, 15);
 
   drawArrowhead(
     context,
-    rovTopLeftX + 20,
+    arrowEndX,
     arrowEndY,
     arrowAngle,
     arrowSize,
     arrowSize,
   );
 
-  context.textAlign = 'left';
+  //context.textAlign = 'left';
+  context.textBaseline = 'middle';
 
   context.fillText(
     Math.abs(velocity).toFixed(1) + ' m/s',
-    rovTopLeftX + 30,
+    arrowEndX,
     speedLabelY,
   );
 }

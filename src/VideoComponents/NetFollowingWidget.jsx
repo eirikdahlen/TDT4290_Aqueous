@@ -20,7 +20,7 @@ class NetFollowingWidget extends CanvasWidget {
 
 class PureNetFollowingWidget extends PureCanvas {
   constructor(props) {
-    super(props, 'NetFollowingWidget', 195, 150);
+    super(props, 'NetFollowingWidget', 195, 180);
   }
 }
 
