@@ -24,7 +24,7 @@ class ModeWidget extends Component {
         break;
       case ModeEnum.NETFOLLOWING:
         this.modeLabel = 'NET FOLLOWING';
-        this.canvas = <NetFollowingWidget distance={7} velocity={2} />;
+        this.canvas = <NetFollowingWidget distance={6} velocity={3.4} />;
         break;
       case ModeEnum.DYNAMICPOSITIONING:
         this.modeLabel = 'DYN. POS.';

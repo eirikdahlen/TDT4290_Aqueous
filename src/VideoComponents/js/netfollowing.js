@@ -1,4 +1,4 @@
-import { clamp } from './tools.js';
+import { clamp, mapRange } from './tools.js';
 
 // Dimensions for the ROV (in pixels)
 const rovHeight = 50;
@@ -103,7 +103,6 @@ function drawNetFollowing(context, distance, velocity) {
   context.stroke();
 
   // Settings for measuring labels
-  context.textBaseline = 'bottom';
   context.fillStyle = '#FFFFFF';
 
   let offsetDistanceLabelWidth = 0;
@@ -112,6 +111,9 @@ function drawNetFollowing(context, distance, velocity) {
   if (offsetDistance < 45) {
     offsetDistanceLabelWidth = -offsetDistance / 2 - 7;
     context.textAlign = 'right';
+    context.textBaseline = 'middle';
+  } else {
+    context.textBaseline = 'bottom';
   }
 
   // Distance label
@@ -121,33 +123,60 @@ function drawNetFollowing(context, distance, velocity) {
     canvasHeight / 2,
   );
 
+  var arrowStartY;
+  var arrowCurveY;
+  var arrowEndY;
+  var speedLabelY;
+
   // Velocity arrow
-  const arrowStartY = canvasHeight / 2 + rovHeight / 2 + 5;
+  if (velocity > 0) {
+    arrowStartY = canvasHeight / 2 - rovHeight / 2 - 5;
+    arrowCurveY = arrowStartY - 15;
+    arrowEndY = arrowStartY - 35;
+    speedLabelY = arrowStartY - 30;
+  } else if (velocity < 0) {
+    arrowStartY = canvasHeight / 2 + rovHeight / 2 + 5;
+    arrowCurveY = arrowStartY + 15;
+    arrowEndY = arrowStartY + 35;
+    speedLabelY = arrowStartY + 40;
+  } else {
+    return;
+  }
+
   context.beginPath();
   context.moveTo(rovTopLeftX, arrowStartY);
   context.quadraticCurveTo(
     rovTopLeftX,
-    arrowStartY + 15,
+    arrowCurveY,
     rovTopLeftX + 20,
-    arrowStartY + 35,
+    arrowEndY,
   );
   context.stroke();
 
   const arrowAngle = findAngle(
     rovTopLeftX,
-    arrowStartY + 15,
+    arrowCurveY,
     rovTopLeftX + 20,
-    arrowStartY + 35,
+    arrowEndY,
   );
 
-  drawArrowhead(context, rovTopLeftX + 20, arrowStartY + 35, arrowAngle, 9, 9);
+  const arrowSize = clamp(mapRange(Math.abs(velocity), 0, 5, 6, 15), 6, 15);
+
+  drawArrowhead(
+    context,
+    rovTopLeftX + 20,
+    arrowEndY,
+    arrowAngle,
+    arrowSize,
+    arrowSize,
+  );
 
   context.textAlign = 'left';
 
   context.fillText(
-    velocity.toFixed(1) + ' m/s',
+    Math.abs(velocity).toFixed(1) + ' m/s',
     rovTopLeftX + 30,
-    arrowStartY + 40,
+    speedLabelY,
   );
 }
 
