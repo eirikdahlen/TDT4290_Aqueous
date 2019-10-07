@@ -1,23 +1,34 @@
 import { clamp, mapRange } from './tools.js';
 
+const netCurveX = 20;
+const netCurveY = 40;
+
 // Dimensions for the ROV (in pixels)
-const rovHeight = 50;
-const rovWidth = 50;
+const rovHeight = 40;
+const rovWidth = 42;
+const rovTipWidth = 8;
+const rovTipHeight = 20;
 
 // Width of the legs of the measures
 const measureWidth = 16;
 
-// Global offset (need this to give space for overflowing labels)
+// Global offset (need this to give space for overflowing distance label)
 const globalOffsetWidth = 45;
 
+// Multiply the distance by this factor to get the distance in pixels
+const distanceMultiplier = 10;
+
+// Function for drawing arrows on curves
 function drawArrowhead(context, locX, locY, angle, sizeX, sizeY) {
   var hx = sizeX / 2;
   var hy = sizeY / 2;
 
+  // First, move and rotate the canvas to draw a non-rotated arrow on a rotated canvas
   context.translate(locX, locY);
   context.rotate(angle);
   context.translate(-hx, -hy);
 
+  // Draw the arrow
   context.beginPath();
   context.moveTo(0, 0);
   context.lineTo(0, 1 * sizeY);
@@ -25,50 +36,57 @@ function drawArrowhead(context, locX, locY, angle, sizeX, sizeY) {
   context.closePath();
   context.fill();
 
+  // Move and rotate the canvas back. The result is a non-rotated canvas with a rotated arrow
   context.translate(hx, hy);
   context.rotate(-angle);
   context.translate(-locX, -locY);
 }
 
-// returns radians
+// Function for finding the angle which an arrow on a curve must be drawn with.
+// (startX, startY) are the coordinates of the control point, and
+// (endX, endY) are the coordinates of the end point where the arrow should be drawn.
+// NB! Only for quadratic curves, not bezier curves
 function findAngle(startX, startY, endX, endY) {
-  // make sx and sy at the zero point
   return Math.atan2(endY - startY, endX - startX);
 }
 
 function drawNetFollowing(context, distance, velocity) {
+  // Get the canvas dimensions
   const canvasWidth = context.canvas.clientWidth;
   const canvasHeight = context.canvas.clientHeight;
 
-  // Drawing options
+  // Set drawing flags
   context.strokeStyle = '#00FF00';
-  context.fillStyle = '#FFFFFF';
+  context.fillStyle = '#FFFF00';
   context.lineWidth = 2;
-  context.textAlign = 'left';
+  context.textAlign = 'center';
   context.font = '14px Arial';
 
   // Redraw canvas
   context.clearRect(0, 0, canvasWidth, canvasHeight);
 
+  // Find the distance at which the ROV should be drawn, and also limit this
+  // to ensure it stays on screen even when the distance becomes large
   const offsetDistance = clamp(
-    distance * 10,
+    distance * distanceMultiplier,
     0,
-    canvasWidth - rovWidth - globalOffsetWidth,
+    canvasWidth - rovWidth - rovTipWidth - globalOffsetWidth,
   );
 
-  context.fillStyle = '#FFFF00';
-
+  ////////////////////////////////////////////////////////
   // Draw the net
   context.beginPath();
-  context.moveTo(globalOffsetWidth + 20, 0);
-  context.lineTo(globalOffsetWidth, 40);
-  context.lineTo(globalOffsetWidth, canvasHeight - 40);
-  context.lineTo(globalOffsetWidth + 20, canvasHeight);
+  context.moveTo(globalOffsetWidth + netCurveX, 0);
+  context.lineTo(globalOffsetWidth, netCurveY);
+  context.lineTo(globalOffsetWidth, canvasHeight - netCurveY);
+  context.lineTo(globalOffsetWidth + netCurveX, canvasHeight);
   context.stroke();
+  ////////////////////////////////////////////////////////
 
-  const rovTopLeftX = globalOffsetWidth + offsetDistance;
-  const rovTopLeftY = canvasHeight / 2 - rovHeight / 2;
+  ////////////////////////////////////////////////////////
   // Draw the ROV
+  const rovTopLeftX = globalOffsetWidth + offsetDistance + rovTipWidth;
+  const rovTopLeftY = canvasHeight / 2 - rovHeight / 2;
   context.beginPath();
   context.moveTo(rovTopLeftX, rovTopLeftY);
   context.lineTo(rovTopLeftX + rovWidth, rovTopLeftY);
@@ -77,12 +95,28 @@ function drawNetFollowing(context, distance, velocity) {
   context.lineTo(rovTopLeftX, rovTopLeftY);
   context.fill();
 
-  // Measure color
-  context.strokeStyle = '#A0A0A0';
-  context.textAlign = 'center';
-
-  // Draw the distance measure
+  // Draw the front-facing tip of the ROV
   context.beginPath();
+  context.moveTo(
+    globalOffsetWidth + offsetDistance,
+    canvasHeight / 2 - rovTipHeight / 2,
+  );
+  context.lineTo(
+    globalOffsetWidth + offsetDistance,
+    canvasHeight / 2 + rovTipHeight / 2,
+  );
+  context.lineTo(
+    globalOffsetWidth + offsetDistance + rovTipHeight,
+    canvasHeight / 2,
+  );
+  context.fill();
+  ////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////
+  // Draw the distance measure
+  context.strokeStyle = '#A0A0A0';
+  context.beginPath();
+
   // First leg
   context.moveTo(globalOffsetWidth, canvasHeight / 2 - measureWidth / 2);
   context.lineTo(globalOffsetWidth, canvasHeight / 2 + measureWidth / 2);
@@ -91,12 +125,13 @@ function drawNetFollowing(context, distance, velocity) {
   // Body
   context.moveTo(globalOffsetWidth, canvasHeight / 2);
 
-  if (distance * 10 > offsetDistance) {
-    console.log('HEYYYYY');
+  if (distance * distanceMultiplier > offsetDistance) {
+    // If the distance is too large to be displayed on the canvas: Draw a dashed line.
+    // First third of the line is solid.
     context.lineTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
     context.stroke();
 
-    //context.moveTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
+    // Middle third of the line is dashed.
     context.beginPath();
     context.setLineDash([4, 4]);
     context.moveTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
@@ -106,6 +141,7 @@ function drawNetFollowing(context, distance, velocity) {
     );
     context.stroke();
 
+    // Last third of the line is solid.
     context.beginPath();
     context.setLineDash([]);
     context.moveTo(
@@ -116,6 +152,7 @@ function drawNetFollowing(context, distance, velocity) {
 
   context.lineTo(globalOffsetWidth + offsetDistance, canvasHeight / 2);
   context.stroke();
+
   // Second leg
   context.moveTo(
     globalOffsetWidth + offsetDistance,
@@ -126,7 +163,9 @@ function drawNetFollowing(context, distance, velocity) {
     canvasHeight / 2 + measureWidth / 2,
   );
   context.stroke();
+  ////////////////////////////////////////////////////////
 
+  ////////////////////////////////////////////////////////
   // Settings for measuring labels
   context.fillStyle = '#FFFFFF';
 
@@ -147,38 +186,46 @@ function drawNetFollowing(context, distance, velocity) {
     globalOffsetWidth + offsetDistance / 2 + offsetDistanceLabelWidth,
     canvasHeight / 2,
   );
+  ////////////////////////////////////////////////////////
 
+  ////////////////////////////////////////////////////////
+  // Coordinates for the velocity arrow and its label
+  const arrowEndX = rovTopLeftX + 20;
   var arrowStartY;
   var arrowCurveY;
   var arrowEndY;
   var speedLabelY;
 
-  // Velocity arrow
+  // If velocity is a positive number, the ROV moves in a clockwise direction.
   if (velocity > 0) {
     arrowStartY = canvasHeight / 2 - rovHeight / 2 - 5;
     arrowCurveY = arrowStartY - 15;
     arrowEndY = arrowStartY - 35;
     speedLabelY = arrowStartY - 50;
-  } else if (velocity < 0) {
+  }
+  // If velocity is a negative number, the ROV moves in a counter-clockwise direction.
+  else if (velocity < 0) {
     arrowStartY = canvasHeight / 2 + rovHeight / 2 + 5;
     arrowCurveY = arrowStartY + 15;
     arrowEndY = arrowStartY + 35;
     speedLabelY = arrowStartY + 55;
-  } else {
+  }
+  // If velocity is zero, don't draw any arrow at all!
+  else {
     return;
   }
 
-  const arrowEndX = rovTopLeftX + 20;
-
+  // Draw the velocity curve
   context.beginPath();
   context.moveTo(rovTopLeftX, arrowStartY);
   context.quadraticCurveTo(rovTopLeftX, arrowCurveY, arrowEndX, arrowEndY);
   context.stroke();
 
+  // Set the angle and size of the arrow
   const arrowAngle = findAngle(rovTopLeftX, arrowCurveY, arrowEndX, arrowEndY);
-
   const arrowSize = clamp(mapRange(Math.abs(velocity), 0, 5, 6, 15), 6, 15);
 
+  // Draw the velocity arrow itself, at the end of the velocity curve
   drawArrowhead(
     context,
     arrowEndX,
@@ -188,14 +235,14 @@ function drawNetFollowing(context, distance, velocity) {
     arrowSize,
   );
 
-  //context.textAlign = 'left';
+  // Draw the velocity label
   context.textBaseline = 'middle';
-
   context.fillText(
     Math.abs(velocity).toFixed(1) + ' m/s',
     arrowEndX,
     speedLabelY,
   );
+  ////////////////////////////////////////////////////////
 }
 
 export default drawNetFollowing;
