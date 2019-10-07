@@ -65,14 +65,6 @@ function drawNetFollowing(context, distance, velocity) {
   // Redraw canvas
   context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-  // Find the distance at which the ROV should be drawn, and also limit this
-  // to ensure it stays on screen even when the distance becomes large
-  const offsetDistance = clamp(
-    distance * distanceMultiplier,
-    0,
-    canvasWidth - rovWidth - rovTipWidth - globalOffsetWidth,
-  );
-
   ////////////////////////////////////////////////////////
   // Draw the net
   context.beginPath();
@@ -84,6 +76,14 @@ function drawNetFollowing(context, distance, velocity) {
   ////////////////////////////////////////////////////////
 
   ////////////////////////////////////////////////////////
+  // Find the distance at which the ROV should be drawn, and also limit this
+  // to ensure it stays on screen even when the distance becomes large
+  const offsetDistance = clamp(
+    distance * distanceMultiplier,
+    0,
+    canvasWidth - rovWidth - rovTipWidth - globalOffsetWidth,
+  );
+
   // Draw the ROV
   const rovTopLeftX = globalOffsetWidth + offsetDistance + rovTipWidth;
   const rovTopLeftY = canvasHeight / 2 - rovHeight / 2;
