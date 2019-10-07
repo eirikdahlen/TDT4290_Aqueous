@@ -13,7 +13,7 @@ class ModeWidget extends Component {
   constructor(props) {
     super(props);
     this.modeLabel = 'INVALID';
-    this.canvas = <canvas width={195} height={195}></canvas>;
+    this.canvas = <canvas width={195} height={150}></canvas>;
     this.componentDidMount();
   }
 
@@ -24,9 +24,7 @@ class ModeWidget extends Component {
         break;
       case ModeEnum.NETFOLLOWING:
         this.modeLabel = 'NET FOLLOWING';
-        this.canvas = (
-          <NetFollowingWidget distance={7} depth={9} velocity={2} />
-        );
+        this.canvas = <NetFollowingWidget distance={7} velocity={2} />;
         break;
       case ModeEnum.DYNAMICPOSITIONING:
         this.modeLabel = 'DYN. POS.';
