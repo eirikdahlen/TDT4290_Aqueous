@@ -237,6 +237,7 @@ function drawNetFollowing(context, distance, velocity) {
 
   // Draw the velocity label
   context.textBaseline = 'middle';
+  context.textAlign = 'center';
   context.fillText(
     Math.abs(velocity).toFixed(1) + ' m/s',
     arrowEndX,
