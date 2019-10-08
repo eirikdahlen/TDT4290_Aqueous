@@ -1,8 +1,5 @@
-//import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
 import drawNetFollowing from './js/netfollowing';
-//import ImageSpeedArrow from './images/circularArrow.png';
-//import { clamp } from './js/tools';
 
 class NetFollowingWidget extends CanvasWidget {
   constructor(props) {

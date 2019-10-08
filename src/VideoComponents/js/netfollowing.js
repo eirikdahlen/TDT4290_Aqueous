@@ -20,8 +20,8 @@ const distanceMultiplier = 10;
 
 // Function for drawing arrows on curves
 function drawArrowhead(context, locX, locY, angle, sizeX, sizeY) {
-  var hx = sizeX / 2;
-  var hy = sizeY / 2;
+  const hx = sizeX / 2;
+  const hy = sizeY / 2;
 
   // First, move and rotate the canvas to draw a non-rotated arrow on a rotated canvas
   context.translate(locX, locY);

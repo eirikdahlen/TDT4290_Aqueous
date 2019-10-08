@@ -44,30 +44,3 @@
 .NFUnavailable {
   opacity: 0.4;
 }
-
-/*.speedArrowClockwise {
-  animation: rotationCW 2s infinite linear;
-  transform: scaleX(-1);
-}
-
-.speedArrowCounterClockwise {
-  animation: rotationCCW 2s infinite linear;
-}*/
-
-@keyframes rotationCW {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
-  }
-}
-
-@keyframes rotationCCW {
-  from {
-    transform: rotate(359deg) scaleX(-1);
-  }
-  to {
-    transform: rotate(0deg) scaleX(-1);
-  }
-}
