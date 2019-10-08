@@ -173,33 +173,40 @@ export default function MiniMapWidget(props) {
     ctx.translate(boatWidth + rovSize / 2, 0);
     drawNEDframe(ctx, mapWidth, boatWidth, rovSize);
     ctx.restore();
-  }, [props.boatHeading, props.east, props.north, props.yaw]);
+  }, [
+    props.boatHeading,
+    props.east,
+    props.north,
+    props.yaw,
+    maxDist,
+    boatHeading,
+  ]);
 
-  /*
   function zoomOut() {
     if (maxDist < 1000) {
+      //maximum 1000 metres
       setMaxDist(maxDist + 1);
     }
   }
 
   function zoomIn() {
     if (maxDist > 1) {
+      //minimum 1 metre
       setMaxDist(maxDist - 1);
     }
   }
-  */
 
   return (
     <div className="MiniMapWidget">
       <div className="MiniMap">
         <canvas ref={canvasRef} width={mapWidth} height={mapWidth} />
       </div>
-      {/* these buttons let us increase or decrease the max distance that draws the ROV as a square on the map
+      {/* these buttons let us increase or decrease the max distance 
+      that draws the ROV as a square on the map*/}
       <div className="zoom">
-        <button onClick={zoomOut}>-</button>  
+        <button onClick={zoomOut}>-</button>
         <button onClick={zoomIn}>+</button>
       </div>
-      */}
     </div>
   );
 }
