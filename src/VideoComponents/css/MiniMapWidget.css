@@ -1,5 +1,15 @@
-.MiniMap {
-    position: absolute;
-    right: 270px;
-    top: 100px;
+.MiniMapWidget {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 270px;
+    padding-top: 100px;
+}
+
+.zoom > button {
+    background: black;
+    color: white;
+    border: 1px solid gray;
+    cursor: pointer;
+    font-size: 20px;
 }
