@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NetFollowingWidget from './NetFollowingWidget';
 import './css/ModeWidget.css';
+import redX from './images/redX.png';
+import greenCheckmark from './images/greenCheckmark.png';
 
 const ModeEnum = {
   MANUAL: 0,
@@ -13,7 +15,24 @@ class ModeWidget extends Component {
   constructor(props) {
     super(props);
     this.modeLabel = 'INVALID';
-    this.canvas = <canvas width={195} height={150}></canvas>;
+    let imgsrc;
+    let opacityStyle;
+
+    if (this.props.nfavailable) {
+      this.nfLabel = 'NET FOLLOWING AVAILABLE';
+      imgsrc = greenCheckmark;
+      opacityStyle = 'NFAvailable';
+    } else {
+      this.nfLabel = 'NET FOLLOWING UNAVAILABLE';
+      imgsrc = redX;
+      opacityStyle = 'NFUnavailable';
+    }
+    this.canvas = (
+      <div className={'NFAvailability ' + opacityStyle}>
+        <img src={imgsrc} alt=""></img>
+        <div>{this.nfLabel}</div>
+      </div>
+    );
     this.componentDidMount();
   }
 
@@ -42,6 +61,7 @@ class ModeWidget extends Component {
   static get propTypes() {
     return {
       mode: PropTypes.number,
+      nfavailable: PropTypes.bool,
     };
   }
 

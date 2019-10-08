@@ -28,6 +28,23 @@
   width: 25px;
 }
 
+.NFAvailability {
+  font-size: 14px;
+  text-align: center;
+}
+
+.NFAvailability img {
+  position: relative;
+}
+
+.NFAvailable {
+  opacity: 0.7;
+}
+
+.NFUnavailable {
+  opacity: 0.4;
+}
+
 /*.speedArrowClockwise {
   animation: rotationCW 2s infinite linear;
   transform: scaleX(-1);

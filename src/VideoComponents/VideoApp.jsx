@@ -40,7 +40,7 @@ function VideoApp() {
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
       />
-      <ModeWidget mode={ModeEnum.NETFOLLOWING} />
+      <ModeWidget mode={ModeEnum.NETFOLLOWING} nfavailable={true} />
       <VideoFeed />
     </div>
   );
