@@ -49,7 +49,7 @@ function setUpOrDown({ button, down }) {
   }
 }
 
-// Converst from button (buttonname) and value (how much pressed) to values for the ROV
+// Converts from button (buttonname) and value (how much pressed) to values for the ROV
 function handleClick({ button, value }) {
   let controls = {
     surge: bias.surge,
