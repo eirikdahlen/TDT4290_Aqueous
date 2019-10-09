@@ -155,9 +155,10 @@ function handleClick({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
-      if (nfIsPossible) {
+      if (this.props.nfavailable) {
         netFollowing = !netFollowing;
         controls['netfollowing'] = netFollowing;
+        break;
       }
       break;
     case 'Start': // toggle DP
