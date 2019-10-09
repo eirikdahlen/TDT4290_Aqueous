@@ -7,6 +7,7 @@ import DepthWidget from './DepthWidget';
 import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
 import ModeWidget, { ModeEnum } from './ModeWidget';
+import MiniMapWidget from './MiniMapWidget';
 
 const { remote } = window.require('electron');
 
@@ -41,6 +42,13 @@ function VideoApp() {
         lockedValue={settingsValues['heave']}
       />
       <ModeWidget mode={ModeEnum.NETFOLLOWING} nfavailable={true} />
+      <MiniMapWidget
+        north={sensorValues['north']}
+        east={sensorValues['east']}
+        yaw={sensorValues['yaw']}
+        boatHeading={0}
+        maxDistance={5}
+      />
       <VideoFeed />
     </div>
   );
