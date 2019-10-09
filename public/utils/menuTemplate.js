@@ -19,10 +19,10 @@ let menuTemplate = [
     label: 'ROV',
     submenu: [
       {
-        label: 'Connect TCP',
+        label: 'Connect to TCP',
       },
       {
-        label: 'Serialize',
+        label: 'Start ROV serial port',
         click() {
           getFileAndLaunch(
             'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
