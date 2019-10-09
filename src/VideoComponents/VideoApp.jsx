@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 // The App for the VideoWindow. This is where every video-component should go.
 
 import React, { useState, useEffect } from 'react';
@@ -7,6 +6,7 @@ import HeadingWidget from './HeadingWidget';
 import DepthWidget from './DepthWidget';
 import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
+import ModeWidget, { ModeEnum } from './ModeWidget';
 
 const { remote } = window.require('electron');
 
@@ -40,6 +40,7 @@ function VideoApp() {
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
       />
+      <ModeWidget mode={ModeEnum.NETFOLLOWING} nfavailable={true} />
       <VideoFeed />
     </div>
   );

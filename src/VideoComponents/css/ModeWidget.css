@@ -1,0 +1,46 @@
+.ModeWidget {
+  position: fixed;
+  color: white;
+
+  width: 170px;
+
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+  bottom: 20px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 20px;
+}
+
+.ModeWidget canvas {
+  position: relative;
+  right: 35px;
+}
+
+.ModeWidget p {
+  display: inline-block;
+}
+
+.ModeWidget img {
+  opacity: 1;
+  width: 25px;
+}
+
+.NFAvailability {
+  font-size: 14px;
+  text-align: center;
+}
+
+.NFAvailability img {
+  position: relative;
+}
+
+.NFAvailable {
+  opacity: 0.7;
+}
+
+.NFUnavailable {
+  opacity: 0.4;
+}
