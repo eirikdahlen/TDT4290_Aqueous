@@ -12,6 +12,8 @@ function encodeData(data) {
    *  'yaw': number,
    *  'autodepth': bool,
    *  'autoheading': bool
+   *  'netfollowing': bool
+   *  'dp': bool
    * }
    */
   const doublesArray = new Float64Array([
@@ -23,6 +25,8 @@ function encodeData(data) {
     data['yaw'],
     data['autodepth'] ? 1 : 0,
     data['autoheading'] ? 1 : 0,
+    data['netfollowing'] ? 1 : 0,
+    data['dp'] ? 1 : 0,
   ]);
   const buf = Buffer.from(doublesArray.buffer);
   return buf;

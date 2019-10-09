@@ -35,6 +35,11 @@ let headingIncrement = 0.2; // Radians
 // Which button is held down
 let buttonDown;
 
+// Net Following and Dynamic Positioning start value
+let nfIsPossible = true; //temp
+let netFollowing = false;
+let dP = false;
+
 //Interval for increasing bias continously
 setInterval(() => {
   if (biasButtons[buttonDown]) {
@@ -60,6 +65,8 @@ function handleClick({ button, value }) {
     yaw: autoHeading ? headingReference : 0.0,
     autodepth: autoDepth,
     autoheading: autoHeading,
+    netfollowing: netFollowing,
+    dp: dP,
   };
   switch (button) {
     // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
@@ -143,6 +150,19 @@ function handleClick({ button, value }) {
       if (!autoDepth) {
         setBias('heave', false, controls);
       }
+      break;
+
+    // BACK AND START BUTTONS |
+    // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
+    case 'Back': // toggle NF
+      if (nfIsPossible) {
+        netFollowing = !netFollowing;
+        controls['netfollowing'] = netFollowing;
+      }
+      break;
+    case 'Start': // toggle DP
+      dP = !dP;
+      controls['dp'] = dP;
       break;
   }
   global.toROV = controls;
