@@ -35,6 +35,10 @@ let headingIncrement = 0.2; // Radians
 // Which button is held down
 let buttonDown;
 
+// Net Following and Dynamic Positioning start value
+let netFollowing = false;
+let dP = false;
+
 //Interval for increasing bias continously
 setInterval(() => {
   if (biasButtons[buttonDown]) {
@@ -49,7 +53,7 @@ function setUpOrDown({ button, down }) {
   }
 }
 
-// Converst from button (buttonname) and value (how much pressed) to values for the ROV
+// Converts from button (buttonname) and value (how much pressed) to values for the ROV
 function handleClick({ button, value }) {
   let controls = {
     surge: bias.surge,
@@ -143,6 +147,20 @@ function handleClick({ button, value }) {
       if (!autoDepth) {
         setBias('heave', false, controls);
       }
+      break;
+
+    // BACK AND START BUTTONS |
+    // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
+    case 'Back': // toggle NF
+      if (this.props.nfavailable) {
+        netFollowing = !netFollowing;
+        //controls['netfollowing'] = netFollowing;
+        break;
+      }
+      break;
+    case 'Start': // toggle DP
+      dP = !dP;
+      //controls['dp'] = dP;
       break;
   }
   global.toROV = controls;
