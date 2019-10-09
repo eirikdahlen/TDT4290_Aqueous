@@ -52,7 +52,7 @@ function VideoApp() {
         east={sensorValues['east']}
         yaw={sensorValues['yaw']}
         boatHeading={0}
-        maxDist={5}
+        maxDistance={5}
       />
 >>>>>>> #77 #81 feature: add simple minimap widget
       <VideoFeed />

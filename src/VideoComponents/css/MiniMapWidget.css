@@ -6,6 +6,11 @@
     padding-top: 100px;
 }
 
+.zoom {
+    display: flex;
+    flex-direction: column;
+}
+
 .zoom > button {
     background: black;
     color: white;
