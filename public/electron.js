@@ -10,9 +10,9 @@ const { app, BrowserWindow, Menu } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
 
-const { menuTemplate } = require('./menuTemplate');
+const { menuTemplate } = require('./utils/menuTemplate');
 
-const { setIPCListeners } = require('./IPC');
+const { setIPCListeners } = require('./utils/IPC');
 
 let controlWindow;
 let videoWindow;
@@ -56,7 +56,7 @@ function createWindows() {
     y: 0,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'utils/preload.js'),
     },
   });
   //Adds a search parameter to the url to be loaded - this is then handled in the index.js/ViewManager.js, which finds the correct .js-file to load.
@@ -73,7 +73,7 @@ function createWindows() {
     y: 0,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'utils/preload.js'),
     },
   });
   controlWindow.loadURL(

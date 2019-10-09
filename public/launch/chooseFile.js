@@ -1,9 +1,15 @@
 var { dialog } = require('electron');
-const { launchSimulator } = require('./launchSimulator');
+const { runCommand } = require('./launchFile');
 const { getConnectedClient } = require('./../TCP/TCPClient');
 
 // Opens browing window for choosing file - when file is chosen, simulator is launched and tcp client is created
-function getSimulatorFileAndLaunch() {
+function getFileAndLaunch(file) {
+  if (file) {
+    const startSimulatorCommand = `start ${file} && exit`;
+    console.log(`Launching ${file}`);
+    runCommand(startSimulatorCommand);
+    return;
+  }
   dialog.showOpenDialog(
     {
       properties: ['openFile'],
@@ -16,10 +22,10 @@ function getSimulatorFileAndLaunch() {
       }
       console.log(`Launching ${filename}`);
       const startSimulatorCommand = `start ${filename} && exit`;
-      launchSimulator(startSimulatorCommand);
+      runCommand(startSimulatorCommand);
       getConnectedClient();
     },
   );
 }
 
-module.exports = { getSimulatorFileAndLaunch };
+module.exports = { getFileAndLaunch };
