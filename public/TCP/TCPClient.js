@@ -1,7 +1,7 @@
 const net = require('net');
 const ROVPort = 5000;
 const { encodeData, decodeData } = require('./coding');
-const { sendReceivedMessage, sendSentMessage } = require('./../IPC');
+const { sendReceivedMessage, sendSentMessage } = require('./../utils/IPC');
 
 // Creates a client that receives and sends data to port 5000
 function getConnectedClient() {
