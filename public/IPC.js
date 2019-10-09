@@ -3,7 +3,7 @@
 // main -> view
 // view -> main -> view
 const { ipcMain } = require('electron');
-const { handleClick, setUpOrDown } = require('./controls/xboxControls');
+const { handleClick, setUpOrDown } = require('./controls/mapping');
 
 // Function for setting up listeners between the main process (electron.js) and the renderer process (Components etc.)
 function setIPCListeners() {
