@@ -30,8 +30,6 @@ global.toROV = {
   yaw: 0.0,
   autodepth: false,
   autoheading: false,
-  netfollowing: false,
-  dp: false,
 };
 global.fromROV = {
   north: 0.0,

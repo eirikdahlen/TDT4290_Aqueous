@@ -61,8 +61,6 @@ function sendData(client, data) {
    *  'yaw': number,
    *  'autodepth': bool,
    *  'autoheading': bool
-   *  'netfollowing': bool
-   *  'dynamicpositioning': bool
    * }
    */
   let buf = encodeData(data);

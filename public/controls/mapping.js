@@ -36,7 +36,6 @@ let headingIncrement = 0.2; // Radians
 let buttonDown;
 
 // Net Following and Dynamic Positioning start value
-let nfIsPossible = true; //temp
 let netFollowing = false;
 let dP = false;
 
@@ -65,8 +64,6 @@ function handleClick({ button, value }) {
     yaw: autoHeading ? headingReference : 0.0,
     autodepth: autoDepth,
     autoheading: autoHeading,
-    netfollowing: netFollowing,
-    dp: dP,
   };
   switch (button) {
     // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
@@ -157,13 +154,13 @@ function handleClick({ button, value }) {
     case 'Back': // toggle NF
       if (this.props.nfavailable) {
         netFollowing = !netFollowing;
-        controls['netfollowing'] = netFollowing;
+        //controls['netfollowing'] = netFollowing;
         break;
       }
       break;
     case 'Start': // toggle DP
       dP = !dP;
-      controls['dp'] = dP;
+      //controls['dp'] = dP;
       break;
   }
   global.toROV = controls;
