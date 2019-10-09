@@ -6,11 +6,8 @@ import HeadingWidget from './HeadingWidget';
 import DepthWidget from './DepthWidget';
 import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
-<<<<<<< HEAD
 import ModeWidget, { ModeEnum } from './ModeWidget';
-=======
 import MiniMapWidget from './MiniMapWidget';
->>>>>>> #77 #81 feature: add simple minimap widget
 
 const { remote } = window.require('electron');
 
@@ -44,9 +41,7 @@ function VideoApp() {
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
       />
-<<<<<<< HEAD
       <ModeWidget mode={ModeEnum.NETFOLLOWING} nfavailable={true} />
-=======
       <MiniMapWidget
         north={sensorValues['north']}
         east={sensorValues['east']}
@@ -54,7 +49,6 @@ function VideoApp() {
         boatHeading={0}
         maxDistance={5}
       />
->>>>>>> #77 #81 feature: add simple minimap widget
       <VideoFeed />
     </div>
   );
