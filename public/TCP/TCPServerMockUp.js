@@ -33,8 +33,6 @@ function decodeRecievedData(buf) {
     'yaw',
     'autodepth',
     'autoheading',
-    'netfollowing',
-    'dp',
   ];
   const result = {};
   values.map((value, i) => {

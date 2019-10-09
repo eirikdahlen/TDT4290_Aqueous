@@ -23,8 +23,6 @@ function getConnectedClient() {
       yaw: 0.0,
       autodepth: false,
       autoheading: false,
-      netfollowing: false,
-      dp: false,
     });
   });
 

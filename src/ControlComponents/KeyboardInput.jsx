@@ -24,11 +24,7 @@ class KeyboardInput extends Component {
       'ARROWLEFT',
     ]; //update this
     const key = e.key.toUpperCase();
-    let multiplier = 1;
-    const negatives = ['S', 'A'];
-    if (negatives.indexOf(key) >= 0) {
-      multiplier = -1;
-    }
+    const multiplier = ['S', 'A'].indexOf(key) >= 0 ? -1 : 1;
     const mapping = {
       W: 'LeftStickY', //forward+
       S: 'LeftStickY', //backward-
