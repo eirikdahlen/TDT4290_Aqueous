@@ -62,9 +62,9 @@ function ControlApp() {
           <Values sensorValues={sensorValues} />
         </div>
       </div>
-        <GamepadWrapper className="GamepadWrapper" />
+      <GamepadWrapper className="GamepadWrapper" />
       <div>
-        <KeyboardInput  className="KeyboardInput"/>
+        <KeyboardInput className="KeyboardInput" />
       </div>
     </div>
   );
