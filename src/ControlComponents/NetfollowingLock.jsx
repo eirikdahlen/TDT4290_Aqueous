@@ -6,22 +6,27 @@ import './css/NetfollowingLock.css';
 
 const { remote } = window.require('electron');
 
-export default function Lock({ title, active, step }) {
+export default function NetfollowingLock({ title, active, step }) {
   const [input, changeInput] = useState(0.0);
+  const [velocityValue, setVelocityValue] = useState(0.0);
+  const [distanceValue, setDistanceValue] = useState(0.0);
 
   function fixValue(value, type) {
     if (type === 'velocity') {
       value = Math.min(value, 10);
       value = Math.max(value, -10);
+      setVelocityValue(value);
     } else {
       value = Math.min(value, 10);
       value = Math.max(value, 0);
+      setDistanceValue(value);
     }
     return value;
   }
 
   // Function that is run when the update-button is clicked
   const updateValue = (value, type) => {
+    // Could remove this "if" to set value before activating the switch
     if (active) {
       if (type === 'velocity') {
         remote.getGlobal('netfollowing')['velocity'] = fixValue(value, type);
@@ -82,18 +87,17 @@ export default function Lock({ title, active, step }) {
             toggle();
           }}
           id={`${title}Switch`}
+          currentValue={`v: ${velocityValue.toFixed(
+            1,
+          )}m/s   d: ${distanceValue.toFixed(1)}m`}
         />
       </div>
     </div>
   );
 }
 
-Lock.propTypes = {
+NetfollowingLock.propTypes = {
   title: PropTypes.string,
-  min: PropTypes.number,
-  max: PropTypes.number,
-  loop: PropTypes.bool,
   step: PropTypes.number,
   active: PropTypes.bool,
-  value: PropTypes.number,
 };
