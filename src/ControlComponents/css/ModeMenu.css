@@ -6,6 +6,10 @@
   margin-top: 5px;
 }
 
+.netfollowingMenu {
+  width: 90%;
+}
+
 ul.modeList {
   list-style-type: none;
   margin: 0;

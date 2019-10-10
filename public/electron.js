@@ -54,6 +54,7 @@ global.bias = {
 global.netfollowing = {
   distance: 0,
   velocity: 0,
+  degree: 0,
   active: false,
   available: true,
 };

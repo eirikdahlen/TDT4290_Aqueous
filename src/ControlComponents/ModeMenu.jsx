@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeMenu.css';
+import NetfollowingLock from './NetfollowingLock';
 
 const { remote } = window.require('electron');
 
@@ -11,27 +12,32 @@ export default function ModeMenu({
 }) {
   const [displayMenu, setDisplayMenu] = useState(false); //Dropdownmenu starts hidden
   const [currentMode, setCurrentMode] = useState(mode);
-
-  useEffect(() => {
-    window.ipcRenderer.on('data-sent', () => {
-      setCurrentMode(remote.getGlobal('netfollowing'));
-    });
-  }, []);
+  const [netfollowingMenu, setNetfollowingMenu] = useState(false);
 
   function showMenu() {
     displayMenu ? setDisplayMenu(false) : setDisplayMenu(true); //Show menu if it's hidden, hide menu if it's visible
   }
 
+  function updateMenu(mode) {
+    if (mode === 'Net Following') {
+      setNetfollowingMenu(true);
+    } else if (currentMode === 'Net Following' && mode === 'Net Following') {
+      setNetfollowingMenu(true);
+    } else {
+      setNetfollowingMenu(false);
+    }
+    updateMode(mode);
+  }
+
   function updateMode(mode) {
+    console.log(currentMode);
     switch (mode) {
       case 'Net Following':
-        if (currentMode !== 'Net Following') {
-          remote.getGlobal('netfollowing')['active'] = true;
-        }
+        // The global state is set in NetfollowingLock.jsx file
         break;
       case 'Dynamic Positioning':
         /**
-         * TODO: Implement activation of DP here
+         * TODO: Implement activation of DP here and the related logic
          */
         if (currentMode === 'Net Following') {
           remote.getGlobal('netfollowing')['active'] = false;
@@ -54,12 +60,12 @@ export default function ModeMenu({
       </div>
       {displayMenu ? ( //If menu should be visible, show list of options
         <ul className="modeList">
-          <li className="modeItem" onClick={() => updateMode('Manual')}>
+          <li className="modeItem" onClick={() => updateMenu('Manual')}>
             Manual
           </li>
           <li
             className="modeItem"
-            onClick={() => updateMode('Dynamic Positioning')}
+            onClick={() => updateMenu('Dynamic Positioning')}
           >
             Dynamic Positioning
           </li>
@@ -70,13 +76,22 @@ export default function ModeMenu({
               cursor: netfollowingAvailable ? 'pointer' : 'not-allowed',
             }}
             onClick={
-              netfollowingAvailable ? () => updateMode('Net Following') : null
+              netfollowingAvailable ? () => updateMenu('Net Following') : null
             }
           >
             Net Following
             {netfollowingActive}
           </li>
         </ul>
+      ) : null}
+      {netfollowingMenu ? (
+        <div className="netfollowingMenu">
+          <NetfollowingLock
+            title="Netfollowing Settings"
+            active={netfollowingActive}
+            step={0.1}
+          />
+        </div>
       ) : null}
     </div>
   );
