@@ -5,20 +5,18 @@ if (setupEvents.handleSquirrelEvent()) {
 }
 // electron.js is the main process for electron. It handles windows and communication between windows.
 const electron = require('electron');
-const { app, BrowserWindow, Menu } = electron;
+const { app, Menu } = electron;
 
-const path = require('path');
 const isDev = require('electron-is-dev');
 
 const { menuTemplate } = require('./utils/menuTemplate');
+// const { registerHotkeys, unregisterHotkeysOnClose } = require('./hotkeys');
+const { createWindows, setWidthAndHeight } = require('./windows');
 
 const { setIPCListeners } = require('./utils/IPC');
 
 let controlWindow;
 let videoWindow;
-
-let width;
-let height;
 
 // Global state objects
 global.toROV = {
@@ -129,13 +127,15 @@ function setWidthAndHeight() {
 }
 
 // Functions that are run when the app is ready
-
 app.on('ready', () => {
+  // Define the size of the windows, and create them
+  setWidthAndHeight();
+  [videoWindow, controlWindow] = createWindows();
+
   // Sets menu for controlVindow (from public/menuTemplate.js) and removes menu from videoWindow
   const controlMenu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(controlMenu);
-  setWidthAndHeight();
-  createWindows();
+  videoWindow.setMenu(null);
 
   setIPCListeners();
 
@@ -144,6 +144,24 @@ app.on('ready', () => {
     controlWindow.webContents.openDevTools();
     videoWindow.webContents.openDevTools();
   }
+
+  // Register hotkeys, as well as unregister them when the app closes
+  // registerHotkeys(app, videoWindow, controlWindow);
+  // unregisterHotkeysOnClose(videoWindow, controlWindow);
+
+  // Function for closing the entire application when only closing one window
+  function closeApp() {
+    // Dereferences the windows when the app is closed, to save resources.
+    controlWindow = null;
+    videoWindow = null;
+
+    // Quits the app
+    app.quit();
+  }
+
+  // Close all windows when closing one of then
+  controlWindow.on('closed', closeApp);
+  videoWindow.on('closed', closeApp);
 });
 
 // Boilerplate code - probably just quits the app when all windows are closed
