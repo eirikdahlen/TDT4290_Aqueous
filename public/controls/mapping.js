@@ -167,6 +167,7 @@ function handleClick({ button, value }) {
       if (global.netfollowing.available) {
         netFollowing = !netFollowing;
         //controls['netfollowing'] = netFollowing;
+        global.netFollowing.active = netFollowing;
         break;
       }
       break;
