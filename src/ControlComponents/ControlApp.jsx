@@ -47,7 +47,7 @@ function ControlApp() {
         </div>
         <div
           className="middleWindow"
-          onClick={() => console.log({ netfollowing }, {dynamicpositioning})}
+          onClick={() => console.log({ netfollowing }, { dynamicpositioning })}
         >
           {/*Start in mode Manual*/}
           <ModeMenu
