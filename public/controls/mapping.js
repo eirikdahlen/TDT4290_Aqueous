@@ -35,10 +35,6 @@ let headingIncrement = 0.05; // Radians
 // Which button is held down
 let buttonDown;
 
-// Net Following and Dynamic Positioning start value
-//let netFollowing = false;
-let dP = false;
-
 //Interval for increasing bias continously
 setInterval(() => {
   if (biasButtons[buttonDown]) {
@@ -170,8 +166,7 @@ function handleClick({ button, value }) {
       }
       break;
     case 'Start': // toggle DP
-      dP = !dP;
-      //controls['dp'] = dP;
+      //update global state
       break;
   }
   global.toROV = controls;
