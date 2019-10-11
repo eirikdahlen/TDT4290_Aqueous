@@ -27,6 +27,11 @@ h3 {
   flex-direction: row;
 }
 
+.thirdRow {
+  display: flex;
+  flex-direction: row;
+}
+
 input {
   width: 95%;
   height: 40px;
