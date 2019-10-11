@@ -1,6 +1,7 @@
 import Webcam from 'react-webcam';
 import React, { Component } from 'react';
 import './css/VideoFeed.css';
+import PropTypes from 'prop-types';
 
 class VideoFeed extends Component {
   constructor(props) {
@@ -111,7 +112,7 @@ class VideoFeed extends Component {
 
   render() {
     return (
-      <div className="VideoFeed">
+      <div className={this.props.hidden ? 'hideVideoFeed' : 'VideoFeed'}>
         <div className="dropdown">
           <button className="dropbtn"></button>
           <div id="video-dropdown-content"></div>
@@ -125,5 +126,9 @@ class VideoFeed extends Component {
     );
   }
 }
+
+VideoFeed.propTypes = {
+  hidden: PropTypes.bool,
+};
 
 export default VideoFeed;

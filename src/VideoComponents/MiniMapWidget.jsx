@@ -127,8 +127,12 @@ export default function MiniMapWidget({
       {/* these buttons let us increase or decrease the max distance 
       that draws the ROV as a square on the map*/}
       <div className="zoom">
-        <button onClick={zoomIn}>+</button>
-        <button onClick={zoomOut}>-</button>
+        <button className="zoomButton" onClick={zoomIn}>
+          +
+        </button>
+        <button className="zoomButton" onClick={zoomOut}>
+          -
+        </button>
       </div>
     </div>
   );
