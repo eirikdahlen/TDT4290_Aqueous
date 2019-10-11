@@ -26,42 +26,6 @@ const menuTemplate = [
         },
       ]
     : []),
-  // { role: 'fileMenu' }
-  {
-    label: 'File',
-    submenu: [isMac ? { role: 'close' } : { role: 'quit' }],
-  },
-  // { role: 'viewMenu' }
-  {
-    label: 'View',
-    submenu: [
-      { role: 'reload' },
-      { role: 'forcereload' },
-      { role: 'toggledevtools' },
-      { type: 'separator' },
-      { role: 'resetzoom' },
-      { role: 'zoomin' },
-      { role: 'zoomout' },
-      { type: 'separator' },
-      { role: 'togglefullscreen' },
-    ],
-  },
-  // { role: 'windowMenu' }
-  {
-    label: 'Window',
-    submenu: [
-      { role: 'minimize' },
-      { role: 'zoom' },
-      ...(isMac
-        ? [
-            { type: 'separator' },
-            { role: 'front' },
-            { type: 'separator' },
-            { role: 'window' },
-          ]
-        : [{ role: 'close' }]),
-    ],
-  },
   {
     label: 'Simulator',
     submenu: [
@@ -88,6 +52,22 @@ const menuTemplate = [
           );
         },
       },
+    ],
+  },
+  // { role: 'viewMenu' }
+  {
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'forcereload' },
+      { role: 'toggledevtools' },
+      { type: 'separator' },
+      { role: 'resetzoom' },
+      { role: 'zoomin' },
+      { role: 'zoomout' },
+      { role: 'togglefullscreen' },
+      { type: 'separator' },
+      { role: 'quit' },
     ],
   },
   // { role: 'editMenu' }

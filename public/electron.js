@@ -11,7 +11,7 @@ const isDev = require('electron-is-dev');
 
 const { menuTemplate } = require('./utils/menuTemplate');
 // const { registerHotkeys, unregisterHotkeysOnClose } = require('./hotkeys');
-const { createWindows, setWidthAndHeight } = require('./windows');
+const { createWindows, setWidthAndHeight } = require('./utils/windows');
 
 const { setIPCListeners } = require('./utils/IPC');
 
@@ -142,7 +142,7 @@ app.on('ready', () => {
   if (isDev) {
     // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     controlWindow.webContents.openDevTools();
-    videoWindow.webContents.openDevTools();
+    //videoWindow.webContents.openDevTools(); Must be off for transparancy
   }
 
   // Register hotkeys, as well as unregister them when the app closes

@@ -22,9 +22,11 @@ function createWindows() {
     height: heightVideoWindow,
     x: xVideoWindow,
     y: yVideoWindow,
+    frame: false,
+    transparent: true,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'utils/preload.js'),
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
@@ -43,7 +45,7 @@ function createWindows() {
     y: yControlWindow,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'utils/preload.js'),
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
