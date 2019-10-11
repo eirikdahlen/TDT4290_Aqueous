@@ -1,14 +1,73 @@
+/*eslint max-len: ["error", { "ignoreStrings": true }]*/
+
 const electron = require('electron');
 const { app } = electron;
 const { getFileAndLaunch } = require('../launch/chooseFile');
 
-// Menu template for control window
-let menuTemplate = [
+let isMac = process.platform === 'darwin';
+
+const menuTemplate = [
+  // { role: 'appMenu' }
+  ...(process.platform === 'darwin'
+    ? [
+        {
+          label: app.getName(),
+          submenu: [
+            { role: 'about' },
+            { type: 'separator' },
+            { role: 'services' },
+            { type: 'separator' },
+            { role: 'hide' },
+            { role: 'hideothers' },
+            { role: 'unhide' },
+            { type: 'separator' },
+            { role: 'quit' },
+          ],
+        },
+      ]
+    : []),
+  // { role: 'fileMenu' }
+  {
+    label: 'File',
+    submenu: [isMac ? { role: 'close' } : { role: 'quit' }],
+  },
+  // { role: 'viewMenu' }
+  {
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'forcereload' },
+      { role: 'toggledevtools' },
+      { type: 'separator' },
+      { role: 'resetzoom' },
+      { role: 'zoomin' },
+      { role: 'zoomout' },
+      { type: 'separator' },
+      { role: 'togglefullscreen' },
+    ],
+  },
+  // { role: 'windowMenu' }
+  {
+    label: 'Window',
+    submenu: [
+      { role: 'minimize' },
+      { role: 'zoom' },
+      ...(isMac
+        ? [
+            { type: 'separator' },
+            { role: 'front' },
+            { type: 'separator' },
+            { role: 'window' },
+          ]
+        : [{ role: 'close' }]),
+    ],
+  },
   {
     label: 'Simulator',
     submenu: [
       {
-        label: 'Open file and run',
+        label: 'Open File and Run',
+        accelerator: 'CmdOrCtrl+S',
         click() {
           getFileAndLaunch();
         },
@@ -31,17 +90,18 @@ let menuTemplate = [
       },
     ],
   },
+  // { role: 'editMenu' }
   {
-    label: 'Exit',
-    click() {
-      app.quit();
-    },
-  },
-  {
-    label: 'DevTools',
-    click(item, focusedWindow) {
-      focusedWindow.toggleDevTools();
-    },
+    role: 'help',
+    submenu: [
+      {
+        label: 'Learn More',
+        click: async () => {
+          const { shell } = require('electron');
+          await shell.openExternal('https://electronjs.org');
+        },
+      },
+    ],
   },
 ];
 
