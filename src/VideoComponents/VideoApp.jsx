@@ -8,6 +8,8 @@ import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
 import ModeWidget, { ModeEnum } from './ModeWidget';
 import MiniMapWidget from './MiniMapWidget';
+import GamepadWrapper from './GamepadWrapper';
+import KeyboardWrapper from './KeyboardWrapper';
 
 const { remote } = window.require('electron');
 
@@ -50,6 +52,8 @@ function VideoApp() {
         maxDistance={5}
       />
       <VideoFeed />
+      <GamepadWrapper className="GamepadWrapper" />
+      <KeyboardWrapper className="KeyboardInput" />
     </div>
   );
 }

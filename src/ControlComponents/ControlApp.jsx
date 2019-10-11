@@ -8,8 +8,6 @@ import Status from './Status';
 import Lock from './Lock';
 
 import './css/ControlApp.css';
-import GamepadWrapper from './GamepadWrapper';
-import KeyboardWrapper from './KeyboardWrapper';
 
 const { remote } = window.require('electron');
 
@@ -74,8 +72,6 @@ function ControlApp() {
           <Values sensorValues={sensorValues} />
         </div>
       </div>
-      <GamepadWrapper className="GamepadWrapper" />
-      <KeyboardWrapper className="KeyboardInput" />
     </div>
   );
 }
