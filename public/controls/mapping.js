@@ -57,6 +57,9 @@ function setUpOrDown({ button, down }) {
 function handleClick({ button, value }) {
   autoHeading = global.toROV.autoheading;
   autoDepth = global.toROV.autodepth;
+  if (autoDepth) {
+    depthReference = global.toROV.heave;
+  }
   let controls = {
     surge: bias.surge,
     sway: bias.sway,
@@ -67,6 +70,7 @@ function handleClick({ button, value }) {
     autodepth: autoDepth,
     autoheading: autoHeading,
   };
+
   switch (button) {
     // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
     case 'LeftStickY': // Forward+/Backward-
@@ -83,6 +87,9 @@ function handleClick({ button, value }) {
         fixMaxThruster('heave', controls);
       } else {
         depthReference -= value * depthIncrement;
+        if (depthReference < 0) {
+          depthReference = 0;
+        }
         controls['heave'] = depthReference;
       }
       break;
