@@ -49,7 +49,6 @@ function VideoApp() {
         boatHeading={0}
         maxDistance={5}
       />
-      <VideoFeed />
     </div>
   );
 }
