@@ -1,6 +1,7 @@
 import Webcam from 'react-webcam';
 import React, { Component } from 'react';
 import './css/VideoFeed.css';
+import PropTypes from 'prop-types';
 
 class VideoFeed extends Component {
   constructor(props) {
@@ -125,5 +126,9 @@ class VideoFeed extends Component {
     );
   }
 }
+
+VideoFeed.propTypes = {
+  hidden: PropTypes.bool,
+};
 
 export default VideoFeed;
