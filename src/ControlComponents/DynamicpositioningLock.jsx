@@ -7,7 +7,10 @@ import './css/NetfollowingLock.css';
 const { remote } = window.require('electron');
 
 export default function DynamicpositioningLock({ title, active, step }) {
-  const [input, changeInput] = useState(0.0);
+  const [setting1Input, setSetting1Input] = useState(0.0);
+  const [setting2Input, setSetting2Input] = useState(0.0);
+  const [setting3Input, setSetting3Input] = useState(0.0);
+
   const [setting1Value, setSetting1Value] = useState(0.0);
   const [setting2Value, setSetting2Value] = useState(0.0);
   const [setting3Value, setSetting3Value] = useState(0.0);
@@ -72,11 +75,11 @@ export default function DynamicpositioningLock({ title, active, step }) {
             step={step}
             min={-10}
             max={10}
-            onChange={e => changeInput(Number(e.target.value))}
+            onChange={e => setSetting1Input(Number(e.target.value))}
           />
           <button
             className="updateButton"
-            onClick={() => updateValue(input, 'Xsetting1')}
+            onClick={() => updateValue(setting1Input, 'Xsetting1')}
           >
             &#x21bb;
           </button>
@@ -89,11 +92,11 @@ export default function DynamicpositioningLock({ title, active, step }) {
             step={step}
             min={0}
             max={10}
-            onChange={e => changeInput(Number(e.target.value))}
+            onChange={e => setSetting2Input(Number(e.target.value))}
           />
           <button
             className="updateButton"
-            onClick={() => updateValue(input, 'Ysetting2')}
+            onClick={() => updateValue(setting2Input, 'Ysetting2')}
           >
             &#x21bb;
           </button>
@@ -106,11 +109,11 @@ export default function DynamicpositioningLock({ title, active, step }) {
             step={step}
             min={0}
             max={10}
-            onChange={e => changeInput(Number(e.target.value))}
+            onChange={e => setSetting3Input(Number(e.target.value))}
           />
           <button
             className="updateButton"
-            onClick={() => updateValue(input, 'Zsetting3')}
+            onClick={() => updateValue(setting3Input, 'Zsetting3')}
           >
             &#x21bb;
           </button>
