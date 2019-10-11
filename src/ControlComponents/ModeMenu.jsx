@@ -45,7 +45,6 @@ export default function ModeMenu({
   }
 
   function updateMode(mode) {
-    console.log(currentMode);
     switch (mode) {
       case 'Net Following':
         // The global state is set in NetfollowingLock.jsx file
