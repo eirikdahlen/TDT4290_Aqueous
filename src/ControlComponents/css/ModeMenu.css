@@ -6,6 +6,15 @@
   margin-top: 5px;
 }
 
+.netfollowingMenu {
+  width: 90%;
+}
+
+.dropdownList {
+  position: absolute;
+  top: 47.5%;
+}
+
 ul.modeList {
   list-style-type: none;
   margin: 0;
@@ -23,11 +32,11 @@ li.modeItem {
 
 li.modeItem:hover {
   background-color: #e5e5e5;
-  color: white;
+  cursor: pointer;
 }
 
 .dropdownButton {
-  padding: 6%;
+  padding: 15px;
   text-align: center;
   background-color: green;
   border-radius: 5px;
@@ -37,4 +46,5 @@ li.modeItem:hover {
 
 .dropdownButton:hover {
   background-color: lightgreen;
+  cursor: pointer;
 }

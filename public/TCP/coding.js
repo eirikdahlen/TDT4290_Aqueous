@@ -11,7 +11,7 @@ function encodeData(data) {
    *  'pitch': number,
    *  'yaw': number,
    *  'autodepth': bool,
-   *  'autoheading': bool
+   *  'autoheading': bool,
    * }
    */
   const doublesArray = new Float64Array([

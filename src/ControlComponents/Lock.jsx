@@ -27,8 +27,8 @@ export default function Lock({ title, active, value, min, max, step }) {
       }
       case 'autodepth': {
         // Lets depth be max 200 and min 0
-        value = Math.min(value, 200);
-        value = Math.max(value, 0.0);
+        value = Math.min(value, max);
+        value = Math.max(value, min);
         return value;
       }
       default: {
@@ -57,6 +57,7 @@ export default function Lock({ title, active, value, min, max, step }) {
       <div className="inputFlex">
         <input
           type="number"
+          placeholder="0,0"
           step={step}
           min={min}
           max={max}

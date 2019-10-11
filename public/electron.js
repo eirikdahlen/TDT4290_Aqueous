@@ -45,6 +45,20 @@ global.bias = {
   heave: 0.0,
 };
 
+/**
+ * In IMC, positive and negative values of velocity is also indicating port/starboard direction
+ * Positive velocity values: Starboard / styrbord
+ * Negative velocity values: Port / babord
+ * Direction property is therefore not needed
+ */
+global.netfollowing = {
+  distance: 0,
+  velocity: 0,
+  degree: 0,
+  active: false,
+  available: true,
+};
+
 //Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
