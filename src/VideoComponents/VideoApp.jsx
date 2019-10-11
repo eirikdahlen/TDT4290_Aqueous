@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 // The App for the VideoWindow. This is where every video-component should go.
 
 import React, { useState, useEffect } from 'react';
@@ -7,6 +6,8 @@ import HeadingWidget from './HeadingWidget';
 import DepthWidget from './DepthWidget';
 import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
+import ModeWidget, { ModeEnum } from './ModeWidget';
+import MiniMapWidget from './MiniMapWidget';
 
 const { remote } = window.require('electron');
 
@@ -39,6 +40,14 @@ function VideoApp() {
         depth={sensorValues['down']}
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
+      />
+      <ModeWidget mode={ModeEnum.NETFOLLOWING} nfavailable={true} />
+      <MiniMapWidget
+        north={sensorValues['north']}
+        east={sensorValues['east']}
+        yaw={sensorValues['yaw']}
+        boatHeading={0}
+        maxDistance={5}
       />
       <VideoFeed />
     </div>

@@ -1,34 +1,33 @@
 const electron = require('electron');
 const { app } = electron;
-const { getSimulatorFileAndLaunch } = require('./simulator/chooseSimulator');
+const { getFileAndLaunch } = require('../launch/chooseFile');
 
 // Menu template for control window
 let menuTemplate = [
   {
-    label: 'File',
+    label: 'Simulator',
     submenu: [
       {
-        label: 'Choose simulator file',
+        label: 'Open file and run',
         click() {
-          getSimulatorFileAndLaunch();
+          getFileAndLaunch();
         },
       },
     ],
   },
   {
-    label: 'Run',
+    label: 'ROV',
     submenu: [
       {
-        label: 'Start',
+        label: 'Connect to TCP',
+      },
+      {
+        label: 'Start ROV serial port',
         click() {
-          getSimulatorFileAndLaunch();
+          getFileAndLaunch(
+            'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
+          );
         },
-      },
-      {
-        label: 'Connect TCP',
-      },
-      {
-        label: 'Serialize',
       },
     ],
   },
