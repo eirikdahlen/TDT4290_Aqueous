@@ -7,6 +7,7 @@ const {
   createKeyboardMappingWindow,
   createXboxMappingWindow,
 } = require('./windows');
+const { getConnectedClient } = require('./../TCP/TCPClient');
 
 const menuTemplate = [
   // { role: 'appMenu' }
@@ -45,6 +46,9 @@ const menuTemplate = [
     submenu: [
       {
         label: 'Connect to TCP',
+        click() {
+          getConnectedClient();
+        },
       },
       {
         label: 'Start ROV serial port',
