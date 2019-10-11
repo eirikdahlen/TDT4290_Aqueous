@@ -9,11 +9,11 @@ const { app, Menu } = electron;
 
 const isDev = require('electron-is-dev');
 
-const { menuTemplate } = require('./menuTemplate.js');
+const { menuTemplate } = require('./utils/menuTemplate');
 // const { registerHotkeys, unregisterHotkeysOnClose } = require('./hotkeys');
 const { createWindows, setWidthAndHeight } = require('./windows');
 
-const { setIPCListeners } = require('./IPC');
+const { setIPCListeners } = require('./utils/IPC');
 
 let controlWindow;
 let videoWindow;

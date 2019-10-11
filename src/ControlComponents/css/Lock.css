@@ -1,0 +1,47 @@
+.Lock {
+  background-color: lightgray;
+  margin: 5px;
+  border-radius: 10px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 70%;
+}
+
+.inputFlex {
+  display: flex;
+  flex-direction: row;
+  padding: 0 5px;
+}
+.inputFlex > input {
+  width: 95%;
+  height: 40px;
+  font-size: 20px;
+  padding-left: 10px;
+  border: 0.5px solid gray;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+}
+
+.inputFlex > button {
+  width: 60px;
+  font-size: 30px;
+  border: none;
+  border: 0.5px solid gray;
+  cursor: pointer;
+  background-color: darkgray;
+  border-radius: 0 5px 5px 0;
+  outline: none;
+}
+.inputFlex > button:hover {
+  background-color: lightgray;
+}
+.inputFlex > button:active {
+  box-shadow: 0 0 1px 1px gray;
+}
+
+.check {
+  text-align: center;
+  bottom: 0;
+}

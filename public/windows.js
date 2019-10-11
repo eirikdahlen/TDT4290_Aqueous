@@ -1,4 +1,5 @@
 const electron = require('electron');
+const { app } = electron
 const isDev = require('electron-is-dev');
 const path = require('path');
 
@@ -23,7 +24,7 @@ function createWindows() {
     y: yVideoWindow,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'utils/preload.js'),
     },
   });
 
@@ -42,7 +43,7 @@ function createWindows() {
     y: yControlWindow,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'utils/preload.js'),
     },
   });
 
@@ -51,6 +52,20 @@ function createWindows() {
       ? 'http://localhost:3000?controlWindow'
       : `file://${path.join(__dirname, '../build/index.html?controlWindow')}`,
   );
+
+  //Deferences the windows when the app is closed, to save resources.
+  controlWindow.on('closed', () => {
+    app.quit();
+  });
+  videoWindow.on('closed', () => {
+    app.quit();
+  });
+
+  videoWindow.setMenu(null);
+
+  // Make the windows globally accessible
+  global.videoWindow = videoWindow;
+  global.controlWindow = controlWindow;
 
   return [videoWindow, controlWindow];
 }

@@ -1,0 +1,40 @@
+.ModeMenu {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  align-items: center;
+  margin-top: 5px;
+}
+
+ul.modeList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  font-weight: bold;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+li.modeItem {
+  padding: 6%;
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+li.modeItem:hover {
+  background-color: #e5e5e5;
+  color: white;
+}
+
+.dropdownButton {
+  padding: 6%;
+  text-align: center;
+  background-color: green;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+}
+
+.dropdownButton:hover {
+  background-color: lightgreen;
+}

@@ -1,0 +1,6 @@
+.HeadingWidget {
+  /* This centers the widget, even in the case where the windows becomes too small when resizing */
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+}

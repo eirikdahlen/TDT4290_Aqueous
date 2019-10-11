@@ -1,4 +1,4 @@
-import { clamp } from './tools.js';
+import { clamp, mapRange } from './tools.js';
 
 // Color values
 const color_base_bias = '#A0A0A0';
@@ -70,15 +70,6 @@ function reset_color(context_bias) {
   context_bias.fill();
 }
 
-function map_range(old_value, old_min, old_max, new_min, new_max) {
-  // Function for mapping a value from one range of numbers to another.
-  // This is used to change the length of the colored arrows with a simple decimal value
-  return (
-    ((old_value - old_min) * (new_max - new_min)) / (old_max - old_min) +
-    new_min
-  );
-}
-
 function drawBias(context_bias, u, v, w) {
   // Clamp the bias values between -1.0 and 1.0
   u = clamp(u, -1.0, 1.0);
@@ -118,8 +109,8 @@ function drawBias(context_bias, u, v, w) {
     context_bias,
     center_x,
     center_y,
-    map_range(u, 1.0, -1.0, start_u_x, end_u_x),
-    map_range(u, 1.0, -1.0, start_u_y, end_u_y),
+    mapRange(u, 1.0, -1.0, start_u_x, end_u_x),
+    mapRange(u, 1.0, -1.0, start_u_y, end_u_y),
     u,
   );
 
@@ -131,8 +122,8 @@ function drawBias(context_bias, u, v, w) {
     context_bias,
     center_x,
     center_y,
-    map_range(v, -1.0, 1.0, start_v_x, end_v_x),
-    map_range(v, -1.0, 1.0, start_v_y, end_v_y),
+    mapRange(v, -1.0, 1.0, start_v_x, end_v_x),
+    mapRange(v, -1.0, 1.0, start_v_y, end_v_y),
     v,
   );
 
@@ -144,8 +135,8 @@ function drawBias(context_bias, u, v, w) {
     context_bias,
     center_x,
     center_y,
-    map_range(w, -1.0, 1.0, start_w_x, end_w_x),
-    map_range(w, -1.0, 1.0, start_w_y, end_w_y),
+    mapRange(w, -1.0, 1.0, start_w_x, end_w_x),
+    mapRange(w, -1.0, 1.0, start_w_y, end_w_y),
     w,
   );
 
