@@ -33,6 +33,7 @@ export default function ModeMenu({
     switch (mode) {
       case 'Net Following':
         // The global state is set in NetfollowingLock.jsx file
+        // Will turn off DP mode here
         break;
       case 'Dynamic Positioning':
         /**
