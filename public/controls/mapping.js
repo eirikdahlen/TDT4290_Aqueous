@@ -55,6 +55,8 @@ function setUpOrDown({ button, down }) {
 
 // Converts from button (buttonname) and value (how much pressed) to values for the ROV
 function handleClick({ button, value }) {
+  autoHeading = global.toROV.autoheading;
+  autoDepth = global.toROV.autodepth;
   let controls = {
     surge: bias.surge,
     sway: bias.sway,
