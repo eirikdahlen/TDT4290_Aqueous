@@ -126,6 +126,8 @@ function createXboxMappingWindow() {
   xboxMappingWindow.on('close', function() {
     xboxMappingWindow = null;
   });
+
+  xboxMappingWindow.setMenu(null);
 }
 
 // Handle add item window
@@ -140,6 +142,8 @@ function createKeyboardMappingWindow() {
   keyboardMappingWindow.on('close', function() {
     keyboardMappingWindow = null;
   });
+
+  keyboardMappingWindow.setMenu(null);
 }
 
 module.exports = {
