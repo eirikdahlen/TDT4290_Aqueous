@@ -3,14 +3,18 @@ import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
 import './css/NetfollowingLock.css';
+import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
 
-export default function NetfollowingLock({ title, active, step }) {
+export default function NetfollowingLock({ title, globalMode, step }) {
   const [velocityInput, setVelocityInput] = useState(0.0);
   const [distanceInput, setDistanceInput] = useState(0.0);
   const [velocityValue, setVelocityValue] = useState(0.0);
   const [distanceValue, setDistanceValue] = useState(0.0);
+  const [nfActive, nfActiveChange] = useState(
+    globalMode === ModeEnum.NETFOLLOWING ? true : false,
+  );
 
   function fixValue(value, type) {
     if (type === 'velocity') {
@@ -28,7 +32,7 @@ export default function NetfollowingLock({ title, active, step }) {
   // Function that is run when the update-button is clicked
   const updateValue = (value, type) => {
     // Could remove this "if" to set value before activating the switch
-    if (active) {
+    if (globalMode === ModeEnum.NETFOLLOWING) {
       if (type === 'velocity') {
         remote.getGlobal('netfollowing')['velocity'] = fixValue(value, type);
       } else if (type === 'distance') {
@@ -41,7 +45,18 @@ export default function NetfollowingLock({ title, active, step }) {
 
   // Function that is run when toggle is clicked
   const toggle = () => {
-    remote.getGlobal('netfollowing')['active'] = !active;
+    if (remote.getGlobal('mode')['globalMode'] === ModeEnum.NETFOLLOWING) {
+      remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
+      nfActiveChange(false);
+    } else if (
+      remote.getGlobal('mode')['globalMode'] === ModeEnum.MANUAL ||
+      remote.getGlobal('mode')['globalMode'] === ModeEnum.DYNAMICPOSITIONING
+    ) {
+      remote.getGlobal('mode')['globalMode'] = ModeEnum.NETFOLLOWING;
+      nfActiveChange(true);
+    } else {
+      console.log('Error in changing mode');
+    }
   };
 
   return (
@@ -85,7 +100,7 @@ export default function NetfollowingLock({ title, active, step }) {
       </div>
       <div className="checkSwitch">
         <Switch
-          isOn={active}
+          isOn={nfActive}
           handleToggle={() => {
             toggle();
           }}
@@ -102,5 +117,5 @@ export default function NetfollowingLock({ title, active, step }) {
 NetfollowingLock.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
-  active: PropTypes.bool,
+  globalMode: PropTypes.number,
 };

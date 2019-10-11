@@ -6,7 +6,7 @@ import HeadingWidget from './HeadingWidget';
 import DepthWidget from './DepthWidget';
 import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
-import ModeWidget, { ModeEnum } from './ModeWidget';
+import ModeWidget from './ModeWidget';
 import MiniMapWidget from './MiniMapWidget';
 
 const { remote } = window.require('electron');
@@ -42,8 +42,8 @@ function VideoApp() {
         lockedValue={settingsValues['heave']}
       />
       <ModeWidget
-        mode={ModeEnum.NETFOLLOWING}
-        nfAvailable={remote.getGlobal('netfollowing')['available']}
+        globalMode={remote.getGlobal('mode')['globalMode']}
+        nfAvailable={remote.getGlobal('mode')['nfAvailable']}
       />
       <MiniMapWidget
         north={sensorValues['north']}

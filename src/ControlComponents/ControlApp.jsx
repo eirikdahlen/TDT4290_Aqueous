@@ -19,6 +19,7 @@ function ControlApp() {
   const [netfollowing, netfollowingUpdate] = useState(
     remote.getGlobal('netfollowing'),
   );
+  const [mode, setMode] = useState(remote.getGlobal('mode'));
 
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
@@ -29,6 +30,7 @@ function ControlApp() {
   useEffect(() => {
     window.ipcRenderer.on('data-sent', () => {
       controlUpdate(remote.getGlobal('toROV'));
+      setMode(remote.getGlobal('mode'));
       netfollowingUpdate(remote.getGlobal('netfollowing'));
     });
   }, []);
@@ -43,13 +45,12 @@ function ControlApp() {
         </div>
         <div
           className="middleWindow"
-          onClick={() => console.log({ netfollowing })}
+          onClick={() => console.log({ netfollowing }, { mode })}
         >
           {/*Start in mode Manual*/}
           <ModeMenu
-            mode="Manual"
-            netfollowingActive={netfollowing.active} // TODO: This should be fetched from the ROV somehow
-            netfollowingAvailable={netfollowing.available}
+            globalMode={mode.globalMode} // TODO: This should be fetched from the ROV somehow
+            netfollowingAvailable={mode.nfAvailable}
           />
           <div className="lockFlex">
             <Lock

@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeMenu.css';
 import NetfollowingLock from './NetfollowingLock';
+import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
 
-export default function ModeMenu({
-  mode,
-  netfollowingActive,
-  netfollowingAvailable,
-}) {
+const modeToString = {
+  0: 'Manual',
+  1: 'Dynamic Positioning',
+  2: 'Net Following',
+};
+
+export default function ModeMenu({ globalMode, netfollowingAvailable }) {
   const [displayMenu, setDisplayMenu] = useState(false); //Dropdownmenu starts hidden
-  const [currentMode, setCurrentMode] = useState(mode);
+  const [currentMode, setCurrentMode] = useState(globalMode);
   const [netfollowingMenu, setNetfollowingMenu] = useState(false);
 
   function showMenu() {
@@ -19,9 +22,12 @@ export default function ModeMenu({
   }
 
   function updateMenu(mode) {
-    if (mode === 'Net Following') {
+    if (mode === ModeEnum.NETFOLLOWING) {
       setNetfollowingMenu(true);
-    } else if (currentMode === 'Net Following' && mode === 'Net Following') {
+    } else if (
+      currentMode === ModeEnum.NETFOLLOWING &&
+      mode === ModeEnum.NETFOLLOWING
+    ) {
       setNetfollowingMenu(true);
     } else {
       setNetfollowingMenu(false);
@@ -31,22 +37,18 @@ export default function ModeMenu({
 
   function updateMode(mode) {
     switch (mode) {
-      case 'Net Following':
+      case ModeEnum.NETFOLLOWING:
         // The global state is set in NetfollowingLock.jsx file
         // Will turn off DP mode here
         break;
-      case 'Dynamic Positioning':
+      case ModeEnum.DYNAMICPOSITIONING:
         /**
          * TODO: Implement activation of DP here and the related logic
          */
-        if (currentMode === 'Net Following') {
-          remote.getGlobal('netfollowing')['active'] = false;
-        }
+        remote.getGlobal('mode')['globalMode'] = ModeEnum.DYNAMICPOSITIONING;
         break;
       default:
-        if (currentMode === 'Net Following') {
-          remote.getGlobal('netfollowing')['active'] = false;
-        }
+        remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
         break;
     }
     setCurrentMode(mode);
@@ -56,17 +58,20 @@ export default function ModeMenu({
   return (
     <div className="ModeMenu">
       <div className="dropdownButton" onClick={showMenu}>
-        Mode: {currentMode}
+        Mode: {modeToString[currentMode]}
       </div>
       {displayMenu ? ( //If menu should be visible, show list of options
         <div className="dropdownList">
           <ul className="modeList">
-            <li className="modeItem" onClick={() => updateMenu('Manual')}>
+            <li
+              className="modeItem"
+              onClick={() => updateMenu(ModeEnum.MANUAL)}
+            >
               Manual
             </li>
             <li
               className="modeItem"
-              onClick={() => updateMenu('Dynamic Positioning')}
+              onClick={() => updateMenu(ModeEnum.DYNAMICPOSITIONING)}
             >
               Dynamic Positioning
             </li>
@@ -77,11 +82,12 @@ export default function ModeMenu({
                 cursor: netfollowingAvailable ? 'pointer' : 'not-allowed',
               }}
               onClick={
-                netfollowingAvailable ? () => updateMenu('Net Following') : null
+                netfollowingAvailable
+                  ? () => updateMenu(ModeEnum.NETFOLLOWING)
+                  : null
               }
             >
               Net Following
-              {netfollowingActive}
             </li>
           </ul>
         </div>
@@ -90,7 +96,7 @@ export default function ModeMenu({
         <div className="netfollowingMenu">
           <NetfollowingLock
             title="Netfollowing Settings"
-            active={netfollowingActive}
+            globalMode={globalMode}
             step={0.1}
           />
         </div>
@@ -100,7 +106,6 @@ export default function ModeMenu({
 }
 
 ModeMenu.propTypes = {
-  mode: PropTypes.string,
+  globalMode: PropTypes.number,
   netfollowingAvailable: PropTypes.bool,
-  netfollowingActive: PropTypes.bool,
 };

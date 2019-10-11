@@ -4,34 +4,29 @@ import NetFollowingWidget from './NetFollowingWidget';
 import './css/ModeWidget.css';
 import redX from './images/redX.png';
 import greenCheckmark from './images/greenCheckmark.png';
+import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
-
-const ModeEnum = {
-  MANUAL: 0,
-  NETFOLLOWING: 1,
-  DYNAMICPOSITIONING: 2,
-};
 
 class ModeWidget extends Component {
   constructor(props) {
     super(props);
     this.modeLabel = 'INVALID';
-    let imgsrc;
-    let opacityStyle;
+    this.imgsrc = null;
+    this.opacityStyle = null;
 
     if (this.props.nfAvailable) {
       this.nfLabel = 'NET FOLLOWING AVAILABLE';
-      imgsrc = greenCheckmark;
-      opacityStyle = 'NFAvailable';
+      this.imgsrc = greenCheckmark;
+      this.opacityStyle = 'NFAvailable';
     } else {
       this.nfLabel = 'NET FOLLOWING UNAVAILABLE';
-      imgsrc = redX;
-      opacityStyle = 'NFUnavailable';
+      this.imgsrc = redX;
+      this.opacityStyle = 'NFUnavailable';
     }
     this.canvas = (
-      <div className={'NFAvailability ' + opacityStyle}>
-        <img src={imgsrc} alt=""></img>
+      <div className={'NFAvailability ' + this.opacityStyle}>
+        <img src={this.imgsrc} alt=""></img>
         <div>{this.nfLabel}</div>
       </div>
     );
@@ -39,12 +34,18 @@ class ModeWidget extends Component {
   }
 
   componentDidMount() {
-    switch (this.props.mode) {
+    switch (this.props.globalMode) {
       case ModeEnum.MANUAL:
         this.modeLabel = 'MANUAL';
+        this.canvas = (
+          <div className={'NFAvailability ' + this.opacityStyle}>
+            <img src={this.imgsrc} alt=""></img>
+            <div>{this.nfLabel}</div>
+          </div>
+        );
         break;
       case ModeEnum.NETFOLLOWING:
-        if (remote.getGlobal('netfollowing')['active']) {
+        if (remote.getGlobal('mode')['globalMode'] === ModeEnum.NETFOLLOWING) {
           this.modeLabel = 'NET FOLLOWING';
           this.canvas = (
             <NetFollowingWidget
@@ -56,6 +57,12 @@ class ModeWidget extends Component {
         break;
       case ModeEnum.DYNAMICPOSITIONING:
         this.modeLabel = 'DYN. POS.';
+        this.canvas = (
+          <div className={'NFAvailability ' + this.opacityStyle}>
+            <img src={this.imgsrc} alt=""></img>
+            <div>{this.nfLabel}</div>
+          </div>
+        );
         break;
       default:
         this.modeLabel = 'INVALID';
@@ -69,7 +76,7 @@ class ModeWidget extends Component {
 
   static get propTypes() {
     return {
-      mode: PropTypes.number,
+      globalMode: PropTypes.number,
       nfAvailable: PropTypes.bool,
     };
   }
