@@ -10,6 +10,11 @@
   width: 90%;
 }
 
+.dropdownList {
+  position: absolute;
+  top: 47.5%;
+}
+
 ul.modeList {
   list-style-type: none;
   margin: 0;

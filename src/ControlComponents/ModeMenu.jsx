@@ -59,30 +59,32 @@ export default function ModeMenu({
         Mode: {currentMode}
       </div>
       {displayMenu ? ( //If menu should be visible, show list of options
-        <ul className="modeList">
-          <li className="modeItem" onClick={() => updateMenu('Manual')}>
-            Manual
-          </li>
-          <li
-            className="modeItem"
-            onClick={() => updateMenu('Dynamic Positioning')}
-          >
-            Dynamic Positioning
-          </li>
-          <li
-            className="modeItem"
-            style={{
-              color: netfollowingAvailable ? 'black' : '#9e9e9e',
-              cursor: netfollowingAvailable ? 'pointer' : 'not-allowed',
-            }}
-            onClick={
-              netfollowingAvailable ? () => updateMenu('Net Following') : null
-            }
-          >
-            Net Following
-            {netfollowingActive}
-          </li>
-        </ul>
+        <div className="dropdownList">
+          <ul className="modeList">
+            <li className="modeItem" onClick={() => updateMenu('Manual')}>
+              Manual
+            </li>
+            <li
+              className="modeItem"
+              onClick={() => updateMenu('Dynamic Positioning')}
+            >
+              Dynamic Positioning
+            </li>
+            <li
+              className="modeItem"
+              style={{
+                color: netfollowingAvailable ? 'black' : '#9e9e9e',
+                cursor: netfollowingAvailable ? 'pointer' : 'not-allowed',
+              }}
+              onClick={
+                netfollowingAvailable ? () => updateMenu('Net Following') : null
+              }
+            >
+              Net Following
+              {netfollowingActive}
+            </li>
+          </ul>
+        </div>
       ) : null}
       {netfollowingMenu ? (
         <div className="netfollowingMenu">
