@@ -58,7 +58,7 @@ function sendData(client, data) {
    *  'pitch': number,
    *  'yaw': number,
    *  'autodepth': bool,
-   *  'autoheading': bool
+   *  'autoheading': bool,
    * }
    */
   let buf = encodeData(data);

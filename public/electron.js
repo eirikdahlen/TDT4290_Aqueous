@@ -43,6 +43,20 @@ global.bias = {
   heave: 0.0,
 };
 
+/**
+ * In IMC, positive and negative values of velocity is also indicating port/starboard direction
+ * Positive velocity values: Starboard / styrbord
+ * Negative velocity values: Port / babord
+ * Direction property is therefore not needed
+ */
+global.netfollowing = {
+  distance: 0,
+  velocity: 0,
+  degree: 0,
+  active: false,
+  available: true,
+};
+
 // Functions that are run when the app is ready
 app.on('ready', () => {
   // Define the size of the windows, and create them
