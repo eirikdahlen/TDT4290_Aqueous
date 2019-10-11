@@ -30,7 +30,7 @@ const mapping = {
   A: 'LeftStickX', //left-
   ARROWUP: 'LeftTrigger', //bias up
   ARROWDOWN: 'RightTrigger', //bias down
-  ARROWLEFT: 'RightStickX', //yaw
+  ARROWLEFT: 'RightStickX', //yaw-
   ARROWRIGHT: 'RightStickX', //yaw
   V: 'B', //autoheading
   C: 'A', //autodepth
@@ -50,7 +50,7 @@ class KeyboardWrapper extends Component {
   keyChangeHandler(e) {
     const key = e.key.toUpperCase();
     if (!(validKeys.indexOf(key) >= 0)) return;
-    const multiplier = ['S', 'A'].indexOf(key) >= 0 ? -1 : 1;
+    const multiplier = ['S', 'A', 'ARROWLEFT'].indexOf(key) >= 0 ? -1 : 1;
     console.log(key);
     window.ipcRenderer.send('button-click', {
       button: mapping[key],
