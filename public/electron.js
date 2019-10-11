@@ -45,6 +45,17 @@ global.bias = {
 };
 
 /**
+ * Global mode variable
+ * 0 - Manual
+ * 1 - DP mode
+ * 2 - NF mode
+ */
+global.mode = {
+  globalMode: 0,
+  nfAvailable: true,
+};
+
+/**
  * In IMC, positive and negative values of velocity is also indicating port/starboard direction
  * Positive velocity values: Starboard / styrbord
  * Negative velocity values: Port / babord
@@ -54,8 +65,6 @@ global.netfollowing = {
   distance: 0,
   velocity: 0,
   degree: 0,
-  active: false,
-  available: true,
 };
 
 /**
@@ -66,7 +75,6 @@ global.dynamicpositioning = {
   Xsetting1: 0,
   Ysetting2: 0,
   Zsetting3: 0,
-  active: false,
 };
 
 // Functions that are run when the app is ready

@@ -6,7 +6,7 @@ import HeadingWidget from './HeadingWidget';
 import DepthWidget from './DepthWidget';
 import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
-import ModeWidget, { ModeEnum } from './ModeWidget';
+import ModeWidget from './ModeWidget';
 import MiniMapWidget from './MiniMapWidget';
 import GamepadWrapper from './GamepadWrapper';
 import KeyboardWrapper from './KeyboardWrapper';
@@ -49,7 +49,10 @@ function VideoApp() {
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
       />
-      <ModeWidget mode={ModeEnum.NETFOLLOWING} nfavailable={true} />
+      <ModeWidget
+        globalMode={remote.getGlobal('mode')['globalMode']}
+        nfAvailable={remote.getGlobal('mode')['nfAvailable']}
+      />
       <MiniMapWidget
         north={sensorValues['north']}
         east={sensorValues['east']}
