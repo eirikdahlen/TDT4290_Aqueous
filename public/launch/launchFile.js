@@ -6,8 +6,8 @@ function execute(command, callback) {
   });
 }
 
-function launchSimulator(command) {
+function runCommand(command) {
   execute(command, () => {});
 }
 
-module.exports = { launchSimulator };
+module.exports = { runCommand };
