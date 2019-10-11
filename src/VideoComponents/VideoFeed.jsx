@@ -44,6 +44,9 @@ class VideoFeed extends Component {
     devices.forEach(feed => {
       let { label } = feed;
       label = label.substr(0, label.indexOf('(') - 1);
+      if (!label) {
+        label = 'Unlabeled Video Input';
+      }
       feeds[label] = feed.deviceId;
     });
     this.setState({ devices: feeds });
