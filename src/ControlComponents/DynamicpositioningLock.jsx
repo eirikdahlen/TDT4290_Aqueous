@@ -8,31 +8,47 @@ const { remote } = window.require('electron');
 
 export default function DynamicpositioningLock({ title, active, step }) {
   const [input, changeInput] = useState(0.0);
-  const [velocityValue, setVelocityValue] = useState(0.0);
-  const [distanceValue, setDistanceValue] = useState(0.0);
+  const [setting1Value, setSetting1Value] = useState(0.0);
+  const [setting2Value, setSetting2Value] = useState(0.0);
+  const [setting3Value, setSetting3Value] = useState(0.0);
 
   function fixValue(value, type) {
-    if (type === 'setting1') {
+    if (type === 'Xsetting1') {
       value = Math.min(value, 10);
       value = Math.max(value, -10);
-      setVelocityValue(value);
-    } else {
+      setSetting1Value(value);
+    } else if (type === 'Ysetting2') {
       value = Math.min(value, 10);
-      value = Math.max(value, 0);
-      setDistanceValue(value);
+      value = Math.max(value, -10);
+      setSetting2Value(value);
+    } else if (type === 'Zsetting3') {
+      value = Math.min(value, 10);
+      value = Math.max(value, -10);
+      setSetting3Value(value);
     }
     return value;
   }
 
   // Function that is run when the update-button is clicked
-  // Placeholder settings for now (setting1 and setting2)
+  // Placeholder settings for now (Xsetting1, Ysetting2, Zsetting3)
   const updateValue = (value, type) => {
     // Could remove this "if" to set value before activating the switch
     if (active) {
-      if (type === 'setting1') {
-        remote.getGlobal('dynamicpositioning')['setting1'] = fixValue(value, type);
-      } else if (type === 'setting2') {
-        remote.getGlobal('dynamicpositioning')['setting2'] = fixValue(value, type);
+      if (type === 'Xsetting1') {
+        remote.getGlobal('Xdynamicpositioning')['Xsetting1'] = fixValue(
+          value,
+          type,
+        );
+      } else if (type === 'Ysetting2') {
+        remote.getGlobal('dynamicpositioning')['Ysetting2'] = fixValue(
+          value,
+          type,
+        );
+      } else if (type === 'Zsetting3') {
+        remote.getGlobal('dynamicpositioning')['Zsetting3'] = fixValue(
+          value,
+          type,
+        );
       } else {
         console.log('Type not recognized');
       }
@@ -48,11 +64,11 @@ export default function DynamicpositioningLock({ title, active, step }) {
     <div className="NetfollowingLock">
       <Title>{title}</Title>
       <div className="inputFlexNF">
-        <h3>setting1</h3>
+        <h3>x (placeholder)</h3>
         <div className="firstRow">
           <input
             type="number"
-            placeholder="Setting1"
+            placeholder="x"
             step={step}
             min={-10}
             max={10}
@@ -60,16 +76,16 @@ export default function DynamicpositioningLock({ title, active, step }) {
           />
           <button
             className="updateButton"
-            onClick={() => updateValue(input, 'setting1')}
+            onClick={() => updateValue(input, 'Xsetting1')}
           >
             &#x21bb;
           </button>
         </div>
-        <h3>setting2</h3>
+        <h3>y (placeholder)</h3>
         <div className="secondRow">
           <input
             type="number"
-            placeholder="setting2"
+            placeholder="y"
             step={step}
             min={0}
             max={10}
@@ -77,7 +93,24 @@ export default function DynamicpositioningLock({ title, active, step }) {
           />
           <button
             className="updateButton"
-            onClick={() => updateValue(input, 'setting2')}
+            onClick={() => updateValue(input, 'Ysetting2')}
+          >
+            &#x21bb;
+          </button>
+        </div>
+        <h3>z (placeholder)</h3>
+        <div className="thirdRow">
+          <input
+            type="number"
+            placeholder="z"
+            step={step}
+            min={0}
+            max={10}
+            onChange={e => changeInput(Number(e.target.value))}
+          />
+          <button
+            className="updateButton"
+            onClick={() => updateValue(input, 'Zsetting3')}
           >
             &#x21bb;
           </button>
@@ -90,9 +123,11 @@ export default function DynamicpositioningLock({ title, active, step }) {
             toggle();
           }}
           id={`${title}Switch`}
-          currentValue={`v: ${velocityValue.toFixed(
+          currentValue={`x: ${setting1Value.toFixed(
             1,
-          )}m/s   d: ${distanceValue.toFixed(1)}m`}
+          )}m   y: ${setting2Value.toFixed(1)}m z: ${setting3Value.toFixed(
+            1,
+          )}m`}
         />
       </div>
     </div>

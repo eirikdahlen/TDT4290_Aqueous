@@ -61,14 +61,14 @@ global.netfollowing = {
 
 /**
  * Add correct settings later
- * Placeholders for now
+ * Placeholders for X, Y, Z for now
  */
 global.dynamicpositioning = {
-  setting1: 0,
-  setting2: 0,
+  Xsetting1: 0,
+  Ysetting2: 0,
+  Zsetting3: 0,
   active: false,
 };
-
 
 //Function for creating the two windows - controls and video
 function createWindows() {

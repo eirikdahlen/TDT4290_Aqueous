@@ -11,7 +11,6 @@ export default function ModeMenu({
   netfollowingActive,
   netfollowingAvailable,
   dynamicpositioningActive,
-
 }) {
   const [displayMenu, setDisplayMenu] = useState(false); //Dropdownmenu starts hidden
   const [currentMode, setCurrentMode] = useState(mode);
@@ -29,10 +28,13 @@ export default function ModeMenu({
     } else if (currentMode === 'Net Following' && mode === 'Net Following') {
       setNetfollowingMenu(true);
       setDynamicpositioningMenu(false);
-    } else if (mode === 'Dynamic Positioning'){
+    } else if (mode === 'Dynamic Positioning') {
       setDynamicpositioningMenu(true);
       setNetfollowingMenu(false);
-    } else if (currentMode === 'Dynamic Positioning' && mode === 'Dynamic Positioning') {
+    } else if (
+      currentMode === 'Dynamic Positioning' &&
+      mode === 'Dynamic Positioning'
+    ) {
       setDynamicpositioningMenu(true);
       setNetfollowingMenu(false);
     } else {
@@ -52,7 +54,7 @@ export default function ModeMenu({
         }
         break;
       case 'Dynamic Positioning':
-        // The global state is set in DynamicpositioningLock.jsx file 
+        // The global state is set in DynamicpositioningLock.jsx file
         if (currentMode === 'Net Following') {
           remote.getGlobal('netfollowing')['active'] = false;
         }
@@ -69,15 +71,6 @@ export default function ModeMenu({
     setCurrentMode(mode);
     showMenu();
   }
-
-  // update mode globally & with setCurrentMode for this file
-  function setMode_onClick(mode) {
-    updateMode(mode)
-    global.mode = {
-      name: mode,
-    }
-  }
-
 
   return (
     <div className="ModeMenu">
@@ -123,6 +116,7 @@ export default function ModeMenu({
         </div>
       ) : null}
       {dynamicpositioningMenu ? (
+        // uses the same .css as netfollowing for now, change later if supposed to be different
         <div className="netfollowingMenu">
           <DynamicpositioningLock
             title="Dynamic Positioning Settings"
