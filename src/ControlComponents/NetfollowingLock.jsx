@@ -7,7 +7,8 @@ import './css/NetfollowingLock.css';
 const { remote } = window.require('electron');
 
 export default function NetfollowingLock({ title, active, step }) {
-  const [input, changeInput] = useState(0.0);
+  const [velocityInput, setVelocityInput] = useState(0.0);
+  const [distanceInput, setDistanceInput] = useState(0.0);
   const [velocityValue, setVelocityValue] = useState(0.0);
   const [distanceValue, setDistanceValue] = useState(0.0);
 
@@ -55,11 +56,11 @@ export default function NetfollowingLock({ title, active, step }) {
             step={step}
             min={-10}
             max={10}
-            onChange={e => changeInput(Number(e.target.value))}
+            onChange={e => setVelocityInput(Number(e.target.value))}
           />
           <button
             className="updateButton"
-            onClick={() => updateValue(input, 'velocity')}
+            onClick={() => updateValue(velocityInput, 'velocity')}
           >
             &#x21bb;
           </button>
@@ -72,11 +73,11 @@ export default function NetfollowingLock({ title, active, step }) {
             step={step}
             min={0}
             max={10}
-            onChange={e => changeInput(Number(e.target.value))}
+            onChange={e => setDistanceInput(Number(e.target.value))}
           />
           <button
             className="updateButton"
-            onClick={() => updateValue(input, 'distance')}
+            onClick={() => updateValue(distanceInput, 'distance')}
           >
             &#x21bb;
           </button>
