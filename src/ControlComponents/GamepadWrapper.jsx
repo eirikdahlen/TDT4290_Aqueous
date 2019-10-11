@@ -13,20 +13,20 @@ class GamepadWrapper extends Component {
   buttonChangeHandler(button, down) {
     if (down) {
       // window.ipcRenderer is fetched from preload.js
-      window.ipcRenderer.send('xbox-change', { button, value: 1.0 });
+      window.ipcRenderer.send('button-click', { button, value: 1.0 });
     }
   }
 
   axisChangeHandler(button, value) {
-    window.ipcRenderer.send('xbox-change', { button, value });
+    window.ipcRenderer.send('button-click', { button, value });
   }
 
   buttonUpHandler(button) {
-    window.ipcRenderer.send('xbox-up-down', { button, down: false });
+    window.ipcRenderer.send('button-up-down', { button, down: false });
   }
 
   buttonDownHandler(button) {
-    window.ipcRenderer.send('xbox-up-down', { button, down: true });
+    window.ipcRenderer.send('button-up-down', { button, down: true });
   }
 
   render() {

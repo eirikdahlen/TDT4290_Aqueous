@@ -82,8 +82,12 @@ function createWindows() {
       : `file://${path.join(__dirname, '../build/index.html?controlWindow')}`,
   );
   //Deferences the windows when the app is closed, to save resources.
-  controlWindow.on('closed', () => (controlWindow = null));
-  videoWindow.on('closed', () => (videoWindow = null));
+  controlWindow.on('closed', () => {
+    app.quit();
+  });
+  videoWindow.on('closed', () => {
+    app.quit();
+  });
 
   videoWindow.setMenu(null);
 
