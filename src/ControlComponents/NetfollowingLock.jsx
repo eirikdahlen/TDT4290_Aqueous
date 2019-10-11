@@ -47,6 +47,7 @@ export default function NetfollowingLock({ title, active, step }) {
     <div className="NetfollowingLock">
       <Title>{title}</Title>
       <div className="inputFlexNF">
+        <h3>Velocity</h3>
         <div className="firstRow">
           <input
             type="number"
@@ -63,6 +64,7 @@ export default function NetfollowingLock({ title, active, step }) {
             &#x21bb;
           </button>
         </div>
+        <h3>Distance</h3>
         <div className="secondRow">
           <input
             type="number"

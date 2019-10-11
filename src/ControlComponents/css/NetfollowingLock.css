@@ -12,6 +12,11 @@
   padding: 15px;
 }
 
+h3 {
+  font-size: medium;
+  margin: 0px;
+}
+
 .firstRow {
   display: flex;
   flex-direction: row;
