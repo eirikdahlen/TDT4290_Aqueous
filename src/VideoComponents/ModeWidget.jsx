@@ -20,7 +20,7 @@ class ModeWidget extends Component {
     let imgsrc;
     let opacityStyle;
 
-    if (this.props.nfavailable) {
+    if (this.props.nfAvailable) {
       this.nfLabel = 'NET FOLLOWING AVAILABLE';
       imgsrc = greenCheckmark;
       opacityStyle = 'NFAvailable';
@@ -70,7 +70,7 @@ class ModeWidget extends Component {
   static get propTypes() {
     return {
       mode: PropTypes.number,
-      nfavailable: PropTypes.bool,
+      nfAvailable: PropTypes.bool,
     };
   }
 
