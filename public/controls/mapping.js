@@ -36,7 +36,7 @@ let headingIncrement = 0.05; // Radians
 let buttonDown;
 
 // Net Following and Dynamic Positioning start value
-let netFollowing = false;
+//let netFollowing = false;
 let dP = false;
 
 //Interval for increasing bias continously
@@ -165,9 +165,7 @@ function handleClick({ button, value }) {
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
       if (global.netfollowing.available) {
-        netFollowing = !netFollowing;
-        //controls['netfollowing'] = netFollowing;
-        global.netFollowing.active = netFollowing;
+        global.netfollowing.active = !global.netfollowing.active;
         break;
       }
       break;
