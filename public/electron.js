@@ -14,6 +14,7 @@ const { menuTemplate } = require('./utils/menuTemplate');
 const { createWindows, setWidthAndHeight } = require('./utils/windows');
 
 const { setIPCListeners } = require('./utils/IPC');
+const { closeSimulator } = require('./launch/closeSimulator');
 
 let controlWindow;
 let videoWindow;
@@ -106,10 +107,10 @@ function createWindows() {
   );
   //Deferences the windows when the app is closed, to save resources.
   controlWindow.on('closed', () => {
-    app.quit();
+    quit();
   });
   videoWindow.on('closed', () => {
-    app.quit();
+    quit();
   });
 
   videoWindow.setMenu(null);
@@ -167,7 +168,7 @@ app.on('ready', () => {
 // Boilerplate code - probably just quits the app when all windows are closed
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    quit();
   }
 });
 
@@ -177,3 +178,8 @@ app.on('activate', () => {
     createWindows();
   }
 });
+
+function quit() {
+  closeSimulator('FhRtVis.exe');
+  app.quit();
+}
