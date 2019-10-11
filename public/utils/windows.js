@@ -114,7 +114,41 @@ function setWidthAndHeight() {
   }
 }
 
+// Handle add item window
+function createXboxMappingWindow() {
+  let xboxMappingWindow = new electron.BrowserWindow({
+    title: 'Xbox Controller Mappings',
+  });
+  xboxMappingWindow.loadURL(
+    `file://${path.join(__dirname, '../img/xbox-mappings.png')}`,
+  );
+  // Handle garbage collection
+  xboxMappingWindow.on('close', function() {
+    xboxMappingWindow = null;
+  });
+
+  xboxMappingWindow.setMenu(null);
+}
+
+// Handle add item window
+function createKeyboardMappingWindow() {
+  let keyboardMappingWindow = new electron.BrowserWindow({
+    title: 'Keyboard Mappings',
+  });
+  keyboardMappingWindow.loadURL(
+    `file://${path.join(__dirname, '../img/keyboard-mappings.jpg')}`,
+  );
+  // Handle garbage collection
+  keyboardMappingWindow.on('close', function() {
+    keyboardMappingWindow = null;
+  });
+
+  keyboardMappingWindow.setMenu(null);
+}
+
 module.exports = {
   createWindows,
   setWidthAndHeight,
+  createXboxMappingWindow,
+  createKeyboardMappingWindow,
 };

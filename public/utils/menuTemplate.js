@@ -3,8 +3,10 @@
 const electron = require('electron');
 const { app } = electron;
 const { getFileAndLaunch } = require('../launch/chooseFile');
-
-let isMac = process.platform === 'darwin';
+const {
+  createKeyboardMappingWindow,
+  createXboxMappingWindow,
+} = require('./windows');
 
 const menuTemplate = [
   // { role: 'appMenu' }
@@ -75,10 +77,15 @@ const menuTemplate = [
     role: 'help',
     submenu: [
       {
-        label: 'Learn More',
+        label: 'Xbox Controller Mappings',
         click: async () => {
-          const { shell } = require('electron');
-          await shell.openExternal('https://electronjs.org');
+          createXboxMappingWindow();
+        },
+      },
+      {
+        label: 'Keyboard Mappings',
+        click: async () => {
+          createKeyboardMappingWindow();
         },
       },
     ],
