@@ -26,6 +26,7 @@ export default function ModeMenu({ globalMode, netfollowingAvailable }) {
   function updateMenu(mode) {
     if (mode === ModeEnum.NETFOLLOWING) {
       setNetfollowingMenu(true);
+      setDynamicpositioningMenu(false);
     } else if (
       currentMode === ModeEnum.NETFOLLOWING &&
       mode === ModeEnum.NETFOLLOWING
@@ -51,9 +52,12 @@ export default function ModeMenu({ globalMode, netfollowingAvailable }) {
   function updateMode(mode) {
     switch (mode) {
       case ModeEnum.NETFOLLOWING:
+        // Changing from eg. DP to NF will result in mode=Manual until the switch is changed
+        remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
         break;
       case ModeEnum.DYNAMICPOSITIONING:
-        remote.getGlobal('mode')['globalMode'] = ModeEnum.DYNAMICPOSITIONING;
+        // Changing from eg. NF to DP will result in mode=Manual until the switch is changed
+        remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
         break;
       default:
         remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;

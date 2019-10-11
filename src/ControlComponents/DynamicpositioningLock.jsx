@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
 import './css/NetfollowingLock.css';
+import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
 
-export default function DynamicpositioningLock({ title, active, step }) {
+export default function DynamicpositioningLock({ title, globalMode, step }) {
   const [setting1Input, setSetting1Input] = useState(0.0);
   const [setting2Input, setSetting2Input] = useState(0.0);
   const [setting3Input, setSetting3Input] = useState(0.0);
@@ -14,6 +15,9 @@ export default function DynamicpositioningLock({ title, active, step }) {
   const [setting1Value, setSetting1Value] = useState(0.0);
   const [setting2Value, setSetting2Value] = useState(0.0);
   const [setting3Value, setSetting3Value] = useState(0.0);
+  const [dpActive, dpActiveChange] = useState(
+    globalMode === ModeEnum.DYNAMICPOSITIONING ? true : false,
+  );
 
   function fixValue(value, type) {
     if (type === 'Xsetting1') {
@@ -36,7 +40,7 @@ export default function DynamicpositioningLock({ title, active, step }) {
   // Placeholder settings for now (Xsetting1, Ysetting2, Zsetting3)
   const updateValue = (value, type) => {
     // Could remove this "if" to set value before activating the switch
-    if (active) {
+    if (globalMode === ModeEnum.DYNAMICPOSITIONING) {
       if (type === 'Xsetting1') {
         remote.getGlobal('dynamicpositioning')['Xsetting1'] = fixValue(
           value,
@@ -60,7 +64,20 @@ export default function DynamicpositioningLock({ title, active, step }) {
 
   // Function that is run when toggle is clicked
   const toggle = () => {
-    remote.getGlobal('dynamicpositioning')['active'] = !active;
+    if (
+      remote.getGlobal('mode')['globalMode'] === ModeEnum.DYNAMICPOSITIONING
+    ) {
+      remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
+      dpActiveChange(false);
+    } else if (
+      remote.getGlobal('mode')['globalMode'] === ModeEnum.MANUAL ||
+      remote.getGlobal('mode')['globalMode'] === ModeEnum.NETFOLLOWING
+    ) {
+      remote.getGlobal('mode')['globalMode'] = ModeEnum.DYNAMICPOSITIONING;
+      dpActiveChange(true);
+    } else {
+      console.log('Error in changing mode');
+    }
   };
 
   return (
@@ -121,14 +138,14 @@ export default function DynamicpositioningLock({ title, active, step }) {
       </div>
       <div className="checkSwitch">
         <Switch
-          isOn={active}
+          isOn={dpActive}
           handleToggle={() => {
             toggle();
           }}
           id={`${title}Switch`}
           currentValue={`x: ${setting1Value.toFixed(
             1,
-          )}m   y: ${setting2Value.toFixed(1)}m z: ${setting3Value.toFixed(
+          )}m   y: ${setting2Value.toFixed(1)}m   z: ${setting3Value.toFixed(
             1,
           )}m`}
         />
@@ -140,5 +157,5 @@ export default function DynamicpositioningLock({ title, active, step }) {
 DynamicpositioningLock.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
-  active: PropTypes.bool,
+  globalMode: PropTypes.number,
 };

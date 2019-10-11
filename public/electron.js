@@ -75,7 +75,6 @@ global.dynamicpositioning = {
   Xsetting1: 0,
   Ysetting2: 0,
   Zsetting3: 0,
-  active: false,
 };
 
 // Functions that are run when the app is ready
