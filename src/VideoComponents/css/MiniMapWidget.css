@@ -13,7 +13,7 @@
     flex-direction: column;
 }
 
-.zoom > button {
+.zoomButton {
     background: transparent;
     color: white;
     border: 0.5px solid white;
