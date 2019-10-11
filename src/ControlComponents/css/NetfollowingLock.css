@@ -27,6 +27,11 @@ h3 {
   flex-direction: row;
 }
 
+.thirdRow {
+  display: flex;
+  flex-direction: row;
+}
+
 input {
   width: 95%;
   height: 40px;
@@ -37,7 +42,7 @@ input {
   outline: none;
 }
 
-button {
+.updateButton {
   width: 30%;
   font-size: 30px;
   border: none;
@@ -47,10 +52,10 @@ button {
   border-radius: 0 5px 5px 0;
   outline: none;
 }
-button:hover {
+.updateButton:hover {
   background-color: lightgray;
 }
-button:active {
+.updateButton:active {
   box-shadow: 0 0 1px 1px gray;
 }
 

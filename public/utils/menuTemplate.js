@@ -1,14 +1,39 @@
+/*eslint max-len: ["error", { "ignoreStrings": true }]*/
+
 const electron = require('electron');
 const { app } = electron;
 const { getFileAndLaunch } = require('../launch/chooseFile');
+const {
+  createKeyboardMappingWindow,
+  createXboxMappingWindow,
+} = require('./windows');
 
-// Menu template for control window
-let menuTemplate = [
+const menuTemplate = [
+  // { role: 'appMenu' }
+  ...(process.platform === 'darwin'
+    ? [
+        {
+          label: app.getName(),
+          submenu: [
+            { role: 'about' },
+            { type: 'separator' },
+            { role: 'services' },
+            { type: 'separator' },
+            { role: 'hide' },
+            { role: 'hideothers' },
+            { role: 'unhide' },
+            { type: 'separator' },
+            { role: 'quit' },
+          ],
+        },
+      ]
+    : []),
   {
     label: 'Simulator',
     submenu: [
       {
-        label: 'Open file and run',
+        label: 'Open File and Run',
+        accelerator: 'CmdOrCtrl+S',
         click() {
           getFileAndLaunch();
         },
@@ -31,17 +56,39 @@ let menuTemplate = [
       },
     ],
   },
+  // { role: 'viewMenu' }
   {
-    label: 'Exit',
-    click() {
-      app.quit();
-    },
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'forcereload' },
+      { role: 'toggledevtools' },
+      { type: 'separator' },
+      { role: 'resetzoom' },
+      { role: 'zoomin' },
+      { role: 'zoomout' },
+      { role: 'togglefullscreen' },
+      { type: 'separator' },
+      { role: 'quit' },
+    ],
   },
+  // { role: 'editMenu' }
   {
-    label: 'DevTools',
-    click(item, focusedWindow) {
-      focusedWindow.toggleDevTools();
-    },
+    role: 'help',
+    submenu: [
+      {
+        label: 'Xbox Controller Mappings',
+        click: async () => {
+          createXboxMappingWindow();
+        },
+      },
+      {
+        label: 'Keyboard Mappings',
+        click: async () => {
+          createKeyboardMappingWindow();
+        },
+      },
+    ],
   },
 ];
 

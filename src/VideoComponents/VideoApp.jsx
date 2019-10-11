@@ -8,6 +8,8 @@ import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
 import ModeWidget from './ModeWidget';
 import MiniMapWidget from './MiniMapWidget';
+import GamepadWrapper from './GamepadWrapper';
+import KeyboardWrapper from './KeyboardWrapper';
 
 const { remote } = window.require('electron');
 
@@ -15,6 +17,12 @@ function VideoApp() {
   const [settingsValues, settingsUpdate] = useState(remote.getGlobal('toROV'));
   const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
   const [biasValues, biasUpdate] = useState(remote.getGlobal('bias'));
+  const [transparent, toggleTransparent] = useState(false);
+
+  const closeVideoWindow = () => {
+    let w = remote.getCurrentWindow();
+    w.close();
+  };
 
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
@@ -25,7 +33,7 @@ function VideoApp() {
   }, []);
 
   return (
-    <div className="VideoApp">
+    <div className={transparent ? 'transparentVideoApp' : 'VideoApp'}>
       <BiasWidget
         u={biasValues['surge']}
         v={biasValues['sway']}
@@ -52,7 +60,21 @@ function VideoApp() {
         boatHeading={0}
         maxDistance={5}
       />
-      <VideoFeed />
+      <GamepadWrapper className="GamepadWrapper" />
+      <KeyboardWrapper className="KeyboardInput" />
+      <VideoFeed hidden={transparent} />
+      <button
+        className="toggleTransparentBtn"
+        onClick={() => {
+          toggleTransparent(!transparent);
+        }}
+      ></button>
+      <button
+        className="closeVideoBtn"
+        onClick={() => {
+          closeVideoWindow();
+        }}
+      ></button>
     </div>
   );
 }

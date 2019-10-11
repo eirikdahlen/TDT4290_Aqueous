@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeMenu.css';
 import NetfollowingLock from './NetfollowingLock';
+import DynamicpositioningLock from './DynamicpositioningLock';
 import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
@@ -16,6 +17,7 @@ export default function ModeMenu({ globalMode, netfollowingAvailable }) {
   const [displayMenu, setDisplayMenu] = useState(false); //Dropdownmenu starts hidden
   const [currentMode, setCurrentMode] = useState(globalMode);
   const [netfollowingMenu, setNetfollowingMenu] = useState(false);
+  const [dynamicpositioningMenu, setDynamicpositioningMenu] = useState(false);
 
   function showMenu() {
     displayMenu ? setDisplayMenu(false) : setDisplayMenu(true); //Show menu if it's hidden, hide menu if it's visible
@@ -29,8 +31,19 @@ export default function ModeMenu({ globalMode, netfollowingAvailable }) {
       mode === ModeEnum.NETFOLLOWING
     ) {
       setNetfollowingMenu(true);
+      setDynamicpositioningMenu(false);
+    } else if (mode === ModeEnum.DYNAMICPOSITIONING) {
+      setDynamicpositioningMenu(true);
+      setNetfollowingMenu(false);
+    } else if (
+      currentMode === ModeEnum.DYNAMICPOSITIONING &&
+      mode === ModeEnum.DYNAMICPOSITIONING
+    ) {
+      setDynamicpositioningMenu(true);
+      setNetfollowingMenu(false);
     } else {
       setNetfollowingMenu(false);
+      setDynamicpositioningMenu(false);
     }
     updateMode(mode);
   }
@@ -38,13 +51,8 @@ export default function ModeMenu({ globalMode, netfollowingAvailable }) {
   function updateMode(mode) {
     switch (mode) {
       case ModeEnum.NETFOLLOWING:
-        // The global state is set in NetfollowingLock.jsx file
-        // Will turn off DP mode here
         break;
       case ModeEnum.DYNAMICPOSITIONING:
-        /**
-         * TODO: Implement activation of DP here and the related logic
-         */
         remote.getGlobal('mode')['globalMode'] = ModeEnum.DYNAMICPOSITIONING;
         break;
       default:
@@ -96,6 +104,16 @@ export default function ModeMenu({ globalMode, netfollowingAvailable }) {
         <div className="netfollowingMenu">
           <NetfollowingLock
             title="Netfollowing Settings"
+            globalMode={globalMode}
+            step={0.1}
+          />
+        </div>
+      ) : null}
+      {dynamicpositioningMenu ? (
+        // uses the same .css as netfollowing for now, change later if supposed to be different
+        <div className="netfollowingMenu">
+          <DynamicpositioningLock
+            title="Dynamic Positioning Settings"
             globalMode={globalMode}
             step={0.1}
           />
