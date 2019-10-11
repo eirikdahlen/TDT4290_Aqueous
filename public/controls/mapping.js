@@ -116,7 +116,8 @@ function handleClick({ button, value }) {
     // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
     case 'Y': // Reset all bias
       Object.keys(bias).forEach(v => (bias[v] = 0.0));
-      ['surge', 'sway', 'heave'].forEach(v => (controls[v] = 0.0));
+      ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
+      controls['heave'] = autoDepth ? depthReference : 0.0;
       break;
     case 'X': // Used in combination with bias button to reset axis bias
       break;
