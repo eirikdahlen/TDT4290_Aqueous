@@ -5,6 +5,8 @@ import './css/ModeWidget.css';
 import redX from './images/redX.png';
 import greenCheckmark from './images/greenCheckmark.png';
 
+const { remote } = window.require('electron');
+
 const ModeEnum = {
   MANUAL: 0,
   NETFOLLOWING: 1,
@@ -42,8 +44,15 @@ class ModeWidget extends Component {
         this.modeLabel = 'MANUAL';
         break;
       case ModeEnum.NETFOLLOWING:
-        this.modeLabel = 'NET FOLLOWING';
-        this.canvas = <NetFollowingWidget distance={20} velocity={2.5} />;
+        if (remote.getGlobal('netfollowing')['active']) {
+          this.modeLabel = 'NET FOLLOWING';
+          this.canvas = (
+            <NetFollowingWidget
+              distance={remote.getGlobal('netfollowing')['distance']}
+              velocity={remote.getGlobal('netfollowing')['velocity']}
+            />
+          );
+        }
         break;
       case ModeEnum.DYNAMICPOSITIONING:
         this.modeLabel = 'DYN. POS.';

@@ -41,7 +41,10 @@ function VideoApp() {
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
       />
-      <ModeWidget mode={ModeEnum.NETFOLLOWING} nfavailable={true} />
+      <ModeWidget
+        mode={ModeEnum.NETFOLLOWING}
+        nfAvailable={remote.getGlobal('netfollowing')['available']}
+      />
       <MiniMapWidget
         north={sensorValues['north']}
         east={sensorValues['east']}
