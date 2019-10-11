@@ -15,6 +15,7 @@ function VideoApp() {
   const [settingsValues, settingsUpdate] = useState(remote.getGlobal('toROV'));
   const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
   const [biasValues, biasUpdate] = useState(remote.getGlobal('bias'));
+  const [transparent, toggleTransparent] = useState(false);
 
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
@@ -25,7 +26,7 @@ function VideoApp() {
   }, []);
 
   return (
-    <div className="VideoApp">
+    <div className={transparent ? 'transparentVideoApp' : 'VideoApp'}>
       <BiasWidget
         u={biasValues['surge']}
         v={biasValues['sway']}
@@ -49,6 +50,13 @@ function VideoApp() {
         boatHeading={0}
         maxDistance={5}
       />
+      <VideoFeed hidden={transparent} />
+      <button
+        className="toggleTransparentBtn"
+        onClick={() => {
+          toggleTransparent(!transparent);
+        }}
+      ></button>
     </div>
   );
 }

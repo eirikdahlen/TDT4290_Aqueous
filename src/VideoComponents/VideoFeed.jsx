@@ -111,7 +111,7 @@ class VideoFeed extends Component {
 
   render() {
     return (
-      <div className="VideoFeed">
+      <div className={this.props.hidden ? 'hideVideoFeed' : 'VideoFeed'}>
         <div className="dropdown">
           <button className="dropbtn"></button>
           <div id="video-dropdown-content"></div>

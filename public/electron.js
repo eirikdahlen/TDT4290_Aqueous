@@ -73,7 +73,7 @@ app.on('ready', () => {
   if (isDev) {
     // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     controlWindow.webContents.openDevTools();
-    //videoWindow.webContents.openDevTools();
+    //videoWindow.webContents.openDevTools(); Must be off for transparancy
   }
 
   // Register hotkeys, as well as unregister them when the app closes

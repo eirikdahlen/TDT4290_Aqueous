@@ -1,0 +1,26 @@
+.VideoApp {
+  background-color: black !important;
+  height: 100%;
+}
+
+.transparentVideoApp {
+  height: 100%;
+  border: solid 0.3px white;
+}
+
+.toggleTransparentBtn {
+  top: 1px;
+  left: 2px;
+  position: absolute;
+  z-index: 2;
+  height: 20px;
+  width: 20px;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  background-image: url('../images/transparent.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+  outline: none;
+  cursor: pointer;
+}
