@@ -59,6 +59,17 @@ global.netfollowing = {
   available: true,
 };
 
+/**
+ * Add correct settings later
+ * Placeholders for now
+ */
+global.dynamicpositioning = {
+  setting1: 0,
+  setting2: 0,
+  active: false,
+};
+
+
 //Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
