@@ -35,7 +35,7 @@ export default function DynamicpositioningLock({ title, active, step }) {
     // Could remove this "if" to set value before activating the switch
     if (active) {
       if (type === 'Xsetting1') {
-        remote.getGlobal('Xdynamicpositioning')['Xsetting1'] = fixValue(
+        remote.getGlobal('dynamicpositioning')['Xsetting1'] = fixValue(
           value,
           type,
         );
