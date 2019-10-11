@@ -24,3 +24,20 @@
   outline: none;
   cursor: pointer;
 }
+
+.closeVideoBtn {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  z-index: 2;
+  height: 20px;
+  width: 20px;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+  background-image: url('../images/close.png');
+  background-repeat: no-repeat;
+  background-size: 20px;
+  outline: none;
+  cursor: pointer;
+}

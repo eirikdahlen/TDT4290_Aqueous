@@ -17,6 +17,11 @@ function VideoApp() {
   const [biasValues, biasUpdate] = useState(remote.getGlobal('bias'));
   const [transparent, toggleTransparent] = useState(false);
 
+  const closeVideoWindow = () => {
+    let w = remote.getCurrentWindow();
+    w.close();
+  };
+
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
       settingsUpdate(remote.getGlobal('toROV'));
@@ -55,6 +60,12 @@ function VideoApp() {
         className="toggleTransparentBtn"
         onClick={() => {
           toggleTransparent(!transparent);
+        }}
+      ></button>
+      <button
+        className="closeVideoBtn"
+        onClick={() => {
+          closeVideoWindow();
         }}
       ></button>
     </div>
