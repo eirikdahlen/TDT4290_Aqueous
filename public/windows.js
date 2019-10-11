@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { app } = electron
+const { app } = electron;
 const isDev = require('electron-is-dev');
 const path = require('path');
 
