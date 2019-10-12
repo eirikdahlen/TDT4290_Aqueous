@@ -9,9 +9,9 @@
 }
 
 .videoMenu {
-  height: 22px;
+  height: 24px;
   width: 100%;
-  background-color: gray;
+  background-color: rgba(0, 0, 0, 0.8);
   -webkit-user-select: none;
   -webkit-app-region: drag;
   position: relative;

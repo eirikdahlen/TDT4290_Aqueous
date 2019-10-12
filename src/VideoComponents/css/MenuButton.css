@@ -17,12 +17,12 @@
 }
 
 .transparentBtn {
-  top: 1.5px;
-  left: 1px;
+  top: 2px;
+  left: 10px;
 }
 
 .closeBtn {
-  top: 1.5px;
-  right: 0;
+  top: 2px;
+  right: 10px;
   left: auto;
 }

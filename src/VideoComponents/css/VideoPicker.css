@@ -3,8 +3,8 @@
   position: absolute;
   z-index: 1;
   display: inline-block;
-  top: -3px;
-  left: 24px;
+  top: -2px;
+  left: 34px;
 }
 
 /* Dropdown Button */
@@ -16,6 +16,7 @@
   background-repeat: no-repeat;
   background-size: 20px;
   outline: none;
+  -webkit-app-region: no-drag;
 }
 
 /* Dropdown Content (Hidden by Default) */
