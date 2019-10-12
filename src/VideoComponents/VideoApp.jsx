@@ -10,6 +10,7 @@ import ModeWidget from './ModeWidget';
 import MiniMapWidget from './MiniMapWidget';
 import GamepadWrapper from './GamepadWrapper';
 import KeyboardWrapper from './KeyboardWrapper';
+import MenuButton from './MenuButton';
 
 const { remote } = window.require('electron');
 
@@ -34,6 +35,20 @@ function VideoApp() {
 
   return (
     <div className={transparent ? 'transparentVideoApp' : 'VideoApp'}>
+      <div className="videoMenu">
+        <MenuButton
+          clickFunction={() => toggleTransparent(!transparent)}
+          image="transparent"
+          additionalClass="transparentBtn"
+        />
+        <MenuButton
+          clickFunction={() => {
+            closeVideoWindow();
+          }}
+          image="close"
+          additionalClass="closeBtn"
+        ></MenuButton>
+      </div>
       <BiasWidget
         u={biasValues['surge']}
         v={biasValues['sway']}
@@ -63,18 +78,6 @@ function VideoApp() {
       <GamepadWrapper className="GamepadWrapper" />
       <KeyboardWrapper className="KeyboardInput" />
       <VideoFeed hidden={transparent} />
-      <button
-        className="toggleTransparentBtn"
-        onClick={() => {
-          toggleTransparent(!transparent);
-        }}
-      ></button>
-      <button
-        className="closeVideoBtn"
-        onClick={() => {
-          closeVideoWindow();
-        }}
-      ></button>
     </div>
   );
 }

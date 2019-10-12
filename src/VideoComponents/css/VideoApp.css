@@ -8,36 +8,11 @@
   border: solid 0.3px white;
 }
 
-.toggleTransparentBtn {
-  top: 1px;
-  left: 2px;
-  position: absolute;
-  z-index: 2;
-  height: 20px;
-  width: 20px;
-  padding: 10px;
-  border: none;
-  background-color: transparent;
-  background-image: url('../images/transparent.png');
-  background-repeat: no-repeat;
-  background-size: 20px;
-  outline: none;
-  cursor: pointer;
-}
-
-.closeVideoBtn {
-  position: absolute;
-  top: 1px;
-  right: 2px;
-  z-index: 2;
-  height: 20px;
-  width: 20px;
-  padding: 10px;
-  border: none;
-  background-color: transparent;
-  background-image: url('../images/close.png');
-  background-repeat: no-repeat;
-  background-size: 20px;
-  outline: none;
-  cursor: pointer;
+.videoMenu {
+  height: 22px;
+  width: 100%;
+  background-color: gray;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  position: relative;
 }
