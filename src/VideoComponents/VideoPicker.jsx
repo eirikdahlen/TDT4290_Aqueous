@@ -19,7 +19,6 @@ class VideoPicker extends Component {
     const clickedLabel = btnClicked.innerHTML;
     const clickedID = this.state.devices[clickedLabel];
     this.setState({ currentID: clickedID, currentLabel: clickedLabel });
-    // Adds selected-styling only to the button recently clicked
     const buttons = document.querySelectorAll('.videoButton');
     buttons.forEach(btn => {
       btn.classList.remove('selectedFeed');
@@ -107,6 +106,7 @@ class VideoPicker extends Component {
 
 VideoPicker.propTypes = {
   hidden: PropTypes.bool,
+  handleClick: PropTypes.func,
 };
 
 export default VideoPicker;
