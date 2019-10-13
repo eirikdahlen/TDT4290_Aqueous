@@ -34,7 +34,7 @@ function createWindows() {
   videoWindow.loadURL(
     isDev
       ? 'http://localhost:3000?videoWindow'
-      : `file://${path.join(__dirname, '../build/index.html?videoWindow')}`,
+      : `file://${path.join(__dirname, '../../build/index.html?videoWindow')}`,
   );
 
   let controlWindow = new electron.BrowserWindow({
@@ -52,7 +52,10 @@ function createWindows() {
   controlWindow.loadURL(
     isDev
       ? 'http://localhost:3000?controlWindow'
-      : `file://${path.join(__dirname, '../build/index.html?controlWindow')}`,
+      : `file://${path.join(
+          __dirname,
+          '../../build/index.html?controlWindow',
+        )}`,
   );
 
   //Deferences the windows when the app is closed, to save resources.
