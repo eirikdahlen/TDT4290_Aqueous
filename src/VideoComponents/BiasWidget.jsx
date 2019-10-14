@@ -1,14 +1,28 @@
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import drawBias from './js/bias.js';
+import drawBias, { scaleWidget } from './js/bias.js';
 import { mapRange } from './js/tools.js';
 import './css/BiasWidget.css';
+
+const initialWidth = 360;
+const initialHeight = 360;
 
 class BiasWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasBias);
   }
 
+  updateDimensions = () => {
+    scaleWidget(this.ctx, initialWidth, initialHeight);
+    this.componentDidUpdate();
+  };
+
   componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+    this.updateDimensions();
+  }
+
+  // Redraw widget
+  componentDidUpdate() {
     // This widget takes u, v, w as properties
     var { u, v, w } = this.props;
 
@@ -20,15 +34,14 @@ class BiasWidget extends CanvasWidget {
     drawBias(this.ctx, u, v, w);
   }
 
-  // Redraw widget
-  componentDidUpdate() {
-    this.componentDidMount();
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
   }
 }
 
 class PureCanvasBias extends PureCanvas {
   constructor(props) {
-    super(props, 'BiasWidget', 360, 360);
+    super(props, 'BiasWidget', initialWidth, initialHeight);
   }
 }
 
