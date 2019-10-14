@@ -20,7 +20,8 @@ class HeadingWidget extends CanvasWidget {
   // Redraw widget
   componentDidUpdate() {
     const heading_degrees = radiansToDegrees(this.props.heading);
-    this.lockedValue = radiansToDegrees(this.props.lockedValue);
+    this.lockedValue =
+      ((radiansToDegrees(this.props.lockedValue) % 360) + 360) % 360;
 
     drawHeading(
       this.ctx,
