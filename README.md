@@ -1,5 +1,7 @@
 # TDT4290 Aqeous
 
+[![Build Status](https://travis-ci.org/eirikdahlen/TDT4290_Aqeous.svg?branch=master)](https://travis-ci.org/eirikdahlen/TDT4290_Aqeous)
+
 _The project is a part of the course TDT4290 Customer driven project in the autumn of 2019._
 
 During this project, we will build a graphical user interface for controlling a [ROV](https://en.wikipedia.org/wiki/Remotely_operated_underwater_vehicle) with an Xbox controller built on web technologies ([Electron](https://electronjs.org/), Node, [React](https://reactjs.org/)). The GUI will incorporate a videofeed, ability to connect to a ROV simulation and use a subset of the [IMC protocol](https://www.lsts.pt/toolchain/imc) for communication.
@@ -9,7 +11,6 @@ During this project, we will build a graphical user interface for controlling a 
 ## Prerequisites
 
 We recommend [Visual Studio Code](https://code.visualstudio.com/) as IDE/text editor.
-
 
 ### Windows
 
@@ -40,4 +41,3 @@ yarn electron-dev
 ## Contributing
 
 Follow the conventions specified in [CONTRIBUTION](./CONTRIBUTING.md).
-
