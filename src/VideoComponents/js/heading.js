@@ -1,10 +1,12 @@
+//import { scaleWidget } from './tools.js';
+
+var color_base;
+
 function heading_init(context_heading) {
   // Basic formatting
   context_heading.textAlign = 'center';
   context_heading.lineWidth = 1.5;
 }
-
-var color_base;
 
 function wraparound(value, max_value) {
   // Wraparound
@@ -16,6 +18,19 @@ function wraparound(value, max_value) {
 
   return value;
 }
+
+/*function scaleHeading(context, initialWidth, initialHeight) {
+  scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    0,
+    1500,
+    0,
+    0.8,
+  );
+}*/
 
 function drawHeading(context_heading, degrees, isLocked, lockedValue) {
   if (isLocked) {

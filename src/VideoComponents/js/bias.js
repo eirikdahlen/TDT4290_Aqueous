@@ -1,4 +1,4 @@
-import { clamp, mapRange } from './tools.js';
+import { clamp, mapRange, scaleWidget } from './tools.js';
 
 // Color values
 const color_base_bias = '#A0A0A0';
@@ -70,20 +70,17 @@ function resetColor(context) {
   context.fill();
 }
 
-function scaleWidget(context, initialWidth, initialHeight) {
-  // Reset scaling
-  context.setTransform(1, 0, 0, 1, 0, 0);
-
-  // Calculate the scaling factor based on the window width
-  var factor = mapRange(window.innerWidth, 0, 1500, 0, 0.8);
-  factor = clamp(factor, 0.5, 0.8);
-
-  // Resize the canvas itself
-  context.canvas.width = initialWidth * factor;
-  context.canvas.height = initialHeight * factor;
-
-  // Resize everything drawn on the canvas
-  context.scale(factor, factor);
+function scaleBias(context, initialWidth, initialHeight) {
+  scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.5,
+    0.8,
+  );
 }
 
 function drawBias(context, u, v, w) {
@@ -167,4 +164,4 @@ function drawBias(context, u, v, w) {
 }
 
 export default drawBias;
-export { scaleWidget };
+export { scaleBias };

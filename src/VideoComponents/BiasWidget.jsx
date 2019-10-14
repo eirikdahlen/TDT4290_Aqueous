@@ -1,5 +1,5 @@
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import drawBias, { scaleWidget } from './js/bias.js';
+import drawBias, { scaleBias } from './js/bias.js';
 import { mapRange } from './js/tools.js';
 import './css/BiasWidget.css';
 
@@ -12,7 +12,7 @@ class BiasWidget extends CanvasWidget {
   }
 
   updateDimensions = () => {
-    scaleWidget(this.ctx, initialWidth, initialHeight);
+    scaleBias(this.ctx, initialWidth, initialHeight);
     this.componentDidUpdate();
   };
 
