@@ -46,22 +46,37 @@ const mapping = {
   E: 'LB', //negative heave bias (up) -
 };
 
+// Buttons we dont want to send value:0 when is released
+const toggles = ['C', 'V', 'SHIFT', ' '];
+
+// Buttons we want to send negative values for
+const negatives = ['S', 'A', 'ARROWLEFT'];
+
 class KeyboardWrapper extends Component {
-  keyChangeHandler(e) {
+  keyChangeHandler = (e, down) => {
     const key = e.key.toUpperCase();
     if (!(validKeys.indexOf(key) >= 0)) return;
-    const multiplier = ['S', 'A', 'ARROWLEFT'].indexOf(key) >= 0 ? -1 : 1;
-    console.log(key);
+    if (toggles.indexOf(key) >= 0 && !down) return;
+    const value = down ? 1.0 : 0.0;
+    const multiplier = negatives.indexOf(key) >= 0 ? -1 : 1;
     window.ipcRenderer.send('button-click', {
       button: mapping[key],
-      value: 1.0 * multiplier,
+      value: value * multiplier,
     });
-  }
+  };
 
   componentDidMount() {
     document.addEventListener('keydown', e => {
-      this.keyChangeHandler(e);
+      this.keyChangeHandler(e, true);
     });
+    document.addEventListener('keyup', e => {
+      this.keyChangeHandler(e, false);
+    });
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keyup', this.keyChangeHandler);
+    document.removeEventListener('keydown', this.keyChangeHandler);
   }
 
   render() {
