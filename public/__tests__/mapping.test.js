@@ -1,6 +1,6 @@
 //Tests controls/mapping
 
-const { handleClick, setUpOrDown } = require('./../controls/mapping');
+const { handleClick } = require('./../controls/mapping');
 
 // Mocks global state
 global.toROV = {
@@ -14,7 +14,7 @@ global.toROV = {
   autoheading: false,
 };
 
-toROV = {
+const toROV = {
   surge: 0.0,
   sway: 0.0,
   heave: 0.0,
@@ -25,6 +25,6 @@ toROV = {
   autoheading: false,
 };
 test('no clicks', () => {
-  const { controls, bias } = handleClick({ button: 'none', value: 0.0 });
-  expect(controls).toBe(toROV);
+  const { controls } = handleClick({ button: 'none', value: 0.0 });
+  expect(controls).toStrictEqual(toROV);
 });
