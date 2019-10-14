@@ -1,6 +1,6 @@
 # TDT4290 Aqeous
 
-[![Build Status](https://travis-ci.org/eirikdahlen/TDT4290_Aqeous.svg?branch=master)](https://travis-ci.org/eirikdahlen/TDT4290_Aqeous)
+[![Build Status](https://travis-ci.org/eirikdahlen/TDT4290_Aqeous.svg?branch=master)](https://travis-ci.org/eirikdahlen/TDT4290_Aqeous) [![GitHub release](https://img.shields.io/github/v/release/eirikdahlen/TDT4290_Aqeous)](https://github.com/eirikdahlen/TDT4290_Aqeous/releases)
 
 _The project is a part of the course TDT4290 Customer driven project in the autumn of 2019._
 
