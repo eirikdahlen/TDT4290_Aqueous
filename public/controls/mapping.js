@@ -172,6 +172,7 @@ function handleClick({ button, value }) {
   }
   global.toROV = controls;
   global.bias = bias;
+  return { controls, bias };
 }
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
