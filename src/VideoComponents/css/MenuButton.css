@@ -1,0 +1,29 @@
+.MenuButton {
+  z-index: 2;
+  padding: 0;
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  outline: none;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.MenuButton:hover {
+  background-color: white;
+}
+
+.transparentBtn {
+  top: 1px;
+  left: 10px;
+}
+
+.closeBtn {
+  top: 1px;
+  right: 10px;
+  left: auto;
+}
