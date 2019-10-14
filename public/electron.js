@@ -96,26 +96,26 @@ app.on('ready', () => {
     //videoWindow.webContents.openDevTools(); Must be off for transparancy
   }
 
-  // Function for closing the entire application when only closing one window
-  function closeApp() {
-    closeSimulator('FhRtVis.exe');
-    // Dereferences the windows when the app is closed, to save resources.
-    controlWindow = null;
-    videoWindow = null;
-
-    // Quits the app
-    app.quit();
-  }
-
   // Close all windows when closing one of then
-  controlWindow.on('closed', closeApp);
-  videoWindow.on('closed', closeApp);
+  controlWindow.on('closed', quitAll);
+  videoWindow.on('closed', quitAll);
 });
+
+// Function for quitting the entire application also the simulator
+function quitAll() {
+  closeSimulator('FhRtVis.exe');
+  // Dereferences the windows when the app is closed, to save resources.
+  controlWindow = null;
+  videoWindow = null;
+
+  // Quits the app
+  app.quit();
+}
 
 // Boilerplate code - probably just quits the app when all windows are closed
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    quit();
+    quitAll();
   }
 });
 
