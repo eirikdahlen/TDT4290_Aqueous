@@ -25,7 +25,7 @@ function scaleHeading(context, initialWidth, initialHeight) {
 }
 
 function drawHeading(
-  context_heading,
+  context,
   degrees,
   isLocked,
   lockedValue,
@@ -40,12 +40,12 @@ function drawHeading(
     color_base = '#FFFFFF';
   }
 
-  context_heading.textAlign = 'center';
-  context_heading.lineWidth = 1.5;
-  context_heading.strokeStyle = color_base;
-  context_heading.fillStyle = color_base;
+  context.textAlign = 'center';
+  context.lineWidth = 1.5;
+  context.strokeStyle = color_base;
+  context.fillStyle = color_base;
 
-  //const width = context_heading.canvas.width;
+  //const width = context.canvas.width;
   const width_half = initialWidth / 2;
 
   const degree_step = 15; // Number of degrees between each displayed number
@@ -59,13 +59,13 @@ function drawHeading(
   const heading = (degree_space * (120 - degrees)) / degree_step;
 
   // Clear the screen (except the bottom triangle, which does not move!)
-  context_heading.clearRect(0, 0, initialWidth, initialHeight);
+  context.clearRect(0, 0, initialWidth, initialHeight);
 
   // Optional separator line
-  /* context_heading.beginPath();
-	context_heading.moveTo(0, 56);
-	context_heading.lineTo(800, 56);
-	context_heading.stroke(); */
+  /* context.beginPath();
+	context.moveTo(0, 56);
+	context.lineTo(800, 56);
+	context.stroke(); */
 
   // Create a label for every degree number to be displayed
   for (var i = 0; i < 360 / degree_step; i++) {
@@ -79,23 +79,23 @@ function drawHeading(
     switch (angle) {
       case 0:
         text = 'N';
-        context_heading.font = '15px Arial';
+        context.font = '15px Arial';
         break;
       case 90:
         text = 'E';
-        context_heading.font = '15px Arial';
+        context.font = '15px Arial';
         break;
       case 180:
         text = 'S';
-        context_heading.font = '15px Arial';
+        context.font = '15px Arial';
         break;
       case 270:
         text = 'W';
-        context_heading.font = '15px Arial';
+        context.font = '15px Arial';
         break;
       default:
         text = angle.toString();
-        context_heading.font = '11px Arial';
+        context.font = '11px Arial';
         break;
     }
 
@@ -104,40 +104,41 @@ function drawHeading(
     x_position = wraparound(x_position, max_x_position);
 
     // Draw the actual label
-    context_heading.fillText(text, x_position, 35);
+    context.fillText(text, x_position, 35);
 
     // Draw the indicator line below each label
-    context_heading.beginPath();
-    context_heading.moveTo(x_position, 43);
-    context_heading.lineTo(x_position, 53);
-    context_heading.stroke();
+    context.beginPath();
+    context.moveTo(x_position, 43);
+    context.lineTo(x_position, 53);
+    context.stroke();
   }
 
   // Draw autoheading indicator line
   if (isLocked) {
-    context_heading.strokeStyle = '#FF0000';
+    context.strokeStyle = '#FF0000';
     let x_position_locked =
       (lockedValue * degree_space) / degree_step + (heading % max_x_position);
     x_position_locked = wraparound(x_position_locked, max_x_position);
-    context_heading.beginPath();
-    context_heading.moveTo(x_position_locked, 10);
-    context_heading.lineTo(x_position_locked, 20);
-    context_heading.stroke();
-    context_heading.strokeStyle = color_base;
+    context.beginPath();
+    context.moveTo(x_position_locked, 10);
+    context.lineTo(x_position_locked, 20);
+    context.stroke();
+    context.strokeStyle = color_base;
   }
 
   // Draw number showing the numerical value of the heading
-  context_heading.font = '18px Arial';
-  context_heading.fillText(degrees.toFixed(0) + '\xB0', width_half, 100);
+  context.font = '18px Arial';
+  context.fillText(degrees.toFixed(0) + '\xB0', width_half, 100);
 
   // Draw a triangle indicating the heading
-  context_heading.beginPath();
-  context_heading.moveTo(width_half, 58);
-  context_heading.lineTo(width_half + 3, 68);
-  context_heading.lineTo(width_half - 3, 68);
-  context_heading.lineTo(width_half, 58);
-  context_heading.stroke();
-  context_heading.fill();
+  context.beginPath();
+  context.moveTo(width_half, 58);
+  context.lineTo(width_half + 3, 68);
+  context.lineTo(width_half - 3, 68);
+  context.lineTo(width_half, 58);
+  context.stroke();
+  context.fill();
 }
 
-export { drawHeading, scaleHeading };
+export default drawHeading;
+export { scaleHeading };

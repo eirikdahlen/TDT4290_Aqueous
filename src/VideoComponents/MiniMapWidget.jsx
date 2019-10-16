@@ -1,6 +1,6 @@
 import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import drawMinimap, { initMinimap } from './js/minimap.js';
+import drawMinimap, { initMinimap, scaleMinimap } from './js/minimap.js';
 import './css/MiniMapWidget.css';
 
 const initialWidth = 200;
@@ -9,10 +9,14 @@ const initialHeight = 200;
 class MiniMapWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasMinimap);
+    this.scaleFunction = scaleMinimap;
+    this.initialWidth = initialWidth;
+    this.initialHeight = initialHeight;
   }
 
   componentDidMount() {
     initMinimap(0);
+    super.componentDidMount();
     this.componentDidUpdate();
   }
 
@@ -24,6 +28,8 @@ class MiniMapWidget extends CanvasWidget {
       this.props.yaw,
       this.props.boatHeading,
       this.props.maxDistance,
+      initialWidth,
+      initialHeight,
     );
   }
 

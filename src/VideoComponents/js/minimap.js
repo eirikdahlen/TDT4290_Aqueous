@@ -1,9 +1,14 @@
-import { mapRange, radiansToDegrees } from './tools.js';
+import { mapRange, radiansToDegrees, scaleWidget } from './tools.js';
 
-const mapWidth = 200; //px
+const initialWidth = 200; //px
 const rovSize = 15; //px
 const boatWidth = 20; //px
 const boatLength = 80; //px
+
+const leftSpace = initialWidth + boatWidth; // Pixels to the left of where ROV when N, E = 0, 0
+const rightSpace = initialWidth - boatWidth - rovSize; // Pixels to the right of where ROV when N, E = 0, 0
+const leftFactor = leftSpace / rightSpace; // Describes how large portion of the map is left of the ROV when N, E = 0, 0
+const rightFactor = rightSpace / leftSpace; // Describes how large portion of the map is right of the ROV when N, E = 0, 0
 
 var boatHeadingOffset = 0;
 
@@ -52,32 +57,32 @@ function drawROV(context, rovSize) {
   context.closePath();
 }
 
-function drawNEDframe(context, mapWidth, boatWidth, rovSize) {
+function drawNEDframe(context, initialWidth, boatWidth, rovSize) {
   context.beginPath();
   // East arrow
   context.moveTo(0, 0);
-  context.lineTo(mapWidth / 2 - boatWidth - rovSize / 2, 0);
+  context.lineTo(initialWidth / 2 - boatWidth - rovSize / 2, 0);
   context.lineTo(
-    mapWidth / 2 - boatWidth - rovSize / 2 - mapWidth / 40,
-    mapWidth / 40,
+    initialWidth / 2 - boatWidth - rovSize / 2 - initialWidth / 40,
+    initialWidth / 40,
   );
-  context.moveTo(mapWidth / 2 - boatWidth - rovSize / 2, 0);
+  context.moveTo(initialWidth / 2 - boatWidth - rovSize / 2, 0);
   context.lineTo(
-    mapWidth / 2 - boatWidth - rovSize / 2 - mapWidth / 40,
-    -mapWidth / 40,
+    initialWidth / 2 - boatWidth - rovSize / 2 - initialWidth / 40,
+    -initialWidth / 40,
   );
 
   // North arrow
   context.moveTo(0, 0);
-  context.lineTo(0, -(mapWidth / 2 - boatWidth - rovSize / 2));
+  context.lineTo(0, -(initialWidth / 2 - boatWidth - rovSize / 2));
   context.lineTo(
-    -mapWidth / 40,
-    -(mapWidth / 2 - boatWidth - rovSize / 2) + mapWidth / 40,
+    -initialWidth / 40,
+    -(initialWidth / 2 - boatWidth - rovSize / 2) + initialWidth / 40,
   );
-  context.moveTo(0, -(mapWidth / 2 - boatWidth - rovSize / 2));
+  context.moveTo(0, -(initialWidth / 2 - boatWidth - rovSize / 2));
   context.lineTo(
-    mapWidth / 40,
-    -(mapWidth / 2 - boatWidth - rovSize / 2) + mapWidth / 40,
+    initialWidth / 40,
+    -(initialWidth / 2 - boatWidth - rovSize / 2) + initialWidth / 40,
   );
   context.stroke();
 
@@ -87,24 +92,37 @@ function drawNEDframe(context, mapWidth, boatWidth, rovSize) {
   // East label
   context.fillText(
     'E',
-    mapWidth / 2 - boatWidth - rovSize - mapWidth / 40,
-    mapWidth / 15,
+    initialWidth / 2 - boatWidth - rovSize - initialWidth / 40,
+    initialWidth / 15,
   );
 
   // North label
   context.fillText(
     'N',
-    mapWidth / 40,
-    -(mapWidth / 2 - boatWidth - rovSize / 2) + mapWidth / 40,
+    initialWidth / 40,
+    -(initialWidth / 2 - boatWidth - rovSize / 2) + initialWidth / 40,
   );
 }
 
-function drawArrow(context, rovSize, mapWidth) {
+function drawArrow(context, rovSize, initialWidth) {
   context.beginPath();
-  context.moveTo(mapWidth / 2, 0);
-  context.lineTo(mapWidth / 2 - rovSize, rovSize);
-  context.lineTo(mapWidth / 2 - rovSize, -rovSize);
+  context.moveTo(initialWidth / 2, 0);
+  context.lineTo(initialWidth / 2 - rovSize, rovSize);
+  context.lineTo(initialWidth / 2 - rovSize, -rovSize);
   context.closePath();
+}
+
+function scaleMinimap(context, initialWidth, initialHeight) {
+  scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.7,
+    1,
+  );
 }
 
 function initMinimap(boatHeading) {
@@ -112,28 +130,34 @@ function initMinimap(boatHeading) {
   boatHeadingOffset = boatHeading;
 }
 
-function drawMinimap(context, north, east, yaw, boatHeading, maxDistance) {
+function drawMinimap(
+  context,
+  north,
+  east,
+  yaw,
+  boatHeading,
+  maxDistance,
+  initialWidth,
+  initialHeight,
+) {
   context.strokeStyle = '#FFFFFF';
   context.fillStyle = '#FFFFFF';
+  context.lineWidth = 1.5;
 
   const ROVangleInNED = Math.atan2(north, east); // Calculates direction of the ROV based on north and east props
-  const leftSpace = mapWidth + boatWidth; // Pixels to the left of where ROV when N, E = 0, 0
-  const rightSpace = mapWidth - boatWidth - rovSize; // Pixels to the right of where ROV when N, E = 0, 0
-  const leftFactor = leftSpace / rightSpace; // Describes how large portion of the map is left of the ROV when N, E = 0, 0
-  const rightFactor = rightSpace / leftSpace; // Describes how large portion of the map is right of the ROV when N, E = 0, 0
 
   var boatRotation = boatHeading - boatHeadingOffset; // Set boatHeading to difference in heading since beginning
 
-  context.clearRect(0, 0, mapWidth, mapWidth); // Clear canvas to avoid drawing on top of previous canvas
+  context.clearRect(0, 0, initialWidth, initialWidth); // Clear canvas to avoid drawing on top of previous canvas
 
   // Draw map boundary
   context.beginPath();
-  context.rect(0, 0, mapWidth, mapWidth);
+  context.rect(0, 0, initialWidth, initialHeight);
   context.stroke();
 
   // Draw the boat
   context.save(); // Save context state so we can draw boat and ROV from different origins and rotate independently
-  context.translate(mapWidth / 2, mapWidth / 2); // Draw boat from the middle of the circle
+  context.translate(initialWidth / 2, initialWidth / 2); // Draw boat from the middle of the circle
   //context.rotate(boatAngle[0]); // Rotate the boat drawing around the middle of the circle
   drawBoat(context, boatWidth, boatLength, boatHeading);
   context.restore(); // Restore context state we saved earlier
@@ -143,7 +167,7 @@ function drawMinimap(context, north, east, yaw, boatHeading, maxDistance) {
   const inBoundsNorth = Math.abs(north) <= maxDistance;
 
   context.save();
-  context.translate(mapWidth / 2, mapWidth / 2);
+  context.translate(initialWidth / 2, initialWidth / 2);
   context.rotate(-boatRotation); //rotates ROV around boat when boat rotates
 
   // If the ROV is within the bounds of the map, draw it as a square within the map
@@ -153,8 +177,8 @@ function drawMinimap(context, north, east, yaw, boatHeading, maxDistance) {
       north,
       -maxDistance,
       maxDistance,
-      -mapWidth / 2,
-      mapWidth / 2,
+      -initialWidth / 2,
+      initialWidth / 2,
     );
 
     // Map east prop to the pixel range we're working with
@@ -162,8 +186,8 @@ function drawMinimap(context, north, east, yaw, boatHeading, maxDistance) {
       east,
       -maxDistance,
       maxDistance,
-      -mapWidth / 2,
-      mapWidth / 2,
+      -initialWidth / 2,
+      initialWidth / 2,
     );
 
     // Draw the ROV itself
@@ -182,7 +206,7 @@ function drawMinimap(context, north, east, yaw, boatHeading, maxDistance) {
       rovSize *
         (maxDistance /
           Math.log(Math.exp(maxDistance) + Math.pow(Math.max(east, north), 3))),
-      mapWidth,
+      initialWidth,
     ); // Make size of arrow based on how far out of bounds the ROV is
     context.restore();
   }
@@ -191,9 +215,9 @@ function drawMinimap(context, north, east, yaw, boatHeading, maxDistance) {
 
   // Draw the north/east axes
   context.translate(boatWidth + rovSize / 2, 0);
-  drawNEDframe(context, mapWidth, boatWidth, rovSize);
+  drawNEDframe(context, initialWidth, boatWidth, rovSize);
   context.restore();
 }
 
 export default drawMinimap;
-export { initMinimap };
+export { initMinimap, scaleMinimap };

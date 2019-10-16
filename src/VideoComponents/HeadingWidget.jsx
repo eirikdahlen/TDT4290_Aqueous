@@ -1,6 +1,6 @@
 import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import { drawHeading, scaleHeading } from './js/heading.js';
+import drawHeading, { scaleHeading } from './js/heading.js';
 import LockWidget from './LockWidget';
 import { radiansToDegrees } from './js/tools.js';
 import './css/HeadingWidget.css';

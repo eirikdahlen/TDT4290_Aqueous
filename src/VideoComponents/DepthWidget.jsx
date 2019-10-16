@@ -1,6 +1,6 @@
 import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import { drawDepth, scaleDepth } from './js/depth.js';
+import drawDepth, { scaleDepth } from './js/depth.js';
 import './css/DepthWidget.css';
 import LockWidget from './LockWidget';
 
