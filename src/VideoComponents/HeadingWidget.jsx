@@ -17,11 +17,6 @@ class HeadingWidget extends CanvasWidget {
     this.initialHeight = initialHeight;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
-    this.componentDidUpdate();
-  }
-
   // Redraw widget
   componentDidUpdate() {
     const headingDegrees = radiansToDegrees(this.props.heading);

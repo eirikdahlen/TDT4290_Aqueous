@@ -115,7 +115,7 @@ app.on('ready', () => {
 // Boilerplate code - probably just quits the app when all windows are closed
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    quit();
+    app.quit();
   }
 });
 

@@ -14,11 +14,6 @@ class BiasWidget extends CanvasWidget {
     this.initialHeight = initialHeight;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
-    this.updateDimensions();
-  }
-
   // Redraw widget
   componentDidUpdate() {
     // This widget takes u, v, w as properties

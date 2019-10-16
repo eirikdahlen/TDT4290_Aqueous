@@ -1,4 +1,4 @@
-import { clamp, mapRange } from './tools.js';
+import { clamp, mapRange, scaleWidget } from './tools.js';
 
 const netCurveX = 20;
 const netCurveY = 40;
@@ -17,6 +17,19 @@ const globalOffsetWidth = 45;
 
 // Multiply the distance by this factor to get the distance in pixels
 const distanceMultiplier = 10;
+
+function scaleNetFollowing(context, initialWidth, initialHeight) {
+  scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.7,
+    1,
+  );
+}
 
 // Function for drawing arrows on curves
 function drawArrowhead(context, locX, locY, angle, sizeX, sizeY) {
@@ -50,11 +63,13 @@ function findAngle(startX, startY, endX, endY) {
   return Math.atan2(endY - startY, endX - startX);
 }
 
-function drawNetFollowing(context, distance, velocity) {
-  // Get the canvas dimensions
-  const canvasWidth = context.canvas.clientWidth;
-  const canvasHeight = context.canvas.clientHeight;
-
+function drawNetFollowing(
+  context,
+  distance,
+  velocity,
+  initialWidth,
+  initialHeight,
+) {
   // Set drawing flags
   context.strokeStyle = '#00FF00';
   context.fillStyle = '#FFFF00';
@@ -63,15 +78,15 @@ function drawNetFollowing(context, distance, velocity) {
   context.font = '14px Arial';
 
   // Redraw canvas
-  context.clearRect(0, 0, canvasWidth, canvasHeight);
+  context.clearRect(0, 0, initialWidth, initialHeight);
 
   ////////////////////////////////////////////////////////
   // Draw the net
   context.beginPath();
   context.moveTo(globalOffsetWidth + netCurveX, 0);
   context.lineTo(globalOffsetWidth, netCurveY);
-  context.lineTo(globalOffsetWidth, canvasHeight - netCurveY);
-  context.lineTo(globalOffsetWidth + netCurveX, canvasHeight);
+  context.lineTo(globalOffsetWidth, initialHeight - netCurveY);
+  context.lineTo(globalOffsetWidth + netCurveX, initialHeight);
   context.stroke();
   ////////////////////////////////////////////////////////
 
@@ -81,12 +96,12 @@ function drawNetFollowing(context, distance, velocity) {
   const offsetDistance = clamp(
     distance * distanceMultiplier,
     0,
-    canvasWidth - rovWidth - rovTipWidth - globalOffsetWidth,
+    initialWidth - rovWidth - rovTipWidth - globalOffsetWidth,
   );
 
   // Draw the ROV
   const rovTopLeftX = globalOffsetWidth + offsetDistance + rovTipWidth;
-  const rovTopLeftY = canvasHeight / 2 - rovHeight / 2;
+  const rovTopLeftY = initialHeight / 2 - rovHeight / 2;
   context.beginPath();
   context.moveTo(rovTopLeftX, rovTopLeftY);
   context.lineTo(rovTopLeftX + rovWidth, rovTopLeftY);
@@ -99,15 +114,15 @@ function drawNetFollowing(context, distance, velocity) {
   context.beginPath();
   context.moveTo(
     globalOffsetWidth + offsetDistance,
-    canvasHeight / 2 - rovTipHeight / 2,
+    initialHeight / 2 - rovTipHeight / 2,
   );
   context.lineTo(
     globalOffsetWidth + offsetDistance,
-    canvasHeight / 2 + rovTipHeight / 2,
+    initialHeight / 2 + rovTipHeight / 2,
   );
   context.lineTo(
     globalOffsetWidth + offsetDistance + rovTipHeight,
-    canvasHeight / 2,
+    initialHeight / 2,
   );
   context.fill();
   ////////////////////////////////////////////////////////
@@ -118,26 +133,26 @@ function drawNetFollowing(context, distance, velocity) {
   context.beginPath();
 
   // First leg
-  context.moveTo(globalOffsetWidth, canvasHeight / 2 - measureWidth / 2);
-  context.lineTo(globalOffsetWidth, canvasHeight / 2 + measureWidth / 2);
+  context.moveTo(globalOffsetWidth, initialHeight / 2 - measureWidth / 2);
+  context.lineTo(globalOffsetWidth, initialHeight / 2 + measureWidth / 2);
   context.stroke();
 
   // Body
-  context.moveTo(globalOffsetWidth, canvasHeight / 2);
+  context.moveTo(globalOffsetWidth, initialHeight / 2);
 
   if (distance * distanceMultiplier > offsetDistance) {
     // If the distance is too large to be displayed on the canvas: Draw a dashed line.
     // First third of the line is solid.
-    context.lineTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
+    context.lineTo(globalOffsetWidth + offsetDistance / 3, initialHeight / 2);
     context.stroke();
 
     // Middle third of the line is dashed.
     context.beginPath();
     context.setLineDash([4, 4]);
-    context.moveTo(globalOffsetWidth + offsetDistance / 3, canvasHeight / 2);
+    context.moveTo(globalOffsetWidth + offsetDistance / 3, initialHeight / 2);
     context.lineTo(
       globalOffsetWidth + offsetDistance * (2 / 3),
-      canvasHeight / 2,
+      initialHeight / 2,
     );
     context.stroke();
 
@@ -146,21 +161,21 @@ function drawNetFollowing(context, distance, velocity) {
     context.setLineDash([]);
     context.moveTo(
       globalOffsetWidth + offsetDistance * (2 / 3),
-      canvasHeight / 2,
+      initialHeight / 2,
     );
   }
 
-  context.lineTo(globalOffsetWidth + offsetDistance, canvasHeight / 2);
+  context.lineTo(globalOffsetWidth + offsetDistance, initialHeight / 2);
   context.stroke();
 
   // Second leg
   context.moveTo(
     globalOffsetWidth + offsetDistance,
-    canvasHeight / 2 - measureWidth / 2,
+    initialHeight / 2 - measureWidth / 2,
   );
   context.lineTo(
     globalOffsetWidth + offsetDistance,
-    canvasHeight / 2 + measureWidth / 2,
+    initialHeight / 2 + measureWidth / 2,
   );
   context.stroke();
   ////////////////////////////////////////////////////////
@@ -184,7 +199,7 @@ function drawNetFollowing(context, distance, velocity) {
   context.fillText(
     distance.toFixed(1) + ' m',
     globalOffsetWidth + offsetDistance / 2 + offsetDistanceLabelWidth,
-    canvasHeight / 2,
+    initialHeight / 2,
   );
   ////////////////////////////////////////////////////////
 
@@ -198,14 +213,14 @@ function drawNetFollowing(context, distance, velocity) {
 
   // If velocity is a positive number, the ROV moves in a clockwise direction.
   if (velocity > 0) {
-    arrowStartY = canvasHeight / 2 - rovHeight / 2 - 5;
+    arrowStartY = initialHeight / 2 - rovHeight / 2 - 5;
     arrowCurveY = arrowStartY - 15;
     arrowEndY = arrowStartY - 35;
     speedLabelY = arrowStartY - 50;
   }
   // If velocity is a negative number, the ROV moves in a counter-clockwise direction.
   else if (velocity < 0) {
-    arrowStartY = canvasHeight / 2 + rovHeight / 2 + 5;
+    arrowStartY = initialHeight / 2 + rovHeight / 2 + 5;
     arrowCurveY = arrowStartY + 15;
     arrowEndY = arrowStartY + 35;
     speedLabelY = arrowStartY + 55;
@@ -247,3 +262,4 @@ function drawNetFollowing(context, distance, velocity) {
 }
 
 export default drawNetFollowing;
+export { scaleNetFollowing };

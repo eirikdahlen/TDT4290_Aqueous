@@ -1,22 +1,27 @@
 .MiniMapWidget {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    position: absolute;
-    top: 100px;
-    right: 270px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: absolute;
+  top: 100px;
+  right: 270px;
+}
+
+.MiniMap {
+  position: relative;
+  right: 0px;
 }
 
 .zoom {
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .zoomButton {
-    background: transparent;
-    color: white;
-    border: 0.5px solid white;
-    cursor: pointer;
-    font-size: 20px;
+  background: transparent;
+  color: white;
+  border: 0.5px solid white;
+  cursor: pointer;
+  font-size: 20px;
 }

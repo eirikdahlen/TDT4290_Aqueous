@@ -15,11 +15,6 @@ class DepthWidget extends CanvasWidget {
     this.initialHeight = initialHeight;
   }
 
-  componentDidMount() {
-    super.componentDidMount();
-    this.componentDidUpdate();
-  }
-
   // Redraw widget
   componentDidUpdate() {
     drawDepth(

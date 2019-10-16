@@ -17,7 +17,6 @@ class MiniMapWidget extends CanvasWidget {
   componentDidMount() {
     initMinimap(0);
     super.componentDidMount();
-    this.componentDidUpdate();
   }
 
   componentDidUpdate() {
