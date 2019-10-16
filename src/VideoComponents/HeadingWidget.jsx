@@ -1,33 +1,40 @@
 import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import { heading_init, drawHeading } from './js/heading.js';
+import { drawHeading, scaleHeading } from './js/heading.js';
 import LockWidget from './LockWidget';
+import { radiansToDegrees } from './js/tools.js';
 import './css/HeadingWidget.css';
 
-import { radiansToDegrees } from './js/tools.js';
+const initialWidth = 800;
+const initialHeight = 100;
 
 class HeadingWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasHeading);
     this.lockedValue = 0;
+    this.scaleFunction = scaleHeading;
+    this.initialWidth = initialWidth;
+    this.initialHeight = initialHeight;
   }
 
   componentDidMount() {
-    heading_init(this.ctx);
+    super.componentDidMount();
     this.componentDidUpdate();
   }
 
   // Redraw widget
   componentDidUpdate() {
-    const heading_degrees = radiansToDegrees(this.props.heading);
+    const headingDegrees = radiansToDegrees(this.props.heading);
     this.lockedValue =
       ((radiansToDegrees(this.props.lockedValue) % 360) + 360) % 360;
 
     drawHeading(
       this.ctx,
-      heading_degrees,
+      headingDegrees,
       this.props.isLocked,
       this.lockedValue, // Do not perform .toFixed on this :)
+      initialWidth,
+      initialHeight,
     );
   }
 
@@ -48,7 +55,7 @@ class HeadingWidget extends CanvasWidget {
 
 class PureCanvasHeading extends PureCanvas {
   constructor(props) {
-    super(props, 'HeadingWidget', 800, 100);
+    super(props, 'HeadingWidget', initialWidth, initialHeight);
   }
 }
 

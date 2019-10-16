@@ -9,15 +9,13 @@ const initialHeight = 360;
 class BiasWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasBias);
+    this.scaleFunction = scaleBias;
+    this.initialWidth = initialWidth;
+    this.initialHeight = initialHeight;
   }
 
-  updateDimensions = () => {
-    scaleBias(this.ctx, initialWidth, initialHeight);
-    this.componentDidUpdate();
-  };
-
   componentDidMount() {
-    window.addEventListener('resize', this.updateDimensions);
+    super.componentDidMount();
     this.updateDimensions();
   }
 
@@ -31,11 +29,7 @@ class BiasWidget extends CanvasWidget {
     v = mapRange(v, -400.0, 400.0, -1.0, 1.0);
     w = mapRange(w, -400.0, 400.0, -1.0, 1.0);
 
-    drawBias(this.ctx, u, v, w);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDimensions);
+    drawBias(this.ctx, u, v, w, initialWidth, initialHeight);
   }
 }
 

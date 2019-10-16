@@ -21,8 +21,20 @@ class CanvasWidget extends Component {
     this.ctx = ctx;
   }
 
+  updateDimensions = () => {
+    this.scaleFunction(this.ctx, this.initialWidth, this.initialHeight);
+    this.componentDidUpdate();
+  };
+
   // This needs to be defined by every child class. This is the method calling the functions to actually draw on the canvas
-  componentDidMount() {}
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+    this.updateDimensions();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
 
   render() {
     // Render the canvas using the widget given in the constructor

@@ -29,14 +29,14 @@ class MiniMapWidget extends CanvasWidget {
 
   zoomOut() {
     if (this.props.maxDistance < 1000) {
-      //maximum 1000 meters
+      // Maximum 1000 meters
       this.props.maxDistance += 1;
     }
   }
 
   zoomIn() {
     if (this.props.maxDistance > 1) {
-      //minimum 1 meter
+      // Minimum 1 meter
       this.props.maxDistance -= 1;
     }
   }
@@ -47,7 +47,7 @@ class MiniMapWidget extends CanvasWidget {
     return (
       <div className="MiniMapWidget">
         <div className="MiniMap">{canvas}</div>
-        {/* these buttons let us increase or decrease the max distance 
+        {/* These buttons let us increase or decrease the max distance 
         that draws the ROV as a square on the map*/}
         <div className="zoom">
           <button className="zoomButton" onClick={this.zoomIn}>

@@ -1,12 +1,4 @@
-//import { scaleWidget } from './tools.js';
-
-var color_base;
-
-function heading_init(context_heading) {
-  // Basic formatting
-  context_heading.textAlign = 'center';
-  context_heading.lineWidth = 1.5;
-}
+import { scaleWidget } from './tools.js';
 
 function wraparound(value, max_value) {
   // Wraparound
@@ -19,31 +11,42 @@ function wraparound(value, max_value) {
   return value;
 }
 
-/*function scaleHeading(context, initialWidth, initialHeight) {
+function scaleHeading(context, initialWidth, initialHeight) {
   scaleWidget(
     context,
     initialWidth,
     initialHeight,
     window.innerWidth,
-    0,
+    1000,
     1500,
-    0,
-    0.8,
+    0.7,
+    1,
   );
-}*/
+}
 
-function drawHeading(context_heading, degrees, isLocked, lockedValue) {
+function drawHeading(
+  context_heading,
+  degrees,
+  isLocked,
+  lockedValue,
+  initialWidth,
+  initialHeight,
+) {
+  var color_base;
+
   if (isLocked) {
     color_base = '#B0B0B0';
   } else {
     color_base = '#FFFFFF';
   }
 
+  context_heading.textAlign = 'center';
+  context_heading.lineWidth = 1.5;
   context_heading.strokeStyle = color_base;
   context_heading.fillStyle = color_base;
 
-  const width = context_heading.canvas.clientWidth;
-  const width_half = width / 2;
+  //const width = context_heading.canvas.width;
+  const width_half = initialWidth / 2;
 
   const degree_step = 15; // Number of degrees between each displayed number
   const degree_space = 50; // Spacing between each displayed number
@@ -56,7 +59,7 @@ function drawHeading(context_heading, degrees, isLocked, lockedValue) {
   const heading = (degree_space * (120 - degrees)) / degree_step;
 
   // Clear the screen (except the bottom triangle, which does not move!)
-  context_heading.clearRect(0, 0, width, context_heading.canvas.clientHeight);
+  context_heading.clearRect(0, 0, initialWidth, initialHeight);
 
   // Optional separator line
   /* context_heading.beginPath();
@@ -137,4 +140,4 @@ function drawHeading(context_heading, degrees, isLocked, lockedValue) {
   context_heading.fill();
 }
 
-export { heading_init, drawHeading };
+export { drawHeading, scaleHeading };
