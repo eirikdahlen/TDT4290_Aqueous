@@ -1,20 +1,38 @@
-import { clamp } from './tools.js';
-
-function depth_init(context_depth) {
-  // Basic formatting
-  context_depth.textBaseline = 'middle';
-  context_depth.lineWidth = 1.5;
-}
+import { clamp, scaleWidget } from './tools.js';
 
 const num_space = 50; // Spacing between the numerical labels
-var color_base;
 
-function drawDepth(context_depth, depth, isLocked, lockedValue) {
+function scaleDepth(context, initialWidth, initialHeight) {
+  scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.7,
+    1,
+  );
+}
+
+function drawDepth(
+  context_depth,
+  depth,
+  isLocked,
+  lockedValue,
+  initialWidth,
+  initialHeight,
+) {
+  var color_base;
+
   if (isLocked) {
     color_base = '#B0B0B0';
   } else {
     color_base = '#FFFFFF';
   }
+
+  context_depth.textBaseline = 'middle';
+  context_depth.lineWidth = 1.5;
   context_depth.strokeStyle = color_base;
   context_depth.fillStyle = color_base;
 
@@ -24,12 +42,7 @@ function drawDepth(context_depth, depth, isLocked, lockedValue) {
   var offset_depth = depth;
 
   // Clear the canvas every frame (except the rightmost triangle, which is static)
-  context_depth.clearRect(
-    0,
-    0,
-    context_depth.canvas.clientWidth,
-    context_depth.canvas.clientHeight,
-  );
+  context_depth.clearRect(0, 0, initialWidth, initialHeight);
 
   // Text formatting for the depth labels
   context_depth.textAlign = 'right';
@@ -84,4 +97,4 @@ function drawDepth(context_depth, depth, isLocked, lockedValue) {
   context_depth.fill();
 }
 
-export { depth_init, drawDepth };
+export { drawDepth, scaleDepth };
