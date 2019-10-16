@@ -74,7 +74,9 @@ export default function Lock({ title, active, value, min, max, step }) {
             toggle();
           }}
           id={`${title}Switch`}
-          currentValue={`${fixValue(value, false).toFixed(1)}${unit}`}
+          currentValue={
+            value ? `${fixValue(value, false).toFixed(1)}${unit}` : ''
+          }
         />
       </div>
     </div>

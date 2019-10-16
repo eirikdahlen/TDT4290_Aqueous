@@ -1,0 +1,15 @@
+.ManualMode {
+  background-color: lightgray;
+}
+
+.manualLockFlex {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 92%;
+}
+
+.manualLockFlex > .Lock {
+  height: 50%;
+  width: 40%;
+}

@@ -2,13 +2,12 @@
   display: flex;
   justify-content: center;
   width: 100%;
-}
-
-.Values .ValueBox {
-  display: inline-block;
+  height: 100%;
 }
 
 .Values {
   text-align: center;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }

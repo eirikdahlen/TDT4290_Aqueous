@@ -6,7 +6,7 @@ import './css/ValueBox.css';
 export default function ValueBox({ title, value }) {
   return (
     <div className="ValueBox">
-      <Title>{title}</Title>
+      <Title>{title[0].toUpperCase() + title.slice(1)}</Title>
       <Value>{value}</Value>
     </div>
   );

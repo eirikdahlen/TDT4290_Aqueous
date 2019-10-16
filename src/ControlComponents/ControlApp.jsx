@@ -1,14 +1,14 @@
 // The App for the ControlWindow. This is where every control-components should go.
 import React, { useState, useEffect } from 'react';
 import Values from './Values';
-import Map from './Map';
-import RollPitch from './RollPitch';
 import ModeMenu from './ModeMenu';
-import Status from './Status';
 import Lock from './Lock';
 import ForceValues from './ForceValues';
+import ManualMode from './ManualMode';
 
 import './css/ControlApp.css';
+import NetfollowingLock from './NetfollowingLock';
+import DynamicpositioningLock from './DynamicpositioningLock';
 
 const { remote } = window.require('electron');
 
@@ -38,44 +38,17 @@ function ControlApp() {
     <div className="ControlApp">
       <div className="controlFlex">
         <div className="topWindow">
-          <Map />
-          <RollPitch />
-          <Status />
-        </div>
-        <div
-          className="middleWindow"
-          onClick={() => console.log({ netfollowing }, { mode })}
-        >
-          {/*Start in mode Manual*/}
-          <ModeMenu
-            globalMode={mode.globalMode} // TODO: This should be fetched from the ROV somehow
-            netfollowingAvailable={mode.nfAvailable}
-          />
-          <div className="lockFlex">
-            <Lock
-              title="autodepth"
-              active={controlValues.autodepth}
-              value={controlValues.heave}
-              min={0}
-              max={200}
-              step={0.1}
-            />
-            <Lock
-              title="autoheading"
-              active={controlValues.autoheading}
-              value={controlValues.yaw}
-              min={0}
-              max={360}
-              step={1}
-            />
-          </div>
+          <ManualMode title="Manual Mode" toROV={controlValues}></ManualMode>
+          <NetfollowingLock title="Net Following"></NetfollowingLock>
+          <DynamicpositioningLock title="Dynamic Positioning"></DynamicpositioningLock>
         </div>
         <div className="bottomWindow">
-          <div>
-            <div className="forcesTitle">Commanded Forces</div>
-            <ForceValues controlValues={controlValues} />
+          <div className="bottomLeft">
+            <Values sensorValues={sensorValues} />
           </div>
-          <Values sensorValues={sensorValues} />
+          <div className="bottomRight">
+            <span></span>
+          </div>
         </div>
       </div>
     </div>

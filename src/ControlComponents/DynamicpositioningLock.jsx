@@ -84,7 +84,7 @@ export default function DynamicpositioningLock({ title, globalMode, step }) {
     <div className="NetfollowingLock">
       <Title>{title}</Title>
       <div className="inputFlexNF">
-        <h3>x (placeholder)</h3>
+        <h3>East</h3>
         <div className="firstRow">
           <input
             type="number"
@@ -101,7 +101,7 @@ export default function DynamicpositioningLock({ title, globalMode, step }) {
             &#x21bb;
           </button>
         </div>
-        <h3>y (placeholder)</h3>
+        <h3>Down</h3>
         <div className="secondRow">
           <input
             type="number"
@@ -118,7 +118,7 @@ export default function DynamicpositioningLock({ title, globalMode, step }) {
             &#x21bb;
           </button>
         </div>
-        <h3>z (placeholder)</h3>
+        <h3>Down</h3>
         <div className="thirdRow">
           <input
             type="number"

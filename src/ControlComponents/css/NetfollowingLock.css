@@ -1,9 +1,8 @@
 .NetfollowingLock {
   background-color: lightgray;
-  margin: 5px;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .inputFlexNF {
@@ -62,4 +61,6 @@ input {
 .checkSwitch {
   text-align: center;
   bottom: 0;
+  position: absolute;
+  width: 100%;
 }
