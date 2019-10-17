@@ -11,8 +11,7 @@
   justify-content: space-between;
   cursor: pointer;
   width: 100%;
-  height: 50px;
-  border-radius: 5px;
+  height: 35px;
   background: darkgray;
   position: relative;
   transition: background-color 0.2s;
@@ -23,8 +22,8 @@
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 45px;
-  height: 45px;
+  width: 31px;
+  height: 31px;
   border-radius: 5px;
   transition: 0.2s;
   background: #fff;

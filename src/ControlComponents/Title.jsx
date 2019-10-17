@@ -4,7 +4,9 @@ import './css/Title.css';
 
 export default function Title({ children, small }) {
   return (
-    <div className={'Title ' + (small ? 'smallTitle' : '')}>{children}</div>
+    <div className={'Title ' + (small ? 'smallTitle' : '')}>
+      {children.toUpperCase()}
+    </div>
   );
 }
 

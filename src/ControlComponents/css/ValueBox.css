@@ -1,10 +1,14 @@
 .ValueBox {
   background-color: lightgray;
-  height: 50px;
-  width: 50px;
-  margin: 10px;
-  padding: 5px;
+  height: 43px;
+  width: 43px;
+  margin: 8px;
+  padding: 3px;
   box-shadow: 0 0 2px 1px rgb(114, 114, 114);
+}
+
+.ValueBox h4 {
+  font-size: 14px;
 }
 
 .value,

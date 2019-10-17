@@ -30,16 +30,18 @@
   justify-content: space-between;
   width: 100%;
 }
-
-.bottomLeft {
-  width: 50%;
-  height: 100%;
-}
-
+.bottomLeft,
 .bottomRight {
   width: 50%;
   height: 100%;
   background-color: lightgray;
+}
+
+.bottomLeft {
+  border-right: 1px solid;
+}
+.bottomLeft .Title {
+  border-right: 0.5px solid;
 }
 
 .lockFlex {

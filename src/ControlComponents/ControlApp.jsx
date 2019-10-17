@@ -43,7 +43,7 @@ function ControlApp() {
             <Values title="sensor values" values={sensorValues} />
           </div>
           <div className="bottomRight">
-            <span></span>
+            <Values title="Sent to ROV" values={controlValues} />
           </div>
         </div>
       </div>
