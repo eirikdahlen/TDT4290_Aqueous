@@ -1,0 +1,19 @@
+.Mode {
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.modeInputFlex {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.checkSwitch {
+  text-align: center;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}

@@ -1,15 +1,17 @@
 .ManualMode {
   background-color: lightgray;
+  position: relative;
 }
 
 .manualLockFlex {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
   align-items: center;
   height: 92%;
 }
 
 .manualLockFlex > .Lock {
-  height: 50%;
-  width: 40%;
+  height: 30%;
+  width: 80%;
+  margin-top: 25px;
 }

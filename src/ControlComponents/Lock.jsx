@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title';
 import Switch from './Switch';
+import ModeInput from './ModeInput';
 import './css/Lock.css';
+import {
+  degreesToRadians,
+  radiansToDegrees,
+  normalize,
+} from './../utils/utils';
 
 const { remote } = window.require('electron');
 
 export default function Lock({ title, active, value, min, max, step }) {
-  const [input, changeInput] = useState(0.0);
   const [reference, setReference] = useState(0.0);
   const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
   const unit = type === 'yaw' ? '°' : ' m';
@@ -16,20 +21,13 @@ export default function Lock({ title, active, value, min, max, step }) {
     switch (title) {
       case 'autoheading': {
         if (toRadians) {
-          return Number(value) * (Math.PI / 180);
+          return degreesToRadians(value);
         } else {
-          let degrees = (Number(value) * (180 / Math.PI)) % 360;
-          while (degrees < 0) {
-            degrees += 360;
-          }
-          return degrees;
+          return radiansToDegrees(value);
         }
       }
       case 'autodepth': {
-        // Lets depth be max 200 and min 0
-        value = Math.min(value, max);
-        value = Math.max(value, min);
-        return value;
+        return normalize(value, min, max);
       }
       default: {
         console.log('Unrecognized title');
@@ -55,17 +53,12 @@ export default function Lock({ title, active, value, min, max, step }) {
     <div className="Lock">
       <Title>{title}</Title>
       <div className="inputFlex">
-        <input
-          type="number"
-          placeholder="0,0"
-          step={step}
+        <ModeInput
           min={min}
           max={max}
-          onChange={e => changeInput(Number(e.target.value))}
-        />
-        <button className="updateButton" onClick={() => updateValue(input)}>
-          &#x21bb;
-        </button>
+          step={step}
+          clickFunction={updateValue}
+        ></ModeInput>
       </div>
       <div className="check">
         <Switch
@@ -74,9 +67,6 @@ export default function Lock({ title, active, value, min, max, step }) {
             toggle();
           }}
           id={`${title}Switch`}
-          currentValue={
-            value ? `${fixValue(value, false).toFixed(1)}${unit}` : ''
-          }
         />
       </div>
     </div>

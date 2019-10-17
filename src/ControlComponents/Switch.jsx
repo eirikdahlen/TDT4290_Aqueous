@@ -17,7 +17,6 @@ const Switch = ({ isOn, handleToggle, id, currentValue }) => {
         className="switch-label"
         htmlFor={id}
       >
-        <span className="currentValue">{isOn ? currentValue : ''}</span>
         <span className="switch-button"></span>
       </label>
     </>

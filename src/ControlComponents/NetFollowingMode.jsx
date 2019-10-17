@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
-import './css/NetfollowingLock.css';
+import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
+import ModeInput from './ModeInput';
+import { normalize } from './../utils/utils';
 
 const { remote } = window.require('electron');
 
-export default function NetfollowingLock({ title, globalMode, step }) {
-  const [velocityInput, setVelocityInput] = useState(0.0);
-  const [distanceInput, setDistanceInput] = useState(0.0);
+export default function NetfollowingMode({ title, globalMode, step }) {
+  const [depthValue, setDepthValue] = useState(0.0);
   const [velocityValue, setVelocityValue] = useState(0.0);
   const [distanceValue, setDistanceValue] = useState(0.0);
   const [nfActive, nfActiveChange] = useState(
@@ -18,13 +19,14 @@ export default function NetfollowingLock({ title, globalMode, step }) {
 
   function fixValue(value, type) {
     if (type === 'velocity') {
-      value = Math.min(value, 10);
-      value = Math.max(value, -10);
+      value = normalize(value, -10, 10);
       setVelocityValue(value);
-    } else {
-      value = Math.min(value, 10);
-      value = Math.max(value, 0);
+    } else if (type === 'distance') {
+      value = normalize(value, 0, 10);
       setDistanceValue(value);
+    } else {
+      value = normalize(value, 0, 200);
+      setDepthValue(value);
     }
     return value;
   }
@@ -37,6 +39,8 @@ export default function NetfollowingLock({ title, globalMode, step }) {
         remote.getGlobal('netfollowing')['velocity'] = fixValue(value, type);
       } else if (type === 'distance') {
         remote.getGlobal('netfollowing')['distance'] = fixValue(value, type);
+      } else if (type === 'depth') {
+        //remote.getGlobal('netfollowing')['depth'] = fixValue(value, type); TODO
       } else {
         console.log('Type not recognized');
       }
@@ -60,43 +64,30 @@ export default function NetfollowingLock({ title, globalMode, step }) {
   };
 
   return (
-    <div className="NetfollowingLock">
+    <div className="Mode">
       <Title>{title}</Title>
-      <div className="inputFlexNF">
-        <h3>Velocity</h3>
-        <div className="firstRow">
-          <input
-            type="number"
-            placeholder="Velocity"
-            step={step}
-            min={-10}
-            max={10}
-            onChange={e => setVelocityInput(Number(e.target.value))}
-          />
-          <button
-            className="updateButton"
-            onClick={() => updateValue(velocityInput, 'velocity')}
-          >
-            &#x21bb;
-          </button>
-        </div>
-        <h3>Distance</h3>
-        <div className="secondRow">
-          <input
-            type="number"
-            placeholder="Distance"
-            step={step}
-            min={0}
-            max={10}
-            onChange={e => setDistanceInput(Number(e.target.value))}
-          />
-          <button
-            className="updateButton"
-            onClick={() => updateValue(distanceInput, 'distance')}
-          >
-            &#x21bb;
-          </button>
-        </div>
+      <div className="modeInputFlex">
+        <ModeInput
+          header={'Velocity'}
+          min={-10}
+          max={10}
+          step={step}
+          clickFunction={updateValue}
+        ></ModeInput>
+        <ModeInput
+          header={'Distance'}
+          min={0}
+          max={10}
+          step={step}
+          clickFunction={updateValue}
+        ></ModeInput>
+        <ModeInput
+          header={'Depth'}
+          min={0}
+          max={200}
+          step={step}
+          clickFunction={updateValue}
+        ></ModeInput>
       </div>
       <div className="checkSwitch">
         <Switch
@@ -105,16 +96,13 @@ export default function NetfollowingLock({ title, globalMode, step }) {
             toggle();
           }}
           id={`${title}Switch`}
-          currentValue={`v: ${velocityValue.toFixed(
-            1,
-          )}m/s   d: ${distanceValue.toFixed(1)}m`}
         />
       </div>
     </div>
   );
 }
 
-NetfollowingLock.propTypes = {
+NetfollowingMode.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
   globalMode: PropTypes.number,

@@ -1,14 +1,10 @@
 // The App for the ControlWindow. This is where every control-components should go.
 import React, { useState, useEffect } from 'react';
 import Values from './Values';
-import ModeMenu from './ModeMenu';
-import Lock from './Lock';
-import ForceValues from './ForceValues';
 import ManualMode from './ManualMode';
-
+import NetfollowingMode from './NetFollowingMode';
+import DynamicPositioningMode from './DynamicPositioningMode';
 import './css/ControlApp.css';
-import NetfollowingLock from './NetfollowingLock';
-import DynamicpositioningLock from './DynamicpositioningLock';
 
 const { remote } = window.require('electron');
 
@@ -39,8 +35,8 @@ function ControlApp() {
       <div className="controlFlex">
         <div className="topWindow">
           <ManualMode title="Manual Mode" toROV={controlValues}></ManualMode>
-          <NetfollowingLock title="Net Following"></NetfollowingLock>
-          <DynamicpositioningLock title="Dynamic Positioning"></DynamicpositioningLock>
+          <NetfollowingMode title="Net Following"></NetfollowingMode>
+          <DynamicPositioningMode title="Dynamic Positioning"></DynamicPositioningMode>
         </div>
         <div className="bottomWindow">
           <div className="bottomLeft">

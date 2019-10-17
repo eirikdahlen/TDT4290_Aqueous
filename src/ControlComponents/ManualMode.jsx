@@ -1,6 +1,7 @@
 import React from 'react';
 import Lock from './Lock';
 import Title from './Title';
+import Switch from './Switch';
 import './css/ManualMode.css';
 
 export default function ManualMode({ title, toROV }) {
@@ -24,6 +25,9 @@ export default function ManualMode({ title, toROV }) {
           max={400}
           step={0.2}
         ></Lock>
+      </div>
+      <div className="checkSwitch">
+        <Switch></Switch>
       </div>
     </div>
   );
