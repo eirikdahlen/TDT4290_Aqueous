@@ -1,10 +1,17 @@
-.Value {
-  font-size: 20px;
-  padding: 5px 10px;
-}
-
 .ValueBox {
   background-color: lightgray;
-  height: 50%;
-  width: 33.3333%;
+  height: 50px;
+  width: 50px;
+  margin: 10px;
+  padding: 5px;
+  box-shadow: 0 0 2px 1px rgb(114, 114, 114);
+}
+
+.value,
+.valueBoxHeader {
+  margin: 0;
+}
+
+.value {
+  font-weight: normal;
 }

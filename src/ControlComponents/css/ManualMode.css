@@ -1,8 +1,3 @@
-.ManualMode {
-  background-color: lightgray;
-  position: relative;
-}
-
 .manualLockFlex {
   display: flex;
   flex-direction: column;
@@ -11,7 +6,7 @@
 }
 
 .manualLockFlex > .Lock {
-  height: 30%;
+  height: 34%;
   width: 80%;
-  margin-top: 25px;
+  margin-top: 15px;
 }

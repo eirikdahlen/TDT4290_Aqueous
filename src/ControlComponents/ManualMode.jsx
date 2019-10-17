@@ -6,8 +6,8 @@ import './css/ManualMode.css';
 
 export default function ManualMode({ title, toROV }) {
   return (
-    <div className="ManualMode">
-      <Title className="manualTitle">{title}</Title>
+    <div className="Mode">
+      <Title className="manualTitle">{title.toUpperCase()}</Title>
       <div className="manualLockFlex">
         <Lock
           title="autoheading"

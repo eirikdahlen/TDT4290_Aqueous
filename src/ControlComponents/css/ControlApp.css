@@ -10,7 +10,7 @@
 .topWindow {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   height: 60%;
 }
@@ -18,7 +18,7 @@
 /* Mode boxes */
 .topWindow > div {
   width: 30%;
-  height: 97%;
+  height: 90%;
 }
 
 .bottomWindow {

@@ -12,33 +12,7 @@
   display: flex;
   flex-direction: row;
   padding: 0 5px;
-}
-.inputFlex input {
-  width: 95%;
-  height: 30px;
-  font-size: 16px;
-  padding-left: 10px;
-  border: 0.5px solid gray;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-}
-
-.inputFlex button {
-  width: 30px;
-  height: 33px;
-  font-size: 20px;
-  border: none;
-  border: 0.5px solid gray;
-  cursor: pointer;
-  background-color: darkgray;
-  border-radius: 0 5px 5px 0;
-  outline: none;
-}
-.inputFlex button:hover {
-  background-color: lightgray;
-}
-.inputFlex button:active {
-  box-shadow: 0 0 1px 1px gray;
+  margin: 5px 0;
 }
 
 .check {

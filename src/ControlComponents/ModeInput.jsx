@@ -23,7 +23,7 @@ export default function ModeInput({ min, max, step, clickFunction, header }) {
               : () => clickFunction(input)
           }
         >
-          &#x21bb;
+          &#10003;
         </button>
       </div>
     </div>

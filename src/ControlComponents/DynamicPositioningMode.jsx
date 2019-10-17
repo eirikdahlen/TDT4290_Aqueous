@@ -16,7 +16,7 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
   const [heading, setHeading] = useState(0.0);
   const [depth, setDepth] = useState(0.0);
   const [dpActive, dpActiveChange] = useState(
-    globalMode === ModeEnum.DYNAMICPOSITIONING ? true : false,
+    globalMode === ModeEnum.DYNAMICPOSITIONING,
   );
 
   function fixValue(value, type) {
@@ -37,10 +37,7 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
   // Function that is run when the update-button is clicked
   const updateValue = (value, type) => {
     // dont update value if invalid type or not in dynamic position
-    if (
-      globalMode !== ModeEnum.DYNAMICPOSITIONING ||
-      attributes.indexOf(type) < 0
-    ) {
+    if (attributes.indexOf(type) < 0) {
       return;
     }
     remote.getGlobal('dynamicpositioning')[type] = fixValue(value, type);
@@ -66,31 +63,31 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
 
   return (
     <div className="Mode">
-      <Title>{title}</Title>
+      <Title>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
           header="Latitude"
           step={step}
-          onClick={updateValue}
+          clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
           header="Longitude"
           step={step}
-          onClick={updateValue}
+          clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
           header="Heading"
           step={step}
           min={0}
           max={360}
-          onClick={updateValue}
+          clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
           header="Depth"
           step={step}
           min={0}
           max={200}
-          onClick={updateValue}
+          clickFunction={updateValue}
         ></ModeInput>
       </div>
       <div className="checkSwitch">

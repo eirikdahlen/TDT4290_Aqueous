@@ -13,6 +13,10 @@ import {
 const { remote } = window.require('electron');
 
 export default function Lock({ title, active, value, min, max, step }) {
+  const nameMapping = {
+    autoheading: 'AH',
+    autodepth: 'AD',
+  };
   const [reference, setReference] = useState(0.0);
   const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
   const unit = type === 'yaw' ? '°' : ' m';
@@ -51,7 +55,7 @@ export default function Lock({ title, active, value, min, max, step }) {
 
   return (
     <div className="Lock">
-      <Title>{title}</Title>
+      <Title small={true}>{nameMapping[title]}</Title>
       <div className="inputFlex">
         <ModeInput
           min={min}

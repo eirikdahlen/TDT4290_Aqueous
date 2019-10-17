@@ -1,11 +1,15 @@
 .Title {
   font-size: 15px;
   font-weight: bold;
-  padding: 2% 0px 5px 0px;
+  padding: 5px;
   background-color: silver;
   text-align: center;
   border-radius: inherit;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.smallTitle {
+  font-weight: normal;
 }

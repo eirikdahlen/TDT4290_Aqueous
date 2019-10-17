@@ -40,7 +40,7 @@ function ControlApp() {
         </div>
         <div className="bottomWindow">
           <div className="bottomLeft">
-            <Values sensorValues={sensorValues} />
+            <Values title="sensor values" values={sensorValues} />
           </div>
           <div className="bottomRight">
             <span></span>

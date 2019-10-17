@@ -65,7 +65,7 @@ export default function NetfollowingMode({ title, globalMode, step }) {
 
   return (
     <div className="Mode">
-      <Title>{title}</Title>
+      <Title>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
           header={'Velocity'}
