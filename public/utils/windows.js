@@ -136,11 +136,22 @@ function createXboxMappingWindow() {
 function createMockupWindow() {
   let mockupWindow = new electron.BrowserWindow({
     title: 'Mockup',
+    width: widthControlWindow,
+    height: heightControlWindow,
+    x: xControlWindow,
+    y: yControlWindow,
+    webPreferences: {
+      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
   });
 
   mockupWindow.loadURL(
-    `file://${path.join(__dirname, '../../build/index.html?mockupWindow')}`,
+    isDev
+      ? 'http://localhost:3000?mockupWindow'
+      : `file://${path.join(__dirname, '../../build/index.html?mockupWindow')}`,
   );
+  mockupWindow.webContents.openDevTools();
   // Handle garbage collection
   mockupWindow.on('close', function() {
     mockupWindow = null;
