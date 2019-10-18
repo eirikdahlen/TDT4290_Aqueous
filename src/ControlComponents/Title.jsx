@@ -21,4 +21,6 @@ export default function Title({ children, small, available }) {
 
 Title.propTypes = {
   children: PropTypes.string,
+  small: PropTypes.bool,
+  available: PropTypes.bool,
 };

@@ -11,9 +11,6 @@ const { remote } = window.require('electron');
 function ControlApp() {
   const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
   const [controlValues, controlUpdate] = useState(remote.getGlobal('toROV'));
-  const [netfollowing, netfollowingUpdate] = useState(
-    remote.getGlobal('netfollowing'),
-  );
   const [mode, setMode] = useState(remote.getGlobal('mode'));
 
   useEffect(() => {
@@ -26,7 +23,6 @@ function ControlApp() {
     window.ipcRenderer.on('data-sent', () => {
       controlUpdate(remote.getGlobal('toROV'));
       setMode(remote.getGlobal('mode'));
-      netfollowingUpdate(remote.getGlobal('netfollowing'));
     });
   }, []);
 

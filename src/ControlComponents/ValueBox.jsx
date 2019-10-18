@@ -14,7 +14,7 @@ export default function ValueBox({ title, value, changeEffect }) {
       setRecentlyChanged(true);
       setTimeout(() => setRecentlyChanged(false), 500);
     }
-  }, [value]);
+  }, [value, changeEffect]);
   const fixTitle = title => {
     if (nameMappings[title]) {
       return nameMappings[title];
@@ -33,4 +33,5 @@ export default function ValueBox({ title, value, changeEffect }) {
 ValueBox.propTypes = {
   title: PropTypes.string,
   value: PropTypes.string,
+  changeEffect: PropTypes.bool,
 };

@@ -15,7 +15,6 @@ const { remote } = window.require('electron');
 export default function Lock({
   title,
   active,
-  value,
   min,
   max,
   step,
@@ -40,7 +39,7 @@ export default function Lock({
       remote.getGlobal('toROV')[title] = false;
       remote.getGlobal('toROV')[type] = 0.0;
     }
-  }, [manualModeActive, reference, localActive]);
+  });
 
   // Function that is run when the update-button is clicked
   const updateValue = value => {
@@ -101,5 +100,5 @@ Lock.propTypes = {
   loop: PropTypes.bool,
   step: PropTypes.number,
   active: PropTypes.bool,
-  value: PropTypes.number,
+  manualModeActive: PropTypes.bool,
 };

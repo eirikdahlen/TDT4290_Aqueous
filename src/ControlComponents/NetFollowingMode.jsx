@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
@@ -10,22 +10,15 @@ import { normalize } from './../utils/utils';
 const { remote } = window.require('electron');
 
 export default function NetfollowingMode({ title, modeData, step }) {
-  const [depthValue, setDepthValue] = useState(0.0);
-  const [velocityValue, setVelocityValue] = useState(0.0);
-  const [distanceValue, setDistanceValue] = useState(0.0);
-
   let active = modeData.currentMode === ModeEnum.NETFOLLOWING;
   let available = modeData.nfAvailable;
   function fixValue(value, type) {
     if (type === 'velocity') {
       value = normalize(value, -10, 10);
-      setVelocityValue(value);
     } else if (type === 'distance') {
       value = normalize(value, 0, 10);
-      setDistanceValue(value);
     } else {
       value = normalize(value, 0, 200);
-      setDepthValue(value);
     }
     return value;
   }
@@ -102,5 +95,5 @@ export default function NetfollowingMode({ title, modeData, step }) {
 NetfollowingMode.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
-  globalMode: PropTypes.number,
+  modeData: PropTypes.object,
 };

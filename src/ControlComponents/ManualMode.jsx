@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Lock from './Lock';
 import Title from './Title';
 import Switch from './Switch';
@@ -28,7 +29,6 @@ export default function ManualMode({ title, toROV, modeData }) {
         <Lock
           title="autoheading"
           active={toROV.autoheading}
-          value={toROV.yaw}
           min={0}
           max={360}
           step={0.5}
@@ -37,7 +37,6 @@ export default function ManualMode({ title, toROV, modeData }) {
         <Lock
           title="autodepth"
           active={toROV.autodepth}
-          value={toROV.heave}
           min={0}
           max={400}
           step={0.2}
@@ -56,3 +55,9 @@ export default function ManualMode({ title, toROV, modeData }) {
     </div>
   );
 }
+
+ManualMode.propTypes = {
+  title: PropTypes.string,
+  toROV: PropTypes.object,
+  modeData: PropTypes.object,
+};

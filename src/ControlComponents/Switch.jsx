@@ -2,7 +2,7 @@ import React from 'react';
 import './css/Switch.css';
 import PropTypes from 'prop-types';
 
-const Switch = ({ isOn, handleToggle, id, currentValue }) => {
+const Switch = ({ isOn, handleToggle, id }) => {
   return (
     <>
       <input
@@ -26,7 +26,6 @@ Switch.propTypes = {
   isOn: PropTypes.bool,
   handleToggle: PropTypes.func,
   id: PropTypes.string,
-  currentValue: PropTypes.string,
 };
 
 export default Switch;

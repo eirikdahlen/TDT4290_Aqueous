@@ -30,5 +30,7 @@ export default function Values({ title, values, changeEffect }) {
 }
 
 Values.propTypes = {
-  sensorValues: PropTypes.object,
+  values: PropTypes.object,
+  title: PropTypes.string,
+  changeEffect: PropTypes.bool,
 };

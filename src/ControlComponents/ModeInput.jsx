@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import './css/ModeInput.css';
 
 export default function ModeInput({ min, max, step, clickFunction, header }) {
@@ -29,3 +30,11 @@ export default function ModeInput({ min, max, step, clickFunction, header }) {
     </div>
   );
 }
+
+ModeInput.propTypes = {
+  min: PropTypes.number,
+  max: PropTypes.number,
+  step: PropTypes.number,
+  clickFunction: PropTypes.func,
+  header: PropTypes.string,
+};

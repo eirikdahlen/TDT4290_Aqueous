@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
@@ -11,25 +11,19 @@ const { remote } = window.require('electron');
 
 export default function DynamicPositioningMode({ title, modeData, step }) {
   const attributes = ['latitude', 'longitude', 'heading', 'depth'];
-  const [latitude, setLatitude] = useState(0.0);
-  const [longitude, setLongitude] = useState(0.0);
-  const [heading, setHeading] = useState(0.0);
-  const [depth, setDepth] = useState(0.0);
 
   let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
   let available = modeData.dpAvailable;
 
   function fixValue(value, type) {
     if (type === 'latitude') {
-      setLatitude(value);
+      // Normalize value somehow here
     } else if (type === 'longitude') {
-      setLongitude(value);
+      // Normalize value somehow here
     } else if (type === 'heading') {
       value = degreesToRadians(value);
-      setHeading(value);
     } else if (type === 'depth') {
       value = normalize(value, 0, 200);
-      setDepth(value);
     }
     return value;
   }
