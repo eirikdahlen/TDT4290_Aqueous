@@ -12,6 +12,12 @@ class MiniMapWidget extends CanvasWidget {
     this.scaleFunction = scaleMinimap;
     this.initialWidth = initialWidth;
     this.initialHeight = initialHeight;
+
+    this.maxDistance = this.props.maxDistance;
+
+    // This is necessary to make 'this' work inside the zoom functions
+    this.zoomOut = this.zoomOut.bind(this);
+    this.zoomIn = this.zoomIn.bind(this);
   }
 
   componentDidMount() {
@@ -26,23 +32,23 @@ class MiniMapWidget extends CanvasWidget {
       this.props.east,
       this.props.yaw,
       this.props.boatHeading,
-      this.props.maxDistance,
+      this.maxDistance,
       initialWidth,
       initialHeight,
     );
   }
 
   zoomOut() {
-    if (this.props.maxDistance < 1000) {
+    if (this.maxDistance < 1000) {
       // Maximum 1000 meters
-      this.props.maxDistance += 1;
+      this.maxDistance += 1;
     }
   }
 
   zoomIn() {
-    if (this.props.maxDistance > 1) {
+    if (this.maxDistance > 1) {
       // Minimum 1 meter
-      this.props.maxDistance -= 1;
+      this.maxDistance -= 1;
     }
   }
 
