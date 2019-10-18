@@ -37,16 +37,16 @@ function ControlApp() {
           <ManualMode
             title="Manual Mode"
             toROV={controlValues}
-            globalMode={mode}
+            modeData={mode}
           ></ManualMode>
           <NetfollowingMode
             title="Net Following"
-            globalMode={mode}
+            modeData={mode}
             step={0.5}
           ></NetfollowingMode>
           <DynamicPositioningMode
             title="Dynamic Positioning"
-            globalMode={mode}
+            modeData={mode}
             step={0.5}
           ></DynamicPositioningMode>
         </div>

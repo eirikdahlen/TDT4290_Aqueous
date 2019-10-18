@@ -7,15 +7,15 @@ import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
 
-export default function ManualMode({ title, toROV, globalMode }) {
-  let active = globalMode.globalMode === ModeEnum.MANUAL;
+export default function ManualMode({ title, toROV, modeData }) {
+  let active = modeData.currentMode === ModeEnum.MANUAL;
   let available = true;
 
   const toggle = () => {
-    if (active) {
+    if (!available || active) {
       return; // Can't turn of manual mode
     } else {
-      remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
+      remote.getGlobal('mode')['currentMode'] = ModeEnum.MANUAL;
     }
   };
 

@@ -9,15 +9,15 @@ import ModeInput from './ModeInput';
 
 const { remote } = window.require('electron');
 
-export default function DynamicPositioningMode({ title, globalMode, step }) {
+export default function DynamicPositioningMode({ title, modeData, step }) {
   const attributes = ['latitude', 'longitude', 'heading', 'depth'];
   const [latitude, setLatitude] = useState(0.0);
   const [longitude, setLongitude] = useState(0.0);
   const [heading, setHeading] = useState(0.0);
   const [depth, setDepth] = useState(0.0);
 
-  let active = globalMode.globalMode === ModeEnum.DYNAMICPOSITIONING;
-  let available = globalMode.dpAvailable;
+  let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
+  let available = modeData.dpAvailable;
 
   function fixValue(value, type) {
     if (type === 'latitude') {
@@ -45,13 +45,16 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
 
   // Function that is run when toggle is clicked
   const toggle = () => {
-    if (globalMode.globalMode === ModeEnum.DYNAMICPOSITIONING) {
-      remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
+    if (!available) {
+      return;
+    }
+    if (modeData.currentMode === ModeEnum.DYNAMICPOSITIONING) {
+      remote.getGlobal('mode')['currentMode'] = ModeEnum.MANUAL;
     } else if (
-      globalMode.globalMode === ModeEnum.MANUAL ||
-      globalMode.globalMode === ModeEnum.NETFOLLOWING
+      modeData.currentMode === ModeEnum.MANUAL ||
+      modeData.currentMode === ModeEnum.NETFOLLOWING
     ) {
-      remote.getGlobal('mode')['globalMode'] = ModeEnum.DYNAMICPOSITIONING;
+      remote.getGlobal('mode')['currentMode'] = ModeEnum.DYNAMICPOSITIONING;
     } else {
       console.log('Error in changing mode');
     }
@@ -102,5 +105,5 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
 DynamicPositioningMode.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
-  globalMode: PropTypes.number,
+  modeData: PropTypes.number,
 };

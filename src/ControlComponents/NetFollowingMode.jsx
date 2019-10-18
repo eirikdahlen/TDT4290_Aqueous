@@ -9,13 +9,13 @@ import { normalize } from './../utils/utils';
 
 const { remote } = window.require('electron');
 
-export default function NetfollowingMode({ title, globalMode, step }) {
+export default function NetfollowingMode({ title, modeData, step }) {
   const [depthValue, setDepthValue] = useState(0.0);
   const [velocityValue, setVelocityValue] = useState(0.0);
   const [distanceValue, setDistanceValue] = useState(0.0);
 
-  let active = globalMode.globalMode === ModeEnum.NETFOLLOWING;
-  let available = globalMode.nfAvailable;
+  let active = modeData.currentMode === ModeEnum.NETFOLLOWING;
+  let available = modeData.nfAvailable;
   function fixValue(value, type) {
     if (type === 'velocity') {
       value = normalize(value, -10, 10);
@@ -45,13 +45,16 @@ export default function NetfollowingMode({ title, globalMode, step }) {
 
   // Function that is run when toggle is clicked
   const toggle = () => {
-    if (globalMode.globalMode === ModeEnum.NETFOLLOWING) {
-      remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
+    if (!available) {
+      return;
+    }
+    if (modeData.currentMode === ModeEnum.NETFOLLOWING) {
+      remote.getGlobal('mode')['currentMode'] = ModeEnum.MANUAL;
     } else if (
-      globalMode.globalMode === ModeEnum.MANUAL ||
-      globalMode.globalMode === ModeEnum.DYNAMICPOSITIONING
+      modeData.currentMode === ModeEnum.MANUAL ||
+      modeData.currentMode === ModeEnum.DYNAMICPOSITIONING
     ) {
-      remote.getGlobal('mode')['globalMode'] = ModeEnum.NETFOLLOWING;
+      remote.getGlobal('mode')['currentMode'] = ModeEnum.NETFOLLOWING;
     } else {
       console.log('Error in changing mode');
     }
