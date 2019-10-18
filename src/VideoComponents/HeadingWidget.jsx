@@ -2,7 +2,7 @@ import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
 import drawHeading, { scaleHeading } from './js/heading.js';
 import LockWidget from './LockWidget';
-import { radiansToDegrees } from './js/tools.js';
+import { radiansToDegrees, wrapDegrees } from './js/tools.js';
 import './css/HeadingWidget.css';
 
 const initialWidth = 800;
@@ -20,8 +20,7 @@ class HeadingWidget extends CanvasWidget {
   // Redraw widget
   componentDidUpdate() {
     const headingDegrees = radiansToDegrees(this.props.heading);
-    this.lockedValue =
-      ((radiansToDegrees(this.props.lockedValue) % 360) + 360) % 360;
+    this.lockedValue = wrapDegrees(radiansToDegrees(this.props.lockedValue));
 
     drawHeading(
       this.ctx,

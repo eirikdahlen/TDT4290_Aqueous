@@ -1,4 +1,9 @@
-import { mapRange, radiansToDegrees, scaleWidget } from './tools.js';
+import {
+  mapRange,
+  wrapDegrees,
+  scaleWidget,
+  degreesToRadians,
+} from './tools.js';
 
 const initialWidth = 200; //px
 const rovSize = 15; //px
@@ -20,7 +25,7 @@ function drawBoat(context, boatWidth, boatLength, boatHeading) {
   context.textAlign = 'center';
 
   // Convert boat heading to degrees
-  const boatDegrees = radiansToDegrees(boatHeading);
+  const boatDegrees = boatHeading;
 
   // Draw the boat itself
   context.beginPath();
@@ -156,8 +161,11 @@ function drawMinimap(
   context.fillStyle = '#FFFFFF';
   context.lineWidth = 1.5;
 
-  const ROVangleInNED = Math.atan2(north, east); // Calculates direction of the ROV based on north and east props
+  // Keep degrees between 0 and 360
+  boatHeading = wrapDegrees(boatHeading);
+  boatHeadingOffset = wrapDegrees(boatHeadingOffset);
 
+  const ROVangleInNED = Math.atan2(north, east); // Calculates direction of the ROV based on north and east props
   var boatRotation = boatHeading - boatHeadingOffset; // Set boatHeading to difference in heading since beginning
 
   context.clearRect(0, 0, initialWidth, initialWidth); // Clear canvas to avoid drawing on top of previous canvas
@@ -180,7 +188,7 @@ function drawMinimap(
 
   context.save();
   context.translate(initialWidth / 2, initialWidth / 2);
-  context.rotate(-boatRotation); //rotates ROV around boat when boat rotates
+  context.rotate(-degreesToRadians(boatRotation)); //rotates ROV around boat when boat rotates
 
   // If the ROV is within the bounds of the map, draw it as a square within the map
   if (inBoundsEast && inBoundsNorth) {

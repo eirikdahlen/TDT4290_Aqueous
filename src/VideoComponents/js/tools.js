@@ -8,6 +8,16 @@ function radiansToDegrees(radians) {
   return radians * (180 / Math.PI);
 }
 
+// Function for converting degrees to radians
+function degreesToRadians(degrees) {
+  return degrees * (Math.PI / 180);
+}
+
+// Function for converting any degree value to a value between 0 and 360
+function wrapDegrees(degrees) {
+  return ((degrees % 360) + 360) % 360;
+}
+
 // Function for mapping a value from one range of numbers to another
 function mapRange(old_value, old_min, old_max, new_min, new_max) {
   return (
@@ -53,4 +63,11 @@ function scaleWidget(
   return factor;
 }
 
-export { clamp, radiansToDegrees, mapRange, scaleWidget };
+export {
+  clamp,
+  radiansToDegrees,
+  degreesToRadians,
+  wrapDegrees,
+  mapRange,
+  scaleWidget,
+};

@@ -1,4 +1,4 @@
-import { clamp, mapRange, scaleWidget } from './tools.js';
+import { clamp, mapRange, scaleWidget, wrapDegrees } from './tools.js';
 
 function wraparound(value, max_value) {
   // Wraparound
@@ -75,7 +75,7 @@ function drawHeading(
 
   // Handle negative degrees and degrees larger than 360.
   // Locked value is handled in the parent widget.
-  degrees = ((degrees % 360) + 360) % 360;
+  degrees = wrapDegrees(degrees);
 
   // Convert degrees to pixel offset
   const heading = (degree_space * (120 - degrees)) / degree_step;
