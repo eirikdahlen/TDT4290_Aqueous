@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ControlApp from './ControlComponents/ControlApp';
 import VideoApp from './VideoComponents/VideoApp';
+import ROVMockUp from './ControlComponents/ROVMockUp';
 
 class ViewManager extends Component {
   static Views() {
     return {
       controlWindow: <ControlApp />,
       videoWindow: <VideoApp />,
+      mockupWindow: <ROVMockUp />,
     };
   }
 

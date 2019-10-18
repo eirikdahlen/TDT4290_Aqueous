@@ -23,6 +23,7 @@ export default function ROVMockUp() {
 
   return (
     <div className="mockupBox" style={{ backgroundColor: 'white' }}>
+      <div className="startSimulator"></div>
       <div className="modeInput">
         <input placeholder="Mode"></input>
       </div>
