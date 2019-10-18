@@ -9,6 +9,8 @@ const { remote } = window.require('electron');
 
 export default function ManualMode({ title, toROV, globalMode }) {
   let active = globalMode.globalMode === ModeEnum.MANUAL;
+  let available = true;
+
   const toggle = () => {
     if (active) {
       return; // Can't turn of manual mode
@@ -16,9 +18,12 @@ export default function ManualMode({ title, toROV, globalMode }) {
       remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
     }
   };
+
   return (
     <div className={'Mode ' + (active ? 'activeMode' : '')}>
-      <Title className="manualTitle">{title.toUpperCase()}</Title>
+      <Title className="manualTitle" available={available}>
+        {title.toUpperCase()}
+      </Title>
       <div className="manualLockFlex">
         <Lock
           title="autoheading"

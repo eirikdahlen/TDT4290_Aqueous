@@ -8,8 +8,25 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  position: relative;
 }
 
 .smallTitle {
   font-weight: normal;
+}
+
+.availableMark {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 100px;
+  top: 10px;
+  right: 10px;
+}
+
+.available {
+  background-color: var(--positive-light);
+}
+.notAvailable {
+  background-color: var(--negative-light);
 }

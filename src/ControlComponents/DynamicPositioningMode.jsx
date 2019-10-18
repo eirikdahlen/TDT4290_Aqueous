@@ -15,7 +15,9 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
   const [longitude, setLongitude] = useState(0.0);
   const [heading, setHeading] = useState(0.0);
   const [depth, setDepth] = useState(0.0);
+
   let active = globalMode.globalMode === ModeEnum.DYNAMICPOSITIONING;
+  let available = globalMode.dpAvailable;
 
   function fixValue(value, type) {
     if (type === 'latitude') {
@@ -57,7 +59,7 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
 
   return (
     <div className={'Mode ' + (active ? 'activeMode' : '')}>
-      <Title>{title.toUpperCase()}</Title>
+      <Title available={available}>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
           header="Latitude"

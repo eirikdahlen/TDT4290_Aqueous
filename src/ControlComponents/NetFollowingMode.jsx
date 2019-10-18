@@ -15,7 +15,7 @@ export default function NetfollowingMode({ title, globalMode, step }) {
   const [distanceValue, setDistanceValue] = useState(0.0);
 
   let active = globalMode.globalMode === ModeEnum.NETFOLLOWING;
-
+  let available = globalMode.nfAvailable;
   function fixValue(value, type) {
     if (type === 'velocity') {
       value = normalize(value, -10, 10);
@@ -59,7 +59,7 @@ export default function NetfollowingMode({ title, globalMode, step }) {
 
   return (
     <div className={'Mode ' + (active ? 'activeMode' : '')}>
-      <Title>{title.toUpperCase()}</Title>
+      <Title available={available}>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
           header={'Velocity'}
