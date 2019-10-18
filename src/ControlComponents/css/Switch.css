@@ -36,11 +36,15 @@
 }
 
 .switch-label:hover .switch-button {
-  width: 60px;
+  width: 40px;
 }
 
 .currentValue {
   position: relative;
   left: 10px;
   color: white;
+}
+
+.activated-switch {
+  background-color: var(--positive-normal);
 }

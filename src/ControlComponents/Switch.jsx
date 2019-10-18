@@ -13,8 +13,7 @@ const Switch = ({ isOn, handleToggle, id, currentValue }) => {
         type="checkbox"
       />
       <label
-        style={{ background: isOn && '#087f23' }}
-        className="switch-label"
+        className={'switch-label ' + (isOn ? 'activated-switch' : '')}
         htmlFor={id}
       >
         <span className="switch-button"></span>

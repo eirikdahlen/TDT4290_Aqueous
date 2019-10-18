@@ -1,6 +1,6 @@
 .ControlApp {
-  font-family: 'Segoe UI', sans-serif;
   height: 100%;
+  font-family: 'Segoe UI', 'Verdana', sans-serif;
 }
 
 .controlFlex {
@@ -27,21 +27,15 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 100%;
 }
 .bottomLeft,
 .bottomRight {
-  width: 50%;
+  width: 48%;
   height: 100%;
   background-color: var(--primary-normal);
-}
-
-.bottomLeft {
-  border-right: 1px solid;
-}
-.bottomLeft .Title {
-  border-right: 0.5px solid;
+  box-shadow: var(--shadow-secondary);
 }
 
 .lockFlex {

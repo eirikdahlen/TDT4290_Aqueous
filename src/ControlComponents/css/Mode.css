@@ -13,6 +13,7 @@
 .activeMode {
   opacity: 1;
   transform: scale(1.02);
+  box-shadow: var(--shadow-big);
 }
 
 .modeInputFlex {
