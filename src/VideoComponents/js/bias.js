@@ -71,6 +71,7 @@ function resetColor(context) {
 }
 
 function scaleBias(context, initialWidth, initialHeight) {
+  // Scale widget according to window width
   scaleWidget(
     context,
     initialWidth,

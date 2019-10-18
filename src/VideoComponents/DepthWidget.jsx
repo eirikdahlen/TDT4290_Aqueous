@@ -30,6 +30,7 @@ class DepthWidget extends CanvasWidget {
   render() {
     const canvas = super.render();
 
+    // Add a lock widget
     return (
       <div>
         {canvas}

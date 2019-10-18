@@ -19,6 +19,7 @@ const globalOffsetWidth = 45;
 const distanceMultiplier = 10;
 
 function scaleNetFollowing(context, initialWidth, initialHeight) {
+  // Scale widget according to window width
   scaleWidget(
     context,
     initialWidth,

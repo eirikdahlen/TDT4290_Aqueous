@@ -113,6 +113,7 @@ function drawArrow(context, rovSize, initialWidth) {
 }
 
 function scaleMinimap(context, initialWidth, initialHeight) {
+  // Scale widget according to window width
   const factor = scaleWidget(
     context,
     initialWidth,
@@ -124,11 +125,13 @@ function scaleMinimap(context, initialWidth, initialHeight) {
     1,
   );
 
+  // Scale the parent div, to be able to use CSS positioning properly
   document.getElementsByClassName('MiniMapWidget')[0].style.width =
     initialWidth * factor + 'px';
 
   const zoomButtons = document.getElementsByClassName('zoomButton');
 
+  // Scale the zoom buttons
   for (var i = 0; i < zoomButtons.length; i++) {
     zoomButtons[i].style.fontSize = 22 * factor + 'px';
   }

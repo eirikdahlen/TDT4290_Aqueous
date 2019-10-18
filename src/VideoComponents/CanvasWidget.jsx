@@ -21,14 +21,17 @@ class CanvasWidget extends Component {
     this.ctx = ctx;
   }
 
+  // Function for scaling canvas widgets when resizing video window
   updateDimensions = () => {
     this.scaleFunction(this.ctx, this.initialWidth, this.initialHeight);
     this.componentDidUpdate();
   };
 
-  // This needs to be defined by every child class. This is the method calling the functions to actually draw on the canvas
+  // This is the method calling the functions to actually draw on the canvas
   componentDidMount() {
+    // Add resize event listener, to be able to resize widgets along with the window
     window.addEventListener('resize', this.updateDimensions);
+
     this.updateDimensions();
     this.componentDidUpdate();
   }
