@@ -9,7 +9,7 @@ body,
   height: 100%;
 }
 
-/* Color variables */
+/* Global css-variables - can and should be used when coloring/shadowing anything */
 :root {
   --primary-dark: #007ac1;
   --primary-normal: #03a9f4;

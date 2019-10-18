@@ -19,7 +19,8 @@
 .modeInputFlex {
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 0 15px;
+  margin-top: 4px;
 }
 
 .checkSwitch {
