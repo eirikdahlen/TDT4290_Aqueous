@@ -27,6 +27,7 @@ export default function ManualMode({ title, toROV, globalMode }) {
           min={0}
           max={360}
           step={0.5}
+          manualModeActive={active}
         ></Lock>
         <Lock
           title="autodepth"
@@ -35,6 +36,7 @@ export default function ManualMode({ title, toROV, globalMode }) {
           min={0}
           max={400}
           step={0.2}
+          manualModeActive={active}
         ></Lock>
       </div>
       <div className="checkSwitch">

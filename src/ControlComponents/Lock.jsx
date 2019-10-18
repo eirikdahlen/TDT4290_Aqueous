@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title';
 import Switch from './Switch';
@@ -12,14 +12,45 @@ import {
 
 const { remote } = window.require('electron');
 
-export default function Lock({ title, active, value, min, max, step }) {
+export default function Lock({
+  title,
+  active,
+  value,
+  min,
+  max,
+  step,
+  manualModeActive,
+}) {
+  const [reference, setReference] = useState(0.0);
+  const [localActive, setLocalActive] = useState(active);
+
+  const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
   const nameMapping = {
     autoheading: 'AH',
     autodepth: 'AD',
   };
-  const [reference, setReference] = useState(0.0);
-  const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
-  const unit = type === 'yaw' ? '°' : ' m';
+
+  useEffect(() => {
+    if (manualModeActive) {
+      remote.getGlobal('toROV')[title] = localActive;
+      if (localActive) {
+        remote.getGlobal('toROV')[type] = fixValue(reference, true);
+      }
+    } else {
+      remote.getGlobal('toROV')[title] = false;
+      remote.getGlobal('toROV')[type] = 0.0;
+    }
+  }, [manualModeActive, reference, localActive]);
+
+  // Function that is run when the update-button is clicked
+  const updateValue = value => {
+    setReference(value);
+  };
+
+  // Function that is run when toggle is clicked
+  const toggle = () => {
+    setLocalActive(!localActive);
+  };
 
   const fixValue = (value, toRadians) => {
     switch (title) {
@@ -39,20 +70,6 @@ export default function Lock({ title, active, value, min, max, step }) {
     }
   };
 
-  // Function that is run when the update-button is clicked
-  const updateValue = value => {
-    setReference(value);
-    if (active) {
-      remote.getGlobal('toROV')[type] = fixValue(value, true);
-    }
-  };
-
-  // Function that is run when toggle is clicked
-  const toggle = () => {
-    remote.getGlobal('toROV')[title] = !active;
-    remote.getGlobal('toROV')[type] = active ? 0.0 : fixValue(reference, true);
-  };
-
   return (
     <div className="Lock">
       <Title small={true}>{nameMapping[title]}</Title>
@@ -66,7 +83,7 @@ export default function Lock({ title, active, value, min, max, step }) {
       </div>
       <div className="check">
         <Switch
-          isOn={active}
+          isOn={localActive}
           handleToggle={() => {
             toggle();
           }}
