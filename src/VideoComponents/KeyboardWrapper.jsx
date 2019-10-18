@@ -21,6 +21,7 @@ const validKeys = [
   'ARROWDOWN',
   'ARROWRIGHT',
   'ARROWLEFT',
+  'M',
 ]; //update this
 
 const mapping = {
@@ -42,9 +43,9 @@ const mapping = {
   J: 'DPadLeft', //sway bias-
   I: 'DPadUp', //surge bias+
   K: 'DPadDown', //surge bias-
-  DELETE: 'L3'
   Q: 'LB', //heave bias (down) +
   E: 'RB', //negative heave bias (up) -
+  M: 'LS', //set to manual mode and reset bias
 };
 
 // Buttons we dont want to send value:0 when is released
