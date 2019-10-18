@@ -5,6 +5,14 @@
   flex-direction: column;
   position: relative;
   box-shadow: var(--shadow-primary);
+  opacity: 0.9;
+  transition: all 0.2s;
+}
+
+/* Active effect */
+.activeMode {
+  opacity: 1;
+  transform: scale(1.02);
 }
 
 .modeInputFlex {

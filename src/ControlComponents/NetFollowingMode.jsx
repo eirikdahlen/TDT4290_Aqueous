@@ -13,9 +13,8 @@ export default function NetfollowingMode({ title, globalMode, step }) {
   const [depthValue, setDepthValue] = useState(0.0);
   const [velocityValue, setVelocityValue] = useState(0.0);
   const [distanceValue, setDistanceValue] = useState(0.0);
-  const [nfActive, nfActiveChange] = useState(
-    globalMode === ModeEnum.NETFOLLOWING ? true : false,
-  );
+
+  let active = globalMode.globalMode === ModeEnum.NETFOLLOWING;
 
   function fixValue(value, type) {
     if (type === 'velocity') {
@@ -33,38 +32,33 @@ export default function NetfollowingMode({ title, globalMode, step }) {
 
   // Function that is run when the update-button is clicked
   const updateValue = (value, type) => {
-    // Could remove this "if" to set value before activating the switch
-    if (globalMode === ModeEnum.NETFOLLOWING) {
-      if (type === 'velocity') {
-        remote.getGlobal('netfollowing')['velocity'] = fixValue(value, type);
-      } else if (type === 'distance') {
-        remote.getGlobal('netfollowing')['distance'] = fixValue(value, type);
-      } else if (type === 'depth') {
-        //remote.getGlobal('netfollowing')['depth'] = fixValue(value, type); TODO
-      } else {
-        console.log('Type not recognized');
-      }
+    if (type === 'velocity') {
+      remote.getGlobal('netfollowing')['velocity'] = fixValue(value, type);
+    } else if (type === 'distance') {
+      remote.getGlobal('netfollowing')['distance'] = fixValue(value, type);
+    } else if (type === 'depth') {
+      //remote.getGlobal('netfollowing')['depth'] = fixValue(value, type); TODO (IMC DEPENDENT)
+    } else {
+      console.log('Type not recognized');
     }
   };
 
   // Function that is run when toggle is clicked
   const toggle = () => {
-    if (remote.getGlobal('mode')['globalMode'] === ModeEnum.NETFOLLOWING) {
+    if (globalMode.globalMode === ModeEnum.NETFOLLOWING) {
       remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
-      nfActiveChange(false);
     } else if (
-      remote.getGlobal('mode')['globalMode'] === ModeEnum.MANUAL ||
-      remote.getGlobal('mode')['globalMode'] === ModeEnum.DYNAMICPOSITIONING
+      globalMode.globalMode === ModeEnum.MANUAL ||
+      globalMode.globalMode === ModeEnum.DYNAMICPOSITIONING
     ) {
       remote.getGlobal('mode')['globalMode'] = ModeEnum.NETFOLLOWING;
-      nfActiveChange(true);
     } else {
       console.log('Error in changing mode');
     }
   };
 
   return (
-    <div className="Mode">
+    <div className={'Mode ' + (active ? 'activeMode' : '')}>
       <Title>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
@@ -91,7 +85,7 @@ export default function NetfollowingMode({ title, globalMode, step }) {
       </div>
       <div className="checkSwitch">
         <Switch
-          isOn={nfActive}
+          isOn={active}
           handleToggle={() => {
             toggle();
           }}

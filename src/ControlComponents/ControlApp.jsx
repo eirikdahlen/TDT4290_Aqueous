@@ -34,9 +34,21 @@ function ControlApp() {
     <div className="ControlApp">
       <div className="controlFlex">
         <div className="topWindow">
-          <ManualMode title="Manual Mode" toROV={controlValues}></ManualMode>
-          <NetfollowingMode title="Net Following"></NetfollowingMode>
-          <DynamicPositioningMode title="Dynamic Positioning"></DynamicPositioningMode>
+          <ManualMode
+            title="Manual Mode"
+            toROV={controlValues}
+            globalMode={mode}
+          ></ManualMode>
+          <NetfollowingMode
+            title="Net Following"
+            globalMode={mode}
+            step={0.5}
+          ></NetfollowingMode>
+          <DynamicPositioningMode
+            title="Dynamic Positioning"
+            globalMode={mode}
+            step={0.5}
+          ></DynamicPositioningMode>
         </div>
         <div className="bottomWindow">
           <div className="bottomLeft">

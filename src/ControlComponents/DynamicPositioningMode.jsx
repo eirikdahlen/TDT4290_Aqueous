@@ -15,9 +15,7 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
   const [longitude, setLongitude] = useState(0.0);
   const [heading, setHeading] = useState(0.0);
   const [depth, setDepth] = useState(0.0);
-  const [dpActive, dpActiveChange] = useState(
-    globalMode === ModeEnum.DYNAMICPOSITIONING,
-  );
+  let active = globalMode.globalMode === ModeEnum.DYNAMICPOSITIONING;
 
   function fixValue(value, type) {
     if (type === 'latitude') {
@@ -45,24 +43,20 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
 
   // Function that is run when toggle is clicked
   const toggle = () => {
-    if (
-      remote.getGlobal('mode')['globalMode'] === ModeEnum.DYNAMICPOSITIONING
-    ) {
+    if (globalMode.globalMode === ModeEnum.DYNAMICPOSITIONING) {
       remote.getGlobal('mode')['globalMode'] = ModeEnum.MANUAL;
-      dpActiveChange(false);
     } else if (
-      remote.getGlobal('mode')['globalMode'] === ModeEnum.MANUAL ||
-      remote.getGlobal('mode')['globalMode'] === ModeEnum.NETFOLLOWING
+      globalMode.globalMode === ModeEnum.MANUAL ||
+      globalMode.globalMode === ModeEnum.NETFOLLOWING
     ) {
       remote.getGlobal('mode')['globalMode'] = ModeEnum.DYNAMICPOSITIONING;
-      dpActiveChange(true);
     } else {
       console.log('Error in changing mode');
     }
   };
 
   return (
-    <div className="Mode">
+    <div className={'Mode ' + (active ? 'activeMode' : '')}>
       <Title>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
@@ -92,7 +86,7 @@ export default function DynamicPositioningMode({ title, globalMode, step }) {
       </div>
       <div className="checkSwitch">
         <Switch
-          isOn={dpActive}
+          isOn={active}
           handleToggle={() => {
             toggle();
           }}
