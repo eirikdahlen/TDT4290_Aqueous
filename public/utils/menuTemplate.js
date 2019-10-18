@@ -40,6 +40,12 @@ const menuTemplate = [
           getFileAndLaunch();
         },
       },
+      {
+        label: 'Mockup window',
+        click: async () => {
+          createMockupWindow();
+        },
+      },
     ],
   },
   {
@@ -91,12 +97,6 @@ const menuTemplate = [
         label: 'Keyboard Mappings',
         click: async () => {
           createKeyboardMappingWindow();
-        },
-      },
-      {
-        label: 'Mockup window',
-        click: async () => {
-          createMockupWindow();
         },
       },
     ],

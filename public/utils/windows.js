@@ -136,8 +136,8 @@ function createXboxMappingWindow() {
 function createMockupWindow() {
   let mockupWindow = new electron.BrowserWindow({
     title: 'Mockup',
-    width: widthControlWindow,
-    height: heightControlWindow,
+    width: widthControlWindow / 1.5,
+    height: heightControlWindow / 1.5,
     x: xControlWindow,
     y: yControlWindow,
     webPreferences: {
