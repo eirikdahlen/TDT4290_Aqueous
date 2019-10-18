@@ -5,6 +5,8 @@ const maxThruster = 400;
 const biasIncrease = 10;
 const biasIncreaseTimer = 200;
 const maxYaw = 2 * Math.PI;
+const nfIncrease = 0.2;
+const nfMax = 40;
 
 // Bias values
 let bias = {
@@ -81,7 +83,10 @@ function handleClick({ button, value }) {
       fixMaxThruster('sway', controls);
       break;
     case 'LeftTrigger': // Up
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        setNfParameters('distance', true);
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         controls['heave'] += value * -maxThruster;
         fixMaxThruster('heave', controls);
       } else {
@@ -93,7 +98,10 @@ function handleClick({ button, value }) {
       }
       break;
     case 'RightTrigger': // Down
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        setNfParameters('distance', false);
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         controls['heave'] += value * maxThruster;
         fixMaxThruster('heave', controls);
       } else {
@@ -148,12 +156,18 @@ function handleClick({ button, value }) {
       setBias('surge', false, controls);
       break;
     case 'RB': // positive heave bias (down)
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        setNfParameters('velocity', true);
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         setBias('heave', true, controls);
       }
       break;
     case 'LB': // negative heave bias (up)
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        setNfParameters('velocity', false);
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         setBias('heave', false, controls);
       }
       break;
@@ -161,24 +175,11 @@ function handleClick({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
-      if (global.mode.nfAvailable && global.mode.globalMode != 2) {
-        global.mode.globalMode = 2;
-        break;
-      }
-      if (global.mode.globalMode == 2) {
-        global.mode.globalMode = 0;
-        break;
-      }
+      global.mode.globalMode =
+        global.mode.nfAvailable && global.mode.globalMode == 2 ? 0 : 2;
       break;
     case 'Start': // toggle DP
-      if (global.mode.globalMode != 1) {
-        global.mode.globalMode = 1;
-        break;
-      }
-      if (global.mode.globalMode == 1) {
-        global.mode.globalMode = 0;
-        break;
-      }
+      global.mode.globalMode = global.mode.globalMode == 1 ? 0 : 1;
       break;
   }
   global.toROV = controls;
@@ -210,6 +211,18 @@ function fixMaxThruster(type, controls) {
     force = -maxThruster;
   }
   controls[type] = force;
+}
+
+//Helper function for setting parameters in Netfollowing
+function setNfParameters(type, positive) {
+  const typeDistance = type == 'distance' ? true : false;
+  if (positive) {
+    global.netfollowing[type] +=
+      global.netfollowing[type] < nfMax ? nfIncrease : 0.0;
+  } else {
+    global.netfollowing[type] -=
+      global.netfollowing[type] > -nfMax ? nfIncrease : 0.0;
+  }
 }
 
 module.exports = { handleClick, setUpOrDown };

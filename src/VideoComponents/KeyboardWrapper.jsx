@@ -42,8 +42,8 @@ const mapping = {
   J: 'DPadLeft', //sway bias-
   I: 'DPadUp', //surge bias+
   K: 'DPadDown', //surge bias-
-  Q: 'RB', //heave bias (down) +
-  E: 'LB', //negative heave bias (up) -
+  Q: 'LB', //heave bias (down) +
+  E: 'RB', //negative heave bias (up) -
 };
 
 // Buttons we dont want to send value:0 when is released
