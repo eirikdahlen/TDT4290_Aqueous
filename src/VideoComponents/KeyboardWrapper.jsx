@@ -44,6 +44,7 @@ const mapping = {
   K: 'DPadDown', //surge bias-
   Q: 'RB', //heave bias (down) +
   E: 'LB', //negative heave bias (up) -
+  DELETE: 'L3'
 };
 
 // Buttons we dont want to send value:0 when is released

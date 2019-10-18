@@ -161,13 +161,17 @@ function handleClick({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
-      if (global.netfollowing.available) {
-        global.netfollowing.active = !global.netfollowing.active;
-        break;
-      }
+      global.mode.globalMode = 2;
       break;
     case 'Start': // toggle DP
-      //update global state
+      global.mode.globalMode = 1;
+      break;
+    case 'L3': //turn on manual mode, turn off NF and DP and reset bias
+      console.log("DELETE pressed!");
+      global.mode.globalMode = 0;
+      Object.keys(bias).forEach(v => (bias[v] = 0.0));
+      ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
+      controls['heave'] = autoDepth ? depthReference : 0.0;
       break;
   }
   global.toROV = controls;
