@@ -161,13 +161,24 @@ function handleClick({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
-      if (global.netfollowing.available) {
-        global.netfollowing.active = !global.netfollowing.active;
+      if (global.mode.nfAvailable && global.mode.globalMode != 2) {
+        global.mode.globalMode = 2;
+        break;
+      }
+      if (global.mode.globalMode == 2) {
+        global.mode.globalMode = 0;
         break;
       }
       break;
     case 'Start': // toggle DP
-      //update global state
+      if (global.mode.globalMode != 1) {
+        global.mode.globalMode = 1;
+        break;
+      }
+      if (global.mode.globalMode == 1) {
+        global.mode.globalMode = 0;
+        break;
+      }
       break;
   }
   global.toROV = controls;
