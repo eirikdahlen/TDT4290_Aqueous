@@ -12,6 +12,7 @@ import {
 
 const { remote } = window.require('electron');
 
+// Component which handles Autoheading and autodepth locks
 export default function Lock({
   title,
   active,
@@ -29,6 +30,7 @@ export default function Lock({
     autodepth: 'AD',
   };
 
+  // When manualModeActive (true if manual mode is active) changes, the global lock state is updates to match the Lock-components
   useEffect(() => {
     if (manualModeActive) {
       remote.getGlobal('toROV')[title] = localActive;
@@ -41,16 +43,17 @@ export default function Lock({
     }
   });
 
-  // Function that is run when the update-button is clicked
+  // Function that is run when the update-button is clicked - sets the local reference
   const updateValue = value => {
     setReference(value);
   };
 
-  // Function that is run when toggle is clicked
+  // Function that is run when toggle is clicked - toggles the localActive-state
   const toggle = () => {
     setLocalActive(!localActive);
   };
 
+  // Normalizes or converts values to correct format and range
   const fixValue = (value, toRadians) => {
     switch (title) {
       case 'autoheading': {

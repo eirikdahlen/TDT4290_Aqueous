@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeInput.css';
 
+// Component for the inputs used in the different modes. Contains a header, a input field and a button
+// It uses the prop clickFunction to set the state of its parent to the input-value
 export default function ModeInput({ min, max, step, clickFunction, header }) {
   const [input, changeInput] = useState(0.0);
   return (

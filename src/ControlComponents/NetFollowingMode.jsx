@@ -9,9 +9,13 @@ import { normalize } from './../utils/utils';
 
 const { remote } = window.require('electron');
 
+// Component for the net following mode, handles its values and toggling it on and off.
 export default function NetfollowingMode({ title, modeData, step }) {
+  // Active is set if the current global mode is NF, and available is set from the global state
   let active = modeData.currentMode === ModeEnum.NETFOLLOWING;
   let available = modeData.nfAvailable;
+
+  // Normalises a value to the correct ranges
   function fixValue(value, type) {
     if (type === 'velocity') {
       value = normalize(value, -10, 10);
@@ -23,7 +27,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
     return value;
   }
 
-  // Function that is run when the update-button is clicked
+  // Function that is run when the update-button is clicked, sets the global state to value
   const updateValue = (value, type) => {
     if (type === 'velocity') {
       remote.getGlobal('netfollowing')['velocity'] = fixValue(value, type);
@@ -36,7 +40,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
     }
   };
 
-  // Function that is run when toggle is clicked
+  // Function that is run when toggle is clicked - toggles to NF if available and in different mode, toggle to manual if in NF
   const toggle = () => {
     if (!available) {
       return;

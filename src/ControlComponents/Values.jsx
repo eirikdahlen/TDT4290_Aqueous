@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import './css/Values.css';
 import Title from './Title';
 
+// A container for ValueBox-components.
 export default function Values({ title, values, changeEffect }) {
+  // Handles rounding numbers and converting from boolean to numbers
   const fixValue = value => {
     if (typeof value === 'boolean') {
       return value ? 1 : 0;

@@ -8,13 +8,16 @@ import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
 
+// Component for the manual mode. Contains two locks, autoheading and autodepth
 export default function ManualMode({ title, toROV, modeData }) {
+  // Sets active if the current global mode is manual, and it is always available to be used
   let active = modeData.currentMode === ModeEnum.MANUAL;
   let available = true;
 
+  // Sets to manual mode if it is not already in manual mode
   const toggle = () => {
     if (!available || active) {
-      return; // Can't turn of manual mode
+      return;
     } else {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.MANUAL;
     }

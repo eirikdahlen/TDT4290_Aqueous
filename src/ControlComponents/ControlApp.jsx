@@ -1,4 +1,3 @@
-// The App for the ControlWindow. This is where every control-components should go.
 import React, { useState, useEffect } from 'react';
 import Values from './Values';
 import ManualMode from './ManualMode';
@@ -8,17 +7,21 @@ import './css/ControlApp.css';
 
 const { remote } = window.require('electron');
 
+// The ControlApp is the main component for the controls-window
 function ControlApp() {
+  // Set the states to the global variables
   const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
   const [controlValues, controlUpdate] = useState(remote.getGlobal('toROV'));
   const [mode, setMode] = useState(remote.getGlobal('mode'));
 
+  // Update sensorValues when data is received
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
       sensorUpdate(remote.getGlobal('fromROV'));
     });
   }, []);
 
+  // Update controlValues and mode when data is sent to ROV
   useEffect(() => {
     window.ipcRenderer.on('data-sent', () => {
       controlUpdate(remote.getGlobal('toROV'));
@@ -38,7 +41,7 @@ function ControlApp() {
           <NetfollowingMode
             title="Net Following"
             modeData={mode}
-            step={0.5}
+            step={0.05}
           ></NetfollowingMode>
           <DynamicPositioningMode
             title="Dynamic Positioning"

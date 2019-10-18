@@ -2,6 +2,7 @@ import React from 'react';
 import './css/Switch.css';
 import PropTypes from 'prop-types';
 
+// Component for the switch used in locks and modes
 const Switch = ({ isOn, handleToggle, id }) => {
   return (
     <>

@@ -9,12 +9,15 @@ import ModeInput from './ModeInput';
 
 const { remote } = window.require('electron');
 
+// DP mode component for setting DP-values and toggling DP on and off
 export default function DynamicPositioningMode({ title, modeData, step }) {
   const attributes = ['latitude', 'longitude', 'heading', 'depth'];
 
+  // Active if the current mode of the ROV is DP, available if the dpavailable flag is true
   let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
   let available = modeData.dpAvailable;
 
+  // Converts value of type withing proper range and format
   function fixValue(value, type) {
     if (type === 'latitude') {
       // Normalize value somehow here
@@ -28,16 +31,15 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
     return value;
   }
 
-  // Function that is run when the update-button is clicked
+  // Function that is run when the update-button is clicked - updates the global dp-variable with value
   const updateValue = (value, type) => {
-    // dont update value if invalid type or not in dynamic position
     if (attributes.indexOf(type) < 0) {
       return;
     }
     remote.getGlobal('dynamicpositioning')[type] = fixValue(value, type);
   };
 
-  // Function that is run when toggle is clicked
+  // Function that is run when toggle is clicked - sets to DP if dp is not current mode, sets to manual if dp is current
   const toggle = () => {
     if (!available) {
       return;
@@ -50,7 +52,7 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.DYNAMICPOSITIONING;
     } else {
-      console.log('Error in changing mode');
+      console.log('Error when changing mode');
     }
   };
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/ValueBox.css';
 
+// A component for a box containing a title, a value, and a optional changeEffect.
+// This is used in Values-component to display different values and show an effect on change.
 export default function ValueBox({ title, value, changeEffect }) {
   const [recentlyChanged, setRecentlyChanged] = useState(false);
   const nameMappings = {
@@ -9,12 +11,15 @@ export default function ValueBox({ title, value, changeEffect }) {
     autodepth: 'AD',
   };
 
+  // Sets a recentlyChanged-state which is used to add a temporary style when a value is changed
   useEffect(() => {
     if (changeEffect) {
       setRecentlyChanged(true);
       setTimeout(() => setRecentlyChanged(false), 500);
     }
   }, [value, changeEffect]);
+
+  // Properly formats titles
   const fixTitle = title => {
     if (nameMappings[title]) {
       return nameMappings[title];
