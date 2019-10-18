@@ -78,19 +78,19 @@ function scaleBias(context, initialWidth, initialHeight) {
     window.innerWidth,
     1000,
     1500,
-    0.5,
+    0.45,
     0.8,
   );
 }
 
-function drawBias(context, u, v, w) {
+function drawBias(context, u, v, w, initialWidth, initialHeight) {
   // Clamp the bias values between -1.0 and 1.0
   u = clamp(u, -1.0, 1.0);
   v = clamp(v, -1.0, 1.0);
   w = clamp(w, -1.0, 1.0);
 
   // Clear the canvas before redrawing
-  context.clearRect(0, 0, 10000, 10000);
+  context.clearRect(0, 0, initialWidth, initialHeight);
 
   // Set the initial color and stroke thickness
   context.strokeStyle = color_base_bias;

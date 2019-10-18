@@ -49,6 +49,8 @@ function scaleWidget(
 
   // Resize everything drawn on the canvas
   context.scale(factor, factor);
+
+  return factor;
 }
 
 export { clamp, radiansToDegrees, mapRange, scaleWidget };

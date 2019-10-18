@@ -113,7 +113,7 @@ function drawArrow(context, rovSize, initialWidth) {
 }
 
 function scaleMinimap(context, initialWidth, initialHeight) {
-  scaleWidget(
+  const factor = scaleWidget(
     context,
     initialWidth,
     initialHeight,
@@ -123,6 +123,15 @@ function scaleMinimap(context, initialWidth, initialHeight) {
     0.7,
     1,
   );
+
+  document.getElementsByClassName('MiniMapWidget')[0].style.width =
+    initialWidth * factor + 'px';
+
+  const zoomButtons = document.getElementsByClassName('zoomButton');
+
+  for (var i = 0; i < zoomButtons.length; i++) {
+    zoomButtons[i].style.fontSize = 22 * factor + 'px';
+  }
 }
 
 function initMinimap(boatHeading) {

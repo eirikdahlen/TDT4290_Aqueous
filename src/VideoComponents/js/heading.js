@@ -1,4 +1,4 @@
-import { scaleWidget } from './tools.js';
+import { clamp, mapRange, scaleWidget } from './tools.js';
 
 function wraparound(value, max_value) {
   // Wraparound
@@ -12,7 +12,7 @@ function wraparound(value, max_value) {
 }
 
 function scaleHeading(context, initialWidth, initialHeight) {
-  scaleWidget(
+  const factor = scaleWidget(
     context,
     initialWidth,
     initialHeight,
@@ -22,6 +22,23 @@ function scaleHeading(context, initialWidth, initialHeight) {
     0.7,
     1,
   );
+
+  const lockWidgetHeading = document.getElementById('LockWidgetHeading');
+
+  lockWidgetHeading.style.top = 150 * factor + 'px';
+
+  var sizeLockMargin = mapRange(window.innerWidth, 1000, 1500, 10, 0);
+  sizeLockMargin = clamp(sizeLockMargin, 0, 20);
+  lockWidgetHeading.style.marginTop = sizeLockMargin + 'px';
+
+  var sizeLockLabel = mapRange(window.innerWidth, 1000, 1500, 12, 16);
+  sizeLockLabel = clamp(sizeLockLabel, 12, 16);
+  lockWidgetHeading.style.fontSize = sizeLockLabel + 'px';
+
+  var sizeLockImg = mapRange(window.innerWidth, 1000, 1500, 12, 17);
+  sizeLockImg = clamp(sizeLockImg, 12, 17);
+  lockWidgetHeading.getElementsByTagName('img')[0].style.width =
+    sizeLockImg + 'px';
 }
 
 function drawHeading(

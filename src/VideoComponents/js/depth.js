@@ -1,9 +1,9 @@
-import { clamp, scaleWidget } from './tools.js';
+import { clamp, mapRange, scaleWidget } from './tools.js';
 
 const num_space = 50; // Spacing between the numerical labels
 
 function scaleDepth(context, initialWidth, initialHeight) {
-  scaleWidget(
+  const factor = scaleWidget(
     context,
     initialWidth,
     initialHeight,
@@ -13,6 +13,24 @@ function scaleDepth(context, initialWidth, initialHeight) {
     0.7,
     1,
   );
+
+  const lockWidgetDepth = document.getElementById('LockWidgetDepth');
+
+  lockWidgetDepth.style.top = 370 * factor + 'px';
+  lockWidgetDepth.style.left = 87 * factor + 'px';
+
+  var sizeLockMargin = mapRange(window.innerWidth, 1000, 1500, 20, 0);
+  sizeLockMargin = clamp(sizeLockMargin, 0, 20);
+  lockWidgetDepth.style.marginTop = sizeLockMargin + 'px';
+
+  var sizeLockLabel = mapRange(window.innerWidth, 1000, 1500, 12, 16);
+  sizeLockLabel = clamp(sizeLockLabel, 12, 16);
+  lockWidgetDepth.style.fontSize = sizeLockLabel + 'px';
+
+  var sizeLockImg = mapRange(window.innerWidth, 1000, 1500, 12, 17);
+  sizeLockImg = clamp(sizeLockImg, 12, 17);
+  lockWidgetDepth.getElementsByTagName('img')[0].style.width =
+    sizeLockImg + 'px';
 }
 
 function drawDepth(

@@ -1,15 +1,10 @@
 .MiniMapWidget {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   position: absolute;
   top: 100px;
-  right: 270px;
-}
-
-.MiniMap {
-  position: relative;
-  right: 0px;
+  right: 50px;
 }
 
 .zoom {

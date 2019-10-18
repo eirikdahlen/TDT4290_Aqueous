@@ -51,7 +51,7 @@ class MiniMapWidget extends CanvasWidget {
 
     return (
       <div className="MiniMapWidget">
-        <div className="MiniMap">{canvas}</div>
+        {canvas}
         {/* These buttons let us increase or decrease the max distance 
         that draws the ROV as a square on the map*/}
         <div className="zoom">

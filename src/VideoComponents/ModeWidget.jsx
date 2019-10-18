@@ -5,8 +5,14 @@ import './css/ModeWidget.css';
 import redX from './images/redX.png';
 import greenCheckmark from './images/greenCheckmark.png';
 import ModeEnum from '../constants/modeEnum';
+import { clamp, mapRange } from './js/tools.js';
 
 const { remote } = window.require('electron');
+
+const modeToLabel = {};
+modeToLabel[ModeEnum.MANUAL] = 'MANUAL';
+modeToLabel[ModeEnum.DYNAMICPOSITIONING] = 'DYN. POS.';
+modeToLabel[ModeEnum.NETFOLLOWING] = 'NET FOLLOWING';
 
 class ModeWidget extends Component {
   constructor(props) {
@@ -34,45 +40,51 @@ class ModeWidget extends Component {
   }
 
   componentDidMount() {
-    switch (this.props.globalMode) {
-      case ModeEnum.MANUAL:
-        this.modeLabel = 'MANUAL';
-        this.canvas = (
-          <div className={'NFAvailability ' + this.opacityStyle}>
-            <img src={this.imgsrc} alt=""></img>
-            <div>{this.nfLabel}</div>
-          </div>
-        );
-        break;
-      case ModeEnum.NETFOLLOWING:
-        if (remote.getGlobal('mode')['globalMode'] === ModeEnum.NETFOLLOWING) {
-          this.modeLabel = 'NET FOLLOWING';
-          this.canvas = (
-            <NetFollowingWidget
-              distance={remote.getGlobal('netfollowing')['distance']}
-              velocity={remote.getGlobal('netfollowing')['velocity']}
-            />
-          );
-        }
-        break;
-      case ModeEnum.DYNAMICPOSITIONING:
-        this.modeLabel = 'DYN. POS.';
-        this.canvas = (
-          <div className={'NFAvailability ' + this.opacityStyle}>
-            <img src={this.imgsrc} alt=""></img>
-            <div>{this.nfLabel}</div>
-          </div>
-        );
-        break;
-      default:
-        this.modeLabel = 'INVALID';
-        break;
+    window.addEventListener('resize', this.updateDimensions);
+
+    this.modeLabel = modeToLabel[this.props.globalMode];
+
+    if (this.props.globalMode === ModeEnum.NETFOLLOWING) {
+      this.canvas = (
+        <NetFollowingWidget
+          distance={remote.getGlobal('netfollowing')['distance']}
+          velocity={remote.getGlobal('netfollowing')['velocity']}
+        />
+      );
+    } else {
+      this.canvas = (
+        <div className={'NFAvailability ' + this.opacityStyle}>
+          <img id="ImgNFAvailable" src={this.imgsrc} alt=""></img>
+          <div>{this.nfLabel}</div>
+        </div>
+      );
     }
   }
 
   componentDidUpdate() {
     this.componentDidMount();
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions = () => {
+    var factorMode = mapRange(window.innerWidth, 1000, 1500, 12, 20);
+    factorMode = clamp(factorMode, 12, 20);
+    document.getElementsByClassName('ModeWidget')[0].style.fontSize =
+      factorMode + 'px';
+
+    var factorNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
+    factorNF = clamp(factorNF, 12, 14);
+    document.getElementsByClassName('NFAvailable')[0].style.fontSize =
+      factorNF + 'px';
+
+    var factorImg = mapRange(window.innerWidth, 1000, 1500, 15, 25);
+    factorImg = clamp(factorImg, 15, 25);
+    document.getElementById('ImgNFAvailable').style.width = factorImg + 'px';
+    this.componentDidUpdate();
+  };
 
   static get propTypes() {
     return {
