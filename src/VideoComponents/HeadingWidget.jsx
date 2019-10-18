@@ -6,7 +6,7 @@ import { radiansToDegrees, wrapDegrees } from './js/tools.js';
 import './css/HeadingWidget.css';
 
 const initialWidth = 800;
-const initialHeight = 100;
+const initialHeight = 110;
 
 class HeadingWidget extends CanvasWidget {
   constructor(props) {

@@ -83,17 +83,19 @@ class ModeWidget extends Component {
     document.getElementsByClassName('ModeWidget')[0].style.fontSize =
       sizeMode + 'px';
 
-    // Scale the NF availability text
-    var sizeNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
-    sizeNF = clamp(sizeNF, 12, 14);
-    document.getElementsByClassName('NFAvailable')[0].style.fontSize =
-      sizeNF + 'px';
+    if (this.props.globalMode !== ModeEnum.NETFOLLOWING) {
+      // Scale the NF availability text
+      var sizeNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
+      sizeNF = clamp(sizeNF, 12, 14);
+      document.getElementsByClassName('NFAvailable')[0].style.fontSize =
+        sizeNF + 'px';
 
-    // Scale the NF availability icon
-    var sizeImg = mapRange(window.innerWidth, 1000, 1500, 15, 25);
-    sizeImg = clamp(sizeImg, 15, 25);
-    document.getElementById('ImgNFAvailable').style.width = sizeImg + 'px';
-    this.componentDidUpdate();
+      // Scale the NF availability icon
+      var sizeImg = mapRange(window.innerWidth, 1000, 1500, 15, 25);
+      sizeImg = clamp(sizeImg, 15, 25);
+      document.getElementById('ImgNFAvailable').style.width = sizeImg + 'px';
+      this.componentDidUpdate();
+    }
   };
 
   static get propTypes() {
