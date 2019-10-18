@@ -42,6 +42,7 @@ const mapping = {
   J: 'DPadLeft', //sway bias-
   I: 'DPadUp', //surge bias+
   K: 'DPadDown', //surge bias-
+  DELETE: 'L3'
   Q: 'LB', //heave bias (down) +
   E: 'RB', //negative heave bias (up) -
 };

@@ -181,6 +181,13 @@ function handleClick({ button, value }) {
     case 'Start': // toggle DP
       global.mode.globalMode = global.mode.globalMode == 1 ? 0 : 1;
       break;
+    case 'L3': //turn on manual mode, turn off NF and DP and reset bias
+      console.log("DELETE pressed!");
+      global.mode.globalMode = 0;
+      Object.keys(bias).forEach(v => (bias[v] = 0.0));
+      ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
+      controls['heave'] = autoDepth ? depthReference : 0.0;
+      break;
   }
   global.toROV = controls;
   global.bias = bias;
