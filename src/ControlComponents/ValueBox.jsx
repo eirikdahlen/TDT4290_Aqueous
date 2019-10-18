@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/ValueBox.css';
 
-export default function ValueBox({ title, value }) {
+export default function ValueBox({ title, value, changeEffect }) {
+  const [recentlyChanged, setRecentlyChanged] = useState(false);
   const nameMappings = {
     autoheading: 'AH',
     autodepth: 'AD',
   };
+
+  useEffect(() => {
+    if (changeEffect) {
+      setRecentlyChanged(true);
+      setTimeout(() => setRecentlyChanged(false), 500);
+    }
+  }, [value]);
   const fixTitle = title => {
     if (nameMappings[title]) {
       return nameMappings[title];
@@ -15,7 +23,7 @@ export default function ValueBox({ title, value }) {
     }
   };
   return (
-    <div className="ValueBox">
+    <div className={'ValueBox ' + (recentlyChanged ? 'changedValueBox' : '')}>
       <h4 className="valueBoxHeader">{fixTitle(title)}</h4>
       <h4 className="value">{value}</h4>
     </div>

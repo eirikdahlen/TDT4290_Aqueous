@@ -40,10 +40,18 @@ function ControlApp() {
         </div>
         <div className="bottomWindow">
           <div className="bottomLeft">
-            <Values title="sensor values" values={sensorValues} />
+            <Values
+              title="sensor values"
+              values={sensorValues}
+              changeEffect={false}
+            />
           </div>
           <div className="bottomRight">
-            <Values title="Sent to ROV" values={controlValues} />
+            <Values
+              title="Sent to ROV"
+              values={controlValues}
+              changeEffect={true}
+            />
           </div>
         </div>
       </div>

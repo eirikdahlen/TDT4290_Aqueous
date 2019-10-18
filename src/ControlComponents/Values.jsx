@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './css/Values.css';
 import Title from './Title';
 
-export default function Values({ title, values }) {
+export default function Values({ title, values, changeEffect }) {
   const fixValue = value => {
     if (typeof value === 'boolean') {
       return value ? 1 : 0;
@@ -17,7 +17,12 @@ export default function Values({ title, values }) {
       <Title>{title}</Title>
       <div className="valuesFlex">
         {Object.keys(values).map(value => (
-          <ValueBox key={value} title={value} value={fixValue(values[value])} />
+          <ValueBox
+            key={value}
+            title={value}
+            value={fixValue(values[value])}
+            changeEffect={changeEffect}
+          />
         ))}
       </div>
     </div>
