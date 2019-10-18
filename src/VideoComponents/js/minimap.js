@@ -14,7 +14,6 @@ function drawBoat(ctx, boatWidth, boatLength, boatHeading) {
   ctx.lineTo(-boatWidth, boatLength / 2);
   ctx.lineTo(-boatWidth, -boatWidth);
   ctx.closePath();
-  ctx.fillStyle = '#FFFFFF';
   ctx.strokeStyle = '#FFFFFF';
   ctx.stroke();
 }
