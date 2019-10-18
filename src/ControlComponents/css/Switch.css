@@ -12,7 +12,7 @@
   cursor: pointer;
   width: 100%;
   height: 35px;
-  background: darkgray;
+  background: var(--primary-dark);
   position: relative;
   transition: background-color 0.2s;
 }

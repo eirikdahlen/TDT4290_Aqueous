@@ -1,10 +1,10 @@
 .Mode {
   max-width: 250px;
-  background-color: lightgray;
+  background-color: var(--primary-normal);
   display: flex;
   flex-direction: column;
   position: relative;
-  box-shadow: 0 0 2px 1px darkgray;
+  box-shadow: var(--shadow-primary);
 }
 
 .modeInputFlex {

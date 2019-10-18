@@ -8,3 +8,21 @@ body,
 #root > div {
   height: 100%;
 }
+
+/* Color variables */
+:root {
+  --primary-dark: #007ac1;
+  --primary-normal: #03a9f4;
+  --primary-light: #67daff;
+
+  --secondary-dark: #b0003a;
+  --secondary-normal: #e91e63;
+  --secondary-light: #ff6090;
+
+  --activated-normal: #4caf50;
+  --activated-dark: #087f23;
+  --activated-light: #80e27e;
+
+  --shadow-primary: 0 0 2px 1px black;
+  --shadow-secondary: 0 0 1.5px 0.5px black;
+}

@@ -34,7 +34,7 @@
 .bottomRight {
   width: 50%;
   height: 100%;
-  background-color: lightgray;
+  background-color: var(--primary-normal);
 }
 
 .bottomLeft {

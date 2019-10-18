@@ -1,10 +1,13 @@
 .ValueBox {
-  background-color: lightgray;
-  height: 43px;
-  width: 43px;
+  background-color: var(--primary-light);
+  height: 50px;
+  width: 50px;
   margin: 8px;
   padding: 3px;
-  box-shadow: 0 0 2px 1px rgb(114, 114, 114);
+  box-shadow: var(--shadow-secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ValueBox h4 {
@@ -14,6 +17,7 @@
 .value,
 .valueBoxHeader {
   margin: 0;
+  margin-top: -2px;
 }
 
 .value {

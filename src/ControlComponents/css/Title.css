@@ -2,7 +2,7 @@
   font-size: 15px;
   font-weight: bold;
   padding: 5px;
-  background-color: silver;
+  background-color: var(--primary-dark);
   text-align: center;
   border-radius: inherit;
   text-overflow: ellipsis;
