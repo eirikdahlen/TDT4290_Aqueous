@@ -6,6 +6,7 @@ import RollPitch from './RollPitch';
 import ModeMenu from './ModeMenu';
 import Status from './Status';
 import Lock from './Lock';
+import ForceValues from './ForceValues';
 
 import './css/ControlApp.css';
 
@@ -70,6 +71,10 @@ function ControlApp() {
           </div>
         </div>
         <div className="bottomWindow">
+          <div>
+            <div className="forcesTitle">Commanded Forces</div>
+            <ForceValues controlValues={controlValues} />
+          </div>
           <Values sensorValues={sensorValues} />
         </div>
       </div>
