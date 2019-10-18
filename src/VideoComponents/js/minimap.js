@@ -16,7 +16,6 @@ function drawBoat(ctx, boatWidth, boatLength, boatHeading) {
   ctx.closePath();
   ctx.fillStyle = '#FFFFFF';
   ctx.strokeStyle = '#FFFFFF';
-  ctx.fill();
   ctx.stroke();
 }
 
