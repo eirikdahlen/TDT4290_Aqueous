@@ -133,6 +133,22 @@ function createXboxMappingWindow() {
   xboxMappingWindow.setMenu(null);
 }
 
+function createMockupWindow() {
+  let mockupWindow = new electron.BrowserWindow({
+    title: 'Mockup',
+  });
+
+  mockupWindow.loadURL(
+    `file://${path.join(__dirname, '../../build/index.html?mockupWindow')}`,
+  );
+  // Handle garbage collection
+  mockupWindow.on('close', function() {
+    mockupWindow = null;
+  });
+
+  mockupWindow.setMenu(null);
+}
+
 // Handle add item window
 function createKeyboardMappingWindow() {
   let keyboardMappingWindow = new electron.BrowserWindow({
@@ -154,4 +170,5 @@ module.exports = {
   setWidthAndHeight,
   createXboxMappingWindow,
   createKeyboardMappingWindow,
+  createMockupWindow,
 };

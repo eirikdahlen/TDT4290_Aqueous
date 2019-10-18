@@ -6,6 +6,7 @@ const { getFileAndLaunch } = require('../launch/chooseFile');
 const {
   createKeyboardMappingWindow,
   createXboxMappingWindow,
+  createMockupWindow,
 } = require('./windows');
 const { getConnectedClient } = require('./../TCP/TCPClient');
 
@@ -90,6 +91,12 @@ const menuTemplate = [
         label: 'Keyboard Mappings',
         click: async () => {
           createKeyboardMappingWindow();
+        },
+      },
+      {
+        label: 'Mockup window',
+        click: async () => {
+          createMockupWindow();
         },
       },
     ],
