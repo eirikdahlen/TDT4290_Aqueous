@@ -36,7 +36,6 @@ function ControlApp() {
           <ManualMode
             title="Manual Mode"
             toROV={controlValues}
-            fromROV={sensorValues}
             modeData={mode}
           ></ManualMode>
           <NetfollowingMode
