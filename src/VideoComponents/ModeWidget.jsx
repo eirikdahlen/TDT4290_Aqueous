@@ -42,6 +42,7 @@ class ModeWidget extends Component {
   }
 
   componentDidMount() {
+<<<<<<< 2b11f6bcbaf24caad20de6153a9ad4c1ca546c8e
     // Add an event listener to be able to scale the widget along with the window
     window.addEventListener('resize', this.updateDimensions);
 
@@ -64,6 +65,41 @@ class ModeWidget extends Component {
           <div>{this.nfLabel}</div>
         </div>
       );
+=======
+    switch (this.props.currentMode) {
+      case ModeEnum.MANUAL:
+        this.modeLabel = 'MANUAL';
+        this.canvas = (
+          <div className={'NFAvailability ' + this.opacityStyle}>
+            <img src={this.imgsrc} alt=""></img>
+            <div>{this.nfLabel}</div>
+          </div>
+        );
+        break;
+      case ModeEnum.NETFOLLOWING:
+        if (remote.getGlobal('mode')['currentMode'] === ModeEnum.NETFOLLOWING) {
+          this.modeLabel = 'NET FOLLOWING';
+          this.canvas = (
+            <NetFollowingWidget
+              distance={remote.getGlobal('netfollowing')['distance']}
+              velocity={remote.getGlobal('netfollowing')['velocity']}
+            />
+          );
+        }
+        break;
+      case ModeEnum.DYNAMICPOSITIONING:
+        this.modeLabel = 'DYN. POS.';
+        this.canvas = (
+          <div className={'NFAvailability ' + this.opacityStyle}>
+            <img src={this.imgsrc} alt=""></img>
+            <div>{this.nfLabel}</div>
+          </div>
+        );
+        break;
+      default:
+        this.modeLabel = 'INVALID';
+        break;
+>>>>>>> #122 fix: fix bug in modewidget from refactoring global variable
     }
   }
 
@@ -100,7 +136,7 @@ class ModeWidget extends Component {
 
   static get propTypes() {
     return {
-      globalMode: PropTypes.number,
+      currentMode: PropTypes.number,
       nfAvailable: PropTypes.bool,
     };
   }
