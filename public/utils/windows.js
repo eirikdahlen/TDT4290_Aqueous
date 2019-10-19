@@ -28,6 +28,7 @@ function createWindows() {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    icon: path.join(__dirname, '../img/logo.png'),
   });
 
   //Adds a search parameter to the url to be loaded - this is then handled in the index.js/ViewManager.js, which finds the correct .js-file to load.
@@ -47,6 +48,7 @@ function createWindows() {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    icon: path.join(__dirname, '../img/logo.png'),
   });
 
   controlWindow.loadURL(
