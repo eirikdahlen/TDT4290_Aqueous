@@ -20,9 +20,9 @@ export default function Lock({
   max,
   step,
   manualModeActive,
+  current,
 }) {
   const [reference, setReference] = useState(0.0);
-  const [localActive, setLocalActive] = useState(active);
 
   const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
   const nameMapping = {
@@ -33,31 +33,15 @@ export default function Lock({
   // When manualModeActive (true if manual mode is active) changes, the global lock state is updates to match the Lock-components
   useEffect(() => {
     if (manualModeActive) {
-      remote.getGlobal('toROV')[title] = localActive;
-      if (localActive) {
+      remote.getGlobal('toROV')[title] = active;
+      if (active) {
         remote.getGlobal('toROV')[type] = fixValue(reference, true);
       }
     } else {
       remote.getGlobal('toROV')[title] = false;
       remote.getGlobal('toROV')[type] = 0.0;
     }
-  });
-
-  // Function that is run when the update-button is clicked - sets the local reference
-  const updateValue = value => {
-    setReference(value);
-  };
-
-  // Function that is run when toggle is clicked - toggles the localActive-state
-  const toggle = () => {
-    setLocalActive(!localActive);
-    if (manualModeActive) {
-      remote.getGlobal('toROV')[title] = localActive;
-      if (localActive) {
-        remote.getGlobal('toROV')[type] = 0.0;
-      }
-    }
-  };
+  }, [manualModeActive, reference, title, type, min, max]);
 
   // Normalizes or converts values to correct format and range
   const fixValue = (value, toRadians) => {
@@ -78,6 +62,26 @@ export default function Lock({
     }
   };
 
+  // Function that is run when the update-button is clicked - sets the local reference
+  const updateValue = value => {
+    setReference(value);
+    if (active && manualModeActive) {
+      remote.getGlobal('toROV')[type] = fixValue(reference, true);
+    }
+  };
+
+  // Function that is run when toggle is clicked - toggles the localActive-state
+  const toggle = () => {
+    remote.getGlobal('toROV')[title] = !remote.getGlobal('toROV')[title];
+    if (manualModeActive) {
+      if (!active) {
+        remote.getGlobal('toROV')[type] = fixValue(reference, true);
+      } else {
+        remote.getGlobal('toROV')[type] = 0.0;
+      }
+    }
+  };
+
   return (
     <div className="Lock">
       <Title small={true}>{nameMapping[title]}</Title>
@@ -91,7 +95,7 @@ export default function Lock({
       </div>
       <div className="check">
         <Switch
-          isOn={localActive}
+          isOn={active}
           handleToggle={() => {
             toggle();
           }}
