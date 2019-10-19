@@ -37,6 +37,6 @@ export default function ValueBox({ title, value, changeEffect }) {
 
 ValueBox.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   changeEffect: PropTypes.bool,
 };

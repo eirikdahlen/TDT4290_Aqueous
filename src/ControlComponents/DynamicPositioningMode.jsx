@@ -101,5 +101,5 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
 DynamicPositioningMode.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
-  modeData: PropTypes.number,
+  modeData: PropTypes.object,
 };

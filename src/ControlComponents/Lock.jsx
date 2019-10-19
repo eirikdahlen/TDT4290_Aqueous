@@ -51,6 +51,12 @@ export default function Lock({
   // Function that is run when toggle is clicked - toggles the localActive-state
   const toggle = () => {
     setLocalActive(!localActive);
+    if (manualModeActive) {
+      remote.getGlobal('toROV')[title] = localActive;
+      if (localActive) {
+        remote.getGlobal('toROV')[type] = 0.0;
+      }
+    }
   };
 
   // Normalizes or converts values to correct format and range
