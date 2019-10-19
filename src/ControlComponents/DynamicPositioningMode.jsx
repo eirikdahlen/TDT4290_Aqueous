@@ -52,7 +52,7 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.DYNAMICPOSITIONING;
     } else {
-      console.log('Error when changing mode');
+      console.log('Error - unable to change mode');
     }
   };
 

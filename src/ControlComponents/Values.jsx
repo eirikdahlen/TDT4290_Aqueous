@@ -11,7 +11,7 @@ export default function Values({ title, values, changeEffect }) {
     if (typeof value === 'boolean') {
       return value ? 1 : 0;
     }
-    return Math.abs(value) >= 100 ? value.toFixed(0) : value.toFixed(2);
+    return Math.abs(value) >= 100 ? value.toFixed(1) : value.toFixed(2);
   };
 
   return (

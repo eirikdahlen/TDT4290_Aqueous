@@ -73,15 +73,13 @@ export default function Lock({
     }
   };
 
-  // Function that is run when toggle is clicked - toggles the localActive-state
+  // Function that is run when toggle is clicked - toggles the autoheading/depth
   const toggle = () => {
     remote.getGlobal('toROV')[title] = !remote.getGlobal('toROV')[title];
     if (manualModeActive) {
-      if (!active) {
-        remote.getGlobal('toROV')[type] = fixValue(reference, true);
-      } else {
-        remote.getGlobal('toROV')[type] = 0.0;
-      }
+      remote.getGlobal('toROV')[type] = active
+        ? 0.0
+        : fixValue(reference, true);
     }
   };
 

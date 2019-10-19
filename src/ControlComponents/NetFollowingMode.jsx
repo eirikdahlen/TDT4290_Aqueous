@@ -53,7 +53,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.NETFOLLOWING;
     } else {
-      console.log('Error in changing mode');
+      console.log('Error - unable to change mode');
     }
   };
 

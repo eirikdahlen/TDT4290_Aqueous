@@ -18,9 +18,8 @@ export default function ManualMode({ title, toROV, modeData }) {
   const toggle = () => {
     if (!available || active) {
       return;
-    } else {
-      remote.getGlobal('mode')['currentMode'] = ModeEnum.MANUAL;
     }
+    remote.getGlobal('mode')['currentMode'] = ModeEnum.MANUAL;
   };
 
   return (

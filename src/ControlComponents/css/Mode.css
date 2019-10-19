@@ -5,7 +5,7 @@
   flex-direction: column;
   position: relative;
   box-shadow: var(--shadow-primary);
-  opacity: 0.9;
+  opacity: 0.8;
   transition: all 0.2s;
 }
 
