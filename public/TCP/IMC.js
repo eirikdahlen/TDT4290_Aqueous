@@ -1,12 +1,20 @@
 const encode = {
   estimatedState: encodeEstimatedState,
   entityState: encodeEntityState,
+  desiredControl: encodeDesiredControl,
+  lowLevelControlManeuver: {
+    desiredHeading: encodeLowLevelControlManeuverDesiredHeading,
+    desiredZ: encodeLowLevelControlManeuverDesiredZ,
+  },
+  goTo: encodeGoTo,
+  netFollow: encodeNetFollow,
+  customNetFollow: encodeCustomNetFollowState,
 };
 
-const decode = {
-  estimatedState: decodeEstimatedState,
-  entityState: decodeEntityState,
-};
+function decode(buf) {
+  let id = buf.readUInt16BE(0);
+  return decodeImc(buf, idToMessageMetadata[id]);
+}
 
 const datatypes = {
   uint_8t: {
@@ -32,6 +40,9 @@ const datatypes = {
   bitfield: {
     name: 'bitfield',
     length: 1,
+  },
+  recursive: {
+    name: 'recursive',
   },
 };
 
@@ -122,11 +133,23 @@ function decodeImc(buf, imcMessageMetadata) {
             imcEntity.fields,
           );
           break;
+        case datatypes.recursive:
+          result[imcEntity.name] = decodeImc(
+            buf.subarray(
+              offset,
+              offset + idToMessageMetadata[buf.readUInt16BE(offset)].length,
+            ),
+            idToMessageMetadata[buf.readUInt16BE(offset)],
+          );
+          break;
         default:
           break;
       }
     }
-    offset += imcEntity.datatype.length;
+    offset +=
+      imcEntity.datatype === datatypes.recursive
+        ? idToMessageMetadata[buf.readUInt16BE(offset)].length
+        : imcEntity.datatype.length;
   });
   return result;
 }
@@ -207,10 +230,6 @@ function encodeEstimatedState(estimatedState) {
   return encodeIMC(estimatedState, estimatedStateMetadata);
 }
 
-function decodeEstimatedState(buf) {
-  return decodeImc(buf, estimatedStateMetadata);
-}
-
 const entityStateMetadata = {
   length: 8,
   id: {
@@ -236,8 +255,266 @@ function encodeEntityState(entityState) {
   return encodeIMC(entityState, entityStateMetadata);
 }
 
-function decodeEntityState(buf) {
-  return decodeImc(buf, entityStateMetadata);
+const desiredControlMetadata = {
+  length: 51,
+  id: {
+    value: 407,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'x',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'y',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'z',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'k',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'm',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'n',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'flags',
+      datatype: datatypes.bitfield,
+      fields: ['x', 'y', 'z', 'k', 'm', 'n', '', ''],
+    },
+  ],
+};
+
+function encodeDesiredControl(desiredControl) {
+  return encodeIMC(desiredControl, desiredControlMetadata);
 }
+
+const lowLevelControlManeuverMetadata = {
+  id: {
+    value: 455,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'control',
+      datatype: datatypes.recursive,
+    },
+    {
+      name: 'duration',
+      datatype: datatypes.uint_16t,
+    },
+  ],
+};
+
+function encodeLowLevelControlManeuver(
+  encodeControlManeuver,
+  ControlManeuver,
+  duration,
+) {
+  let idBuffer = Buffer.alloc(2);
+  idBuffer.writeInt16BE(lowLevelControlManeuverMetadata.id.value);
+
+  let desiredHeadingBuf = encodeControlManeuver(ControlManeuver);
+
+  let durationBuffer = Buffer.alloc(2);
+  durationBuffer.writeInt16BE(duration);
+
+  return Buffer.concat(
+    [idBuffer, desiredHeadingBuf, durationBuffer],
+    idBuffer.length + desiredHeadingBuf.length + durationBuffer.length,
+  );
+}
+
+const desiredHeadingMetadata = {
+  length: 10,
+  id: {
+    value: 400,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'value',
+      datatype: datatypes.fp64_t,
+    },
+  ],
+};
+
+function encodeDesiredHeading(desiredHeading) {
+  return encodeIMC(desiredHeading, desiredHeadingMetadata);
+}
+
+function encodeLowLevelControlManeuverDesiredHeading(desiredHeading, duration) {
+  return encodeLowLevelControlManeuver(
+    encodeDesiredHeading,
+    desiredHeading,
+    duration,
+  );
+}
+
+const desiredZMetadata = {
+  length: 7,
+  id: {
+    value: 401,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'value',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'z_units',
+      datatype: datatypes.uint_8t,
+    },
+  ],
+};
+
+function encodeDesiredZ(desiredZ) {
+  return encodeIMC(desiredZ, desiredZMetadata);
+}
+
+function encodeLowLevelControlManeuverDesiredZ(desiredZ, duration) {
+  return encodeLowLevelControlManeuver(encodeDesiredZ, desiredZ, duration);
+}
+
+const goToMetadata = {
+  length: 54,
+  id: {
+    value: 450,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'timeout',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'lat',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'lon',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'z',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'z_units',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'speed',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'speed_units',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'roll',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'pitch',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'yaw',
+      datatype: datatypes.fp64_t,
+    },
+  ],
+};
+
+function encodeGoTo(goTo) {
+  return encodeIMC(goTo, goToMetadata);
+}
+
+const netFollowMetadata = {
+  length: 33,
+  id: {
+    value: 465,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'timeout',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'name',
+      datatype: datatypes.uint_32t,
+      value: 151110,
+    },
+    {
+      name: 'd',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'v',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'z',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'z_units',
+      datatype: datatypes.uint_8t,
+    },
+  ],
+};
+
+function encodeNetFollow(netFollow) {
+  return encodeIMC(netFollow, netFollowMetadata);
+}
+
+const customNetFollowStateMetadata = {
+  length: 18,
+  id: {
+    value: 1002,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'd',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'v',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'rad',
+      datatype: datatypes.fp64_t,
+    },
+  ],
+};
+
+function encodeCustomNetFollowState(customNetFollowState) {
+  return encodeIMC(customNetFollowState, customNetFollowStateMetadata);
+}
+
+const idToMessageMetadata = {
+  350: estimatedStateMetadata,
+  1: entityStateMetadata,
+  407: desiredControlMetadata,
+  400: desiredHeadingMetadata,
+  401: desiredZMetadata,
+  455: lowLevelControlManeuverMetadata,
+  450: goToMetadata,
+  465: netFollowMetadata,
+  1002: customNetFollowStateMetadata,
+};
 
 module.exports = { encode, decode };
