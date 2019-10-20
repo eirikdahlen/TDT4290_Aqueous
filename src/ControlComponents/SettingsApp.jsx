@@ -18,6 +18,11 @@ export default function SettingsApp() {
     });
   });
 
+  const closeWindow = () => {
+    let w = remote.getCurrentWindow();
+    w.close();
+  };
+
   const choseSerialFile = () => {
     window.ipcRenderer.send('run-file-pick');
   };
@@ -32,8 +37,7 @@ export default function SettingsApp() {
     if (serialFileInput !== serialFile) {
       remote.getGlobal('settings')['serialFile'] = serialFileInput;
     }
-    let w = remote.getCurrentWindow();
-    w.close();
+    closeWindow();
   };
 
   return (
@@ -54,16 +58,19 @@ export default function SettingsApp() {
       </div>
       <div className="settingGroup">
         <label>Serial file</label>
-        <input
-          id="serialField"
-          value={serialFile}
-          onChange={e => setSerialFileInput(e.target.value)}
-        ></input>
+        <div className="serialInputs">
+          <input
+            id="serialField"
+            value={serialFile}
+            onChange={e => setSerialFileInput(e.target.value)}
+          ></input>
+          <button onClick={choseSerialFile}></button>
+        </div>
       </div>
       <button className="updateSettingsBtn" onClick={updateSettings}>
-        Update
+        UPDATE
       </button>
-      <button onClick={choseSerialFile}></button>
+      <button className="closeSettings" onClick={closeWindow}></button>
     </div>
   );
 }

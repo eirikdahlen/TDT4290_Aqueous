@@ -152,6 +152,7 @@ function createSettingsWindow(x, y) {
   let settingsWindow = new BrowserWindow({
     title: 'Settings',
     modal: true,
+    frame: false,
     parent: controlWindow,
     x: x - 50,
     y: y - 50,
@@ -161,9 +162,10 @@ function createSettingsWindow(x, y) {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    transparent: true,
   });
   settingsWindow.setMenu(null);
-  // Handle garbage collection
+
   settingsWindow.on('close', function() {
     settingsWindow = null;
   });
@@ -176,7 +178,6 @@ function createSettingsWindow(x, y) {
           '../../build/index.html?settingsWindow',
         )}`,
   );
-  settingsWindow.webContents.openDevTools();
   global.settingsWindow = settingsWindow;
 }
 
