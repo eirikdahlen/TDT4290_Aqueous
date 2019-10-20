@@ -16,7 +16,7 @@ function setIPCListeners() {
   });
 
   //Listen to function requests
-  ipcMain.on('run-file-pick', event => {
+  ipcMain.on('run-file-pick', () => {
     getFileAndSend();
   });
 }

@@ -11,6 +11,7 @@ export default function SettingsApp() {
   const [hostInput, setHostInput] = useState(host);
   const [serialFileInput, setSerialFileInput] = useState(serialFile);
 
+  // Listens to the file-chosen message which is sent with the filename that is chosen
   useEffect(() => {
     window.ipcRenderer.on('file-chosen', (event, content) => {
       setSerialFileInput(content);
@@ -18,39 +19,46 @@ export default function SettingsApp() {
     });
   });
 
+  // Listens to enter-click which runs the updateSettings-function
+  useEffect(() => {
+    document.addEventListener('keydown', e => {
+      const key = e.key.toUpperCase();
+      if (key === 'ENTER') {
+        updateSettings();
+      }
+    });
+  });
+
+  // Closes current window - which is the settings-window
   const closeWindow = () => {
     let w = remote.getCurrentWindow();
     w.close();
   };
 
+  // Sends a message to the main process to open the file-picker
   const choseSerialFile = () => {
     window.ipcRenderer.send('run-file-pick');
   };
 
+  // Function which is run on button click or enter click to update values
   const updateSettings = () => {
-    if (portInput !== port) {
-      remote.getGlobal('settings')['port'] = portInput;
-    }
-    if (hostInput !== host) {
-      remote.getGlobal('settings')['host'] = hostInput;
-    }
-    if (serialFileInput !== serialFile) {
-      remote.getGlobal('settings')['serialFile'] = serialFileInput;
-    }
+    remote.getGlobal('settings')['port'] = portInput;
+    remote.getGlobal('settings')['host'] = hostInput;
+    remote.getGlobal('settings')['serialFile'] = serialFileInput;
     closeWindow();
   };
 
   return (
     <div className="SettingsApp">
       <div className="settingGroup">
-        <label>Port</label>
+        <label>TCP port</label>
         <input
           value={portInput}
           onChange={e => setPortInput(e.target.value)}
         ></input>
       </div>
       <div className="settingGroup">
-        <label>Host</label>
+        <label>Host IP address</label>
         <input
           value={hostInput}
           onChange={e => setHostInput(e.target.value)}

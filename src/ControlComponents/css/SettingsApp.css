@@ -80,9 +80,14 @@
   border: none;
   background: url('../img/exit.png');
   background-repeat: no-repeat;
-  background-size: 13px;
+  background-size: 12px;
   background-position: center;
   cursor: pointer;
   -webkit-app-region: no-drag;
   outline: none;
+  opacity: 0.7;
+}
+
+.closeSettings:hover {
+  opacity: 1;
 }

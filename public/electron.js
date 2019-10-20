@@ -19,6 +19,7 @@ const { closeSimulator } = require('./launch/closeSimulator');
 let controlWindow;
 let videoWindow;
 
+// Global settings for TCP port and IP adress, as well as the "start serial port"-file
 global.settings = {
   port: 5000,
   host: '127.0.0.1',
