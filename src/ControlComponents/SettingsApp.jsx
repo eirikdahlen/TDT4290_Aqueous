@@ -1,6 +1,6 @@
 // The App for the VideoWindow. This is where every video-component should go.
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/SettingsApp.css';
 
 const { remote } = window.require('electron');
@@ -10,6 +10,17 @@ export default function SettingsApp() {
   const [portInput, setPortInput] = useState(port);
   const [hostInput, setHostInput] = useState(host);
   const [serialFileInput, setSerialFileInput] = useState(serialFile);
+
+  useEffect(() => {
+    window.ipcRenderer.on('file-chosen', (event, content) => {
+      setSerialFileInput(content);
+      document.getElementById('serialField').value = content;
+    });
+  });
+
+  const choseSerialFile = () => {
+    window.ipcRenderer.send('run-file-pick');
+  };
 
   const updateSettings = () => {
     if (portInput !== port) {
@@ -30,27 +41,29 @@ export default function SettingsApp() {
       <div className="settingGroup">
         <label>Port</label>
         <input
-          placeholder={port}
+          value={portInput}
           onChange={e => setPortInput(e.target.value)}
         ></input>
       </div>
       <div className="settingGroup">
         <label>Host</label>
         <input
-          placeholder={host}
+          value={hostInput}
           onChange={e => setHostInput(e.target.value)}
         ></input>
       </div>
       <div className="settingGroup">
         <label>Serial file</label>
         <input
-          placeholder={serialFile}
+          id="serialField"
+          value={serialFile}
           onChange={e => setSerialFileInput(e.target.value)}
         ></input>
       </div>
       <button className="updateSettingsBtn" onClick={updateSettings}>
         Update
       </button>
+      <button onClick={choseSerialFile}></button>
     </div>
   );
 }

@@ -33,7 +33,7 @@
   cursor: pointer;
   background-color: #03a9f4; /* Change to variable */
   transition: all 0.2s;
-  margin-top: 10px;
+  margin: 10px 0;
 }
 
 .SettingsApp button:hover {

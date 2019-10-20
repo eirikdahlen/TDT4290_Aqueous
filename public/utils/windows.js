@@ -177,6 +177,7 @@ function createSettingsWindow(x, y) {
         )}`,
   );
   settingsWindow.webContents.openDevTools();
+  global.settingsWindow = settingsWindow;
 }
 
 module.exports = {
