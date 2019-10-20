@@ -56,30 +56,29 @@ function encodeIMC(imcMessage, imcMessageMetadata) {
   buf.writeUInt16BE(imcMessageMetadata.id.value);
   let offset = imcMessageMetadata.id.datatype.length;
 
-  imcMessageMetadata.message.map(value => {
-    switch (value.datatype) {
+  imcMessageMetadata.message.map(imcEntity => {
+    let imcValue = Object.prototype.hasOwnProperty.call(imcEntity, 'value')
+      ? imcEntity.value
+      : imcMessage[imcEntity['name']];
+    switch (imcEntity.datatype) {
       case datatypes.uint_8t:
-        buf.writeUIntBE(
-          imcMessage[value['name']],
-          offset,
-          value.datatype.length,
-        );
+        buf.writeUIntBE(imcValue, offset, imcEntity.datatype.length);
         break;
       case datatypes.uint_16t:
-        buf.writeUInt16BE(imcMessage[value['name']], offset);
+        buf.writeUInt16BE(imcValue, offset);
         break;
       case datatypes.uint_32t:
-        buf.writeUInt32BE(imcMessage[value['name']], offset);
+        buf.writeUInt32BE(imcValue, offset);
         break;
       case datatypes.fp32_t:
-        buf.writeFloatBE(imcMessage[value['name']], offset);
+        buf.writeFloatBE(imcValue, offset);
         break;
       case datatypes.fp64_t:
-        buf.writeDoubleBE(imcMessage[value['name']], offset);
+        buf.writeDoubleBE(imcValue, offset);
         break;
       case datatypes.bitfield:
         buf.writeUIntBE(
-          bitfieldToUIntBE(imcMessage[value['name']], value.fields),
+          bitfieldToUIntBE(imcValue, imcEntity.fields),
           offset,
           datatypes.bitfield.length,
         );
@@ -87,7 +86,7 @@ function encodeIMC(imcMessage, imcMessageMetadata) {
       default:
         break;
     }
-    offset += value.datatype.length;
+    offset += imcEntity.datatype.length;
   });
   return buf;
 }
@@ -96,33 +95,38 @@ function decodeImc(buf, imcMessageMetadata) {
   const result = {};
   let offset = 2; // Do not need to decode id
 
-  imcMessageMetadata.message.map(value => {
-    switch (value.datatype) {
-      case datatypes.uint_8t:
-        result[value.name] = buf.readUIntBE(offset, datatypes.uint_8t.length);
-        break;
-      case datatypes.uint_16t:
-        result[value.name] = buf.readUInt16BE(offset);
-        break;
-      case datatypes.uint_32t:
-        result[value.name] = buf.readUInt32BE(offset);
-        break;
-      case datatypes.fp32_t:
-        result[value.name] = buf.readFloatBE(offset);
-        break;
-      case datatypes.fp64_t:
-        result[value.name] = buf.readDoubleBE(offset);
-        break;
-      case datatypes.bitfield:
-        result[value.name] = UIntBEToBitfield(
-          buf.readUIntBE(offset, datatypes.bitfield.length),
-          value.fields,
-        );
-        break;
-      default:
-        break;
+  imcMessageMetadata.message.map(imcEntity => {
+    if (!Object.prototype.hasOwnProperty.call(imcEntity, 'value')) {
+      switch (imcEntity.datatype) {
+        case datatypes.uint_8t:
+          result[imcEntity.name] = buf.readUIntBE(
+            offset,
+            datatypes.uint_8t.length,
+          );
+          break;
+        case datatypes.uint_16t:
+          result[imcEntity.name] = buf.readUInt16BE(offset);
+          break;
+        case datatypes.uint_32t:
+          result[imcEntity.name] = buf.readUInt32BE(offset);
+          break;
+        case datatypes.fp32_t:
+          result[imcEntity.name] = buf.readFloatBE(offset);
+          break;
+        case datatypes.fp64_t:
+          result[imcEntity.name] = buf.readDoubleBE(offset);
+          break;
+        case datatypes.bitfield:
+          result[imcEntity.name] = UIntBEToBitfield(
+            buf.readUIntBE(offset, datatypes.bitfield.length),
+            imcEntity.fields,
+          );
+          break;
+        default:
+          break;
+      }
     }
-    offset += value.datatype.length;
+    offset += imcEntity.datatype.length;
   });
   return result;
 }
@@ -223,6 +227,7 @@ const entityStateMetadata = {
     {
       name: 'description',
       datatype: datatypes.uint_32t,
+      value: 131072,
     },
   ],
 };
