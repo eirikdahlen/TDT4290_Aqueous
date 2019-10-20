@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { app } = electron;
+const { BrowserWindow, app } = electron;
 const isDev = require('electron-is-dev');
 const path = require('path');
 
@@ -77,8 +77,7 @@ function createWindows() {
 
 // Sets the width and height of screen - for positioning the created windows according to screen size
 function setWidthAndHeight() {
-  const screen = electron.screen;
-
+  const { screen } = electron;
   // Get the primary screen, as well as a complete list of all available screens
   const mainDisplay = screen.getPrimaryDisplay();
   const allDisplays = screen.getAllDisplays();
@@ -119,7 +118,7 @@ function setWidthAndHeight() {
 
 // Handle add item window
 function createXboxMappingWindow() {
-  let xboxMappingWindow = new electron.BrowserWindow({
+  let xboxMappingWindow = new BrowserWindow({
     title: 'Xbox Controller Mappings',
   });
   xboxMappingWindow.loadURL(
@@ -135,7 +134,7 @@ function createXboxMappingWindow() {
 
 // Handle add item window
 function createKeyboardMappingWindow() {
-  let keyboardMappingWindow = new electron.BrowserWindow({
+  let keyboardMappingWindow = new BrowserWindow({
     title: 'Keyboard Mappings',
   });
   keyboardMappingWindow.loadURL(
@@ -149,9 +148,39 @@ function createKeyboardMappingWindow() {
   keyboardMappingWindow.setMenu(null);
 }
 
+function createSettingsWindow() {
+  let settingsWindow = new BrowserWindow({
+    title: 'Settings',
+    modal: true,
+    parent: controlWindow,
+    width: 300,
+    height: 200,
+    webPreferences: {
+      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+  });
+  settingsWindow.setMenu(null);
+  // Handle garbage collection
+  settingsWindow.on('close', function() {
+    settingsWindow = null;
+  });
+
+  settingsWindow.loadURL(
+    isDev
+      ? 'http://localhost:3000?settingsWindow'
+      : `file://${path.join(
+          __dirname,
+          '../../build/index.html?settingsWindow',
+        )}`,
+  );
+  settingsWindow.webContents.openDevTools();
+}
+
 module.exports = {
   createWindows,
   setWidthAndHeight,
   createXboxMappingWindow,
   createKeyboardMappingWindow,
+  createSettingsWindow,
 };

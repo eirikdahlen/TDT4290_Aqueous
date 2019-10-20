@@ -6,6 +6,7 @@ const { getFileAndLaunch } = require('../launch/chooseFile');
 const {
   createKeyboardMappingWindow,
   createXboxMappingWindow,
+  createSettingsWindow,
 } = require('./windows');
 const { getConnectedClient } = require('./../TCP/TCPClient');
 
@@ -54,6 +55,12 @@ const menuTemplate = [
         label: 'Start ROV serial port',
         click() {
           getFileAndLaunch(global.settings.serialFile);
+        },
+      },
+      {
+        label: 'Settings',
+        click() {
+          createSettingsWindow();
         },
       },
     ],
