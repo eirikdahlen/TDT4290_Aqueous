@@ -1,5 +1,4 @@
 const net = require('net');
-const ROVPort = 5000;
 const { encodeData, decodeData } = require('./coding');
 const { sendMessage } = require('./../utils/IPC');
 
@@ -9,7 +8,8 @@ function getConnectedClient() {
   const client = new net.Socket();
 
   client.connect({
-    port: ROVPort,
+    port: global.settings.port,
+    host: global.settings.host,
   });
 
   client.on('connect', function() {
