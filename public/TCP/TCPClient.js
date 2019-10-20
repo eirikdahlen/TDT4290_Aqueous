@@ -2,6 +2,10 @@ const net = require('net');
 const { encodeData, decodeData } = require('./coding');
 const { sendMessage } = require('./../utils/IPC');
 
+// How many times the TCP has tried to connect and how many times it can try before quitting.
+let connectionAttempts = 0;
+const limitAttempts = 3;
+
 // Creates a client that receives and sends data to port 5000
 function getConnectedClient() {
   console.log('Attempting to create TCP client and connect to server..');
@@ -41,8 +45,17 @@ function getConnectedClient() {
   client.on('error', function(err) {
     const { code } = err;
     if (code === 'ECONNREFUSED') {
-      console.log('Attempt failed :( Trying again in 500ms..');
-      setTimeout(getConnectedClient, 500);
+      if (connectionAttempts < limitAttempts) {
+        connectionAttempts += 1;
+        console.log('Connection attempt failed. Trying again in 500ms..');
+        setTimeout(getConnectedClient, 500);
+      } else {
+        console.log(
+          `Giving up after ${connectionAttempts + 1} connection attempts. `,
+        );
+        connectionAttempts = 0;
+      }
+      client.destroy();
     }
   });
   return client;
