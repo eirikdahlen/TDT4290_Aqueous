@@ -148,13 +148,15 @@ function createKeyboardMappingWindow() {
   keyboardMappingWindow.setMenu(null);
 }
 
-function createSettingsWindow() {
+function createSettingsWindow(x, y) {
   let settingsWindow = new BrowserWindow({
     title: 'Settings',
     modal: true,
     parent: controlWindow,
-    width: 300,
-    height: 200,
+    x: x - 50,
+    y: y - 50,
+    width: 380,
+    height: 300,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),

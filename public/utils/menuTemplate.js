@@ -60,7 +60,8 @@ const menuTemplate = [
       {
         label: 'Settings',
         click() {
-          createSettingsWindow();
+          const { x, y } = electron.screen.getCursorScreenPoint();
+          createSettingsWindow(x, y);
         },
       },
     ],

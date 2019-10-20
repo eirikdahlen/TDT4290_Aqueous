@@ -1,6 +1,7 @@
 // The App for the VideoWindow. This is where every video-component should go.
 
 import React, { useState } from 'react';
+import './css/SettingsApp.css';
 
 const { remote } = window.require('electron');
 
@@ -47,7 +48,9 @@ export default function SettingsApp() {
           onChange={e => setSerialFileInput(e.target.value)}
         ></input>
       </div>
-      <button onClick={updateSettings}>Update</button>
+      <button className="updateSettingsBtn" onClick={updateSettings}>
+        Update
+      </button>
     </div>
   );
 }
