@@ -1,15 +1,25 @@
 const encode = {
   estimatedState: encodeEstimatedState,
+  entityState: encodeEntityState,
 };
 
 const decode = {
   estimatedState: decodeEstimatedState,
+  entityState: decodeEntityState,
 };
 
 const datatypes = {
+  uint_8t: {
+    name: 'uint_8t',
+    length: 1,
+  },
   uint_16t: {
     name: 'uint_16t',
     length: 2,
+  },
+  uint_32t: {
+    name: 'uint_16t',
+    length: 4,
   },
   fp32_t: {
     name: 'fp32_t',
@@ -19,36 +29,47 @@ const datatypes = {
     name: 'fp64_t',
     length: 8,
   },
+  bitfield: {
+    name: 'bitfield',
+    length: 1,
+  },
 };
 
 function encodeIMC(imcMessage, imcMessageMetadata) {
   // Check if assumed length is corret
-  console.log(
-    imcMessageMetadata.length,
-    lenImcMessage(imcMessageMetadata.message),
-  );
+  if (
+    imcMessageMetadata.length !==
+    imcMessageMetadata.id.datatype.length +
+      lenImcMessage(imcMessageMetadata.message)
+  ) {
+    console.log(
+      `WARNING: Length not equal to calculated length. Assumed length: ${
+        imcMessageMetadata.length
+      } calculated length: ${imcMessageMetadata.id.datatype.length +
+        lenImcMessage(imcMessageMetadata.message)}`,
+    );
+  }
 
   let buf = Buffer.alloc(imcMessageMetadata.length);
 
   // Encode ID
   buf.writeUInt16BE(imcMessageMetadata.id.value);
-
-  console.log(
-    imcMessageMetadata.id.datatype.length,
-    imcMessageMetadata.message[0].datatype.length,
-  );
-
-  let offset =
-    imcMessageMetadata.id.datatype.length -
-    imcMessageMetadata.message[0].datatype.length;
+  let offset = imcMessageMetadata.id.datatype.length;
 
   imcMessageMetadata.message.map(value => {
-    offset += value.datatype.length;
-    console.log(offset);
-
     switch (value.datatype) {
+      case datatypes.uint_8t:
+        buf.writeUIntBE(
+          imcMessage[value['name']],
+          offset,
+          value.datatype.length,
+        );
+        break;
       case datatypes.uint_16t:
         buf.writeUInt16BE(imcMessage[value['name']], offset);
+        break;
+      case datatypes.uint_32t:
+        buf.writeUInt32BE(imcMessage[value['name']], offset);
         break;
       case datatypes.fp32_t:
         buf.writeFloatBE(imcMessage[value['name']], offset);
@@ -56,24 +77,35 @@ function encodeIMC(imcMessage, imcMessageMetadata) {
       case datatypes.fp64_t:
         buf.writeDoubleBE(imcMessage[value['name']], offset);
         break;
+      case datatypes.bitfield:
+        buf.writeUIntBE(
+          bitfieldToUIntBE(imcMessage[value['name']], value.fields),
+          offset,
+          datatypes.bitfield.length,
+        );
+        break;
       default:
         break;
     }
+    offset += value.datatype.length;
   });
   return buf;
 }
 
 function decodeImc(buf, imcMessageMetadata) {
   const result = {};
-  let offset =
-    imcMessageMetadata.id.datatype.length -
-    imcMessageMetadata.message[0].datatype.length;
+  let offset = 2; // Do not need to decode id
 
   imcMessageMetadata.message.map(value => {
-    offset += value.datatype.length;
     switch (value.datatype) {
+      case datatypes.uint_8t:
+        result[value.name] = buf.readUIntBE(offset, datatypes.uint_8t.length);
+        break;
       case datatypes.uint_16t:
         result[value.name] = buf.readUInt16BE(offset);
+        break;
+      case datatypes.uint_32t:
+        result[value.name] = buf.readUInt32BE(offset);
         break;
       case datatypes.fp32_t:
         result[value.name] = buf.readFloatBE(offset);
@@ -81,8 +113,45 @@ function decodeImc(buf, imcMessageMetadata) {
       case datatypes.fp64_t:
         result[value.name] = buf.readDoubleBE(offset);
         break;
+      case datatypes.bitfield:
+        result[value.name] = UIntBEToBitfield(
+          buf.readUIntBE(offset, datatypes.bitfield.length),
+          value.fields,
+        );
+        break;
       default:
         break;
+    }
+    offset += value.datatype.length;
+  });
+  return result;
+}
+
+function bitfieldToUIntBE(values, metadataFieldsArray) {
+  /**
+   * `values` is a object with booleans. I.e. {NF: true, DP: false}
+   * `metadataFieldsArray` is an array with name of field. I.e. ['NF', 'DP, '', ...]
+   */
+  let bitfield = 0x00000000;
+  let keys = Object.keys(values);
+  keys.map(key => {
+    if (values[key]) {
+      let idx =
+        metadataFieldsArray.length - (metadataFieldsArray.indexOf(key) + 1);
+      bitfield = (1 << idx) ^ bitfield;
+    }
+  });
+  return bitfield;
+}
+
+function UIntBEToBitfield(uint, metadataFields) {
+  let result = {};
+  // console.log(`Recieved bitfield: ${uint}`);
+
+  metadataFields.map((feild, i) => {
+    if (feild) {
+      result[feild] = ((1 << (metadataFields.length - (i + 1))) & uint) !== 0;
+      // console.log(dec2bin(1 << (metadataFields.length - (i + 1))));
     }
   });
   return result;
@@ -92,9 +161,12 @@ function lenImcMessage(message) {
   let len = 0;
   message.map(a => {
     len += a.datatype.length;
-    console.log(a);
   });
   return len;
+}
+
+function dec2bin(dec) {
+  return (dec >>> 0).toString(2);
 }
 
 const estimatedStateMetadata = {
@@ -133,6 +205,34 @@ function encodeEstimatedState(estimatedState) {
 
 function decodeEstimatedState(buf) {
   return decodeImc(buf, estimatedStateMetadata);
+}
+
+const entityStateMetadata = {
+  length: 8,
+  id: {
+    value: 1,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    { name: 'state', datatype: datatypes.uint_8t },
+    {
+      name: 'flags',
+      datatype: datatypes.bitfield,
+      fields: ['NF', 'DP', '', '', '', '', '', ''],
+    },
+    {
+      name: 'description',
+      datatype: datatypes.uint_32t,
+    },
+  ],
+};
+
+function encodeEntityState(entityState) {
+  return encodeIMC(entityState, entityStateMetadata);
+}
+
+function decodeEntityState(buf) {
+  return decodeImc(buf, entityStateMetadata);
 }
 
 module.exports = { encode, decode };
