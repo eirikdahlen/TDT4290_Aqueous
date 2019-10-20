@@ -7,9 +7,9 @@ const host = '127.0.0.1';
 /* eslint-disable no-unused-vars */
 
 const states = {
-  manual: 'manual',
-  NF: 'NF',
-  DP: 'DP',
+  manual: 0,
+  NF: 1,
+  DP: 2,
 };
 
 /* eslint no-unused-vars: ["error", { "args": "none" }] */

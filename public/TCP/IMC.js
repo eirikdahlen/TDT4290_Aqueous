@@ -192,10 +192,6 @@ function lenImcMessage(message) {
   return len;
 }
 
-function dec2bin(dec) {
-  return (dec >>> 0).toString(2);
-}
-
 const estimatedStateMetadata = {
   length: 90,
   id: {
