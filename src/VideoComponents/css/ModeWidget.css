@@ -2,7 +2,7 @@
   position: fixed;
   color: white;
 
-  width: 170px;
+  width: 250px;
 
   left: -9999px;
   right: -9999px;
@@ -49,4 +49,37 @@
 
 .NFUnavailable {
   opacity: 0.4;
+}
+
+#DynPos {
+  font-size: 14px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+}
+
+#DynPos table {
+  border-collapse: separate;
+  border-spacing: 30px 5px;
+}
+
+#DynPos thead {
+  font-weight: bold;
+}
+
+#DynPos tfoot {
+  font-style: italic;
+}
+
+#DynPos td:nth-child(1) {
+  text-align: right;
+}
+
+/*#DynPos td:nth-child(3)::before {
+  content: 'Δ ';
+}*/
+
+#DynPos td:nth-child(3) {
+  color: #c0c0c0;
+  text-align: right;
 }

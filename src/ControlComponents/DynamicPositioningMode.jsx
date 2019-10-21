@@ -15,7 +15,7 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
 
   // Active if the current mode of the ROV is DP, available if the dpavailable flag is true
   let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
-  let available = modeData.dpAvailable;
+  let available = !modeData.dpAvailable;
 
   // Converts value of type withing proper range and format
   function fixValue(value, type) {

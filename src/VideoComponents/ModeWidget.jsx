@@ -6,6 +6,7 @@ import redX from './images/redX.png';
 import greenCheckmark from './images/greenCheckmark.png';
 import ModeEnum from '../constants/modeEnum';
 import { clamp, mapRange } from './js/tools.js';
+import DynPosWidget from './DynPosWidget';
 
 const { remote } = window.require('electron');
 
@@ -49,12 +50,17 @@ class ModeWidget extends Component {
     // Get the correct label for the current mode
     this.modeLabel = modeToLabel[currentMode];
 
-    if (currentMode === ModeEnum.NETFOLLOWING) {
+    if (currentMode === ModeEnum.DYNAMICPOSITIONING) {
+      this.widget = (
+        <DynPosWidget currentNorth={3} currentEast={2} currentDown={5} />
+      );
+    } else if (currentMode === ModeEnum.NETFOLLOWING) {
       // Show the net following widget
+      const dataNF = remote.getGlobal('netfollowing');
       this.widget = (
         <NetFollowingWidget
-          distance={remote.getGlobal('netfollowing')['distance']}
-          velocity={remote.getGlobal('netfollowing')['velocity']}
+          distance={dataNF['distance']}
+          velocity={dataNF['velocity']}
         />
       );
     } else {
@@ -84,7 +90,7 @@ class ModeWidget extends Component {
     document.getElementsByClassName('ModeWidget')[0].style.fontSize =
       sizeMode + 'px';
 
-    if (this.props.currentMode !== ModeEnum.NETFOLLOWING) {
+    if (this.props.currentMode === ModeEnum.MANUAL) {
       // Scale the NF availability text
       var sizeNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
       sizeNF = clamp(sizeNF, 12, 14);
