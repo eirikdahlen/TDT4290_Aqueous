@@ -40,7 +40,7 @@ export default function ManualMode({ title, toROV, modeData }) {
           title="autodepth"
           active={toROV.autodepth}
           min={0}
-          max={400}
+          max={200}
           step={0.2}
           manualModeActive={active}
         ></Lock>
