@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import modeEnum from '../constants/modeEnum';
-import { estimatedStateMetadata } from '../constants/imcMetadata';
+import {
+  estimatedStateMetadata,
+  entityStateMetadata,
+} from '../constants/imcMetadata';
 
 import './css/ROVMockUp.css';
 
@@ -66,21 +69,34 @@ export default function ROVMockUp() {
           onChange={e => changeMode(e.target.value.toUpperCase())}
         ></input>
       </div>
-      {manualView ? (
+      <div className="fromROV">
         <div className="estimatedStateSettings">
           <h2>Estimated state</h2>
           <div className="settings">
             {estimatedStateMetadata.message.map(value => {
               return (
-                <div className="stateSlot">
+                <div className="stateSlot" key="estimatedStateSlot">
                   <h3>{value.name}</h3>
-                  <input type="estimatedStateInput"></input>
+                  <input className={`estimatedStateInput${value.name}`}></input>
                 </div>
               );
             })}
           </div>
         </div>
-      ) : null}
+        <div className="entityStateSettings">
+          <h2>Entity state</h2>
+          <div className="settings">
+            {entityStateMetadata.message.map(value => {
+              return (
+                <div className="stateSlot" key="entityStateSlot">
+                  <h3>{value.name}</h3>
+                  <input type={`entityStateInput${value.name}`}></input>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
