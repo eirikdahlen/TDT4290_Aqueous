@@ -3,8 +3,8 @@
   position: absolute;
   z-index: 1;
   display: inline-block;
-  top: -2px;
-  left: 34px;
+  top: 0px;
+  left: 54px;
 }
 
 /* Dropdown Button */
@@ -14,7 +14,7 @@
   background-color: transparent;
   background-image: url('../images/camera.png');
   background-repeat: no-repeat;
-  background-size: 20px;
+  background-size: 18px;
   outline: none;
   -webkit-app-region: no-drag;
 }

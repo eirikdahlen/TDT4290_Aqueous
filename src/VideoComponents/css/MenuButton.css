@@ -3,27 +3,28 @@
   padding: 0;
   position: absolute;
   height: 20px;
-  width: 20px;
+  width: 40px;
   border: none;
   background-color: transparent;
   background-repeat: no-repeat;
-  background-size: 20px;
+  background-size: 13px;
+  background-position: center;
   outline: none;
   cursor: pointer;
   -webkit-app-region: no-drag;
 }
 
 .MenuButton:hover {
-  background-color: white;
+  background-color: rgb(58, 58, 58);
 }
 
 .transparentBtn {
-  top: 1px;
+  top: 3px;
   left: 10px;
 }
 
 .closeBtn {
-  top: 1px;
+  top: 3px;
   right: 10px;
   left: auto;
 }
