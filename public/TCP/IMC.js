@@ -185,11 +185,9 @@ function UIntBEToBitfield(uint, metadataFields) {
 }
 
 function lenImcMessage(message) {
-  let len = 0;
-  message.map(a => {
-    len += a.datatype.length;
-  });
-  return len;
+  return message.reduce((acc, field) => {
+    return acc + field.datatype.length;
+  }, 0);
 }
 
 const estimatedStateMetadata = {
@@ -491,7 +489,7 @@ const customNetFollowStateMetadata = {
       datatype: datatypes.fp32_t,
     },
     {
-      name: 'rad',
+      name: 'angle',
       datatype: datatypes.fp64_t,
     },
   ],
