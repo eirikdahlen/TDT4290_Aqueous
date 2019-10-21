@@ -36,6 +36,7 @@ let headingIncrement = 0.05; // Radians
 
 // Which button is held down
 let buttonDown;
+let prevButtonDown;
 
 //ROV control values
 let controls = {
@@ -51,7 +52,7 @@ let controls = {
 
 //Interval for increasing bias continously
 setInterval(() => {
-  if (biasButtons[buttonDown]) {
+  if (biasButtons[buttonDown] && prevButtonDown !== 'X') {
     handleClick({ button: buttonDown, value: 1 });
   }
 }, biasIncreaseTimer);
@@ -59,6 +60,7 @@ setInterval(() => {
 //Function for setting if X or bias-buttons are held down
 function setUpOrDown({ button, down }) {
   if (button === 'X' || biasButtons[button]) {
+    prevButtonDown = buttonDown;
     buttonDown = down ? button : '';
   }
 }
@@ -225,6 +227,7 @@ function setBias(type, positive, controls) {
     // Reset axis if X is held down
     if (buttonDown === 'X') {
       bias[type] = 0.0;
+      controls[type] = bias[type];
       return;
     }
     // Increase bias if it isn't maxed out
