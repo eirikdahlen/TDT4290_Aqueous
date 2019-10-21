@@ -1,23 +1,31 @@
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import drawNetFollowing from './js/netfollowing';
+import drawNetFollowing, { scaleNetFollowing } from './js/netfollowing';
+
+const initialWidth = 195;
+const initialHeight = 180;
 
 class NetFollowingWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureNetFollowingWidget);
-  }
-
-  componentDidMount() {
-    drawNetFollowing(this.ctx, this.props.distance, this.props.velocity);
+    this.scaleFunction = scaleNetFollowing;
+    this.initialWidth = initialWidth;
+    this.initialHeight = initialHeight;
   }
 
   componentDidUpdate() {
-    this.componentDidMount();
+    drawNetFollowing(
+      this.ctx,
+      this.props.distance,
+      this.props.velocity,
+      initialWidth,
+      initialHeight,
+    );
   }
 }
 
 class PureNetFollowingWidget extends PureCanvas {
   constructor(props) {
-    super(props, 'NetFollowingWidget', 195, 180);
+    super(props, 'NetFollowingWidget', initialWidth, initialHeight);
   }
 }
 
