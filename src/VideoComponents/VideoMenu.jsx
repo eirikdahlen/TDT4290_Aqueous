@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import MenuButton from './MenuButton';
 import VideoPicker from './VideoPicker';
@@ -12,18 +12,19 @@ export default function VideoMenu({
   deviceId,
   setDeviceId,
 }) {
-  const closeVideoWindow = () => {
-    let w = remote.getCurrentWindow();
+  const w = remote.getCurrentWindow();
+  const [maximized, toggleMaximized] = useState(w.isFullScreen());
+
+  const closeWindow = () => {
     w.close();
   };
 
-  const maximizeVideoWindow = () => {
-    let w = remote.getCurrentWindow();
-    w.maximize();
+  const resizeWindow = () => {
+    maximized ? w.unmaximize() : w.maximize();
+    toggleMaximized(!maximized);
   };
 
-  const minimizeVideoWindow = () => {
-    let w = remote.getCurrentWindow();
+  const minimizeWindow = () => {
     w.minimize();
   };
 
@@ -41,21 +42,21 @@ export default function VideoMenu({
       />
       <MenuButton
         clickFunction={() => {
-          minimizeVideoWindow();
+          minimizeWindow();
         }}
         image="minimize"
         additionalClass="minimizeBtn"
       ></MenuButton>
       <MenuButton
         clickFunction={() => {
-          maximizeVideoWindow();
+          resizeWindow();
         }}
-        image="maximize"
+        image={maximized ? 'unMaximize' : 'maximize'}
         additionalClass="maximizeBtn"
       ></MenuButton>
       <MenuButton
         clickFunction={() => {
-          closeVideoWindow();
+          closeWindow();
         }}
         image="close"
         additionalClass="closeBtn"
