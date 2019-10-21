@@ -46,6 +46,10 @@ class ModeWidget extends Component {
     // Add an event listener to be able to scale the widget along with the window
     window.addEventListener('resize', this.updateDimensions);
 
+    this.componentDidUpdate();
+  }
+
+  componentDidUpdate() {
     const { currentMode } = this.props;
     // Get the correct label for the current mode
     this.modeLabel = modeToLabel[currentMode];
@@ -72,10 +76,6 @@ class ModeWidget extends Component {
         </div>
       );
     }
-  }
-
-  componentDidUpdate() {
-    this.componentDidMount();
   }
 
   componentWillUnmount() {
