@@ -1,29 +1,37 @@
 import React, { useState } from 'react';
+import modeEnum from '../constants/modeEnum';
+import { estimatedStateMetadata } from '../constants/imcMetadata';
 
 import './css/ROVMockUp.css';
 
 export default function ROVMockUp() {
-  const [mode, setMode] = useState('M');
+  const [mode, setMode] = useState(modeEnum.MANUAL);
+  const [manualView, setManualView] = useState(true);
+  const [dpView, setDPView] = useState(false);
+  const [nfView, setNFView] = useState(false);
 
   function changeMode(inputMode) {
     switch (inputMode) {
-      case '':
-        setMode('M');
-        console.log('M');
-        break;
-      case 'M':
-        setMode(inputMode);
-        console.log('M');
-        break;
       case 'DP':
-        setMode(inputMode);
+        setMode(modeEnum.DYNAMICPOSITIONING);
+        setNFView(false);
+        setManualView(false);
+        setDPView(true);
         console.log('DP');
         break;
       case 'NF':
-        setMode(inputMode);
+        setMode(modeEnum.NETFOLLOWING);
+        setManualView(false);
+        setDPView(false);
+        setNFView(true);
         console.log('NF');
         break;
       default:
+        setMode(modeEnum.MANUAL);
+        setDPView(false);
+        setNFView(false);
+        setManualView(true);
+        console.log('MANUAL');
         break;
     }
   }
@@ -58,6 +66,21 @@ export default function ROVMockUp() {
           onChange={e => changeMode(e.target.value.toUpperCase())}
         ></input>
       </div>
+      {manualView ? (
+        <div className="estimatedStateSettings">
+          <h2>Estimated state</h2>
+          <div className="settings">
+            {estimatedStateMetadata.message.map(value => {
+              return (
+                <div className="stateSlot">
+                  <h3>{value.name}</h3>
+                  <input type="estimatedStateInput"></input>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

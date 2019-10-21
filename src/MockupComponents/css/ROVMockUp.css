@@ -1,3 +1,7 @@
+.mockupBox {
+  font-family: 'Segoe UI';
+}
+
 .startServer {
   background-color: #89ccff;
   color: white;
@@ -5,4 +9,15 @@
   text-align: center;
   font-size: x-large;
   padding: 15px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.stateSlot > input {
+  width: 15%;
+  margin: 5px;
 }
