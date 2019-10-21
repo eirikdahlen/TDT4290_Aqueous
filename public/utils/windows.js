@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { app } = electron;
+const { BrowserWindow, app } = electron;
 const isDev = require('electron-is-dev');
 const path = require('path');
 
@@ -13,10 +13,13 @@ let yControlWindow;
 let xVideoWindow;
 let yVideoWindow;
 
+let controlWindow;
+let videoWindow;
+
 // Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
-  let videoWindow = new electron.BrowserWindow({
+  videoWindow = new BrowserWindow({
     title: 'Video feed',
     width: widthVideoWindow,
     height: heightVideoWindow,
@@ -37,7 +40,7 @@ function createWindows() {
       : `file://${path.join(__dirname, '../../build/index.html?videoWindow')}`,
   );
 
-  let controlWindow = new electron.BrowserWindow({
+  controlWindow = new BrowserWindow({
     title: 'Controls',
     width: widthControlWindow,
     height: heightControlWindow,
@@ -77,8 +80,7 @@ function createWindows() {
 
 // Sets the width and height of screen - for positioning the created windows according to screen size
 function setWidthAndHeight() {
-  const screen = electron.screen;
-
+  const { screen } = electron;
   // Get the primary screen, as well as a complete list of all available screens
   const mainDisplay = screen.getPrimaryDisplay();
   const allDisplays = screen.getAllDisplays();
@@ -119,7 +121,7 @@ function setWidthAndHeight() {
 
 // Handle add item window
 function createXboxMappingWindow() {
-  let xboxMappingWindow = new electron.BrowserWindow({
+  let xboxMappingWindow = new BrowserWindow({
     title: 'Xbox Controller Mappings',
   });
   xboxMappingWindow.loadURL(
@@ -135,7 +137,7 @@ function createXboxMappingWindow() {
 
 // Handle add item window
 function createKeyboardMappingWindow() {
-  let keyboardMappingWindow = new electron.BrowserWindow({
+  let keyboardMappingWindow = new BrowserWindow({
     title: 'Keyboard Mappings',
   });
   keyboardMappingWindow.loadURL(
@@ -149,9 +151,43 @@ function createKeyboardMappingWindow() {
   keyboardMappingWindow.setMenu(null);
 }
 
+function createSettingsWindow(x, y) {
+  let settingsWindow = new BrowserWindow({
+    title: 'Settings',
+    modal: true,
+    frame: false,
+    parent: controlWindow,
+    x: x - 50,
+    y: y - 50,
+    width: 380,
+    height: 300,
+    webPreferences: {
+      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+    transparent: true,
+  });
+  settingsWindow.setMenu(null);
+
+  settingsWindow.on('close', function() {
+    settingsWindow = null;
+  });
+
+  settingsWindow.loadURL(
+    isDev
+      ? 'http://localhost:3000?settingsWindow'
+      : `file://${path.join(
+          __dirname,
+          '../../build/index.html?settingsWindow',
+        )}`,
+  );
+  global.settingsWindow = settingsWindow;
+}
+
 module.exports = {
   createWindows,
   setWidthAndHeight,
   createXboxMappingWindow,
   createKeyboardMappingWindow,
+  createSettingsWindow,
 };

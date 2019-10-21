@@ -19,6 +19,14 @@ const { closeSimulator } = require('./launch/closeSimulator');
 let controlWindow;
 let videoWindow;
 
+// Global settings for TCP port and IP adress, as well as the "start serial port"-file
+global.settings = {
+  port: 5000,
+  host: '127.0.0.1',
+  serialFile:
+    'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
+};
+
 // Global state objects
 global.toROV = {
   surge: 0.0,

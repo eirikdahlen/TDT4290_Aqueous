@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ControlApp from './ControlComponents/ControlApp';
 import VideoApp from './VideoComponents/VideoApp';
+import SettingsApp from './ControlComponents/SettingsApp';
 
 class ViewManager extends Component {
   static Views() {
     return {
       controlWindow: <ControlApp />,
       videoWindow: <VideoApp />,
+      settingsWindow: <SettingsApp />,
     };
   }
 
@@ -23,9 +25,7 @@ class ViewManager extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <Route path="/" component={ViewManager.View} />
-        </div>
+        <Route path="/" component={ViewManager.View} />
       </Router>
     );
   }
