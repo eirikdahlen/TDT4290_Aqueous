@@ -1,36 +1,31 @@
-// The App for the ControlWindow. This is where every control-components should go.
 import React, { useState, useEffect } from 'react';
 import Values from './Values';
-import Map from './Map';
-import RollPitch from './RollPitch';
-import ModeMenu from './ModeMenu';
-import Status from './Status';
-import Lock from './Lock';
-import ForceValues from './ForceValues';
-
+import ManualMode from './ManualMode';
+import NetfollowingMode from './NetFollowingMode';
+import DynamicPositioningMode from './DynamicPositioningMode';
 import './css/ControlApp.css';
 
 const { remote } = window.require('electron');
 
+// The ControlApp is the main component for the controls-window
 function ControlApp() {
+  // Set the states to the global variables
   const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
   const [controlValues, controlUpdate] = useState(remote.getGlobal('toROV'));
-  const [netfollowing, netfollowingUpdate] = useState(
-    remote.getGlobal('netfollowing'),
-  );
   const [mode, setMode] = useState(remote.getGlobal('mode'));
 
+  // Update sensorValues when data is received
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
       sensorUpdate(remote.getGlobal('fromROV'));
     });
   }, []);
 
+  // Update controlValues and mode when data is sent to ROV
   useEffect(() => {
     window.ipcRenderer.on('data-sent', () => {
       controlUpdate(remote.getGlobal('toROV'));
       setMode(remote.getGlobal('mode'));
-      netfollowingUpdate(remote.getGlobal('netfollowing'));
     });
   }, []);
 
@@ -38,44 +33,37 @@ function ControlApp() {
     <div className="ControlApp">
       <div className="controlFlex">
         <div className="topWindow">
-          <Map />
-          <RollPitch />
-          <Status />
-        </div>
-        <div
-          className="middleWindow"
-          onClick={() => console.log({ netfollowing }, { mode })}
-        >
-          {/*Start in mode Manual*/}
-          <ModeMenu
-            globalMode={mode.globalMode} // TODO: This should be fetched from the ROV somehow
-            netfollowingAvailable={mode.nfAvailable}
-          />
-          <div className="lockFlex">
-            <Lock
-              title="autodepth"
-              active={controlValues.autodepth}
-              value={controlValues.heave}
-              min={0}
-              max={200}
-              step={0.1}
-            />
-            <Lock
-              title="autoheading"
-              active={controlValues.autoheading}
-              value={controlValues.yaw}
-              min={0}
-              max={360}
-              step={1}
-            />
-          </div>
+          <ManualMode
+            title="Manual Mode"
+            toROV={controlValues}
+            modeData={mode}
+          ></ManualMode>
+          <NetfollowingMode
+            title="Net Following"
+            modeData={mode}
+            step={0.05}
+          ></NetfollowingMode>
+          <DynamicPositioningMode
+            title="Dynamic Positioning"
+            modeData={mode}
+            step={0.5}
+          ></DynamicPositioningMode>
         </div>
         <div className="bottomWindow">
-          <div>
-            <div className="forcesTitle">Commanded Forces</div>
-            <ForceValues controlValues={controlValues} />
+          <div className="bottomLeft">
+            <Values
+              title="sensor values"
+              values={sensorValues}
+              changeEffect={false}
+            />
           </div>
-          <Values sensorValues={sensorValues} />
+          <div className="bottomRight">
+            <Values
+              title="Sent to ROV"
+              values={controlValues}
+              changeEffect={true}
+            />
+          </div>
         </div>
       </div>
     </div>

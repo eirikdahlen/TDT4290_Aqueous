@@ -1,0 +1,31 @@
+.Mode {
+  max-width: 250px;
+  background-color: var(--primary-normal);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-primary);
+  opacity: 0.8;
+  transition: all 0.2s;
+}
+
+/* Active effect */
+.activeMode {
+  opacity: 1;
+  transform: scale(1.02);
+  box-shadow: var(--shadow-big);
+}
+
+.modeInputFlex {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+  margin-top: 4px;
+}
+
+.checkSwitch {
+  text-align: center;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+}

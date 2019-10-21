@@ -72,7 +72,7 @@ function VideoApp() {
         lockedValue={settingsValues['heave']}
       />
       <ModeWidget
-        globalMode={remote.getGlobal('mode')['globalMode']}
+        currentMode={remote.getGlobal('mode')['currentMode']}
         nfAvailable={remote.getGlobal('mode')['nfAvailable']}
       />
       <MiniMapWidget

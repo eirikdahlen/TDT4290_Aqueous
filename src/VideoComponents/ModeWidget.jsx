@@ -45,10 +45,11 @@ class ModeWidget extends Component {
     // Add an event listener to be able to scale the widget along with the window
     window.addEventListener('resize', this.updateDimensions);
 
+    const { currentMode } = this.props;
     // Get the correct label for the current mode
-    this.modeLabel = modeToLabel[this.props.globalMode];
+    this.modeLabel = modeToLabel[currentMode];
 
-    if (this.props.globalMode === ModeEnum.NETFOLLOWING) {
+    if (currentMode === ModeEnum.NETFOLLOWING) {
       // Show the net following widget
       this.widget = (
         <NetFollowingWidget
@@ -83,7 +84,7 @@ class ModeWidget extends Component {
     document.getElementsByClassName('ModeWidget')[0].style.fontSize =
       sizeMode + 'px';
 
-    if (this.props.globalMode !== ModeEnum.NETFOLLOWING) {
+    if (this.props.currentMode !== ModeEnum.NETFOLLOWING) {
       // Scale the NF availability text
       var sizeNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
       sizeNF = clamp(sizeNF, 12, 14);
@@ -100,7 +101,7 @@ class ModeWidget extends Component {
 
   static get propTypes() {
     return {
-      globalMode: PropTypes.number,
+      currentMode: PropTypes.number,
       nfAvailable: PropTypes.bool,
     };
   }

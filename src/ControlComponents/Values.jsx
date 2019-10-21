@@ -2,16 +2,28 @@ import React from 'react';
 import ValueBox from './ValueBox';
 import PropTypes from 'prop-types';
 import './css/Values.css';
+import Title from './Title';
 
-export default function Values({ sensorValues }) {
+// A container for ValueBox-components.
+export default function Values({ title, values, changeEffect }) {
+  // Handles rounding numbers and converting from boolean to numbers
+  const fixValue = value => {
+    if (typeof value === 'boolean') {
+      return value ? 1 : 0;
+    }
+    return Math.abs(value) >= 100 ? value.toFixed(1) : value.toFixed(2);
+  };
+
   return (
-    <div className="valuesFlex">
-      <div className="Values">
-        {Object.keys(sensorValues).map(sensor => (
+    <div className="Values">
+      <Title>{title}</Title>
+      <div className="valuesFlex">
+        {Object.keys(values).map(value => (
           <ValueBox
-            key={sensor}
-            title={sensor}
-            value={sensorValues[sensor].toFixed(2)}
+            key={value}
+            title={value}
+            value={fixValue(values[value])}
+            changeEffect={changeEffect}
           />
         ))}
       </div>
@@ -20,5 +32,7 @@ export default function Values({ sensorValues }) {
 }
 
 Values.propTypes = {
-  sensorValues: PropTypes.object,
+  values: PropTypes.object,
+  title: PropTypes.string,
+  changeEffect: PropTypes.bool,
 };

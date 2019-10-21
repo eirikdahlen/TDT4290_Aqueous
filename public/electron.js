@@ -51,8 +51,9 @@ global.bias = {
  * 2 - NF mode
  */
 global.mode = {
-  globalMode: 0,
+  currentMode: 0,
   nfAvailable: true,
+  dpAvailable: false,
 };
 
 /**
@@ -72,9 +73,10 @@ global.netfollowing = {
  * Placeholders for X, Y, Z for now
  */
 global.dynamicpositioning = {
-  Xsetting1: 0,
-  Ysetting2: 0,
-  Zsetting3: 0,
+  latitude: 0,
+  longitude: 0,
+  heading: 0,
+  depth: 0,
 };
 
 // Functions that are run when the app is ready
