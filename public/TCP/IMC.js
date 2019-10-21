@@ -12,9 +12,30 @@ const encode = {
 };
 
 function decode(buf) {
-  let id = buf.readUInt16BE(0);
-  return decodeImc(buf, idToMessageMetadata[id]);
+  let result = {};
+  let offset = 0;
+  let msg, name;
+  do {
+    [msg, offset, name] = decodeImc(buf, offset);
+    result[name] = msg;
+  } while (offset < buf.length);
+  return result;
 }
+
+const messages = {
+  estimatedState: 'estimatedState',
+  entityState: 'entityState',
+  desiredControl: 'desiredControl',
+  desiredHeading: 'desiredHeading',
+  desiredZ: 'desiredZ',
+  lowLevelControlManeuver: {
+    desiredHeading: 'lowLevelControlManeuver.desiredHeading',
+    desiredZ: 'lowLevelControlManeuver.desiredZ',
+  },
+  goTo: 'goTo',
+  netFollow: 'netFollow',
+  customNetFollowState: 'customNetFollowState',
+};
 
 const datatypes = {
   uint_8t: {
@@ -102,9 +123,15 @@ function encodeIMC(imcMessage, imcMessageMetadata) {
   return buf;
 }
 
-function decodeImc(buf, imcMessageMetadata) {
+function decodeImc(buf, offset = 0, name = '') {
   const result = {};
-  let offset = 2; // Do not need to decode id
+
+  // Get information from id
+  let id = buf.readUInt16BE(offset);
+  let imcMessageMetadata = idToMessageMetadata[id];
+  if (name) name += '.';
+  name += imcMessageMetadata.name;
+  offset += 2;
 
   imcMessageMetadata.message.map(imcEntity => {
     if (!Object.prototype.hasOwnProperty.call(imcEntity, 'value')) {
@@ -134,24 +161,17 @@ function decodeImc(buf, imcMessageMetadata) {
           );
           break;
         case datatypes.recursive:
-          result[imcEntity.name] = decodeImc(
-            buf.subarray(
-              offset,
-              offset + idToMessageMetadata[buf.readUInt16BE(offset)].length,
-            ),
-            idToMessageMetadata[buf.readUInt16BE(offset)],
-          );
+          [result[imcEntity.name], offset, name] = decodeImc(buf, offset, name);
           break;
         default:
           break;
       }
     }
-    offset +=
-      imcEntity.datatype === datatypes.recursive
-        ? idToMessageMetadata[buf.readUInt16BE(offset)].length
-        : imcEntity.datatype.length;
+    if (imcEntity.datatype !== datatypes.recursive) {
+      offset += imcEntity.datatype.length;
+    }
   });
-  return result;
+  return [result, offset, name];
 }
 
 function bitfieldToUIntBE(values, metadataFieldsArray) {
@@ -191,6 +211,7 @@ function lenImcMessage(message) {
 }
 
 const estimatedStateMetadata = {
+  name: messages.estimatedState,
   length: 90,
   id: {
     value: 350,
@@ -225,6 +246,7 @@ function encodeEstimatedState(estimatedState) {
 }
 
 const entityStateMetadata = {
+  name: messages.entityState,
   length: 8,
   id: {
     value: 1,
@@ -250,6 +272,7 @@ function encodeEntityState(entityState) {
 }
 
 const desiredControlMetadata = {
+  name: messages.desiredControl,
   length: 51,
   id: {
     value: 407,
@@ -293,6 +316,7 @@ function encodeDesiredControl(desiredControl) {
 }
 
 const lowLevelControlManeuverMetadata = {
+  name: 'lowLevelControlManeuver', // This must be treated seperablely because it encapsulates other messages
   id: {
     value: 455,
     datatype: datatypes.uint_16t,
@@ -329,6 +353,7 @@ function encodeLowLevelControlManeuver(
 }
 
 const desiredHeadingMetadata = {
+  name: messages.desiredHeading,
   length: 10,
   id: {
     value: 400,
@@ -355,6 +380,7 @@ function encodeLowLevelControlManeuverDesiredHeading(desiredHeading, duration) {
 }
 
 const desiredZMetadata = {
+  name: messages.desiredZ,
   length: 7,
   id: {
     value: 401,
@@ -381,6 +407,7 @@ function encodeLowLevelControlManeuverDesiredZ(desiredZ, duration) {
 }
 
 const goToMetadata = {
+  name: messages.goTo,
   length: 54,
   id: {
     value: 450,
@@ -435,6 +462,7 @@ function encodeGoTo(goTo) {
 }
 
 const netFollowMetadata = {
+  name: messages.netFollow,
   length: 33,
   id: {
     value: 465,
@@ -474,6 +502,7 @@ function encodeNetFollow(netFollow) {
 }
 
 const customNetFollowStateMetadata = {
+  name: messages.customNetFollowState,
   length: 18,
   id: {
     value: 1002,

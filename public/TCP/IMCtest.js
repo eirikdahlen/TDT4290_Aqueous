@@ -142,3 +142,17 @@ console.log(bufcustomNetFollow);
 
 let resultcustomNetFollow = decode(bufcustomNetFollow);
 console.log(resultcustomNetFollow);
+
+// composedExample ====================================
+console.log('composedExample =============================');
+
+let totalLength =
+  bufDesiredControl.length + bufDesiredZ.length + bufdesiredHeading.length;
+let resultComposed = decode(
+  Buffer.concat(
+    [bufDesiredControl, bufDesiredZ, bufdesiredHeading],
+    totalLength,
+  ),
+);
+
+console.log(resultComposed);
