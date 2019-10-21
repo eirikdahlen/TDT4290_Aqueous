@@ -134,7 +134,14 @@ function handleClick({ button, value }) {
       break;
 
     // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
-    case 'Y': // Reset all bias
+    case 'Y': // Reset all bias'
+      if (global.mode.globalMode == 2) {
+        //Resets distance, velocity and depth, if in NetFollowing mode
+        global.netfollowing.distance = 0;
+        global.netfollowing.velocity = 0;
+        global.netfollowing.depth = 0;
+        break;
+      }
       Object.keys(bias).forEach(v => (bias[v] = 0.0));
       ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
       controls['heave'] = autoDepth ? depthReference : 0.0;
@@ -165,13 +172,21 @@ function handleClick({ button, value }) {
       break;
     case 'DPadUp': // positive surge bias
       setBias('surge', true, controls);
+      if (global.mode.globalMode == 2) {
+        //Depth (-) if in NF
+        setNfParameters('depth', false);
+      }
       break;
     case 'DPadDown': // negative surge bias
       setBias('surge', false, controls);
+      if (global.mode.globalMode == 2) {
+        //Depth (+) if in NF
+        setNfParameters('depth', true);
+      }
       break;
     case 'RB': // positive heave bias (down)
       if (global.mode.globalMode != 0) {
-        setNfParameters('velocity', true);
+        setNfParameters('velocity', true); //Velocity (+) if in NF
       }
       if (!autoDepth && global.mode.globalMode == 0) {
         setBias('heave', true, controls);
@@ -179,6 +194,7 @@ function handleClick({ button, value }) {
       break;
     case 'LB': // negative heave bias (up)
       if (global.mode.globalMode != 0) {
+        //Velocity (-) if in NF
         setNfParameters('velocity', false);
       }
       if (!autoDepth && global.mode.globalMode == 0) {
@@ -205,18 +221,20 @@ function handleClick({ button, value }) {
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
 function setBias(type, positive, controls) {
-  // Reset axis if X is held down
-  if (buttonDown === 'X') {
-    bias[type] = 0.0;
-    return;
+  if (global.mode.globalMode == 0) {
+    // Reset axis if X is held down
+    if (buttonDown === 'X') {
+      bias[type] = 0.0;
+      return;
+    }
+    // Increase bias if it isn't maxed out
+    if (positive) {
+      bias[type] += bias[type] < maxThruster ? biasIncrease : 0.0;
+    } else {
+      bias[type] -= bias[type] > -maxThruster ? biasIncrease : 0.0;
+    }
+    controls[type] = bias[type];
   }
-  // Increase bias if it isn't maxed out
-  if (positive) {
-    bias[type] += bias[type] < maxThruster ? biasIncrease : 0.0;
-  } else {
-    bias[type] -= bias[type] > -maxThruster ? biasIncrease : 0.0;
-  }
-  controls[type] = bias[type];
 }
 
 //Helper function for making sure thrusting force does not exceed maximum
@@ -236,8 +254,9 @@ function setNfParameters(type, positive) {
     global.netfollowing[type] = 0;
     return;
   }
-  const typeDistance = type == 'distance' ? true : false;
-  const minus = typeDistance ? 0 : -1;
+  const typeDistanceOrDepth =
+    type == 'distance' || type == 'depth' ? true : false;
+  const minus = typeDistanceOrDepth ? 0 : -1;
   if (positive) {
     global.netfollowing[type] +=
       global.netfollowing[type] < nfMax ? nfIncrease : 0.0;
@@ -247,7 +266,7 @@ function setNfParameters(type, positive) {
   }
 }
 
-//Helper function for resetting to manual mode with parameters as zero.
+//Helper function for resetting to manual mode with parameters set to zero.
 function resetToManual() {
   if (buttonDown === 'X') {
     global.mode.globalMode = 0;
