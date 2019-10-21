@@ -37,7 +37,6 @@ function drawBoat(context, boatWidth, boatLength, boatHeading) {
   context.lineTo(-boatWidth, boatLength / 2);
   context.lineTo(-boatWidth, -boatWidth);
   context.closePath();
-  context.fill();
   context.stroke();
 
   // Draw the text
