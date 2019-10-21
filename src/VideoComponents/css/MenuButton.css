@@ -3,14 +3,13 @@
   padding: 0;
   position: absolute;
   height: 100%;
-  width: 40px;
+  width: 45px;
   border: none;
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: 10px;
   background-position: center;
   outline: none;
-  cursor: pointer;
   -webkit-app-region: no-drag;
 }
 
@@ -20,7 +19,7 @@
 
 .transparentBtn {
   left: 10px;
-  background-size: 15px;
+  background-size: 13px;
 }
 
 .closeBtn {
@@ -28,9 +27,9 @@
 }
 
 .maximizeBtn {
-  right: 50px;
+  right: 55px;
 }
 
 .minimizeBtn {
-  right: 90px;
+  right: 100px;
 }

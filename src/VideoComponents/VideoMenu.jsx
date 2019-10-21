@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MenuButton from './MenuButton';
 import VideoPicker from './VideoPicker';
 import './css/VideoMenu.css';
 
 const { remote } = window.require('electron');
+const w = remote.getCurrentWindow();
 
 export default function VideoMenu({
   toggleTransparent,
@@ -12,8 +13,16 @@ export default function VideoMenu({
   deviceId,
   setDeviceId,
 }) {
-  const w = remote.getCurrentWindow();
-  const [maximized, toggleMaximized] = useState(w.isFullScreen());
+  const [maximized, toggleMaximized] = useState(w.isMaximized());
+
+  useEffect(() => {
+    w.on('maximize', () => {
+      toggleMaximized(true);
+    });
+    w.on('unmaximize', () => {
+      toggleMaximized(false);
+    });
+  }, []);
 
   const closeWindow = () => {
     w.close();
