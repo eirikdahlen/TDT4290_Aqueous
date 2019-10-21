@@ -32,6 +32,11 @@ function VideoApp() {
     w.maximize();
   };
 
+  const minimizeVideoWindow = () => {
+    let w = remote.getCurrentWindow();
+    w.minimize();
+  };
+
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
       settingsUpdate(remote.getGlobal('toROV'));
@@ -53,6 +58,13 @@ function VideoApp() {
           handleClick={id => setDeviceId(id)}
           hidden={transparent}
         />
+        <MenuButton
+          clickFunction={() => {
+            minimizeVideoWindow();
+          }}
+          image="minimize"
+          additionalClass="minimizeBtn"
+        ></MenuButton>
         <MenuButton
           clickFunction={() => {
             maximizeVideoWindow();

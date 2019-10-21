@@ -2,12 +2,12 @@
   z-index: 2;
   padding: 0;
   position: absolute;
-  height: 20px;
+  height: 30px;
   width: 40px;
   border: none;
   background-color: transparent;
   background-repeat: no-repeat;
-  background-size: 13px;
+  background-size: 10px;
   background-position: center;
   outline: none;
   cursor: pointer;
@@ -19,18 +19,18 @@
 }
 
 .transparentBtn {
-  top: 3px;
   left: 10px;
+  background-size: 13px;
 }
 
 .closeBtn {
-  top: 3px;
   right: 10px;
-  left: auto;
 }
 
 .maximizeBtn {
-  top: 3px;
   right: 50px;
-  left: auto;
+}
+
+.minimizeBtn {
+  right: 90px;
 }

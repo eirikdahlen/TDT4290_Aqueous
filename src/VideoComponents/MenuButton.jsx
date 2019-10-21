@@ -3,6 +3,7 @@ import './css/MenuButton.css';
 import transparentImg from './images/transparent.png';
 import closeImg from './images/close.png';
 import maximizeImg from './images/maximize.png';
+import minimizeImg from './images/minimize.png';
 import PropTypes from 'prop-types';
 
 export default function MenuButton({ clickFunction, image, additionalClass }) {
@@ -10,6 +11,7 @@ export default function MenuButton({ clickFunction, image, additionalClass }) {
     transparent: transparentImg,
     close: closeImg,
     maximize: maximizeImg,
+    minimize: minimizeImg,
   };
   const icon = {
     backgroundImage: `url(${imgMapping[image]})`,
