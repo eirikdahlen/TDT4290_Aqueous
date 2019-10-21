@@ -123,6 +123,7 @@ function setWidthAndHeight() {
 function createXboxMappingWindow() {
   let xboxMappingWindow = new electron.BrowserWindow({
     title: 'Xbox Controller Mappings',
+    icon: path.join(__dirname, '../img/logo.png'),
   });
   xboxMappingWindow.loadURL(
     `file://${path.join(__dirname, '../img/xbox-mappings.png')}`,
@@ -139,6 +140,7 @@ function createXboxMappingWindow() {
 function createKeyboardMappingWindow() {
   let keyboardMappingWindow = new electron.BrowserWindow({
     title: 'Keyboard Mappings',
+    icon: path.join(__dirname, '../img/logo.png'),
   });
   keyboardMappingWindow.loadURL(
     `file://${path.join(__dirname, '../img/keyboard-mappings.jpg')}`,
