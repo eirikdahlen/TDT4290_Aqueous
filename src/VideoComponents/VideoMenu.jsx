@@ -29,7 +29,7 @@ export default function VideoMenu({
   };
 
   return (
-    <div className="videoMenu">
+    <div className="VideoMenu">
       <MenuButton
         clickFunction={() => toggleTransparent(!transparent)}
         image="transparent"
@@ -65,7 +65,7 @@ export default function VideoMenu({
   );
 }
 
-MenuButton.propTypes = {
+VideoMenu.propTypes = {
   transparent: PropTypes.bool,
   toggleTransparent: PropTypes.func,
   deviceId: PropTypes.string,
