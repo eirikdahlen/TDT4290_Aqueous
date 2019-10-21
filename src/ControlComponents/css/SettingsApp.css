@@ -9,6 +9,7 @@
   background-color: rgba(255, 255, 255, 0.96);
   -webkit-user-select: none;
   -webkit-app-region: drag;
+  border-radius: 5px;
 }
 
 .SettingsApp * {
