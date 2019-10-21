@@ -31,6 +31,7 @@ function createWindows() {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    icon: path.join(__dirname, '../img/logo.png'),
   });
 
   //Adds a search parameter to the url to be loaded - this is then handled in the index.js/ViewManager.js, which finds the correct .js-file to load.
@@ -50,6 +51,7 @@ function createWindows() {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    icon: path.join(__dirname, '../img/logo.png'),
   });
 
   controlWindow.loadURL(
@@ -123,6 +125,7 @@ function setWidthAndHeight() {
 function createXboxMappingWindow() {
   let xboxMappingWindow = new BrowserWindow({
     title: 'Xbox Controller Mappings',
+    icon: path.join(__dirname, '../img/logo.png'),
   });
   xboxMappingWindow.loadURL(
     `file://${path.join(__dirname, '../img/xbox-mappings.png')}`,
@@ -139,6 +142,7 @@ function createXboxMappingWindow() {
 function createKeyboardMappingWindow() {
   let keyboardMappingWindow = new BrowserWindow({
     title: 'Keyboard Mappings',
+    icon: path.join(__dirname, '../img/logo.png'),
   });
   keyboardMappingWindow.loadURL(
     `file://${path.join(__dirname, '../img/keyboard-mappings.jpg')}`,
