@@ -2,12 +2,14 @@ import React from 'react';
 import './css/MenuButton.css';
 import transparentImg from './images/transparent.png';
 import closeImg from './images/close.png';
+import maximizeImg from './images/maximize.png';
 import PropTypes from 'prop-types';
 
 export default function MenuButton({ clickFunction, image, additionalClass }) {
   const imgMapping = {
     transparent: transparentImg,
     close: closeImg,
+    maximize: maximizeImg,
   };
   const icon = {
     backgroundImage: `url(${imgMapping[image]})`,

@@ -28,3 +28,9 @@
   right: 10px;
   left: auto;
 }
+
+.maximizeBtn {
+  top: 3px;
+  right: 50px;
+  left: auto;
+}

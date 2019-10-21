@@ -27,6 +27,11 @@ function VideoApp() {
     w.close();
   };
 
+  const maximizeVideoWindow = () => {
+    let w = remote.getCurrentWindow();
+    w.maximize();
+  };
+
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
       settingsUpdate(remote.getGlobal('toROV'));
@@ -48,6 +53,13 @@ function VideoApp() {
           handleClick={id => setDeviceId(id)}
           hidden={transparent}
         />
+        <MenuButton
+          clickFunction={() => {
+            maximizeVideoWindow();
+          }}
+          image="maximize"
+          additionalClass="maximizeBtn"
+        ></MenuButton>
         <MenuButton
           clickFunction={() => {
             closeVideoWindow();
