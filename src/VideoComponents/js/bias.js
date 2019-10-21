@@ -70,20 +70,6 @@ function resetColor(context) {
   context.fill();
 }
 
-function scaleBias(context, initialWidth, initialHeight) {
-  // Scale widget according to window width
-  scaleWidget(
-    context,
-    initialWidth,
-    initialHeight,
-    window.innerWidth,
-    1000,
-    1500,
-    0.45,
-    0.8,
-  );
-}
-
 function drawBias(context, u, v, w, initialWidth, initialHeight) {
   // Clamp the bias values between -1.0 and 1.0
   u = clamp(u, -1.0, 1.0);
@@ -162,6 +148,20 @@ function drawBias(context, u, v, w, initialWidth, initialHeight) {
   context.fillText('V+', end_v_x + 8, end_v_y + 3);
   context.fillText('W-', start_w_x - 8, start_w_y - 8);
   context.fillText('W+', end_w_x - 8, end_w_y + 20);
+}
+
+function scaleBias(context, initialWidth, initialHeight) {
+  // Scale widget according to window width
+  scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.45,
+    0.8,
+  );
 }
 
 export default drawBias;

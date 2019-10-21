@@ -108,37 +108,34 @@ function drawNEDframe(context, initialWidth, boatWidth, rovSize) {
   );
 }
 
+function drawTarget(context) {
+  context.beginPath();
+
+  context.fillStyle = '#FF0000';
+  context.arc(0, 0, 8, 0, 2 * Math.PI);
+  context.fill();
+  context.closePath();
+
+  context.beginPath();
+  context.fillStyle = '#FFFFFF';
+  context.arc(0, 0, 5, 0, 2 * Math.PI);
+  context.fill();
+  context.closePath();
+
+  context.beginPath();
+  context.fillStyle = '#FF0000';
+  context.arc(0, 0, 2, 0, 2 * Math.PI);
+  context.fill();
+  context.closePath();
+}
+
 function drawArrow(context, rovSize, initialWidth) {
   context.beginPath();
   context.moveTo(initialWidth / 2, 0);
   context.lineTo(initialWidth / 2 - rovSize, rovSize);
   context.lineTo(initialWidth / 2 - rovSize, -rovSize);
+  context.fill();
   context.closePath();
-}
-
-function scaleMinimap(context, initialWidth, initialHeight) {
-  // Scale widget according to window width
-  const factor = scaleWidget(
-    context,
-    initialWidth,
-    initialHeight,
-    window.innerWidth,
-    1000,
-    1500,
-    0.7,
-    1,
-  );
-
-  // Scale the parent div, to be able to use CSS positioning properly
-  document.getElementsByClassName('MiniMapWidget')[0].style.width =
-    initialWidth * factor + 'px';
-
-  const zoomButtons = document.getElementsByClassName('zoomButton');
-
-  // Scale the zoom buttons
-  for (var i = 0; i < zoomButtons.length; i++) {
-    zoomButtons[i].style.fontSize = 22 * factor + 'px';
-  }
 }
 
 function initMinimap(boatHeading) {
@@ -153,6 +150,9 @@ function drawMinimap(
   yaw,
   boatHeading,
   maxDistance,
+  DP,
+  DPnorth,
+  DPeast,
   initialWidth,
   initialHeight,
 ) {
@@ -165,6 +165,7 @@ function drawMinimap(
   boatHeadingOffset = wrapDegrees(boatHeadingOffset);
 
   const ROVangleInNED = Math.atan2(north, east); // Calculates direction of the ROV based on north and east props
+  const TargetAngleInNED = Math.atan2(DPnorth, DPeast); // Calculates direction of the target based on DPnorth and DPeast parameters
   var boatRotation = boatHeading - boatHeadingOffset; // Set boatHeading to difference in heading since beginning
 
   context.clearRect(0, 0, initialWidth, initialWidth); // Clear canvas to avoid drawing on top of previous canvas
@@ -181,16 +182,16 @@ function drawMinimap(
   drawBoat(context, boatWidth, boatLength, boatHeading);
   context.restore(); // Restore context state we saved earlier
 
-  const inBoundsEast =
+  const rovInBoundsEast =
     east <= maxDistance * rightFactor && east >= -maxDistance * leftFactor; // Multiply by left/rightFactor so the ROV square won't be replaced by arrow too early or late
-  const inBoundsNorth = Math.abs(north) <= maxDistance;
+  const rovInBoundsNorth = Math.abs(north) <= maxDistance;
 
   context.save();
   context.translate(initialWidth / 2, initialWidth / 2);
   context.rotate(-degreesToRadians(boatRotation)); //rotates ROV around boat when boat rotates
 
   // If the ROV is within the bounds of the map, draw it as a square within the map
-  if (inBoundsEast && inBoundsNorth) {
+  if (rovInBoundsEast && rovInBoundsNorth) {
     // Map north prop to the pixel range we're working with
     const mapNorth = mapRange(
       north,
@@ -220,6 +221,8 @@ function drawMinimap(
     context.save();
     context.translate(0, 0); // Origin in middle of map so we can rotate arrow about this point
     context.rotate(-ROVangleInNED); // Point/rotate arrow in direction of ROV
+
+    context.fillStyle = '#00FF00';
     drawArrow(
       context,
       rovSize *
@@ -229,13 +232,86 @@ function drawMinimap(
     ); // Make size of arrow based on how far out of bounds the ROV is
     context.restore();
   }
-  context.fillStyle = '#00FF00';
-  context.fill();
+
+  if (DP) {
+    // If the DP target is within the bounds of the map, draw it
+    const targetInBoundsNorth =
+      DPeast <= maxDistance * rightFactor && east >= -maxDistance * leftFactor;
+    const targetInBoundsEast = Math.abs(DPnorth) <= maxDistance;
+
+    if (targetInBoundsEast && targetInBoundsNorth) {
+      // Map north prop to the pixel range we're working with
+      const targetNorth = mapRange(
+        DPnorth,
+        -maxDistance,
+        maxDistance,
+        -initialWidth / 2,
+        initialWidth / 2,
+      );
+
+      // Map east prop to the pixel range we're working with
+      const targetEast = mapRange(
+        DPeast,
+        -maxDistance,
+        maxDistance,
+        -initialWidth / 2,
+        initialWidth / 2,
+      );
+
+      // Draw the target itself
+      context.save();
+      context.translate(boatWidth + targetEast, -targetNorth); // Draw square at correct point in the map
+      drawTarget(context);
+      context.restore();
+    } else {
+      // If the target is outside the bounds of the map, draw an arrow in the direction of the target
+      context.save();
+      context.translate(0, 0); // Origin in middle of map so we can rotate arrow about this point
+      context.rotate(-TargetAngleInNED); // Point/rotate arrow in direction of target
+
+      context.fillStyle = '#FF0000';
+      drawArrow(
+        context,
+        rovSize *
+          (maxDistance /
+            Math.log(
+              Math.exp(maxDistance) + Math.pow(Math.max(DPeast, DPnorth), 3),
+            )),
+        initialWidth,
+      ); // Make size of arrow based on how far out of bounds the target is
+      context.restore();
+    }
+  }
 
   // Draw the north/east axes
   context.translate(boatWidth + rovSize / 2, 0);
   drawNEDframe(context, initialWidth, boatWidth, rovSize);
   context.restore();
+}
+
+function scaleMinimap(context, initialWidth, initialHeight) {
+  // Scale widget according to window width
+  const factor = scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.7,
+    1,
+  );
+
+  // Scale the parent div, to be able to use CSS positioning properly
+  document.getElementsByClassName('MiniMapWidget')[0].style.width =
+    initialWidth * factor + 'px';
+
+  const zoomButtons = document.getElementsByClassName('zoomButton');
+
+  // Scale the zoom buttons
+  for (var i = 0; i < zoomButtons.length; i++) {
+    zoomButtons[i].style.fontSize = 22 * factor + 'px';
+  }
 }
 
 export default drawMinimap;
