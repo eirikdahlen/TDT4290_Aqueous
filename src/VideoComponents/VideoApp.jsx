@@ -10,8 +10,7 @@ import ModeWidget from './ModeWidget';
 import MiniMapWidget from './MiniMapWidget';
 import GamepadWrapper from './GamepadWrapper';
 import KeyboardWrapper from './KeyboardWrapper';
-import MenuButton from './MenuButton';
-import VideoPicker from './VideoPicker';
+import VideoMenu from './VideoMenu';
 
 const { remote } = window.require('electron');
 
@@ -21,11 +20,6 @@ function VideoApp() {
   const [biasValues, biasUpdate] = useState(remote.getGlobal('bias'));
   const [transparent, toggleTransparent] = useState(false);
   const [deviceId, setDeviceId] = useState('');
-
-  const closeVideoWindow = () => {
-    let w = remote.getCurrentWindow();
-    w.close();
-  };
 
   useEffect(() => {
     window.ipcRenderer.on('data-received', () => {
@@ -37,25 +31,12 @@ function VideoApp() {
 
   return (
     <div className={transparent ? 'transparentVideoApp' : 'VideoApp'}>
-      <div className="videoMenu">
-        <MenuButton
-          clickFunction={() => toggleTransparent(!transparent)}
-          image="transparent"
-          additionalClass="transparentBtn"
-        />
-        <VideoPicker
-          deviceId={deviceId}
-          handleClick={id => setDeviceId(id)}
-          hidden={transparent}
-        />
-        <MenuButton
-          clickFunction={() => {
-            closeVideoWindow();
-          }}
-          image="close"
-          additionalClass="closeBtn"
-        ></MenuButton>
-      </div>
+      <VideoMenu
+        toggleTransparent={toggleTransparent}
+        transparent={transparent}
+        deviceId={deviceId}
+        setDeviceId={setDeviceId}
+      />
       <BiasWidget
         u={biasValues['surge']}
         v={biasValues['sway']}
