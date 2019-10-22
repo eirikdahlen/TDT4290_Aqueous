@@ -1,0 +1,26 @@
+.modeToggles {
+  display: flex;
+  flex-direction: row;
+  background-color: lightsteelblue;
+  margin: 2px;
+}
+
+.nfAvailToggle {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 2px;
+}
+
+.dpAvailToggle {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 2px;
+}
+
+.toggleSwitch {
+  background-color: rgb(203, 224, 236);
+  cursor: pointer;
+  text-align: center;
+}

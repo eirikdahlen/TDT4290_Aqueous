@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import modeEnum from '../constants/modeEnum';
-import {
-  estimatedStateMetadata,
-  entityStateMetadata,
-} from '../constants/imcMetadata';
+import ModeAvailableToggles from './ModeAvailableToggles';
+import FromROV from './FromROV';
+import ManualView from './ManualView';
+import DPView from './DPView';
+import NFView from './NFView';
 
 import './css/ROVMockUp.css';
 
@@ -60,43 +61,21 @@ export default function ROVMockUp() {
 
   return (
     <div className="mockupBox" style={{ backgroundColor: 'white' }}>
-      <div className="startServer" onClick={startServer()}>
+      <div className="startServer" onClick={() => startServer()}>
         Start Server
       </div>
       <div className="modeInput">
         <input
           placeholder="Mode"
+          type="modeInput"
           onChange={e => changeMode(e.target.value.toUpperCase())}
         ></input>
       </div>
-      <div className="fromROV">
-        <div className="estimatedStateSettings">
-          <h2>Estimated state</h2>
-          <div className="settings">
-            {estimatedStateMetadata.message.map(value => {
-              return (
-                <div className="stateSlot" key="estimatedStateSlot">
-                  <h3>{value.name}</h3>
-                  <input className={`estimatedStateInput${value.name}`}></input>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="entityStateSettings">
-          <h2>Entity state</h2>
-          <div className="settings">
-            {entityStateMetadata.message.map(value => {
-              return (
-                <div className="stateSlot" key="entityStateSlot">
-                  <h3>{value.name}</h3>
-                  <input type={`entityStateInput${value.name}`}></input>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      <FromROV />
+      <ModeAvailableToggles />
+      {manualView ? <ManualView /> : null}
+      {dpView ? <DPView /> : null}
+      {nfView ? <NFView /> : null}
     </div>
   );
 }
