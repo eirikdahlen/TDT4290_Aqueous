@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ControlApp from './ControlComponents/ControlApp';
 import VideoApp from './VideoComponents/VideoApp';
 import ROVMockUp from './MockupComponents/ROVMockUp';
+import SettingsApp from './ControlComponents/SettingsApp';
 
 class ViewManager extends Component {
   static Views() {
@@ -12,6 +13,7 @@ class ViewManager extends Component {
       controlWindow: <ControlApp />,
       videoWindow: <VideoApp />,
       mockupWindow: <ROVMockUp />,
+      settingsWindow: <SettingsApp />,
     };
   }
 
@@ -25,9 +27,7 @@ class ViewManager extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <Route path="/" component={ViewManager.View} />
-        </div>
+        <Route path="/" component={ViewManager.View} />
       </Router>
     );
   }

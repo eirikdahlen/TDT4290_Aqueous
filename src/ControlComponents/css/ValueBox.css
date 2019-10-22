@@ -1,19 +1,52 @@
-.Value {
-  font-size: 20px;
-  padding: 5px 10px;
-}
-
 .ValueBox {
-  min-width: 90px;
-  width: 16%;
-  background-color: lightgray;
-  margin: 0 2px;
+  background-color: var(--primary-light);
+  height: 50px;
+  width: 50px;
+  margin: 8px;
+  padding: 3px;
+  box-shadow: var(--shadow-secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.1s all;
+  border-radius: var(--small-radius);
 }
 
-.ValueBox:first-child {
-  border-radius: 10px 0px 0px 0px;
+.changedValueBox {
+  transform: scale(1.1);
+  background-color: #92e4ff;
 }
 
-.ValueBox:last-child {
-  border-radius: 0px 10px 0px 0px;
+.ValueBox h4 {
+  font-size: 14px;
+}
+
+.value,
+.valueBoxHeader {
+  margin: 0;
+  margin-top: -2px;
+}
+
+.value {
+  font-weight: normal;
+}
+
+/* Resizing the boxes on different screen sizes */
+@media screen and (max-width: 500px) {
+  .ValueBox {
+    width: 39px;
+    height: 39px;
+    margin: 5px;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .ValueBox {
+    width: 65px;
+    height: 65px;
+    margin: 10px;
+  }
+  .ValueBox h4 {
+    font-size: 16px;
+  }
 }

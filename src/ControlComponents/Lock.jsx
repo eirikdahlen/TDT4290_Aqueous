@@ -1,71 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title';
 import Switch from './Switch';
+import ModeInput from './ModeInput';
 import './css/Lock.css';
+import {
+  degreesToRadians,
+  radiansToDegrees,
+  normalize,
+} from './../utils/utils';
 
 const { remote } = window.require('electron');
 
-export default function Lock({ title, active, value, min, max, step }) {
-  const [input, changeInput] = useState(0.0);
+// Component which handles Autoheading and autodepth locks
+export default function Lock({
+  title,
+  active,
+  min,
+  max,
+  step,
+  manualModeActive,
+}) {
   const [reference, setReference] = useState(0.0);
-  const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
-  const unit = type === 'yaw' ? '°' : ' m';
 
-  const fixValue = (value, toRadians) => {
-    switch (title) {
-      case 'autoheading': {
-        if (toRadians) {
-          return Number(value) * (Math.PI / 180);
-        } else {
-          let degrees = (Number(value) * (180 / Math.PI)) % 360;
-          while (degrees < 0) {
-            degrees += 360;
+  const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
+  const nameMapping = {
+    autoheading: 'AH',
+    autodepth: 'AD',
+  };
+
+  // Normalizes or converts values to correct format and range
+  // Wrapped in useCallback to be able to use it in a useEffect
+  const fixValue = useCallback(
+    (value, toRadians) => {
+      switch (title) {
+        case 'autoheading': {
+          if (toRadians) {
+            return degreesToRadians(value);
+          } else {
+            return radiansToDegrees(value);
           }
-          return degrees;
+        }
+        case 'autodepth': {
+          return normalize(value, min, max);
+        }
+        default: {
+          console.log('Unrecognized title');
         }
       }
-      case 'autodepth': {
-        // Lets depth be max 200 and min 0
-        value = Math.min(value, max);
-        value = Math.max(value, min);
-        return value;
-      }
-      default: {
-        console.log('Unrecognized title');
-      }
-    }
-  };
+    },
+    [title, max, min],
+  );
 
-  // Function that is run when the update-button is clicked
+  // When manualModeActive (true if manual mode is active) changes, the global lock state is updates to match the Lock-components
+  useEffect(() => {
+    if (manualModeActive) {
+      remote.getGlobal('toROV')[title] = active;
+      if (active) {
+        remote.getGlobal('toROV')[type] = fixValue(reference, true);
+      }
+    } else {
+      remote.getGlobal('toROV')[title] = false;
+      remote.getGlobal('toROV')[type] = 0.0;
+    }
+  }, [manualModeActive, reference, title, type, min, max, active, fixValue]);
+
+  // Function that is run when the update-button is clicked - sets the local reference
   const updateValue = value => {
     setReference(value);
-    if (active) {
-      remote.getGlobal('toROV')[type] = fixValue(value, true);
+    if (active && manualModeActive) {
+      remote.getGlobal('toROV')[type] = fixValue(reference, true);
     }
   };
 
-  // Function that is run when toggle is clicked
+  // Function that is run when toggle is clicked - toggles the autoheading/depth
   const toggle = () => {
-    remote.getGlobal('toROV')[title] = !active;
-    remote.getGlobal('toROV')[type] = active ? 0.0 : fixValue(reference, true);
+    remote.getGlobal('toROV')[title] = !remote.getGlobal('toROV')[title];
+    if (manualModeActive) {
+      remote.getGlobal('toROV')[type] = active
+        ? 0.0
+        : fixValue(reference, true);
+    }
   };
 
   return (
     <div className="Lock">
-      <Title>{title}</Title>
+      <Title small={true}>{nameMapping[title]}</Title>
       <div className="inputFlex">
-        <input
-          type="number"
-          placeholder="0,0"
-          step={step}
+        <ModeInput
           min={min}
           max={max}
-          onChange={e => changeInput(Number(e.target.value))}
-        />
-        <button className="updateButton" onClick={() => updateValue(input)}>
-          &#x21bb;
-        </button>
+          step={step}
+          clickFunction={updateValue}
+        ></ModeInput>
       </div>
       <div className="check">
         <Switch
@@ -74,7 +101,6 @@ export default function Lock({ title, active, value, min, max, step }) {
             toggle();
           }}
           id={`${title}Switch`}
-          currentValue={`${fixValue(value, false).toFixed(1)}${unit}`}
         />
       </div>
     </div>
@@ -88,5 +114,5 @@ Lock.propTypes = {
   loop: PropTypes.bool,
   step: PropTypes.number,
   active: PropTypes.bool,
-  value: PropTypes.number,
+  manualModeActive: PropTypes.bool,
 };

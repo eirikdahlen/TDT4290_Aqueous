@@ -1,4 +1,4 @@
-var { dialog } = require('electron');
+const { dialog } = require('electron');
 const { runCommand } = require('./launchFile');
 const { getConnectedClient } = require('./../TCP/TCPClient');
 

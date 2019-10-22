@@ -1,37 +1,41 @@
 import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import { heading_init, drawHeading } from './js/heading.js';
+import drawHeading, { scaleHeading } from './js/heading.js';
 import LockWidget from './LockWidget';
+import { radiansToDegrees, wrapDegrees } from './js/tools.js';
 import './css/HeadingWidget.css';
 
-import { radiansToDegrees } from './js/tools.js';
+const initialWidth = 800;
+const initialHeight = 110;
 
 class HeadingWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasHeading);
     this.lockedValue = 0;
-  }
-
-  componentDidMount() {
-    heading_init(this.ctx);
-    this.componentDidUpdate();
+    this.scaleFunction = scaleHeading;
+    this.initialWidth = initialWidth;
+    this.initialHeight = initialHeight;
   }
 
   // Redraw widget
   componentDidUpdate() {
-    const heading_degrees = radiansToDegrees(this.props.heading);
-    this.lockedValue = radiansToDegrees(this.props.lockedValue);
+    const headingDegrees = radiansToDegrees(this.props.heading);
+    this.lockedValue = wrapDegrees(radiansToDegrees(this.props.lockedValue));
 
     drawHeading(
       this.ctx,
-      heading_degrees,
+      headingDegrees,
       this.props.isLocked,
       this.lockedValue, // Do not perform .toFixed on this :)
+      initialWidth,
+      initialHeight,
     );
   }
 
   render() {
     const canvas = super.render();
+
+    // Add a lock widget
     return (
       <div>
         {canvas}
@@ -47,7 +51,7 @@ class HeadingWidget extends CanvasWidget {
 
 class PureCanvasHeading extends PureCanvas {
   constructor(props) {
-    super(props, 'HeadingWidget', 800, 100);
+    super(props, 'HeadingWidget', initialWidth, initialHeight);
   }
 }
 

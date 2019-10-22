@@ -19,6 +19,14 @@ const { closeSimulator } = require('./launch/closeSimulator');
 let controlWindow;
 let videoWindow;
 
+// Global settings for TCP port and IP adress, as well as the "start serial port"-file
+global.settings = {
+  port: 5000,
+  host: '127.0.0.1',
+  serialFile:
+    'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
+};
+
 // Global state objects
 global.toROV = {
   surge: 0.0,
@@ -51,8 +59,9 @@ global.bias = {
  * 2 - NF mode
  */
 global.mode = {
-  globalMode: 0,
+  currentMode: 0,
   nfAvailable: true,
+  dpAvailable: false,
 };
 
 /**
@@ -72,9 +81,10 @@ global.netfollowing = {
  * Placeholders for X, Y, Z for now
  */
 global.dynamicpositioning = {
-  Xsetting1: 0,
-  Ysetting2: 0,
-  Zsetting3: 0,
+  latitude: 0,
+  longitude: 0,
+  heading: 0,
+  depth: 0,
 };
 
 // Functions that are run when the app is ready
@@ -115,7 +125,7 @@ function quitAll() {
 // Boilerplate code - probably just quits the app when all windows are closed
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    quitAll();
+    app.quitAll();
   }
 });
 

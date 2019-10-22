@@ -26,7 +26,11 @@
       }
     ],
     "prettier/prettier": "error",
-    "max-len": ["error", { "code": 120 }, { "ignoreComments": true }]
+    "max-len": [
+      "error",
+      { "code": 120 },
+      { "ignoreComments": true, "ignoreStrings": true }
+    ]
   },
   "settings": {
     "import/resolver": {

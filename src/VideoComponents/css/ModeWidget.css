@@ -11,6 +11,7 @@
 
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+
   font-size: 20px;
 }
 
@@ -26,11 +27,16 @@
 .ModeWidget img {
   opacity: 1;
   width: 25px;
+  margin-bottom: 5px;
 }
 
 .NFAvailability {
   font-size: 14px;
   text-align: center;
+  width: 160px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
 }
 
 .NFAvailability img {

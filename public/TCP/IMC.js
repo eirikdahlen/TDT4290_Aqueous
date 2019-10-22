@@ -1,3 +1,17 @@
+const {
+  datatypes,
+  customNetFollowStateMetadata,
+  estimatedStateMetadata,
+  entityStateMetadata,
+  desiredControlMetadata,
+  lowLevelControlManeuverMetadata,
+  desiredHeadingMetadata,
+  desiredZMetadata,
+  goToMetadata,
+  netFollowMetadata,
+  messages,
+} = require('./IMCMetadata');
+
 const encode = {
   estimatedState: encodeEstimatedState,
   entityState: encodeEntityState,
@@ -12,39 +26,20 @@ const encode = {
 };
 
 function decode(buf) {
-  let id = buf.readUInt16BE(0);
-  return decodeImc(buf, idToMessageMetadata[id]);
+  /**
+   * Decodes a Buffer with possibly multiple IMC messages
+   *
+   * Return an object of this type: {'entityState': {...}, 'estimatedState': ...}
+   */
+  let result = {};
+  let offset = 0;
+  let msg, name;
+  do {
+    [msg, offset, name] = decodeImc(buf, offset);
+    result[name] = msg;
+  } while (offset < buf.length);
+  return result;
 }
-
-const datatypes = {
-  uint_8t: {
-    name: 'uint_8t',
-    length: 1,
-  },
-  uint_16t: {
-    name: 'uint_16t',
-    length: 2,
-  },
-  uint_32t: {
-    name: 'uint_16t',
-    length: 4,
-  },
-  fp32_t: {
-    name: 'fp32_t',
-    length: 4,
-  },
-  fp64_t: {
-    name: 'fp64_t',
-    length: 8,
-  },
-  bitfield: {
-    name: 'bitfield',
-    length: 1,
-  },
-  recursive: {
-    name: 'recursive',
-  },
-};
 
 function encodeIMC(imcMessage, imcMessageMetadata) {
   // Check if assumed length is corret
@@ -102,9 +97,15 @@ function encodeIMC(imcMessage, imcMessageMetadata) {
   return buf;
 }
 
-function decodeImc(buf, imcMessageMetadata) {
-  const result = {};
-  let offset = 2; // Do not need to decode id
+function decodeImc(buf, offset = 0, name = '') {
+  let result = {};
+
+  // Get information from id
+  const id = buf.readUInt16BE(offset);
+  const imcMessageMetadata = idToMessageMetadata[id];
+  if (name) name += '.';
+  name += imcMessageMetadata.name;
+  offset += 2;
 
   imcMessageMetadata.message.map(imcEntity => {
     if (!Object.prototype.hasOwnProperty.call(imcEntity, 'value')) {
@@ -134,24 +135,17 @@ function decodeImc(buf, imcMessageMetadata) {
           );
           break;
         case datatypes.recursive:
-          result[imcEntity.name] = decodeImc(
-            buf.subarray(
-              offset,
-              offset + idToMessageMetadata[buf.readUInt16BE(offset)].length,
-            ),
-            idToMessageMetadata[buf.readUInt16BE(offset)],
-          );
+          [result[imcEntity.name], offset, name] = decodeImc(buf, offset, name);
           break;
         default:
           break;
       }
     }
-    offset +=
-      imcEntity.datatype === datatypes.recursive
-        ? idToMessageMetadata[buf.readUInt16BE(offset)].length
-        : imcEntity.datatype.length;
+    if (imcEntity.datatype !== datatypes.recursive) {
+      offset += imcEntity.datatype.length;
+    }
   });
-  return result;
+  return [result, offset, name];
 }
 
 function bitfieldToUIntBE(values, metadataFieldsArray) {
@@ -160,8 +154,7 @@ function bitfieldToUIntBE(values, metadataFieldsArray) {
    * `metadataFieldsArray` is an array with name of field. I.e. ['NF', 'DP, '', ...]
    */
   let bitfield = 0x00000000;
-  let keys = Object.keys(values);
-  keys.map(key => {
+  Object.keys(values).map(key => {
     if (values[key]) {
       let idx =
         metadataFieldsArray.length - (metadataFieldsArray.indexOf(key) + 1);
@@ -171,14 +164,18 @@ function bitfieldToUIntBE(values, metadataFieldsArray) {
   return bitfield;
 }
 
-function UIntBEToBitfield(uint, metadataFields) {
+function UIntBEToBitfield(uint, metadataFieldsArray) {
+  /**
+   * `uint` should be an integer between 0 and 255 (8 bits)
+   * `metadataFieldsArray` is an array with name of field. I.e. ['NF', 'DP, '', ...]
+   *
+   * Returns an object of this type: {'NF': true, 'DP': false}
+   */
   let result = {};
-  // console.log(`Recieved bitfield: ${uint}`);
-
-  metadataFields.map((feild, i) => {
+  metadataFieldsArray.map((feild, i) => {
     if (feild) {
-      result[feild] = ((1 << (metadataFields.length - (i + 1))) & uint) !== 0;
-      // console.log(dec2bin(1 << (metadataFields.length - (i + 1))));
+      result[feild] =
+        ((1 << (metadataFieldsArray.length - (i + 1))) & uint) !== 0;
     }
   });
   return result;
@@ -190,124 +187,17 @@ function lenImcMessage(message) {
   }, 0);
 }
 
-const estimatedStateMetadata = {
-  length: 90,
-  id: {
-    value: 350,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    { name: 'lat', datatype: datatypes.fp64_t },
-    { name: 'lon', datatype: datatypes.fp64_t },
-    { name: 'height', datatype: datatypes.fp32_t },
-    { name: 'x', datatype: datatypes.fp32_t },
-    { name: 'y', datatype: datatypes.fp32_t },
-    { name: 'z', datatype: datatypes.fp32_t },
-    { name: 'phi', datatype: datatypes.fp32_t },
-    { name: 'theta', datatype: datatypes.fp32_t },
-    { name: 'psi', datatype: datatypes.fp32_t },
-    { name: 'u', datatype: datatypes.fp32_t },
-    { name: 'v', datatype: datatypes.fp32_t },
-    { name: 'w', datatype: datatypes.fp32_t },
-    { name: 'vx', datatype: datatypes.fp32_t },
-    { name: 'vy', datatype: datatypes.fp32_t },
-    { name: 'vz', datatype: datatypes.fp32_t },
-    { name: 'p', datatype: datatypes.fp32_t },
-    { name: 'q', datatype: datatypes.fp32_t },
-    { name: 'r', datatype: datatypes.fp32_t },
-    { name: 'depth', datatype: datatypes.fp32_t },
-    { name: 'alt', datatype: datatypes.fp32_t },
-  ],
-};
-
 function encodeEstimatedState(estimatedState) {
   return encodeIMC(estimatedState, estimatedStateMetadata);
 }
-
-const entityStateMetadata = {
-  length: 8,
-  id: {
-    value: 1,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    { name: 'state', datatype: datatypes.uint_8t },
-    {
-      name: 'flags',
-      datatype: datatypes.bitfield,
-      fields: ['NF', 'DP', '', '', '', '', '', ''],
-    },
-    {
-      name: 'description',
-      datatype: datatypes.uint_32t,
-      value: 131072,
-    },
-  ],
-};
 
 function encodeEntityState(entityState) {
   return encodeIMC(entityState, entityStateMetadata);
 }
 
-const desiredControlMetadata = {
-  length: 51,
-  id: {
-    value: 407,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'x',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'y',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'z',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'k',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'm',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'n',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'flags',
-      datatype: datatypes.bitfield,
-      fields: ['x', 'y', 'z', 'k', 'm', 'n', '', ''],
-    },
-  ],
-};
-
 function encodeDesiredControl(desiredControl) {
   return encodeIMC(desiredControl, desiredControlMetadata);
 }
-
-const lowLevelControlManeuverMetadata = {
-  id: {
-    value: 455,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'control',
-      datatype: datatypes.recursive,
-    },
-    {
-      name: 'duration',
-      datatype: datatypes.uint_16t,
-    },
-  ],
-};
 
 function encodeLowLevelControlManeuver(
   encodeControlManeuver,
@@ -328,20 +218,6 @@ function encodeLowLevelControlManeuver(
   );
 }
 
-const desiredHeadingMetadata = {
-  length: 10,
-  id: {
-    value: 400,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'value',
-      datatype: datatypes.fp64_t,
-    },
-  ],
-};
-
 function encodeDesiredHeading(desiredHeading) {
   return encodeIMC(desiredHeading, desiredHeadingMetadata);
 }
@@ -354,24 +230,6 @@ function encodeLowLevelControlManeuverDesiredHeading(desiredHeading, duration) {
   );
 }
 
-const desiredZMetadata = {
-  length: 7,
-  id: {
-    value: 401,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'value',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'z_units',
-      datatype: datatypes.uint_8t,
-    },
-  ],
-};
-
 function encodeDesiredZ(desiredZ) {
   return encodeIMC(desiredZ, desiredZMetadata);
 }
@@ -380,120 +238,13 @@ function encodeLowLevelControlManeuverDesiredZ(desiredZ, duration) {
   return encodeLowLevelControlManeuver(encodeDesiredZ, desiredZ, duration);
 }
 
-const goToMetadata = {
-  length: 54,
-  id: {
-    value: 450,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'timeout',
-      datatype: datatypes.uint_16t,
-    },
-    {
-      name: 'lat',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'lon',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'z',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'z_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'speed',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'speed_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'roll',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'pitch',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'yaw',
-      datatype: datatypes.fp64_t,
-    },
-  ],
-};
-
 function encodeGoTo(goTo) {
   return encodeIMC(goTo, goToMetadata);
 }
 
-const netFollowMetadata = {
-  length: 33,
-  id: {
-    value: 465,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'timeout',
-      datatype: datatypes.uint_16t,
-    },
-    {
-      name: 'name',
-      datatype: datatypes.uint_32t,
-      value: 151110,
-    },
-    {
-      name: 'd',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'v',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'z',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'z_units',
-      datatype: datatypes.uint_8t,
-    },
-  ],
-};
-
 function encodeNetFollow(netFollow) {
   return encodeIMC(netFollow, netFollowMetadata);
 }
-
-const customNetFollowStateMetadata = {
-  length: 18,
-  id: {
-    value: 1002,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'd',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'v',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'angle',
-      datatype: datatypes.fp64_t,
-    },
-  ],
-};
 
 function encodeCustomNetFollowState(customNetFollowState) {
   return encodeIMC(customNetFollowState, customNetFollowStateMetadata);
@@ -511,4 +262,4 @@ const idToMessageMetadata = {
   1002: customNetFollowStateMetadata,
 };
 
-module.exports = { encode, decode };
+module.exports = { encode, decode, messages };

@@ -7,6 +7,7 @@ const {
   createKeyboardMappingWindow,
   createXboxMappingWindow,
   createMockupWindow,
+  createSettingsWindow,
 } = require('./windows');
 const { getConnectedClient } = require('./../TCP/TCPClient');
 
@@ -60,9 +61,14 @@ const menuTemplate = [
       {
         label: 'Start ROV serial port',
         click() {
-          getFileAndLaunch(
-            'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
-          );
+          getFileAndLaunch(global.settings.serialFile);
+        },
+      },
+      {
+        label: 'Settings',
+        click() {
+          const { x, y } = electron.screen.getCursorScreenPoint();
+          createSettingsWindow(x, y);
         },
       },
     ],
