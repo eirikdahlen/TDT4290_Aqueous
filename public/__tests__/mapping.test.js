@@ -37,6 +37,10 @@ let bias;
 
 const clearData = () => {
   // Mocks global state
+  global.mode = {
+    globalMode: 0,
+    nfAvailable: true,
+  };
   global.toROV = {
     surge: 0.0,
     sway: 0.0,

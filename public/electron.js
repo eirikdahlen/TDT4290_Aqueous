@@ -74,6 +74,7 @@ global.netfollowing = {
   distance: 0,
   velocity: 0,
   degree: 0,
+  depth: 0,
 };
 
 /**
