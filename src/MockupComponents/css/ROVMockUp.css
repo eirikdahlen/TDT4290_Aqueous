@@ -10,3 +10,8 @@
   font-size: x-large;
   padding: 15px;
 }
+
+input[type='modeInput'] {
+  padding: 10px;
+  font-size: medium;
+}
