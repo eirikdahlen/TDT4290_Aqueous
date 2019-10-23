@@ -25,7 +25,6 @@ class ModeWidget extends Component {
       fontSizeMode: 14,
       fontSizeNFAvail: 14,
       sizeImgNFAvail: 25,
-      hey: 'hey',
     };
 
     // Initial variable values
