@@ -44,8 +44,9 @@ function drawBoat(context, boatWidth, boatLength, boatHeading) {
 }
 
 function drawROV(context, rovSize) {
-  context.beginPath();
+  context.fillStyle = '#00FF00';
 
+  context.beginPath();
   // Draw the main body
   context.moveTo(-rovSize / 2, -rovSize / 2);
   context.lineTo(rovSize / 2, -rovSize / 2);
@@ -59,6 +60,7 @@ function drawROV(context, rovSize) {
   context.lineTo(-rovSize / 3, -rovSize / 3 - rovSize / 2);
 
   context.closePath();
+  context.fill();
 }
 
 function drawNEDframe(context, initialWidth, boatWidth, rovSize) {
@@ -113,20 +115,20 @@ function drawTarget(context) {
 
   context.fillStyle = '#FF0000';
   context.arc(0, 0, 8, 0, 2 * Math.PI);
-  context.fill();
   context.closePath();
+  context.fill();
 
   context.beginPath();
   context.fillStyle = '#FFFFFF';
   context.arc(0, 0, 5, 0, 2 * Math.PI);
-  context.fill();
   context.closePath();
+  context.fill();
 
   context.beginPath();
   context.fillStyle = '#FF0000';
   context.arc(0, 0, 2, 0, 2 * Math.PI);
-  context.fill();
   context.closePath();
+  context.fill();
 }
 
 function drawArrow(context, rovSize, initialWidth) {
@@ -227,16 +229,21 @@ function drawMinimap(
       context,
       rovSize *
         (maxDistance /
-          Math.log(Math.exp(maxDistance) + Math.pow(Math.max(east, north), 3))),
+          Math.log(
+            Math.exp(maxDistance) +
+              Math.pow(Math.max(Math.abs(east), Math.abs(north)), 3),
+          )),
       initialWidth,
     ); // Make size of arrow based on how far out of bounds the ROV is
+    //console.log(east, north, Math.max(east, north));
     context.restore();
   }
 
   if (DP) {
     // If the DP target is within the bounds of the map, draw it
     const targetInBoundsNorth =
-      DPeast <= maxDistance * rightFactor && east >= -maxDistance * leftFactor;
+      DPeast <= maxDistance * rightFactor &&
+      DPeast >= -maxDistance * leftFactor;
     const targetInBoundsEast = Math.abs(DPnorth) <= maxDistance;
 
     if (targetInBoundsEast && targetInBoundsNorth) {
@@ -275,7 +282,8 @@ function drawMinimap(
         rovSize *
           (maxDistance /
             Math.log(
-              Math.exp(maxDistance) + Math.pow(Math.max(DPeast, DPnorth), 3),
+              Math.exp(maxDistance) +
+                Math.pow(Math.max(Math.abs(DPeast), Math.abs(DPnorth)), 3),
             )),
         initialWidth,
       ); // Make size of arrow based on how far out of bounds the target is

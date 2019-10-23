@@ -94,7 +94,7 @@ class ModeWidget extends Component {
       // Scale the NF availability text
       var sizeNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
       sizeNF = clamp(sizeNF, 12, 14);
-      document.getElementsByClassName('NFAvailable')[0].style.fontSize =
+      document.getElementsByClassName('NFAvailability')[0].style.fontSize =
         sizeNF + 'px';
 
       // Scale the NF availability icon
