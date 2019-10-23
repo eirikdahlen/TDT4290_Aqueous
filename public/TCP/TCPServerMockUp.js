@@ -1,5 +1,6 @@
 const net = require('net');
 const { encode, decode, messages } = require('./IMC');
+const { ipcMain } = require('electron');
 
 const port = 5000;
 const host = '127.0.0.1';
@@ -113,73 +114,98 @@ let netFollow = {
 /* eslint-disable no-unused-vars */
 // End states IMC ==============================================
 
-console.log(`Waiting for client to connect to host ${host} port ${port}`);
-
-const server = new net.createServer(socket => {
-  console.log(`TCP Server bound to port ${port}.`);
-
-  socket.on('data', buf => {
-    console.log(`[${Date.now()}] Recieved data from client:`);
-    const recievedData = decode(buf);
-    console.log(decode(buf));
-    Object.keys(recievedData).map(message => {
-      switch (message) {
-        case messages.desiredControl:
-          // Is in manual mode
-          entityState.state = states.manual;
-          desiredControl = recievedData[message];
-          // TODO: SEND IPC message?
-          break;
-        case messages.lowLevelControlManeuver.desiredHeading:
-          lowLevelControlManeuver.desiredHeading = recievedData[message];
-          // TODO: SEND IPC message?
-          break;
-        case messages.lowLevelControlManeuver.desiredZ:
-          lowLevelControlManeuver.desiredZ = recievedData[message];
-          // TODO: SEND IPC message?
-          break;
-        case messages.goTo:
-          goTo = recievedData[message];
-          // TODO: SEND IPC message?
-          break;
-        case messages.netFollow:
-          netFollow = recievedData[message];
-          // TODO: SEND IPC message?
-          break;
-        default:
-          break;
-      }
-    });
+const ipcCommunicationTCPServer = () => {
+  ipcMain.on('entityState', (event, arg) => {
+    entityState = arg;
+    console.log('Received Entitystate:', entityState);
   });
 
-  const sendData = () => {
-    // Create IMC message with estimated state and entity state
-    console.log(`[${Date.now()}] Sending IMC message:`);
-    console.log(estimatedState);
-    console.log(entityState);
+  ipcMain.on('estimatedState', (event, arg) => {
+    estimatedState = arg;
+    console.log('Received Estimatedstate:', estimatedState);
+  });
 
-    let estimatedStateBuf = encode(estimatedState);
-    let entityStateBuf = encode(entityState);
-    let buf = Buffer.concat(
-      [estimatedStateBuf, entityStateBuf],
-      estimatedStateBuf.length + entityStateBuf.length,
-    );
+  console.log('Starting ipcCommunicationTCPServer');
 
-    // Add custom net follow message when mode is NF
-    if (entityState.state === states.NF) {
-      console.log(customNetFollow);
+  ipcMain.on('startROVMockupServer', () => startServer());
+};
 
-      let customNetFollowBuf = encode(customNetFollow);
-      buf = Buffer.concat(
-        [buf, customNetFollowBuf],
-        buf.length + customNetFollowBuf.length,
+const startServer = () => {
+  console.log(`Waiting for client to connect to host ${host} port ${port}`);
+
+  const server = new net.createServer(socket => {
+    console.log(`TCP Server bound to port ${port}.`);
+
+    socket.on('data', buf => {
+      console.log(`[${Date.now()}] Recieved data from client:`);
+      const recievedData = decode(buf);
+      console.log(decode(buf));
+      Object.keys(recievedData).map(message => {
+        switch (message) {
+          case messages.desiredControl:
+            // Is in manual mode
+            entityState.state = states.manual;
+            desiredControl = recievedData[message];
+            // TODO: SEND IPC message?
+
+            break;
+          case messages.lowLevelControlManeuver.desiredHeading:
+            lowLevelControlManeuver.desiredHeading = recievedData[message];
+            // TODO: SEND IPC message?
+            break;
+          case messages.lowLevelControlManeuver.desiredZ:
+            lowLevelControlManeuver.desiredZ = recievedData[message];
+            // TODO: SEND IPC message?
+            break;
+          case messages.goTo:
+            entityState.state = states.DP;
+            goTo = recievedData[message];
+            // TODO: SEND IPC message?
+            break;
+          case messages.netFollow:
+            entityState.state = states.NF;
+            netFollow = recievedData[message];
+            // TODO: SEND IPC message?
+            break;
+          default:
+            break;
+        }
+      });
+    });
+
+    const sendData = () => {
+      // Create IMC message with estimated state and entity state
+      console.log(`[${Date.now()}] Sending IMC message:`);
+      console.log(estimatedState);
+      console.log(entityState);
+
+      let estimatedStateBuf = encode(estimatedState);
+      let entityStateBuf = encode(entityState);
+      let buf = Buffer.concat(
+        [estimatedStateBuf, entityStateBuf],
+        estimatedStateBuf.length + entityStateBuf.length,
       );
-    }
 
-    socket.write(buf);
-  };
+      // Add custom net follow message when mode is NF
+      if (entityState.state === states.NF) {
+        console.log(customNetFollow);
 
-  setInterval(sendData, 200);
-});
+        let customNetFollowBuf = encode(customNetFollow);
+        buf = Buffer.concat(
+          [buf, customNetFollowBuf],
+          buf.length + customNetFollowBuf.length,
+        );
+      }
 
-server.listen(port, host);
+      socket.write(buf);
+    };
+
+    setInterval(sendData, 200);
+  });
+
+  server.listen(port, host);
+};
+
+module.exports = {
+  ipcCommunicationTCPServer,
+};

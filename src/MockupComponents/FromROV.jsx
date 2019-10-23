@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { estimatedStateMetadata } from '../constants/imcMetadata';
 
 import './css/FromROV.css';
 
-const { remote } = window.require('electron');
+const { ipcRenderer } = require('electron');
 
 export default function FromROV() {
   const [estimatedStateMessage, setEstimatedStateMessage] = useState({
@@ -29,16 +29,12 @@ export default function FromROV() {
     alt: 0,
   });
 
-  /*   useEffect(() => {
-    setEstimatedStateMessage(new Array(20).fill(0));
-    setEntityStateMessage(new Array(3).fill(0));
-  }, []); */
-
   function changeEstimatedState(value, name) {
     let tempState = estimatedStateMessage;
     tempState[name] = parseInt(value);
     console.log(tempState);
     setEstimatedStateMessage(tempState);
+    ipcRenderer.send('estimatedState', estimatedStateMessage);
   }
 
   return (

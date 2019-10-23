@@ -8,6 +8,8 @@ import NFView from './NFView';
 
 import './css/ROVMockUp.css';
 
+const { ipcRenderer } = require('electron');
+
 export default function ROVMockUp() {
   const [mode, setMode] = useState(modeEnum.MANUAL);
   const [manualView, setManualView] = useState(true);
@@ -42,7 +44,8 @@ export default function ROVMockUp() {
 
   // TODO: add this functionality in TCPServerMockUp
   function startServer() {
-    return null;
+    console.log('hei');
+    ipcRenderer.send('startROVMockupServer');
   }
 
   /**

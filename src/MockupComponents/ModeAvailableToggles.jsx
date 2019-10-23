@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ModeEnum from '../constants/modeEnum';
 
 import './css/ModeAvailableToggles.css';
@@ -19,10 +19,6 @@ export default function ModeAvailableToggles() {
   const [dpAvailable, changeDpAvailable] = useState(true);
   const [entityStateMessage, changeEntityStateMessage] = useState(entityState);
 
-  useEffect(() => {
-    ipcRenderer.send('entityState', entityStateMessage);
-  }, []);
-
   function toggleDPAvailable() {
     let tempAvail = !dpAvailable;
     changeDpAvailable(tempAvail);
@@ -34,6 +30,7 @@ export default function ModeAvailableToggles() {
       },
     });
     // Send IMC Message here
+    ipcRenderer.send('entityState', entityStateMessage);
   }
 
   function toggleNFAvailable() {

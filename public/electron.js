@@ -14,6 +14,7 @@ const { menuTemplate } = require('./utils/menuTemplate');
 const { createWindows, setWidthAndHeight } = require('./utils/windows');
 
 const { setIPCListeners } = require('./utils/IPC');
+const { ipcCommunicationTCPServer } = require('./TCP/TCPServerMockUp');
 const { closeSimulator } = require('./launch/closeSimulator');
 
 let controlWindow;
@@ -99,6 +100,7 @@ app.on('ready', () => {
   videoWindow.setMenu(null);
 
   setIPCListeners();
+  ipcCommunicationTCPServer();
 
   if (isDev) {
     // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
