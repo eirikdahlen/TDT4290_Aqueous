@@ -21,6 +21,12 @@ class ModeWidget extends Component {
   constructor(props) {
     super(props);
 
+    // Initializing font and image sizes
+    this.fontSizeMode = 14;
+    this.fontSizeNFAvail = 14;
+    this.sizeImgNFAvail = 25;
+    this.fontSizeDP = 14;
+
     // Initial variable values
     this.modeLabel = 'INVALID';
     this.imgsrc = null;
@@ -47,6 +53,7 @@ class ModeWidget extends Component {
     window.addEventListener('resize', this.updateDimensions);
 
     this.componentDidUpdate();
+    this.updateDimensions();
   }
 
   componentDidUpdate() {
@@ -55,9 +62,7 @@ class ModeWidget extends Component {
     this.modeLabel = modeToLabel[currentMode];
 
     if (currentMode === ModeEnum.DYNAMICPOSITIONING) {
-      this.widget = (
-        <DynPosWidget currentNorth={3} currentEast={2} currentDown={5} />
-      );
+      this.widget = <DynPosWidget />;
     } else if (currentMode === ModeEnum.NETFOLLOWING) {
       // Show the net following widget
       const dataNF = remote.getGlobal('netfollowing');
@@ -70,7 +75,10 @@ class ModeWidget extends Component {
     } else {
       // Show the NF availability widget
       this.widget = (
-        <div className={'NFAvailability ' + this.opacityStyle}>
+        <div
+          className={'NFAvailability ' + this.opacityStyle}
+          style={{ fontSize: this.fontSizeNFAvail + 'px' }}
+        >
           <img id="ImgNFAvailable" src={this.imgsrc} alt=""></img>
           <div>{this.nfLabel}</div>
         </div>
@@ -84,25 +92,12 @@ class ModeWidget extends Component {
   }
 
   updateDimensions = () => {
+    const width = window.innerWidth;
+
     // Scale text of the mode label
-    var sizeMode = mapRange(window.innerWidth, 1000, 1500, 12, 20);
-    sizeMode = clamp(sizeMode, 12, 20);
-    document.getElementsByClassName('ModeWidget')[0].style.fontSize =
-      sizeMode + 'px';
-
-    if (this.props.currentMode === ModeEnum.MANUAL) {
-      // Scale the NF availability text
-      var sizeNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
-      sizeNF = clamp(sizeNF, 12, 14);
-      document.getElementsByClassName('NFAvailability')[0].style.fontSize =
-        sizeNF + 'px';
-
-      // Scale the NF availability icon
-      var sizeImg = mapRange(window.innerWidth, 1000, 1500, 15, 25);
-      sizeImg = clamp(sizeImg, 15, 25);
-      document.getElementById('ImgNFAvailable').style.width = sizeImg + 'px';
-      this.componentDidUpdate();
-    }
+    this.fontSizeMode = clamp(mapRange(width, 1000, 1500, 12, 20), 12, 20);
+    this.fontSizeNFAvail = clamp(mapRange(width, 1000, 1500, 12, 14), 12, 14);
+    this.sizeImgNFAvail = clamp(mapRange(width, 1000, 1500, 15, 25), 15, 25);
   };
 
   static get propTypes() {
@@ -114,7 +109,10 @@ class ModeWidget extends Component {
 
   render() {
     return (
-      <div className="ModeWidget" onLoad={this.updateDimensions}>
+      <div
+        className="ModeWidget"
+        style={{ fontSize: this.fontSizeMode + 'px' }}
+      >
         {this.widget}
         <p>{this.modeLabel}</p>
       </div>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { clamp, mapRange } from './js/tools';
 
 const { remote } = window.require('electron');
 
@@ -7,18 +8,39 @@ class DynPosWidget extends Component {
   constructor(props) {
     super(props);
 
+    this.fontSizeDP = 14;
+
     this.distance = { north: 0, east: 0, down: 0, total: 0 };
   }
 
-  calculateDistance(dataDP) {
-    this.distance.north = this.props.currentNorth - dataDP['latitude'];
-    this.distance.east = this.props.currentEast - dataDP['longitude'];
-    this.distance.down = this.props.currentDown - dataDP['depth'];
+  calculateDistance(dataDP, fromROV) {
+    this.distance.north = dataDP.latitude - fromROV.north;
+    this.distance.east = dataDP.longitude - fromROV.east;
+    this.distance.down = dataDP.depth - fromROV.down;
     this.distance.total = Math.sqrt(
       Math.pow(this.distance.north, 2) +
         Math.pow(this.distance.east, 2) +
         Math.pow(this.distance.down, 2),
     );
+  }
+
+  updateDimensions = () => {
+    const width = window.innerWidth;
+    this.fontSizeDP = clamp(mapRange(width, 1000, 1500, 12, 14), 12, 14);
+  };
+
+  componentDidMount() {
+    window.removeEventListener('resize', this.updateDimensions);
+    this.updateDimensions();
+  }
+
+  componentDidUpdate() {
+    this.updateDimensions();
+  }
+
+  componentWillUnmount() {
+    // Unregister event listener
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   static get propTypes() {
@@ -31,11 +53,12 @@ class DynPosWidget extends Component {
 
   render() {
     const dataDP = remote.getGlobal('dynamicpositioning');
+    const fromROV = remote.getGlobal('fromROV');
 
-    this.calculateDistance(dataDP);
+    this.calculateDistance(dataDP, fromROV);
 
     return (
-      <div id="DynPos">
+      <div id="DynPos" style={{ fontSize: this.fontSizeDP + 'px' }}>
         <table>
           <thead>
             <tr>
@@ -47,17 +70,17 @@ class DynPosWidget extends Component {
           <tbody>
             <tr>
               <td>North</td>
-              <td>{dataDP['latitude'].toFixed(2)}</td>
+              <td>{dataDP.latitude.toFixed(2)}</td>
               <td>{this.distance.north.toFixed(2)}</td>
             </tr>
             <tr>
               <td>East</td>
-              <td>{dataDP['longitude'].toFixed(2)}</td>
+              <td>{dataDP.longitude.toFixed(2)}</td>
               <td>{this.distance.east.toFixed(2)}</td>
             </tr>
             <tr>
               <td>Down</td>
-              <td>{dataDP['depth'].toFixed(2)}</td>
+              <td>{dataDP.depth.toFixed(2)}</td>
               <td>{this.distance.down.toFixed(2)}</td>
             </tr>
           </tbody>
