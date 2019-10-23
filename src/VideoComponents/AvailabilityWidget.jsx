@@ -4,6 +4,11 @@ import './css/AvailabilityWidget.css';
 
 const textStyle = {
   color: '#FFFFFF',
+  fontWeight: 'bold',
+};
+
+const textStyleOff = {
+  color: '#A0A0A0',
   fontWeight: 'lighter',
 };
 
@@ -11,11 +16,11 @@ export default function AvailabilityWidget({ nfAvailable, dpAvailable }) {
   return (
     <div className="AvailabilityWidget">
       <div className="nfdp">
-        <h3 style={textStyle}>NF</h3>
+        <h3 style={nfAvailable ? textStyle : textStyleOff}>NF</h3>
         <LightDot available={nfAvailable} />
       </div>
       <div className="nfdp">
-        <h3 style={textStyle}>DP</h3>
+        <h3 style={dpAvailable ? textStyle : textStyleOff}>DP</h3>
         <LightDot available={dpAvailable} />
       </div>
     </div>
