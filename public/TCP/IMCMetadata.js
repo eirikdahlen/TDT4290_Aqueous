@@ -309,6 +309,7 @@ const customNetFollowStateMetadata = {
 
 module.exports = {
   datatypes,
+  messages,
   estimatedStateMetadata,
   customNetFollowStateMetadata,
   entityStateMetadata,
