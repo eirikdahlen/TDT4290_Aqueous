@@ -29,6 +29,7 @@ class MiniMapWidget extends CanvasWidget {
   }
 
   componentDidUpdate() {
+    const down = remote.getGlobal('fromROV').down;
     const dpEnabled =
       remote.getGlobal('mode').currentMode === ModeEnum.DYNAMICPOSITIONING;
     const dpSettings = remote.getGlobal('dynamicpositioning');
@@ -37,12 +38,14 @@ class MiniMapWidget extends CanvasWidget {
       this.ctx,
       this.props.north,
       this.props.east,
+      down,
       this.props.yaw,
       this.props.boatHeading,
       this.maxDistance,
       dpEnabled,
       dpSettings.latitude,
       dpSettings.longitude,
+      dpSettings.depth,
       initialWidth,
       initialHeight,
     );

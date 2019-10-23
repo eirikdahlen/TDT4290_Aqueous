@@ -43,7 +43,7 @@ function drawBoat(context, boatWidth, boatLength, boatHeading) {
   context.fillText(boatDegrees.toFixed(0) + '\xB0', 0, (-2 * boatLength) / 2.5);
 }
 
-function drawROV(context, rovSize) {
+function drawROV(context) {
   context.fillStyle = '#00FF00';
 
   context.beginPath();
@@ -145,55 +145,23 @@ function initMinimap(boatHeading) {
   boatHeadingOffset = boatHeading;
 }
 
-function drawMinimap(
+function drawContent(
+  // Function for drawing either the ROV or the target (or other future components) at the correct place in the minimap
   context,
-  north,
-  east,
-  yaw,
-  boatHeading,
   maxDistance,
-  DP,
-  DPnorth,
-  DPeast,
-  initialWidth,
-  initialHeight,
+  yaw,
+  east,
+  north,
+  drawFunction,
+  arrowColor,
 ) {
-  context.strokeStyle = '#FFFFFF';
-  context.fillStyle = '#FFFFFF';
-  context.lineWidth = 1.5;
-
-  // Keep degrees between 0 and 360
-  boatHeading = wrapDegrees(boatHeading);
-  boatHeadingOffset = wrapDegrees(boatHeadingOffset);
-
-  const ROVangleInNED = Math.atan2(north, east); // Calculates direction of the ROV based on north and east props
-  const TargetAngleInNED = Math.atan2(DPnorth, DPeast); // Calculates direction of the target based on DPnorth and DPeast parameters
-  var boatRotation = boatHeading - boatHeadingOffset; // Set boatHeading to difference in heading since beginning
-
-  context.clearRect(0, 0, initialWidth, initialWidth); // Clear canvas to avoid drawing on top of previous canvas
-
-  // Draw map boundary
-  context.beginPath();
-  context.rect(0, 0, initialWidth, initialHeight);
-  context.stroke();
-
-  // Draw the boat
-  context.save(); // Save context state so we can draw boat and ROV from different origins and rotate independently
-  context.translate(initialWidth / 2, initialWidth / 2); // Draw boat from the middle of the circle
-  //context.rotate(boatAngle[0]); // Rotate the boat drawing around the middle of the circle
-  drawBoat(context, boatWidth, boatLength, boatHeading);
-  context.restore(); // Restore context state we saved earlier
-
-  const rovInBoundsEast =
+  const angleInNED = Math.atan2(north, east);
+  const inBoundsEast =
     east <= maxDistance * rightFactor && east >= -maxDistance * leftFactor; // Multiply by left/rightFactor so the ROV square won't be replaced by arrow too early or late
-  const rovInBoundsNorth = Math.abs(north) <= maxDistance;
-
-  context.save();
-  context.translate(initialWidth / 2, initialWidth / 2);
-  context.rotate(-degreesToRadians(boatRotation)); //rotates ROV around boat when boat rotates
+  const inBoundsNorth = Math.abs(north) <= maxDistance;
 
   // If the ROV is within the bounds of the map, draw it as a square within the map
-  if (rovInBoundsEast && rovInBoundsNorth) {
+  if (inBoundsEast && inBoundsNorth) {
     // Map north prop to the pixel range we're working with
     const mapNorth = mapRange(
       north,
@@ -212,19 +180,19 @@ function drawMinimap(
       initialWidth / 2,
     );
 
-    // Draw the ROV itself
+    // Draw the component itself
     context.save();
     context.translate(boatWidth + mapEast + rovSize / 2, -mapNorth); // Draw square at correct point in the map
     context.rotate(yaw);
-    drawROV(context, rovSize);
+    drawFunction(context);
     context.restore();
   } else {
-    // If the ROV is outside the bounds of the map, draw an arrow in the direction of the ROV
+    // If the component is outside the bounds of the map, draw an arrow in the direction of the component
     context.save();
     context.translate(0, 0); // Origin in middle of map so we can rotate arrow about this point
-    context.rotate(-ROVangleInNED); // Point/rotate arrow in direction of ROV
+    context.rotate(-angleInNED); // Point/rotate arrow in direction of component
 
-    context.fillStyle = '#00FF00';
+    context.fillStyle = arrowColor;
     drawArrow(
       context,
       rovSize *
@@ -234,61 +202,74 @@ function drawMinimap(
               Math.pow(Math.max(Math.abs(east), Math.abs(north)), 3),
           )),
       initialWidth,
-    ); // Make size of arrow based on how far out of bounds the ROV is
-    //console.log(east, north, Math.max(east, north));
+    ); // Make size of arrow based on how far out of bounds the component is
     context.restore();
+  }
+}
+
+function drawMinimap(
+  context,
+  north,
+  east,
+  down,
+  yaw,
+  boatHeading,
+  maxDistance,
+  DP,
+  DPnorth,
+  DPeast,
+  DPdown,
+  initialWidth,
+  initialHeight,
+) {
+  context.strokeStyle = '#FFFFFF';
+  context.fillStyle = '#FFFFFF';
+  context.lineWidth = 1.5;
+
+  // Keep degrees between 0 and 360
+  boatHeading = wrapDegrees(boatHeading);
+  boatHeadingOffset = wrapDegrees(boatHeadingOffset);
+
+  var boatRotation = boatHeading - boatHeadingOffset; // Set boatHeading to difference in heading since beginning
+
+  context.clearRect(0, 0, initialWidth, initialWidth); // Clear canvas to avoid drawing on top of previous canvas
+
+  // Draw map boundary
+  context.beginPath();
+  context.rect(0, 0, initialWidth, initialHeight);
+  context.stroke();
+
+  // Draw the boat
+  context.save(); // Save context state so we can draw boat and ROV from different origins and rotate independently
+  context.translate(initialWidth / 2, initialWidth / 2); // Draw boat from the middle of the circle
+  //context.rotate(boatAngle[0]); // Rotate the boat drawing around the middle of the circle
+  drawBoat(context, boatWidth, boatLength, boatHeading);
+  context.restore(); // Restore context state we saved earlier
+
+  context.save();
+  context.translate(initialWidth / 2, initialWidth / 2);
+  context.rotate(-degreesToRadians(boatRotation)); //rotates ROV around boat when boat rotates
+
+  // If the ROV is below the target: draw the ROV first, then the target on top
+  if (down > DPdown) {
+    drawContent(context, maxDistance, yaw, north, east, drawROV, '#00FF00');
   }
 
   if (DP) {
-    // If the DP target is within the bounds of the map, draw it
-    const targetInBoundsNorth =
-      DPeast <= maxDistance * rightFactor &&
-      DPeast >= -maxDistance * leftFactor;
-    const targetInBoundsEast = Math.abs(DPnorth) <= maxDistance;
+    drawContent(
+      context,
+      maxDistance,
+      yaw,
+      DPnorth,
+      DPeast,
+      drawTarget,
+      '#FF0000',
+    );
+  }
 
-    if (targetInBoundsEast && targetInBoundsNorth) {
-      // Map north prop to the pixel range we're working with
-      const targetNorth = mapRange(
-        DPnorth,
-        -maxDistance,
-        maxDistance,
-        -initialWidth / 2,
-        initialWidth / 2,
-      );
-
-      // Map east prop to the pixel range we're working with
-      const targetEast = mapRange(
-        DPeast,
-        -maxDistance,
-        maxDistance,
-        -initialWidth / 2,
-        initialWidth / 2,
-      );
-
-      // Draw the target itself
-      context.save();
-      context.translate(boatWidth + targetEast, -targetNorth); // Draw square at correct point in the map
-      drawTarget(context);
-      context.restore();
-    } else {
-      // If the target is outside the bounds of the map, draw an arrow in the direction of the target
-      context.save();
-      context.translate(0, 0); // Origin in middle of map so we can rotate arrow about this point
-      context.rotate(-TargetAngleInNED); // Point/rotate arrow in direction of target
-
-      context.fillStyle = '#FF0000';
-      drawArrow(
-        context,
-        rovSize *
-          (maxDistance /
-            Math.log(
-              Math.exp(maxDistance) +
-                Math.pow(Math.max(Math.abs(DPeast), Math.abs(DPnorth)), 3),
-            )),
-        initialWidth,
-      ); // Make size of arrow based on how far out of bounds the target is
-      context.restore();
-    }
+  // If the ROV is above the target: draw the target first, then the ROV on top
+  if (down <= DPdown) {
+    drawContent(context, maxDistance, yaw, north, east, drawROV, '#00FF00');
   }
 
   // Draw the north/east axes
