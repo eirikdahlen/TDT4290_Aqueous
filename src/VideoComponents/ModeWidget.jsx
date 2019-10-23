@@ -21,11 +21,12 @@ class ModeWidget extends Component {
   constructor(props) {
     super(props);
 
-    // Initializing font and image sizes
-    this.fontSizeMode = 14;
-    this.fontSizeNFAvail = 14;
-    this.sizeImgNFAvail = 25;
-    this.fontSizeDP = 14;
+    this.state = {
+      fontSizeMode: 14,
+      fontSizeNFAvail: 14,
+      sizeImgNFAvail: 25,
+      hey: 'hey',
+    };
 
     // Initial variable values
     this.modeLabel = 'INVALID';
@@ -77,9 +78,14 @@ class ModeWidget extends Component {
       this.widget = (
         <div
           className={'NFAvailability ' + this.opacityStyle}
-          style={{ fontSize: this.fontSizeNFAvail + 'px' }}
+          style={{ fontSize: this.state.fontSizeNFAvail + 'px' }}
         >
-          <img id="ImgNFAvailable" src={this.imgsrc} alt=""></img>
+          <img
+            id="ImgNFAvailable"
+            src={this.imgsrc}
+            alt=""
+            style={{ width: this.state.sizeImgNFAvail + 'px' }}
+          ></img>
           <div>{this.nfLabel}</div>
         </div>
       );
@@ -95,9 +101,15 @@ class ModeWidget extends Component {
     const width = window.innerWidth;
 
     // Scale text of the mode label
-    this.fontSizeMode = clamp(mapRange(width, 1000, 1500, 12, 20), 12, 20);
-    this.fontSizeNFAvail = clamp(mapRange(width, 1000, 1500, 12, 14), 12, 14);
-    this.sizeImgNFAvail = clamp(mapRange(width, 1000, 1500, 15, 25), 15, 25);
+    this.setState({
+      fontSizeMode: clamp(mapRange(width, 1000, 1500, 12, 20), 12, 20),
+    });
+    this.setState({
+      fontSizeNFAvail: clamp(mapRange(width, 1000, 1500, 12, 14), 12, 14),
+    });
+    this.setState({
+      sizeImgNFAvail: clamp(mapRange(width, 1000, 1500, 15, 25), 15, 25),
+    });
   };
 
   static get propTypes() {
@@ -111,7 +123,8 @@ class ModeWidget extends Component {
     return (
       <div
         className="ModeWidget"
-        style={{ fontSize: this.fontSizeMode + 'px' }}
+        style={{ fontSize: this.state.fontSizeMode + 'px' }}
+        onLoad={this.updateDimensions}
       >
         {this.widget}
         <p>{this.modeLabel}</p>
