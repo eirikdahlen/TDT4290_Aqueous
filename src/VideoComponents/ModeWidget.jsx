@@ -114,7 +114,7 @@ class ModeWidget extends Component {
 
   render() {
     return (
-      <div className="ModeWidget">
+      <div className="ModeWidget" onLoad={this.updateDimensions}>
         {this.widget}
         <p>{this.modeLabel}</p>
       </div>
