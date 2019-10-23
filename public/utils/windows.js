@@ -163,6 +163,7 @@ function createMockupWindow() {
   });
 
   mockupWindow.setMenu(null);
+  global.mockupWindow = mockupWindow;
 }
 
 // Handle add item window

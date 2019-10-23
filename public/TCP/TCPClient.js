@@ -1,6 +1,13 @@
 const net = require('net');
 const { encodeData, decodeData } = require('./coding');
 const { sendMessage } = require('./../utils/IPC');
+const { encode, decode, messages } = require('./IMC');
+
+const messageProtocols = {
+  IMC: 0,
+  old: 1,
+};
+const messageProtocol = messageProtocols.IMC;
 
 // How many times the TCP has tried to connect and how many times it can try before quitting.
 let connectionAttempts = 0;
@@ -18,27 +25,35 @@ function getConnectedClient() {
 
   client.on('connect', function() {
     console.log(`Client: connection established with server!`);
-    sendData(client, {
-      surge: 0.0,
-      sway: 0.0,
-      heave: 0.0,
-      roll: 0.0,
-      pitch: 0.0,
-      yaw: 0.0,
-      autodepth: false,
-      autoheading: false,
-    });
+
+    if (messageProtocol === messageProtocols.old) {
+      sendData(client, {
+        surge: 0.0,
+        sway: 0.0,
+        heave: 0.0,
+        roll: 0.0,
+        pitch: 0.0,
+        yaw: 0.0,
+        autodepth: false,
+        autoheading: false,
+      });
+    }
   });
 
   // Handles receiving data
-  client.on('data', function(data) {
-    data = decodeData(data);
-    console.log(`\n[${Date.now()}] Recieved data from server:`);
-    console.log(data);
-    global.fromROV = data;
-    sendMessage('data-received');
-    sendData(client, global.toROV);
-    sendMessage('data-sent');
+  client.on('data', function(buf) {
+    if (messageProtocol === messageProtocols.old) {
+      let data = decodeData(buf);
+      console.log(`\n[${Date.now()}] Recieved data from server:`);
+      console.log(data);
+      global.fromROV = data;
+      sendMessage('data-received');
+      sendData(client, global.toROV);
+      sendMessage('data-sent');
+    } else if (messageProtocol === messageProtocols.IMC) {
+      decodeImcData(buf);
+      sendIMCData(client);
+    }
   });
 
   // Tries to connect again if server is not opened yet
@@ -78,6 +93,52 @@ function sendData(client, data) {
   console.log(`\n[${Date.now()}] Sending byte array with data:`);
   console.log(data);
   client.write(buf);
+}
+
+function decodeImcData(buf) {
+  const recievedData = decode(buf);
+  const estimatedState = recievedData[messages.estimatedState];
+  global.fromROV = {
+    north: estimatedState.x,
+    east: estimatedState.y,
+    down: estimatedState.z,
+    roll: estimatedState.phi,
+    pitch: estimatedState.theta,
+    yaw: estimatedState.psi,
+  };
+}
+
+function sendIMCData(client) {
+  /*
+  global.toROV = {
+    surge: 0.0,
+    sway: 0.0,
+    heave: 0.0,
+    roll: 0.0,
+    pitch: 0.0,
+    yaw: 0.0,
+    autodepth: false,
+    autoheading: false,
+  };
+  */
+  let desiredControlBuf = encode.desiredControl({
+    x: global.toROV.surge,
+    y: global.toROV.sway,
+    z: global.toROV.heave,
+    k: 0.0,
+    m: global.toROV.pitch,
+    n: global.toROV.yaw,
+    flags: {
+      x: true,
+      y: true,
+      z: !global.toROV.autodepth,
+      k: false,
+      m: true,
+      n: !global.toROV.autoheading,
+    },
+  });
+
+  client.write(desiredControlBuf);
 }
 
 module.exports = { getConnectedClient, sendData };

@@ -139,6 +139,10 @@ const startServer = () => {
     socket.on('data', buf => {
       console.log(`[${Date.now()}] Recieved data from client:`);
       const recievedData = decode(buf);
+      global.mockupWindow.webContents.send(
+        'rov-mock-up-send-data',
+        recievedData,
+      );
       console.log(decode(buf));
       Object.keys(recievedData).map(message => {
         switch (message) {
@@ -146,8 +150,11 @@ const startServer = () => {
             // Is in manual mode
             entityState.state = states.manual;
             desiredControl = recievedData[message];
+            global.mockupWindow.webContents.send(
+              'rov-mock-up-send-mode',
+              states.manual,
+            );
             // TODO: SEND IPC message?
-
             break;
           case messages.lowLevelControlManeuver.desiredHeading:
             lowLevelControlManeuver.desiredHeading = recievedData[message];
@@ -160,11 +167,19 @@ const startServer = () => {
           case messages.goTo:
             entityState.state = states.DP;
             goTo = recievedData[message];
+            global.mockupWindow.webContents.send(
+              'rov-mock-up-send-mode',
+              states.DP,
+            );
             // TODO: SEND IPC message?
             break;
           case messages.netFollow:
             entityState.state = states.NF;
             netFollow = recievedData[message];
+            global.mockupWindow.webContents.send(
+              'rov-mock-up-send-mode',
+              states.NF,
+            );
             // TODO: SEND IPC message?
             break;
           default:
@@ -179,8 +194,8 @@ const startServer = () => {
       console.log(estimatedState);
       console.log(entityState);
 
-      let estimatedStateBuf = encode(estimatedState);
-      let entityStateBuf = encode(entityState);
+      let estimatedStateBuf = encode.estimatedState(estimatedState);
+      let entityStateBuf = encode.entityState(entityState);
       let buf = Buffer.concat(
         [estimatedStateBuf, entityStateBuf],
         estimatedStateBuf.length + entityStateBuf.length,
@@ -190,7 +205,7 @@ const startServer = () => {
       if (entityState.state === states.NF) {
         console.log(customNetFollow);
 
-        let customNetFollowBuf = encode(customNetFollow);
+        let customNetFollowBuf = encode.customNetFollow(customNetFollow);
         buf = Buffer.concat(
           [buf, customNetFollowBuf],
           buf.length + customNetFollowBuf.length,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import modeEnum from '../constants/modeEnum';
 import ModeAvailableToggles from './ModeAvailableToggles';
 import FromROV from './FromROV';
@@ -15,38 +15,41 @@ export default function ROVMockUp() {
   const [manualView, setManualView] = useState(true);
   const [dpView, setDPView] = useState(false);
   const [nfView, setNFView] = useState(false);
+  const [recievedData, setRecievedData] = useState(null);
+  const [isServerRunning, setIsServerRunning] = useState(false);
 
-  function changeMode(inputMode) {
-    switch (inputMode) {
-      case 'DP':
-        setMode(modeEnum.DYNAMICPOSITIONING);
-        setNFView(false);
-        setManualView(false);
-        setDPView(true);
-        console.log('DP');
-        break;
-      case 'NF':
-        setMode(modeEnum.NETFOLLOWING);
-        setManualView(false);
-        setDPView(false);
-        setNFView(true);
-        console.log('NF');
-        break;
+  // TODO: add this functionality in TCPServerMockUp
+  function startServer() {
+    if (!isServerRunning) {
+      console.log('hei');
+      ipcRenderer.send('startROVMockupServer');
+      setIsServerRunning(true);
+    }
+  }
+
+  function modeToName(mode) {
+    switch (mode) {
+      case 0:
+        return 'MANUAL';
+      case 1:
+        return 'DYNAMIC POSITIONING';
+      case 2:
+        return 'NET FOLLOWING';
       default:
-        setMode(modeEnum.MANUAL);
-        setDPView(false);
-        setNFView(false);
-        setManualView(true);
-        console.log('MANUAL');
         break;
     }
   }
 
-  // TODO: add this functionality in TCPServerMockUp
-  function startServer() {
-    console.log('hei');
-    ipcRenderer.send('startROVMockupServer');
-  }
+  useEffect(() => {
+    window.ipcRenderer.on('rov-mock-up-send-mode', (event, arg) => {
+      setMode(arg);
+      console.log(`Recieved data ${arg}`);
+    });
+    // window.ipcRenderer.on('rov-mock-up-send-data', (event, arg) => {
+    //   setRecievedData(arg);
+    //   // console.log(`Recieved data ${arg}`);
+    // });
+  }, []);
 
   /**
    * Liste med alle felter som skal settes
@@ -65,20 +68,15 @@ export default function ROVMockUp() {
   return (
     <div className="mockupBox" style={{ backgroundColor: 'white' }}>
       <div className="startServer" onClick={() => startServer()}>
-        Start Server
+        {!isServerRunning ? 'Start Server' : 'Server is running...'}
       </div>
-      <div className="modeInput">
-        <input
-          placeholder="Mode"
-          type="modeInput"
-          onChange={e => changeMode(e.target.value.toUpperCase())}
-        ></input>
-      </div>
+      <div className="mode">Mode: {modeToName(mode)}</div>
       <FromROV />
       <ModeAvailableToggles />
       {manualView ? <ManualView /> : null}
       {dpView ? <DPView /> : null}
       {nfView ? <NFView /> : null}
+      <div>Revieced data: {recievedData}</div>
     </div>
   );
 }

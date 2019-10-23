@@ -2,6 +2,7 @@
 
 const electron = require('electron');
 const { app } = electron;
+const { ipcCommunicationTCPServer } = require('../TCP/TCPServerMockUp');
 const { getFileAndLaunch } = require('../launch/chooseFile');
 const {
   createKeyboardMappingWindow,
@@ -45,6 +46,7 @@ const menuTemplate = [
         label: 'Mockup window',
         click: async () => {
           createMockupWindow();
+          ipcCommunicationTCPServer();
         },
       },
     ],
