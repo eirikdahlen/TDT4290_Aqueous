@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { clamp, mapRange } from './js/tools';
 
 const { remote } = window.require('electron');
@@ -9,7 +8,6 @@ class DynPosWidget extends Component {
     super(props);
 
     this.fontSizeDP = 14;
-
     this.distance = { north: 0, east: 0, down: 0, total: 0 };
   }
 
@@ -30,7 +28,9 @@ class DynPosWidget extends Component {
   };
 
   componentDidMount() {
+    // Register event listener
     window.removeEventListener('resize', this.updateDimensions);
+
     this.updateDimensions();
   }
 
@@ -41,14 +41,6 @@ class DynPosWidget extends Component {
   componentWillUnmount() {
     // Unregister event listener
     window.removeEventListener('resize', this.updateDimensions);
-  }
-
-  static get propTypes() {
-    return {
-      currentNorth: PropTypes.number,
-      currentEast: PropTypes.number,
-      currentDown: PropTypes.number,
-    };
   }
 
   render() {

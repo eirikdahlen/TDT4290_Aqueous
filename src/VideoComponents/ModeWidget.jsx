@@ -68,8 +68,8 @@ class ModeWidget extends Component {
       const dataNF = remote.getGlobal('netfollowing');
       this.widget = (
         <NetFollowingWidget
-          distance={dataNF['distance']}
-          velocity={dataNF['velocity']}
+          distance={dataNF.distance}
+          velocity={dataNF.velocity}
         />
       );
     } else {
