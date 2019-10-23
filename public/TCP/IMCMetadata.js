@@ -23,7 +23,7 @@ const datatypes = {
     length: 2,
   },
   uint_32t: {
-    name: 'uint_16t',
+    name: 'uint_32t',
     length: 4,
   },
   fp32_t: {
@@ -88,7 +88,7 @@ const entityStateMetadata = {
     {
       name: 'flags',
       datatype: datatypes.bitfield,
-      fields: ['NF', 'DP', '', '', '', '', '', ''],
+      fields: ['DP', 'NF', '', '', '', '', '', ''],
     },
     {
       name: 'description',

@@ -1,32 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import {
-  estimatedStateMetadata,
-  entityStateMetadata,
-} from '../constants/imcMetadata';
+import { estimatedStateMetadata } from '../constants/imcMetadata';
 
 import './css/FromROV.css';
 
-export default function FromROV() {
-  const [estimatedStateMessage, setEstimatedStateMessage] = useState([]);
-  const [entityStateMessage, setEntityStateMessage] = useState([]);
+const { remote } = window.require('electron');
 
-  useEffect(() => {
+export default function FromROV() {
+  const [estimatedStateMessage, setEstimatedStateMessage] = useState({
+    lat: 0,
+    lon: 0,
+    height: 0,
+    x: 0,
+    y: 0,
+    z: 0,
+    phi: 0,
+    theta: 0,
+    psi: 0,
+    u: 0,
+    v: 0,
+    w: 0,
+    vx: 0,
+    vy: 0,
+    vz: 0,
+    p: 0,
+    q: 0,
+    r: 0,
+    depth: 0,
+    alt: 0,
+  });
+
+  /*   useEffect(() => {
     setEstimatedStateMessage(new Array(20).fill(0));
     setEntityStateMessage(new Array(3).fill(0));
-  }, []);
+  }, []); */
 
-  function changeEstimatedState(value, index) {
+  function changeEstimatedState(value, name) {
     let tempState = estimatedStateMessage;
-    tempState[index] = parseInt(value);
+    tempState[name] = parseInt(value);
     console.log(tempState);
     setEstimatedStateMessage(tempState);
-  }
-
-  function changeEntityState(value, index) {
-    let tempState = entityStateMessage;
-    tempState[index] = parseInt(value);
-    console.log(tempState);
-    setEntityStateMessage(tempState);
   }
 
   return (
@@ -34,7 +46,7 @@ export default function FromROV() {
       <div className="estimatedStateSettings">
         <h3>Estimated state</h3>
         <div className="settings">
-          {estimatedStateMetadata.message.map((value, index) => {
+          {estimatedStateMetadata.message.map(value => {
             return (
               <div
                 className="stateSlot"
@@ -43,23 +55,10 @@ export default function FromROV() {
                 <h3>{value.name}</h3>
                 <input
                   className={`estimatedStateInput${value.name}`}
-                  onChange={e => changeEstimatedState(e.target.value, index)}
-                ></input>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="entityStateSettings">
-        <h3>Entity state </h3>
-        <div className="settings">
-          {entityStateMetadata.message.map((value, index) => {
-            return (
-              <div className="stateSlot" key={`entityStateSlot${value.name}`}>
-                <h3>{value.name}</h3>
-                <input
-                  type={`entityStateInput${value.name}`}
-                  onChange={e => changeEntityState(e.target.value, index)}
+                  onChange={e =>
+                    changeEstimatedState(e.target.value, value.name)
+                  }
+                  placeholder={`${estimatedStateMessage[value.name]}`}
                 ></input>
               </div>
             );

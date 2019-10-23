@@ -8,8 +8,8 @@ const host = '127.0.0.1';
 
 const states = {
   manual: 0,
-  NF: 1,
-  DP: 2,
+  DP: 1,
+  NF: 2,
 };
 
 /* eslint no-unused-vars: ["error", { "args": "none" }] */

@@ -69,7 +69,7 @@ export const entityStateMetadata = {
     {
       name: 'flags',
       datatype: datatypes.bitfield,
-      fields: ['NF', 'DP', '', '', '', '', '', ''],
+      fields: ['DP', 'NF', '', '', '', '', '', ''],
     },
     {
       name: 'description',
