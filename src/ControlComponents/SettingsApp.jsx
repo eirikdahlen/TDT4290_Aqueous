@@ -6,10 +6,15 @@ import './css/SettingsApp.css';
 const { remote } = window.require('electron');
 
 export default function SettingsApp() {
-  const { port, host, serialFile } = remote.getGlobal('settings');
+  const { port, host, serialFile, messageProtocol } = remote.getGlobal(
+    'settings',
+  );
   const [portInput, setPortInput] = useState(port);
   const [hostInput, setHostInput] = useState(host);
   const [serialFileInput, setSerialFileInput] = useState(serialFile);
+  const [messageProtocolInput, setMessageProtocolInput] = useState(
+    messageProtocol,
+  );
 
   // Listens to the file-chosen message which is sent with the filename that is chosen
   useEffect(() => {
@@ -45,6 +50,7 @@ export default function SettingsApp() {
     remote.getGlobal('settings')['port'] = portInput;
     remote.getGlobal('settings')['host'] = hostInput;
     remote.getGlobal('settings')['serialFile'] = serialFileInput;
+    remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
     closeWindow();
   };
 
@@ -74,6 +80,13 @@ export default function SettingsApp() {
           ></input>
           <button onClick={choseSerialFile}></button>
         </div>
+      </div>
+      <div className="settingGroup">
+        <label>Message Protocol</label>
+        <input
+          value={messageProtocolInput}
+          onChange={e => setMessageProtocolInput(e.target.value.toUpperCase())}
+        ></input>
       </div>
       <button className="updateSettingsBtn" onClick={updateSettings}>
         UPDATE
