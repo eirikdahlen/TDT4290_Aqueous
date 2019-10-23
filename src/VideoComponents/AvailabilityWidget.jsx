@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './css/AvailabilityWidget.css';
 
 const textStyle = {
   color: '#FFFFFF',
+  fontWeight: 'lighter',
 };
 
 export default function AvailabilityWidget({ nfAvailable, dpAvailable }) {
@@ -22,11 +23,20 @@ export default function AvailabilityWidget({ nfAvailable, dpAvailable }) {
 }
 
 function LightDot({ available }) {
+  const [recentlyChanged, setRecentlyChanged] = useState(false);
+
+  useEffect(() => {
+    setRecentlyChanged(true);
+    setTimeout(() => setRecentlyChanged(false), 400);
+  }, [available]);
+
   return (
     <div>
       <span
         className={
-          'availabilityMark ' + (available ? 'availability' : 'noAvailability')
+          'availabilityMark ' +
+          (available ? 'availability ' : 'noAvailability ') +
+          (recentlyChanged ? 'changed' : '')
         }
       ></span>
     </div>
