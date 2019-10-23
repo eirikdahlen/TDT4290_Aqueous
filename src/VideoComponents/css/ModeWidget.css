@@ -21,7 +21,7 @@
 }
 
 .ModeWidget p {
-  display: inline-block;
+  display: block;
 }
 
 .ModeWidget img {
@@ -80,10 +80,6 @@
 #DynPos tfoot td:nth-child(3)::after {
   content: ' m';
 }
-
-/*#DynPos td:nth-child(3)::before {
-  content: 'Δ ';
-}*/
 
 #DynPos td:nth-child(3) {
   color: #c0c0c0;
