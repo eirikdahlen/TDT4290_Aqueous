@@ -150,8 +150,8 @@ function drawContent(
   context,
   maxDistance,
   yaw,
-  east,
   north,
+  east,
   drawFunction,
   arrowColor,
 ) {
