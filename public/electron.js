@@ -75,6 +75,7 @@ global.netfollowing = {
   distance: 0,
   velocity: 0,
   degree: 0,
+  depth: 0,
 };
 
 /**
@@ -104,7 +105,7 @@ app.on('ready', () => {
   if (isDev) {
     // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     controlWindow.webContents.openDevTools();
-    //videoWindow.webContents.openDevTools(); Must be off for transparancy
+    // videoWindow.webContents.openDevTools(); // Must be off for transparancy
   }
 
   // Close all windows when closing one of then

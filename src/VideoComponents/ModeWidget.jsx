@@ -6,6 +6,7 @@ import redX from './images/redX.png';
 import greenCheckmark from './images/greenCheckmark.png';
 import ModeEnum from '../constants/modeEnum';
 import { clamp, mapRange } from './js/tools.js';
+import DynPosWidget from './DynPosWidget';
 
 const { remote } = window.require('electron');
 
@@ -19,6 +20,12 @@ modeToLabel[ModeEnum.NETFOLLOWING] = 'NET FOLLOWING';
 class ModeWidget extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      fontSizeMode: 14,
+      fontSizeNFAvail: 14,
+      sizeImgNFAvail: 25,
+    };
 
     // Initial variable values
     this.modeLabel = 'INVALID';
@@ -45,31 +52,43 @@ class ModeWidget extends Component {
     // Add an event listener to be able to scale the widget along with the window
     window.addEventListener('resize', this.updateDimensions);
 
+    this.componentDidUpdate();
+    this.updateDimensions();
+  }
+
+  componentDidUpdate() {
     const { currentMode } = this.props;
     // Get the correct label for the current mode
     this.modeLabel = modeToLabel[currentMode];
 
-    if (currentMode === ModeEnum.NETFOLLOWING) {
+    if (currentMode === ModeEnum.DYNAMICPOSITIONING) {
+      this.widget = <DynPosWidget />;
+    } else if (currentMode === ModeEnum.NETFOLLOWING) {
       // Show the net following widget
+      const dataNF = remote.getGlobal('netfollowing');
       this.widget = (
         <NetFollowingWidget
-          distance={remote.getGlobal('netfollowing')['distance']}
-          velocity={remote.getGlobal('netfollowing')['velocity']}
+          distance={dataNF.distance}
+          velocity={dataNF.velocity}
         />
       );
     } else {
       // Show the NF availability widget
       this.widget = (
-        <div className={'NFAvailability ' + this.opacityStyle}>
-          <img id="ImgNFAvailable" src={this.imgsrc} alt=""></img>
+        <div
+          className={'NFAvailability ' + this.opacityStyle}
+          style={{ fontSize: this.state.fontSizeNFAvail + 'px' }}
+        >
+          <img
+            id="ImgNFAvailable"
+            src={this.imgsrc}
+            alt=""
+            style={{ width: this.state.sizeImgNFAvail + 'px' }}
+          ></img>
           <div>{this.nfLabel}</div>
         </div>
       );
     }
-  }
-
-  componentDidUpdate() {
-    this.componentDidMount();
   }
 
   componentWillUnmount() {
@@ -78,25 +97,18 @@ class ModeWidget extends Component {
   }
 
   updateDimensions = () => {
+    const width = window.innerWidth;
+
     // Scale text of the mode label
-    var sizeMode = mapRange(window.innerWidth, 1000, 1500, 12, 20);
-    sizeMode = clamp(sizeMode, 12, 20);
-    document.getElementsByClassName('ModeWidget')[0].style.fontSize =
-      sizeMode + 'px';
-
-    if (this.props.currentMode !== ModeEnum.NETFOLLOWING) {
-      // Scale the NF availability text
-      var sizeNF = mapRange(window.innerWidth, 1000, 1500, 12, 14);
-      sizeNF = clamp(sizeNF, 12, 14);
-      document.getElementsByClassName('NFAvailable')[0].style.fontSize =
-        sizeNF + 'px';
-
-      // Scale the NF availability icon
-      var sizeImg = mapRange(window.innerWidth, 1000, 1500, 15, 25);
-      sizeImg = clamp(sizeImg, 15, 25);
-      document.getElementById('ImgNFAvailable').style.width = sizeImg + 'px';
-      this.componentDidUpdate();
-    }
+    this.setState({
+      fontSizeMode: clamp(mapRange(width, 1000, 1500, 12, 20), 12, 20),
+    });
+    this.setState({
+      fontSizeNFAvail: clamp(mapRange(width, 1000, 1500, 12, 14), 12, 14),
+    });
+    this.setState({
+      sizeImgNFAvail: clamp(mapRange(width, 1000, 1500, 15, 25), 15, 25),
+    });
   };
 
   static get propTypes() {
@@ -108,7 +120,11 @@ class ModeWidget extends Component {
 
   render() {
     return (
-      <div className="ModeWidget">
+      <div
+        className="ModeWidget"
+        style={{ fontSize: this.state.fontSizeMode + 'px' }}
+        onLoad={this.updateDimensions}
+      >
         {this.widget}
         <p>{this.modeLabel}</p>
       </div>

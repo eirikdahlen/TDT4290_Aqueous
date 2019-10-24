@@ -5,6 +5,8 @@ const maxThruster = 400;
 const biasIncrease = 10;
 const biasIncreaseTimer = 200;
 const maxYaw = 2 * Math.PI;
+const nfIncrease = 0.1;
+const nfMax = 20;
 
 // Bias values
 let bias = {
@@ -34,10 +36,23 @@ let headingIncrement = 0.05; // Radians
 
 // Which button is held down
 let buttonDown;
+let prevButtonDown;
+
+//ROV control values
+let controls = {
+  surge: 0,
+  sway: 0,
+  heave: 0,
+  roll: 0,
+  pitch: 0,
+  yaw: 0,
+  autodepth: false,
+  autoheading: false,
+};
 
 //Interval for increasing bias continously
 setInterval(() => {
-  if (biasButtons[buttonDown]) {
+  if (biasButtons[buttonDown] && prevButtonDown !== 'X') {
     handleClick({ button: buttonDown, value: 1 });
   }
 }, biasIncreaseTimer);
@@ -45,6 +60,7 @@ setInterval(() => {
 //Function for setting if X or bias-buttons are held down
 function setUpOrDown({ button, down }) {
   if (button === 'X' || biasButtons[button]) {
+    prevButtonDown = buttonDown;
     buttonDown = down ? button : '';
   }
 }
@@ -59,7 +75,7 @@ function handleClick({ button, value }) {
   if (autoHeading) {
     headingReference = global.toROV.yaw;
   }
-  let controls = {
+  controls = {
     surge: bias.surge,
     sway: bias.sway,
     heave: autoDepth ? depthReference : bias.heave,
@@ -81,7 +97,10 @@ function handleClick({ button, value }) {
       fixMaxThruster('sway', controls);
       break;
     case 'LeftTrigger': // Up
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        setNfParameters('distance', false);
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         controls['heave'] += value * -maxThruster;
         fixMaxThruster('heave', controls);
       } else {
@@ -93,7 +112,10 @@ function handleClick({ button, value }) {
       }
       break;
     case 'RightTrigger': // Down
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        setNfParameters('distance', true);
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         controls['heave'] += value * maxThruster;
         fixMaxThruster('heave', controls);
       } else {
@@ -114,12 +136,21 @@ function handleClick({ button, value }) {
       break;
 
     // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
-    case 'Y': // Reset all bias
+    case 'Y': // Reset all bias'
+      if (global.mode.globalMode == 2) {
+        //Resets distance, velocity and depth, if in NetFollowing mode
+        global.netfollowing.distance = 0;
+        global.netfollowing.velocity = 0;
+        global.netfollowing.depth = 0;
+        break;
+      }
       Object.keys(bias).forEach(v => (bias[v] = 0.0));
       ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
       controls['heave'] = autoDepth ? depthReference : 0.0;
       break;
-    case 'X': // Used in combination with bias button to reset axis bias
+    case 'X': // Used in combination with
+      // - bias button to reset axis bias
+      // - reset to manual
       break;
     case 'A': // Toggle autodepth
       autoDepth = !autoDepth;
@@ -143,17 +174,32 @@ function handleClick({ button, value }) {
       break;
     case 'DPadUp': // positive surge bias
       setBias('surge', true, controls);
+      if (global.mode.globalMode == 2) {
+        //Depth (-) if in NF
+        setNfParameters('depth', false);
+      }
       break;
     case 'DPadDown': // negative surge bias
       setBias('surge', false, controls);
+      if (global.mode.globalMode == 2) {
+        //Depth (+) if in NF
+        setNfParameters('depth', true);
+      }
       break;
     case 'RB': // positive heave bias (down)
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        setNfParameters('velocity', true); //Velocity (+) if in NF
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         setBias('heave', true, controls);
       }
       break;
     case 'LB': // negative heave bias (up)
-      if (!autoDepth) {
+      if (global.mode.globalMode != 0) {
+        //Velocity (-) if in NF
+        setNfParameters('velocity', false);
+      }
+      if (!autoDepth && global.mode.globalMode == 0) {
         setBias('heave', false, controls);
       }
       break;
@@ -161,13 +207,14 @@ function handleClick({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
-      if (global.netfollowing.available) {
-        global.netfollowing.active = !global.netfollowing.active;
-        break;
-      }
+      global.mode.globalMode =
+        global.mode.nfAvailable && global.mode.globalMode == 2 ? 0 : 2;
       break;
     case 'Start': // toggle DP
-      //update global state
+      global.mode.globalMode = global.mode.globalMode == 1 ? 0 : 1;
+      break;
+    case 'LS': //turn on manual mode, turn off DP/NF and reset bias
+      resetToManual();
       break;
   }
   global.toROV = controls;
@@ -176,18 +223,21 @@ function handleClick({ button, value }) {
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
 function setBias(type, positive, controls) {
-  // Reset axis if X is held down
-  if (buttonDown === 'X') {
-    bias[type] = 0.0;
-    return;
+  if (global.mode.globalMode == 0) {
+    // Reset axis if X is held down
+    if (buttonDown === 'X') {
+      bias[type] = 0.0;
+      controls[type] = bias[type];
+      return;
+    }
+    // Increase bias if it isn't maxed out
+    if (positive) {
+      bias[type] += bias[type] < maxThruster ? biasIncrease : 0.0;
+    } else {
+      bias[type] -= bias[type] > -maxThruster ? biasIncrease : 0.0;
+    }
+    controls[type] = bias[type];
   }
-  // Increase bias if it isn't maxed out
-  if (positive) {
-    bias[type] += bias[type] < maxThruster ? biasIncrease : 0.0;
-  } else {
-    bias[type] -= bias[type] > -maxThruster ? biasIncrease : 0.0;
-  }
-  controls[type] = bias[type];
 }
 
 //Helper function for making sure thrusting force does not exceed maximum
@@ -199,6 +249,34 @@ function fixMaxThruster(type, controls) {
     force = -maxThruster;
   }
   controls[type] = force;
+}
+
+//Helper function for setting parameters in Netfollowing
+function setNfParameters(type, positive) {
+  if (buttonDown === 'X') {
+    global.netfollowing[type] = 0;
+    return;
+  }
+  const typeDistanceOrDepth =
+    type == 'distance' || type == 'depth' ? true : false;
+  const minus = typeDistanceOrDepth ? 0 : -1;
+  if (positive) {
+    global.netfollowing[type] +=
+      global.netfollowing[type] < nfMax ? nfIncrease : 0.0;
+  } else {
+    global.netfollowing[type] -=
+      global.netfollowing[type] > minus * nfMax ? nfIncrease : 0.0;
+  }
+}
+
+//Helper function for resetting to manual mode with parameters set to zero.
+function resetToManual() {
+  if (buttonDown === 'X') {
+    global.mode.globalMode = 0;
+    Object.keys(bias).forEach(v => (bias[v] = 0.0));
+    ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
+    controls['heave'] = autoDepth ? depthReference : 0.0;
+  }
 }
 
 module.exports = { handleClick, setUpOrDown };

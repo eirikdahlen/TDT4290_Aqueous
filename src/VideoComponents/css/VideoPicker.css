@@ -1,10 +1,10 @@
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   display: inline-block;
-  top: -2px;
-  left: 34px;
+  left: 60px;
+  height: 30px;
 }
 
 /* Dropdown Button */
@@ -14,9 +14,11 @@
   background-color: transparent;
   background-image: url('../images/camera.png');
   background-repeat: no-repeat;
-  background-size: 20px;
+  background-size: 16px;
+  background-position: center;
   outline: none;
   -webkit-app-region: no-drag;
+  height: 100%;
 }
 
 /* Dropdown Content (Hidden by Default) */
@@ -24,7 +26,7 @@
   display: none;
   position: absolute;
   background-color: lightgray;
-  z-index: 1;
+  z-index: 2;
   padding: 20px;
   border-radius: 0 0 5px 0;
   border: 1px solid rgb(66, 66, 66);
@@ -63,12 +65,19 @@
   display: block;
 }
 
+/* Show the dropdown menu on hover */
+.dropbtn:hover #video-dropdown-content {
+  display: block;
+}
+
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
   background-color: lightgray;
   width: 241px;
   border: 1px solid rgb(66, 66, 66);
   border-width: 0 1px 0 0;
+  background-position: left;
+  background-position-x: 2px;
 }
 
 .selectedFeed::after {

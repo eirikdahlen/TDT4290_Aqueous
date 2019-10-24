@@ -2,28 +2,34 @@
   z-index: 2;
   padding: 0;
   position: absolute;
-  height: 20px;
-  width: 20px;
+  height: 100%;
+  width: 45px;
   border: none;
   background-color: transparent;
   background-repeat: no-repeat;
-  background-size: 20px;
+  background-size: 10px;
+  background-position: center;
   outline: none;
-  cursor: pointer;
   -webkit-app-region: no-drag;
 }
 
 .MenuButton:hover {
-  background-color: white;
+  background-color: rgb(58, 58, 58);
 }
 
 .transparentBtn {
-  top: 1px;
   left: 10px;
+  background-size: 13px;
 }
 
 .closeBtn {
-  top: 1px;
   right: 10px;
-  left: auto;
+}
+
+.maximizeBtn {
+  right: 55px;
+}
+
+.minimizeBtn {
+  right: 100px;
 }

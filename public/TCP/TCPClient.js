@@ -15,7 +15,7 @@ const limitAttempts = 3;
 
 // Creates a client that receives and sends data to port 5000
 function getConnectedClient() {
-  console.log('Attempting to create TCP client and connect to server..');
+  //console.log('Attempting to create TCP client and connect to server..');
   const client = new net.Socket();
   messageProtocol = global.settings.messageProtocol;
   console.log(messageProtocol);
@@ -47,8 +47,8 @@ function getConnectedClient() {
   client.on('data', function(buf) {
     if (messageProtocol === messageProtocols.old) {
       let data = decodeData(buf);
-      console.log(`\n[${Date.now()}] Recieved data from server:`);
-      console.log(data);
+      // console.log(`\n[${Date.now()}] Recieved data from server:`);
+      // console.log(data);
       global.fromROV = data;
       sendMessage('data-received');
       sendData(client, global.toROV);
@@ -93,8 +93,8 @@ function sendData(client, data) {
    * }
    */
   let buf = encodeData(data);
-  console.log(`\n[${Date.now()}] Sending byte array with data:`);
-  console.log(data);
+  //console.log(`\n[${Date.now()}] Sending byte array with data:`);
+  //console.log(data);
   client.write(buf);
 }
 
