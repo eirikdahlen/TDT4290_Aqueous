@@ -11,41 +11,6 @@ function wraparound(value, max_value) {
   return value;
 }
 
-function scaleHeading(context, initialWidth, initialHeight) {
-  // Scale widget according to window width
-  const factor = scaleWidget(
-    context,
-    initialWidth,
-    initialHeight,
-    window.innerWidth,
-    1000,
-    1500,
-    0.7,
-    1,
-  );
-
-  const lockWidgetHeading = document.getElementById('LockWidgetHeading');
-
-  // Scale the positioning of the corresponding lock widget
-  lockWidgetHeading.style.top = 150 * factor + 'px';
-
-  // Add a margin when the widget scales down, for correct positioning
-  var sizeLockMargin = mapRange(window.innerWidth, 1000, 1500, 10, 0);
-  sizeLockMargin = clamp(sizeLockMargin, 0, 20);
-  lockWidgetHeading.style.marginTop = sizeLockMargin + 'px';
-
-  // Scale the font size of the label
-  var sizeLockLabel = mapRange(window.innerWidth, 1000, 1500, 12, 16);
-  sizeLockLabel = clamp(sizeLockLabel, 12, 16);
-  lockWidgetHeading.style.fontSize = sizeLockLabel + 'px';
-
-  // Scale the lock icon
-  var sizeLockImg = mapRange(window.innerWidth, 1000, 1500, 12, 17);
-  sizeLockImg = clamp(sizeLockImg, 12, 17);
-  lockWidgetHeading.getElementsByTagName('img')[0].style.width =
-    sizeLockImg + 'px';
-}
-
 function drawHeading(
   context,
   degrees,
@@ -160,6 +125,41 @@ function drawHeading(
   context.lineTo(width_half, 58);
   context.stroke();
   context.fill();
+}
+
+function scaleHeading(context, initialWidth, initialHeight) {
+  // Scale widget according to window width
+  const factor = scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.7,
+    1,
+  );
+
+  const lockWidgetHeading = document.getElementById('LockWidgetHeading');
+
+  // Scale the positioning of the corresponding lock widget
+  lockWidgetHeading.style.top = 150 * factor + 'px';
+
+  // Add a margin when the widget scales down, for correct positioning
+  var sizeLockMargin = mapRange(window.innerWidth, 1000, 1500, 10, 0);
+  sizeLockMargin = clamp(sizeLockMargin, 0, 20);
+  lockWidgetHeading.style.marginTop = sizeLockMargin + 'px';
+
+  // Scale the font size of the label
+  var sizeLockLabel = mapRange(window.innerWidth, 1000, 1500, 12, 16);
+  sizeLockLabel = clamp(sizeLockLabel, 12, 16);
+  lockWidgetHeading.style.fontSize = sizeLockLabel + 'px';
+
+  // Scale the lock icon
+  var sizeLockImg = mapRange(window.innerWidth, 1000, 1500, 12, 17);
+  sizeLockImg = clamp(sizeLockImg, 12, 17);
+  lockWidgetHeading.getElementsByTagName('img')[0].style.width =
+    sizeLockImg + 'px';
 }
 
 export default drawHeading;

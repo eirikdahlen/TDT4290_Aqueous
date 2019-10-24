@@ -1,7 +1,10 @@
 import React from 'react';
+import ModeEnum from '../constants/modeEnum.js';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
 import drawMinimap, { initMinimap, scaleMinimap } from './js/minimap.js';
 import './css/MiniMapWidget.css';
+
+const { remote } = window.require('electron');
 
 const initialWidth = 200;
 const initialHeight = 200;
@@ -26,13 +29,23 @@ class MiniMapWidget extends CanvasWidget {
   }
 
   componentDidUpdate() {
+    const down = remote.getGlobal('fromROV').down;
+    const dpEnabled =
+      remote.getGlobal('mode').currentMode === ModeEnum.DYNAMICPOSITIONING;
+    const dpSettings = remote.getGlobal('dynamicpositioning');
+
     drawMinimap(
       this.ctx,
       this.props.north,
       this.props.east,
+      down,
       this.props.yaw,
       this.props.boatHeading,
       this.maxDistance,
+      dpEnabled,
+      dpSettings.latitude,
+      dpSettings.longitude,
+      dpSettings.depth,
       initialWidth,
       initialHeight,
     );

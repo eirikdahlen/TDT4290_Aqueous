@@ -18,20 +18,6 @@ const globalOffsetWidth = 45;
 // Multiply the distance by this factor to get the distance in pixels
 const distanceMultiplier = 10;
 
-function scaleNetFollowing(context, initialWidth, initialHeight) {
-  // Scale widget according to window width
-  scaleWidget(
-    context,
-    initialWidth,
-    initialHeight,
-    window.innerWidth,
-    1000,
-    1500,
-    0.7,
-    1,
-  );
-}
-
 // Function for drawing arrows on curves
 function drawArrowhead(context, locX, locY, angle, sizeX, sizeY) {
   const hx = sizeX / 2;
@@ -260,6 +246,20 @@ function drawNetFollowing(
     speedLabelY,
   );
   ////////////////////////////////////////////////////////
+}
+
+function scaleNetFollowing(context, initialWidth, initialHeight) {
+  // Scale widget according to window width
+  scaleWidget(
+    context,
+    initialWidth,
+    initialHeight,
+    window.innerWidth,
+    1000,
+    1500,
+    0.7,
+    1,
+  );
 }
 
 export default drawNetFollowing;
