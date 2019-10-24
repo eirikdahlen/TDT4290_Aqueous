@@ -1,50 +1,28 @@
-import React, { useState } from 'react';
-import ModeEnum from '../constants/modeEnum';
+import React, { useState, useEffect } from 'react';
 
 import './css/ModeAvailableToggles.css';
 
 const { ipcRenderer } = require('electron');
 
-const states = ModeEnum;
-const entityState = {
-  state: states.MANUAL,
-  flags: {
-    DP: true,
-    NF: true,
-  },
-};
-
 export default function ModeAvailableToggles() {
-  const [nfAvailable, changeNfAvailable] = useState(true);
-  const [dpAvailable, changeDpAvailable] = useState(true);
-  const [entityStateMessage, changeEntityStateMessage] = useState(entityState);
+  const [nfAvailable, setNfAvailable] = useState(true);
+  const [dpAvailable, setDpAvailable] = useState(true);
 
   function toggleDPAvailable() {
-    let tempAvail = !dpAvailable;
-    changeDpAvailable(tempAvail);
-    changeEntityStateMessage({
-      state: states.MANUAL,
-      flags: {
-        DP: tempAvail,
-        NF: nfAvailable,
-      },
-    });
-    // Send IMC Message here
-    ipcRenderer.send('entityState', entityStateMessage);
+    ipcRenderer.send('rov-mock-up-send-df-available', !dpAvailable);
+    setDpAvailable(!dpAvailable);
   }
 
   function toggleNFAvailable() {
-    let tempAvail = !nfAvailable;
-    changeNfAvailable(!nfAvailable);
-    changeEntityStateMessage({
-      state: states.MANUAL,
-      flags: {
-        DP: dpAvailable,
-        NF: tempAvail,
-      },
-    });
-    // Send IMC Message here
+    ipcRenderer.send('rov-mock-up-send-nf-available', !nfAvailable);
+    setNfAvailable(!nfAvailable);
   }
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    ipcRenderer.send('rov-mock-up-send-df-available', dpAvailable);
+    ipcRenderer.send('rov-mock-up-send-nf-available', nfAvailable);
+  }, []);
 
   return (
     <div className="modeToggles">

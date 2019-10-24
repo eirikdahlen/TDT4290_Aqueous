@@ -47,7 +47,7 @@ let estimatedState = {
   alt: 0,
 };
 
-const customNetFollow = {
+let customNetFollow = {
   d: 132,
   v: 1.1,
   angle: 2.2,
@@ -115,17 +115,27 @@ let netFollow = {
 // End states IMC ==============================================
 
 const ipcCommunicationTCPServer = () => {
+  console.log('Starting ipcCommunicationTCPServer');
+
   ipcMain.on('entityState', (event, arg) => {
     entityState = arg;
     console.log('Received Entitystate:', entityState);
   });
 
-  ipcMain.on('estimatedState', (event, arg) => {
-    estimatedState = arg;
-    console.log('Received Estimatedstate:', estimatedState);
+  ipcMain.on('rov-mock-up-send-custom-nf-state', (event, arg) => {
+    customNetFollow = arg;
+    console.log('Received rov-mock-up-send-custom-nf-state:', customNetFollow);
   });
 
-  console.log('Starting ipcCommunicationTCPServer');
+  ipcMain.on('rov-mock-up-send-df-available', (event, arg) => {
+    entityState.flags.DP = arg;
+    console.log('Received rov-mock-up-send-df-available:', entityState);
+  });
+
+  ipcMain.on('rov-mock-up-send-nf-available', (event, arg) => {
+    entityState.flags.NF = arg;
+    console.log('Received rov-mock-up-send-nf-available:', entityState);
+  });
 
   ipcMain.on('startROVMockupServer', () => startServer());
 };

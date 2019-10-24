@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import modeEnum from '../constants/modeEnum';
 import ModeAvailableToggles from './ModeAvailableToggles';
 import FromROV from './FromROV';
-import ManualView from './ManualView';
-import DPView from './DPView';
 import NFView from './NFView';
 
 import './css/ROVMockUp.css';
@@ -12,9 +10,6 @@ const { ipcRenderer } = require('electron');
 
 export default function ROVMockUp() {
   const [mode, setMode] = useState(modeEnum.MANUAL);
-  const [manualView, setManualView] = useState(true);
-  const [dpView, setDPView] = useState(false);
-  const [nfView, setNFView] = useState(false);
   const [recievedData, setRecievedData] = useState(null);
   const [isServerRunning, setIsServerRunning] = useState(false);
 
@@ -73,10 +68,13 @@ export default function ROVMockUp() {
       <div className="mode">Mode: {modeToName(mode)}</div>
       <FromROV />
       <ModeAvailableToggles />
-      {manualView ? <ManualView /> : null}
-      {dpView ? <DPView /> : null}
-      {nfView ? <NFView /> : null}
-      <div>Revieced data: {JSON.stringify(recievedData)}</div>
+      <NFView />
+      <div>
+        Revieced data:
+        <div>
+          <pre>{JSON.stringify(recievedData, null, 2)}</pre>
+        </div>
+      </div>
     </div>
   );
 }

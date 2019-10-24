@@ -100,6 +100,20 @@ function sendData(client, data) {
 
 function decodeImcData(buf) {
   const recievedData = decode(buf);
+
+  // Update mode
+  /*
+  global.mode = {
+    currentMode: 0,
+    nfAvailable: false,
+    dpAvailable: false,
+  };
+*/
+  const entityState = recievedData[messages.entityState];
+  global.mode.nfAvailable = entityState.NF;
+  global.mode.dpAvailable = entityState.DP;
+  // TODO: Handle when ROV tells state is MANUAL
+
   const estimatedState = recievedData[messages.estimatedState];
   global.fromROV = {
     north: estimatedState.x,

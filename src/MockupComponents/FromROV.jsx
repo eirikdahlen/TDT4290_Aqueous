@@ -31,7 +31,7 @@ export default function FromROV() {
 
   function changeEstimatedState(value, name) {
     let tempState = estimatedStateMessage;
-    tempState[name] = parseInt(value);
+    tempState[name] = value === '' ? 0 : parseInt(value);
     console.log(tempState);
     setEstimatedStateMessage(tempState);
     ipcRenderer.send('estimatedState', estimatedStateMessage);
