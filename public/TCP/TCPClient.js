@@ -109,6 +109,7 @@ function decodeImcData(buf) {
     pitch: estimatedState.theta,
     yaw: estimatedState.psi,
   };
+  sendMessage('data-received');
 }
 
 function sendIMCData(client) {
@@ -142,6 +143,7 @@ function sendIMCData(client) {
   });
 
   client.write(desiredControlBuf);
+  sendMessage('data-sent');
 }
 
 module.exports = { getConnectedClient, sendData };

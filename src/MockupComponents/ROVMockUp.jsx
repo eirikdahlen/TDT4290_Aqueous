@@ -45,10 +45,10 @@ export default function ROVMockUp() {
       setMode(arg);
       console.log(`Recieved data ${arg}`);
     });
-    // window.ipcRenderer.on('rov-mock-up-send-data', (event, arg) => {
-    //   setRecievedData(arg);
-    //   // console.log(`Recieved data ${arg}`);
-    // });
+    window.ipcRenderer.on('rov-mock-up-send-data', (event, arg) => {
+      console.log(`Recieved data ${arg}`);
+      setRecievedData(arg);
+    });
   }, []);
 
   /**
@@ -76,7 +76,7 @@ export default function ROVMockUp() {
       {manualView ? <ManualView /> : null}
       {dpView ? <DPView /> : null}
       {nfView ? <NFView /> : null}
-      <div>Revieced data: {recievedData}</div>
+      <div>Revieced data: {JSON.stringify(recievedData)}</div>
     </div>
   );
 }

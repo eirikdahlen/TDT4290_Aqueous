@@ -25,10 +25,10 @@ let entityState = {
 };
 
 let estimatedState = {
-  lat: 1.0,
-  lon: 2.0,
-  height: 3.0,
-  x: 4.0,
+  lat: 0.0,
+  lon: 0.0,
+  height: 0.0,
+  x: 0.0,
   y: 0,
   z: 0,
   phi: 0,
@@ -148,12 +148,14 @@ const startServer = () => {
         switch (message) {
           case messages.desiredControl:
             // Is in manual mode
-            entityState.state = states.manual;
+            if (entityState.state !== states.manual) {
+              entityState.state = states.manual;
+              global.mockupWindow.webContents.send(
+                'rov-mock-up-send-mode',
+                states.manual,
+              );
+            }
             desiredControl = recievedData[message];
-            global.mockupWindow.webContents.send(
-              'rov-mock-up-send-mode',
-              states.manual,
-            );
             // TODO: SEND IPC message?
             break;
           case messages.lowLevelControlManeuver.desiredHeading:

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import './css/SettingsApp.css';
 
 const { remote } = window.require('electron');
+const MessageProtocols = require('../constants/messageProtocols');
 
 export default function SettingsApp() {
   const { port, host, serialFile, messageProtocol } = remote.getGlobal(
@@ -83,10 +84,13 @@ export default function SettingsApp() {
       </div>
       <div className="settingGroup">
         <label>Message Protocol</label>
-        <input
+        <select
           value={messageProtocolInput}
           onChange={e => setMessageProtocolInput(e.target.value.toUpperCase())}
-        ></input>
+        >
+          <option value={MessageProtocols.OLD}>OLD</option>
+          <option value={MessageProtocols.IMC}>IMC</option>
+        </select>
       </div>
       <button className="updateSettingsBtn" onClick={updateSettings}>
         UPDATE
