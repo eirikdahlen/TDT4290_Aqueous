@@ -1,18 +1,13 @@
 .ModeWidget {
-  position: fixed;
   color: white;
-
-  width: 250px;
-
-  left: -9999px;
-  right: -9999px;
-  margin: auto;
-  bottom: 20px;
-
+  width: 100%;
+  height: 30%;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
-
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ModeWidget canvas {
@@ -22,6 +17,7 @@
 
 .ModeWidget p {
   display: block;
+  margin-top: 0;
 }
 
 .ModeWidget img {
@@ -53,14 +49,13 @@
 
 #DynPos {
   font-size: 14px;
-  left: -9999px;
-  right: -9999px;
-  margin: auto;
+  display: flex;
+  justify-content: center;
 }
 
 #DynPos table {
   border-collapse: separate;
-  border-spacing: 30px 5px;
+  border-spacing: 5px;
 }
 
 #DynPos thead {

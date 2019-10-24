@@ -37,11 +37,6 @@ function VideoApp() {
         deviceId={deviceId}
         setDeviceId={setDeviceId}
       />
-      <BiasWidget
-        u={biasValues['surge']}
-        v={biasValues['sway']}
-        w={biasValues['heave']}
-      />
       <HeadingWidget
         heading={sensorValues['yaw']}
         isLocked={settingsValues['autoheading']}
@@ -52,17 +47,28 @@ function VideoApp() {
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
       />
-      <ModeWidget
-        currentMode={remote.getGlobal('mode')['currentMode']}
-        nfAvailable={remote.getGlobal('mode')['nfAvailable']}
-      />
-      <MiniMapWidget
-        north={sensorValues['north']}
-        east={sensorValues['east']}
-        yaw={sensorValues['yaw']}
-        boatHeading={0}
-        maxDistance={5}
-      />
+      <div className="rightWidgetsPlacer">
+        <div className="rightWidgets">
+          <div className="miniMapPlacer">
+            <MiniMapWidget
+              north={sensorValues['north']}
+              east={sensorValues['east']}
+              yaw={sensorValues['yaw']}
+              boatHeading={0}
+              maxDistance={5}
+            />
+          </div>
+          <ModeWidget
+            currentMode={remote.getGlobal('mode')['currentMode']}
+            nfAvailable={remote.getGlobal('mode')['nfAvailable']}
+          />
+          <BiasWidget
+            u={biasValues['surge']}
+            v={biasValues['sway']}
+            w={biasValues['heave']}
+          />
+        </div>
+      </div>
       <GamepadWrapper className="GamepadWrapper" />
       <KeyboardWrapper className="KeyboardInput" />
       <VideoFeed deviceId={deviceId} hidden={transparent} />

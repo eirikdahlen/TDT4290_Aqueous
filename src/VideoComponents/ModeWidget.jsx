@@ -125,8 +125,10 @@ class ModeWidget extends Component {
         style={{ fontSize: this.state.fontSizeMode + 'px' }}
         onLoad={this.updateDimensions}
       >
-        {this.widget}
-        <p>{this.modeLabel}</p>
+        <div>
+          <p>{this.modeLabel}</p>
+          {this.widget}
+        </div>
       </div>
     );
   }
