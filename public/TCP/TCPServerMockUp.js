@@ -117,9 +117,9 @@ let netFollow = {
 const ipcCommunicationTCPServer = () => {
   console.log('Starting ipcCommunicationTCPServer');
 
-  ipcMain.on('entityState', (event, arg) => {
-    entityState = arg;
-    console.log('Received Entitystate:', entityState);
+  ipcMain.on('rov-mock-up-send-estimated-state', (event, arg) => {
+    estimatedState = arg;
+    console.log('Received rov-mock-up-send-estimated-state:', estimatedState);
   });
 
   ipcMain.on('rov-mock-up-send-custom-nf-state', (event, arg) => {

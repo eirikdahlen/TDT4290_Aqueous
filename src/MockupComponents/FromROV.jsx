@@ -34,7 +34,7 @@ export default function FromROV() {
     tempState[name] = value === '' ? 0 : parseInt(value);
     console.log(tempState);
     setEstimatedStateMessage(tempState);
-    ipcRenderer.send('estimatedState', estimatedStateMessage);
+    ipcRenderer.send('rov-mock-up-send-estimated-state', estimatedStateMessage);
   }
 
   return (
