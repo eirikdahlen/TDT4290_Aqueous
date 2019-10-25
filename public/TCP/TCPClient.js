@@ -110,8 +110,8 @@ function decodeImcData(buf) {
   };
 */
   const entityState = recievedData[messages.entityState];
-  global.mode.nfAvailable = entityState.NF;
-  global.mode.dpAvailable = entityState.DP;
+  global.mode.nfAvailable = entityState.flags.NF;
+  global.mode.dpAvailable = entityState.flags.DP;
   // TODO: Handle when ROV tells state is MANUAL
 
   const estimatedState = recievedData[messages.estimatedState];
