@@ -26,6 +26,7 @@ const mapping = {
 */
 
 const { handleClick, setUpOrDown } = require('./../controls/mapping');
+const { initGlobals } = require('./../utils/globals');
 
 const prefix = 'controls/mapping: ';
 
@@ -36,41 +37,7 @@ let toROV;
 let bias;
 
 const clearData = () => {
-  // Mocks global state
-  global.mode = {
-    currentMode: 0,
-    nfAvailable: true,
-    dpAvailable: false,
-  };
-  global.toROV = {
-    surge: 0.0,
-    sway: 0.0,
-    heave: 0.0,
-    roll: 0.0,
-    pitch: 0.0,
-    yaw: 0.0,
-    autodepth: false,
-    autoheading: false,
-  };
-  global.fromROV = {
-    north: 0.0,
-    east: 0.0,
-    down: 0.0,
-    roll: 0.0,
-    pitch: 0.0,
-    yaw: 0.0,
-  };
-  global.bias = {
-    surge: 0.0,
-    sway: 0.0,
-    heave: 0.0,
-  };
-  global.netfollowing = {
-    distance: 0,
-    velocity: 0,
-    degree: 0,
-    depth: 0,
-  };
+  initGlobals();
   toROV = {
     surge: 0.0,
     sway: 0.0,

@@ -1,6 +1,7 @@
 //Tests TCP/TCPClient
 
 const { getConnectedClient, sendData } = require('./../TCP/TCPClient');
+const { initGlobals } = require('./../utils/globals');
 const net = require('net');
 
 const prefix = 'TCP/TCPClient: ';
@@ -9,12 +10,7 @@ let server;
 let client;
 
 const initData = () => {
-  global.settings = {
-    port: 5000,
-    host: '127.0.0.1',
-    serialFile:
-      'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
-  };
+  initGlobals();
   server = new net.createServer();
   server.listen(global.settings.port);
   client = null;
