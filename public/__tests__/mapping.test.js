@@ -25,15 +25,16 @@ const mapping = {
 };
 */
 
-const { handleClick, setUpOrDown } = require('./../controls/mapping');
+//setUpOrDown
+const { handleClick } = require('./../controls/mapping');
 
 const prefix = 'controls/mapping: ';
 
 const maxThruster = 400;
-const biasIncrease = 10;
+//const biasIncrease = 10;
 
 let toROV;
-let bias;
+//let bias;
 
 const clearData = () => {
   // Mocks global state
