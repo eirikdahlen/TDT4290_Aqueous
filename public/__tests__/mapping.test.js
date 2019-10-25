@@ -25,7 +25,6 @@ const mapping = {
 };
 */
 
-//setUpOrDown
 const { handleClick, setUpOrDown } = require('./../controls/mapping');
 
 const prefix = 'controls/mapping: ';
@@ -204,7 +203,7 @@ test(prefix + 'set multiple biases and reset', () => {
     bias[type] += biasIncrease;
     toROV[type] += biasIncrease;
   });
-  //expect(global.bias).toStrictEqual(bias);
+  expect(global.bias).toStrictEqual(bias);
   expect(global.toROV).toStrictEqual(toROV);
 
   //Negatives
@@ -219,7 +218,7 @@ test(prefix + 'set multiple biases and reset', () => {
     bias[type] -= biasIncrease;
     toROV[type] -= biasIncrease;
   });
-  //expect(global.bias).toStrictEqual(bias);
+  expect(global.bias).toStrictEqual(bias);
   expect(global.toROV).toStrictEqual(toROV);
 
   // Reset all
