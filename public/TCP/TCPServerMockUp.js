@@ -177,21 +177,25 @@ const startServer = () => {
             // TODO: SEND IPC message?
             break;
           case messages.goTo:
-            entityState.state = states.DP;
+            if (entityState.state !== states.DP) {
+              entityState.state = states.DP;
+              global.mockupWindow.webContents.send(
+                'rov-mock-up-send-mode',
+                states.DP,
+              );
+            }
             goTo = recievedData[message];
-            global.mockupWindow.webContents.send(
-              'rov-mock-up-send-mode',
-              states.DP,
-            );
             // TODO: SEND IPC message?
             break;
           case messages.netFollow:
-            entityState.state = states.NF;
+            if (entityState.state !== states.NF) {
+              entityState.state = states.NF;
+              global.mockupWindow.webContents.send(
+                'rov-mock-up-send-mode',
+                states.NF,
+              );
+            }
             netFollow = recievedData[message];
-            global.mockupWindow.webContents.send(
-              'rov-mock-up-send-mode',
-              states.NF,
-            );
             // TODO: SEND IPC message?
             break;
           default:

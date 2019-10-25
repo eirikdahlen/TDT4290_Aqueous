@@ -139,24 +139,90 @@ function sendIMCData(client) {
     autoheading: false,
   };
   */
-  let desiredControlBuf = encode.desiredControl({
-    x: global.toROV.surge,
-    y: global.toROV.sway,
-    z: global.toROV.heave,
-    k: 0.0,
-    m: global.toROV.pitch,
-    n: global.toROV.yaw,
-    flags: {
-      x: true,
-      y: true,
-      z: !global.toROV.autodepth,
-      k: false,
-      m: true,
-      n: !global.toROV.autoheading,
-    },
-  });
+  let buf;
+  if (global.mode.currentMode === 0) {
+    // MANUAL MODE
+    buf = encode.desiredControl({
+      x: global.toROV.surge,
+      y: global.toROV.sway,
+      z: global.toROV.autodepth ? 0 : global.toROV.heave,
+      k: 0.0,
+      m: global.toROV.pitch,
+      n: global.toROV.autoheading ? 0 : global.toROV.yaw,
+      flags: {
+        x: false,
+        y: false,
+        z: global.toROV.autodepth,
+        k: true,
+        m: false,
+        n: global.toROV.autoheading,
+      },
+    });
 
-  client.write(desiredControlBuf);
+    if (global.toROV.autodepth) {
+      const lowLevelControlManeuverDesiredZBuf = encode.lowLevelControlManeuver.desiredZ(
+        {
+          value: global.toROV.heave,
+          z_units: 0,
+        },
+        10,
+      );
+      buf = Buffer.concat(
+        [buf, lowLevelControlManeuverDesiredZBuf],
+        buf.length + lowLevelControlManeuverDesiredZBuf.length,
+      );
+    }
+
+    if (global.toROV.autoheading) {
+      const lowLevelControlManeuverDesiredHeadingBuf = encode.lowLevelControlManeuver.desiredHeading(
+        { value: global.toROV.yaw },
+        10,
+      );
+      buf = Buffer.concat(
+        [buf, lowLevelControlManeuverDesiredHeadingBuf],
+        buf.length + lowLevelControlManeuverDesiredHeadingBuf.length,
+      );
+    }
+  }
+  if (global.mode.currentMode === 1) {
+    // DYNAMIC POSITIONING
+
+    // TODO: Get proper value from global state
+    buf = encode.goTo({
+      timeout: 10,
+      lat: 1.1,
+      lon: 2.2,
+      z: global.toROV.heave,
+      z_units: 0,
+      speed: 0.1,
+      speed_units: 0,
+      roll: 0,
+      pitch: global.toROV.pitch,
+      yaw: global.toROV.yaw,
+    });
+  }
+
+  if (global.mode.currentMode === 2) {
+    // NET FOLLOWING
+
+    /*
+    global.netfollowing = {
+      distance: 0,
+      velocity: 0,
+      degree: 0,
+      depth: 0,
+    };
+*/
+    buf = encode.netFollow({
+      timeout: 10,
+      d: global.netfollowing.distance,
+      v: global.netfollowing.velocity,
+      z: global.netfollowing.depth,
+      z_units: 0,
+    });
+  }
+
+  client.write(buf);
   sendMessage('data-sent');
 }
 
