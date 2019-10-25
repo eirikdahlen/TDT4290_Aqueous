@@ -78,6 +78,9 @@ class ModeWidget extends Component {
     this.setState({
       sizeImgNFAvail: clamp(mapRange(width, 1000, 1500, 15, 25), 15, 25),
     });
+    this.setState({
+      divWidth: clamp(mapRange(width, 1000, 1500, 200, 250), 200, 250),
+    });
   };
 
   static get propTypes() {
@@ -90,11 +93,14 @@ class ModeWidget extends Component {
     return (
       <div
         className="ModeWidget"
-        style={{ fontSize: this.state.fontSizeMode + 'px' }}
+        style={{
+          fontSize: this.state.fontSizeMode + 'px',
+          width: this.state.divWidth,
+        }}
         onLoad={this.updateDimensions}
       >
-        {this.widget}
         <p>{this.modeLabel}</p>
+        {this.widget}
       </div>
     );
   }
