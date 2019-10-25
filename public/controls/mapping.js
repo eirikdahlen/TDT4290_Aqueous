@@ -97,10 +97,10 @@ function handleClick({ button, value }) {
       fixMaxThruster('sway', controls);
       break;
     case 'LeftTrigger': // Up
-      if (global.mode.globalMode != 0) {
+      if (global.mode.currentMode != 0) {
         setNfParameters('distance', false);
       }
-      if (!autoDepth && global.mode.globalMode == 0) {
+      if (!autoDepth && global.mode.currentMode == 0) {
         controls['heave'] += value * -maxThruster;
         fixMaxThruster('heave', controls);
       } else {
@@ -112,10 +112,10 @@ function handleClick({ button, value }) {
       }
       break;
     case 'RightTrigger': // Down
-      if (global.mode.globalMode != 0) {
+      if (global.mode.currentMode != 0) {
         setNfParameters('distance', true);
       }
-      if (!autoDepth && global.mode.globalMode == 0) {
+      if (!autoDepth && global.mode.currentMode == 0) {
         controls['heave'] += value * maxThruster;
         fixMaxThruster('heave', controls);
       } else {
@@ -137,7 +137,7 @@ function handleClick({ button, value }) {
 
     // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
     case 'Y': // Reset all bias'
-      if (global.mode.globalMode == 2) {
+      if (global.mode.currentMode == 2) {
         //Resets distance, velocity and depth, if in NetFollowing mode
         global.netfollowing.distance = 0;
         global.netfollowing.velocity = 0;
@@ -174,32 +174,32 @@ function handleClick({ button, value }) {
       break;
     case 'DPadUp': // positive surge bias
       setBias('surge', true, controls);
-      if (global.mode.globalMode == 2) {
+      if (global.mode.currentMode == 2) {
         //Depth (-) if in NF
         setNfParameters('depth', false);
       }
       break;
     case 'DPadDown': // negative surge bias
       setBias('surge', false, controls);
-      if (global.mode.globalMode == 2) {
+      if (global.mode.currentMode == 2) {
         //Depth (+) if in NF
         setNfParameters('depth', true);
       }
       break;
     case 'RB': // positive heave bias (down)
-      if (global.mode.globalMode != 0) {
+      if (global.mode.currentMode != 0) {
         setNfParameters('velocity', true); //Velocity (+) if in NF
       }
-      if (!autoDepth && global.mode.globalMode == 0) {
+      if (!autoDepth && global.mode.currentMode == 0) {
         setBias('heave', true, controls);
       }
       break;
     case 'LB': // negative heave bias (up)
-      if (global.mode.globalMode != 0) {
+      if (global.mode.currentMode != 0) {
         //Velocity (-) if in NF
         setNfParameters('velocity', false);
       }
-      if (!autoDepth && global.mode.globalMode == 0) {
+      if (!autoDepth && global.mode.currentMode == 0) {
         setBias('heave', false, controls);
       }
       break;
@@ -207,11 +207,18 @@ function handleClick({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
-      global.mode.globalMode =
-        global.mode.nfAvailable && global.mode.globalMode == 2 ? 0 : 2;
+      if (global.mode.currentMode == 2) {
+        global.mode.currentMode = 0;
+      } else if (global.mode.nfAvailable) {
+        global.mode.currentMode = 2;
+      }
       break;
     case 'Start': // toggle DP
-      global.mode.globalMode = global.mode.globalMode == 1 ? 0 : 1;
+      if (global.mode.currentMode == 1) {
+        global.mode.currentMode = 0;
+      } else if (global.mode.dpAvailable) {
+        global.mode.currentMode = 1;
+      }
       break;
     case 'LS': //turn on manual mode, turn off DP/NF and reset bias
       resetToManual();
@@ -223,7 +230,7 @@ function handleClick({ button, value }) {
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
 function setBias(type, positive, controls) {
-  if (global.mode.globalMode == 0) {
+  if (global.mode.currentMode == 0) {
     // Reset axis if X is held down
     if (buttonDown === 'X') {
       bias[type] = 0.0;
@@ -272,7 +279,7 @@ function setNfParameters(type, positive) {
 //Helper function for resetting to manual mode with parameters set to zero.
 function resetToManual() {
   if (buttonDown === 'X') {
-    global.mode.globalMode = 0;
+    global.mode.currentMode = 0;
     Object.keys(bias).forEach(v => (bias[v] = 0.0));
     ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
     controls['heave'] = autoDepth ? depthReference : 0.0;
