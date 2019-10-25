@@ -288,7 +288,7 @@ function scaleMinimap(context, initialWidth, initialHeight) {
     1000,
     1500,
     0.7,
-    0.9,
+    0.85,
   );
 
   // Scale the parent div, to be able to use CSS positioning properly

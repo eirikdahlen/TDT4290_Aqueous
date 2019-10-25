@@ -160,7 +160,7 @@ function scaleBias(context, initialWidth, initialHeight) {
     1000,
     1500,
     0.45,
-    0.7,
+    0.65,
   );
 }
 
