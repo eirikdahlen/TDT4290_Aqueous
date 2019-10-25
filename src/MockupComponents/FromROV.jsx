@@ -50,6 +50,7 @@ export default function FromROV() {
               >
                 <h4 className="estimatedStateInputHeader">{value.name}</h4>
                 <input
+                  type="number"
                   className={`estimatedStateInput${value.name}`}
                   onChange={e =>
                     changeEstimatedState(e.target.value, value.name)
