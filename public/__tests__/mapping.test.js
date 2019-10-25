@@ -26,21 +26,22 @@ const mapping = {
 */
 
 //setUpOrDown
-const { handleClick } = require('./../controls/mapping');
+const { handleClick, setUpOrDown } = require('./../controls/mapping');
 
 const prefix = 'controls/mapping: ';
 
 const maxThruster = 400;
-//const biasIncrease = 10;
+const biasIncrease = 10;
 
 let toROV;
-//let bias;
+let bias;
 
 const clearData = () => {
   // Mocks global state
   global.mode = {
-    globalMode: 0,
+    currentMode: 0,
     nfAvailable: true,
+    dpAvailable: false,
   };
   global.toROV = {
     surge: 0.0,
@@ -156,7 +157,6 @@ test(prefix + 'sway click (2 directions)', () => {
   expect(global.toROV).toStrictEqual(toROV);
 });
 
-/*
 // Tests heave-button up with two different click-intensities
 test(prefix + 'heave down', () => {
   let clickIntensity = 0.1;
@@ -168,7 +168,6 @@ test(prefix + 'heave down', () => {
   toROV['heave'] = -clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
 });
-
 
 // Tests heave-button up with two different click-intensities
 test(prefix + 'heave up', () => {
@@ -183,7 +182,7 @@ test(prefix + 'heave up', () => {
 });
 
 // Tests bias buttons
-/*
+
 test(prefix + 'set multiple biases and reset', () => {
   /*
   L: 'DPadRight', //sway bias+
@@ -192,7 +191,7 @@ test(prefix + 'set multiple biases and reset', () => {
   K: 'DPadDown', //surge bias-
   Q: 'RB', //heave bias (down) +
   E: 'LB', //negative heave bias (up) -
-  
+  */
   const posBiasBtns = ['DPadRight', 'DPadUp', 'RB'];
   // Positives
   posBiasBtns.forEach(btn => {
@@ -257,7 +256,7 @@ test(prefix + 'AutoHeading/AutoDepth clicks', () => {
   /*
   V: 'B', //autoheading
   C: 'A', //autodepth
-  
+  */
   ['A', 'B'].forEach(btn => {
     handleClick({ button: btn, value: 1.0 });
   });
@@ -266,4 +265,3 @@ test(prefix + 'AutoHeading/AutoDepth clicks', () => {
   expect(global.toROV['autoheading']).toStrictEqual(toROV['autoheading']);
   expect(global.toROV['autodepth']).toStrictEqual(toROV['autodepth']);
 });
-*/
