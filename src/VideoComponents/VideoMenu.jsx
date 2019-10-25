@@ -38,7 +38,7 @@ export default function VideoMenu({
   };
 
   return (
-    <div className="VideoMenu">
+    <div className={'VideoMenu ' + (maximized ? 'maximizedVideoMenu' : '')}>
       <MenuButton
         clickFunction={() => toggleTransparent(!transparent)}
         image="transparent"
