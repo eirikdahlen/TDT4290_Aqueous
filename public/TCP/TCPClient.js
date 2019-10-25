@@ -158,7 +158,9 @@ function sendIMCData(client) {
     });
 
     if (global.toROV.autodepth) {
+      /*eslint-disable */
       const lowLevelControlManeuverDesiredZBuf = encode.lowLevelControlManeuver.desiredZ(
+        /*eslint-enable */
         {
           value: global.toROV.heave,
           z_units: 0,
@@ -172,7 +174,10 @@ function sendIMCData(client) {
     }
 
     if (global.toROV.autoheading) {
+      /*eslint-disable */
       const lowLevelControlManeuverDesiredHeadingBuf = encode.lowLevelControlManeuver.desiredHeading(
+        /*eslint-enable */
+
         { value: global.toROV.yaw },
         10,
       );
