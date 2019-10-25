@@ -11,6 +11,7 @@ import MiniMapWidget from './MiniMapWidget';
 import GamepadWrapper from './GamepadWrapper';
 import KeyboardWrapper from './KeyboardWrapper';
 import VideoMenu from './VideoMenu';
+import AvailabilityWidget from './AvailabilityWidget';
 
 const { remote } = window.require('electron');
 
@@ -51,6 +52,10 @@ function VideoApp() {
         depth={sensorValues['down']}
         isLocked={settingsValues['autodepth']}
         lockedValue={settingsValues['heave']}
+      />
+      <AvailabilityWidget
+        nfAvailable={remote.getGlobal('mode')['nfAvailable']}
+        dpAvailable={remote.getGlobal('mode')['dpAvailable']}
       />
       <ModeWidget
         currentMode={remote.getGlobal('mode')['currentMode']}
