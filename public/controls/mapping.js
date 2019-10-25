@@ -207,12 +207,18 @@ function handleClick({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // toggle NF
-      global.mode.currentMode =
-        global.mode.nfAvailable && global.mode.currentMode == 2 ? 0 : 2;
+      if (global.mode.currentMode == 2) {
+        global.mode.currentMode = 0;
+      } else if (global.mode.nfAvailable) {
+        global.mode.currentMode = 2;
+      }
       break;
     case 'Start': // toggle DP
-      global.mode.currentMode =
-        global.mode.dpAvailable && global.mode.currentMode == 1 ? 0 : 1;
+      if (global.mode.currentMode == 1) {
+        global.mode.currentMode = 0;
+      } else if (global.mode.dpAvailable) {
+        global.mode.currentMode = 1;
+      }
       break;
     case 'LS': //turn on manual mode, turn off DP/NF and reset bias
       resetToManual();
