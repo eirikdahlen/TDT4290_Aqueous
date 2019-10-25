@@ -1,0 +1,7 @@
+.hideVideoFeed {
+  display: none !important;
+}
+
+.VideoFeed {
+  height: 0;
+}

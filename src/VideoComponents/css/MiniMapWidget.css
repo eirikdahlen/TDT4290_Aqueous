@@ -1,0 +1,22 @@
+.MiniMapWidget {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  top: 100px;
+  right: 40px;
+}
+
+.zoom {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.zoomButton {
+  background: transparent;
+  color: white;
+  border: 0.5px solid white;
+  cursor: pointer;
+  font-size: 20px;
+}

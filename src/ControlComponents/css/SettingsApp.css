@@ -1,0 +1,110 @@
+.SettingsApp {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-family: 'Segoe UI';
+  background-color: rgba(255, 255, 255, 0.96);
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  border-radius: 5px;
+}
+
+.SettingsApp * {
+  border-radius: 2px; /* Change to variable */
+  font-family: 'Segoe UI';
+}
+
+.SettingsApp .settingGroup {
+  width: 90%;
+}
+
+.SettingsApp input {
+  width: 100%;
+  padding: 0;
+  font-size: 14px;
+  box-sizing: border-box;
+  border: 0.5px solid black;
+  padding-left: 5px;
+  height: 35px;
+  -webkit-app-region: no-drag;
+}
+
+.MessageProtocolDropdown {
+  width: 100%;
+  padding: 0;
+  font-size: 14px;
+  box-sizing: border-box;
+  padding-left: 5px;
+  height: 35px;
+  -webkit-app-region: no-drag;
+}
+
+.MessageProtocolMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.updateSettingsBtn {
+  width: 90%;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+  background-color: #03a9f4; /* Change to variable */
+  transition: all 0.2s;
+  margin: 10px 0;
+  font-weight: 500;
+  font-size: 15px;
+  outline: none;
+  -webkit-app-region: no-drag;
+}
+
+.updateSettingsBtn:hover,
+.serialInputs button:hover {
+  background-color: #67daff; /* Change to variable */
+}
+
+.serialInputs {
+  display: flex;
+  flex-direction: row;
+}
+
+.serialInputs button {
+  border: none;
+  margin: 0;
+  width: 40px;
+  height: 35px;
+  padding: 0;
+  background: url('../img/folder.png');
+  background-color: #03a9f4;
+  background-repeat: no-repeat;
+  background-size: 23px;
+  background-position: center;
+  margin-left: 5px;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+}
+
+.closeSettings {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  background-color: transparent;
+  border: none;
+  background: url('../img/exit.png');
+  background-repeat: no-repeat;
+  background-size: 12px;
+  background-position: center;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  outline: none;
+  opacity: 0.7;
+}
+
+.closeSettings:hover {
+  opacity: 1;
+}

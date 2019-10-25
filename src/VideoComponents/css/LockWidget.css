@@ -1,0 +1,30 @@
+.LockWidget {
+  position: fixed;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.LockWidget img {
+  position: relative;
+  width: 15px;
+  display: inline-block;
+  opacity: 1;
+}
+
+.LockWidget p {
+  margin-top: 5px;
+}
+
+#LockWidgetHeading {
+  right: -9999px;
+  left: -9999px;
+  margin: auto;
+
+  top: 150px;
+}
+
+#LockWidgetDepth {
+  left: 87px;
+  top: 370px;
+}

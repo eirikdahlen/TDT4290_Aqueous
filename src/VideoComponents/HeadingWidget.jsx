@@ -1,34 +1,58 @@
+import React from 'react';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import { heading_init, drawHeading } from './js/heading.js';
+import drawHeading, { scaleHeading } from './js/heading.js';
+import LockWidget from './LockWidget';
+import { radiansToDegrees, wrapDegrees } from './js/tools.js';
 import './css/HeadingWidget.css';
 
-import { radiansToDegrees } from './js/tools.js';
+const initialWidth = 800;
+const initialHeight = 110;
 
 class HeadingWidget extends CanvasWidget {
   constructor(props) {
     super(props, PureCanvasHeading);
-  }
-
-  componentDidMount() {
-    // This widget takes heading as a property
-
-    const heading_degrees = radiansToDegrees(this.props.heading);
-
-    heading_init(this.ctx);
-    drawHeading(this.ctx, heading_degrees);
+    this.lockedValue = 0;
+    this.scaleFunction = scaleHeading;
+    this.initialWidth = initialWidth;
+    this.initialHeight = initialHeight;
   }
 
   // Redraw widget
   componentDidUpdate() {
-    const heading_degrees = radiansToDegrees(this.props.heading);
-    drawHeading(this.ctx, heading_degrees);
+    const headingDegrees = radiansToDegrees(this.props.heading);
+    this.lockedValue = wrapDegrees(radiansToDegrees(this.props.lockedValue));
+
+    drawHeading(
+      this.ctx,
+      headingDegrees,
+      this.props.isLocked,
+      this.lockedValue, // Do not perform .toFixed on this :)
+      initialWidth,
+      initialHeight,
+    );
+  }
+
+  render() {
+    const canvas = super.render();
+
+    // Add a lock widget
+    return (
+      <div>
+        {canvas}
+        <LockWidget
+          id="LockWidgetHeading"
+          value={this.lockedValue.toFixed(0) + '\xB0'}
+          isLocked={this.props.isLocked}
+        />
+      </div>
+    );
   }
 }
 
 class PureCanvasHeading extends PureCanvas {
   constructor(props) {
-    super(props, 'HeadingWidget', 800, 100);
+    super(props, 'HeadingWidget', initialWidth, initialHeight);
   }
 }
 
-export { HeadingWidget };
+export default HeadingWidget;

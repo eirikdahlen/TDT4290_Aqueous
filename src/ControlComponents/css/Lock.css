@@ -1,20 +1,30 @@
 .Lock {
-  background-color: lightgray;
-  margin: 5px;
-  border-radius: 10px 10px 0px 0px;
+  background-color: var(--primary-light);
   width: 50%;
-  height: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 0 1.5px 0 black;
 }
 
 .inputFlex {
   display: flex;
   flex-direction: row;
-  padding: 20px;
-}
-.inputFlex > input {
-  width: 70%;
+  padding: 0 5px;
+  margin: 5px 0;
 }
 
 .check {
   text-align: center;
+  bottom: 0;
+}
+
+.Lock .switch-label {
+  height: 30px;
+}
+
+.Lock .switch-button {
+  height: 25px;
+  width: 25px;
 }

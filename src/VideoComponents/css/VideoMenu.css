@@ -1,0 +1,12 @@
+.VideoMenu {
+  height: 31px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.92);
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+  position: relative;
+}
+
+.maximizedVideoMenu {
+  height: 23px !important;
+}

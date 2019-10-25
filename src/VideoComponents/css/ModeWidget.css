@@ -1,0 +1,54 @@
+.ModeWidget {
+  position: fixed;
+  color: white;
+
+  width: 250px;
+  top: 52%;
+  right: 15px;
+  transform: translateY(-50%);
+
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+
+  font-size: 20px;
+}
+
+.ModeWidget canvas {
+  position: relative;
+  right: 35px;
+}
+
+.ModeWidget p {
+  display: block;
+  margin-top: 0;
+}
+
+#DynPos {
+  font-size: 14px;
+  left: -9999px;
+  right: -9999px;
+  margin: auto;
+}
+
+#DynPos table {
+  border-collapse: separate;
+  border-spacing: 20px 5px;
+  position: relative;
+  right: 18px;
+}
+
+#DynPos thead {
+  font-weight: bold;
+}
+
+#DynPos tfoot {
+  font-style: italic;
+}
+
+#DynPos td:nth-child(1) {
+  text-align: right;
+}
+
+#DynPos td:nth-child(3) {
+  color: #c0c0c0;
+}

@@ -1,41 +1,38 @@
 import Webcam from 'react-webcam';
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import './css/VideoFeed.css';
+import PropTypes from 'prop-types';
 
-class VideoFeed extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  // Function for updating size - is called when window is resized to make webcam fit window properly
-  updateDimensions = () => {
-    this.setState({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
+export default function VideoFeed({ deviceId, hidden }) {
+  const [dimensions, updateDimensions] = useState({ width: 0, height: 0 });
+
+  const windowResized = () => {
+    updateDimensions({ width: window.innerWidth, height: window.innerHeight });
   };
 
-  // componentDidMount is built-in function that is called after the inital rendering of the component
-  // Adds eventlistener on resizing window, and updates width and height in state accordingly.
-  componentDidMount() {
-    this.updateDimensions();
+  useEffect(() => {
+    windowResized();
     window.addEventListener('resize', e => {
       e.preventDefault();
-      this.updateDimensions();
+      windowResized();
     });
-  }
+    return () => {
+      window.removeEventListener('resize', windowResized);
+    };
+  }, []);
 
-  // Built in function for when component is removed
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateDimensions);
-  }
-
-  render() {
-    return (
-      <div className="VideoFeed">
-        <Webcam height={this.state.height} width={this.state.width} />
-      </div>
-    );
-  }
+  return (
+    <div className={hidden ? 'hideVideoFeed' : 'VideoFeed'}>
+      <Webcam
+        videoConstraints={{ deviceId }}
+        height={dimensions.height}
+        width={dimensions.width}
+      />
+    </div>
+  );
 }
 
-export default VideoFeed;
+VideoFeed.propTypes = {
+  hidden: PropTypes.bool,
+  deviceId: PropTypes.string,
+};

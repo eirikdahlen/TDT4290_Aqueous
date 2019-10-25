@@ -1,0 +1,45 @@
+.ModeInput {
+  width: 100%;
+}
+
+.ModeInput h3 {
+  font-size: 15px;
+  font-weight: normal;
+  margin: 0;
+  margin-top: 5px;
+}
+
+.inputs {
+  display: flex;
+}
+
+.inputs input {
+  width: 70%;
+  height: 25px;
+  font-size: 15px;
+  padding-left: 7px;
+  border: 0.5px solid #000000;
+  border-right: 0;
+  border-radius: var(--small-radius) 0 0 var(--small-radius);
+  outline: none;
+}
+
+.inputs button {
+  color: var(--primary-dark);
+  width: 30%;
+  font-size: 15px;
+  border: none;
+  border: 0.5px solid black;
+  cursor: pointer;
+  background-color: var(--primary-light);
+  border-radius: 0 var(--small-radius) var(--small-radius) 0;
+  outline: none;
+  height: 28px;
+  font-weight: bold;
+}
+.inputs button:hover {
+  color: black;
+}
+.inputs button:active {
+  box-shadow: 0 0 1px 1px gray;
+}

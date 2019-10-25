@@ -1,3 +1,9 @@
 .VideoApp {
-  background-color: black;
+  background-color: black !important;
+  height: 100%;
+}
+
+.transparentVideoApp {
+  height: 100%;
+  border: solid 0.3px white;
 }

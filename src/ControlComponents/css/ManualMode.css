@@ -1,0 +1,12 @@
+.manualLockFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 92%;
+}
+
+.manualLockFlex > .Lock {
+  height: 34%;
+  width: 80%;
+  margin-top: 15px;
+}
