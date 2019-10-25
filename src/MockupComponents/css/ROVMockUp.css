@@ -1,10 +1,10 @@
 .mockupBox {
-  font-family: 'Segoe UI';
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: scroll;
 }
 
 .startServer {
-  background-color: #89ccff;
+  background-color: var(--primary-normal);
   color: white;
   cursor: pointer;
   text-align: center;

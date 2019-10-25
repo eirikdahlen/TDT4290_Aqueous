@@ -1,7 +1,7 @@
 .modeToggles {
   display: flex;
   flex-direction: row;
-  background-color: lightsteelblue;
+  background-color: var(--primary-normal);
   margin: 2px;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .toggleSwitch {
-  background-color: rgb(203, 224, 236);
+  background-color: var(--primary-light);
   cursor: pointer;
   text-align: center;
 }

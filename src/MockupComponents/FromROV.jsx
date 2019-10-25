@@ -45,12 +45,11 @@ export default function FromROV() {
           {estimatedStateMetadata.message.map(value => {
             return (
               <div
-                className="stateSlot"
-                key={`estimatedStateSlot${value.name}`}
+                className="estimatedStateInputBox"
+                key={`estimatedStateInput${value.name}`}
               >
-                <h3>{value.name}</h3>
+                <h4 className="estimatedStateInputHeader">{value.name}</h4>
                 <input
-                  type="number"
                   className={`estimatedStateInput${value.name}`}
                   onChange={e =>
                     changeEstimatedState(e.target.value, value.name)

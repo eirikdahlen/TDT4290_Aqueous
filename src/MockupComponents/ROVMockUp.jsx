@@ -16,7 +16,6 @@ export default function ROVMockUp() {
   // TODO: add this functionality in TCPServerMockUp
   function startServer() {
     if (!isServerRunning) {
-      console.log('hei');
       ipcRenderer.send('startROVMockupServer');
       setIsServerRunning(true);
     }
@@ -45,20 +44,6 @@ export default function ROVMockUp() {
       setRecievedData(arg);
     });
   }, []);
-
-  /**
-   * Liste med alle felter som skal settes
-   * Vise både hva man får og hva man sender
-   * Starte en funksjon som starter hele serveren
-   * Slå av og på flagg med NF-avail osv
-   * Tvinge GUI til å være i manual mode
-   * I Manual:
-   *    Tar inn input fra UI og setter alle variabler i estimatedStates
-   * I NF:
-   *    Forandre degree, distance og velocity
-   *
-   *
-   */
 
   return (
     <div className="mockupBox" style={{ backgroundColor: 'white' }}>

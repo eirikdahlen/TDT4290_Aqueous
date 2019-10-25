@@ -18,7 +18,6 @@ function getConnectedClient() {
   //console.log('Attempting to create TCP client and connect to server..');
   const client = new net.Socket();
   messageProtocol = global.settings.messageProtocol;
-  console.log(messageProtocol);
 
   client.connect({
     port: global.settings.port,
@@ -27,7 +26,6 @@ function getConnectedClient() {
 
   client.on('connect', function() {
     console.log(`Client: connection established with server!`);
-    console.log(messageProtocol);
 
     if (messageProtocol === messageProtocols.old) {
       sendData(client, {

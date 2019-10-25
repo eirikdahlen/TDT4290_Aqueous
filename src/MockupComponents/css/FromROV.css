@@ -4,7 +4,7 @@
 }
 
 .fromROV > div {
-  background-color: lightsteelblue;
+  background-color: var(--primary-normal);
   margin: 2px;
 }
 
@@ -60,4 +60,24 @@ input[type='entityStateInputdescription'] {
   width: 150px;
   flex: 50%;
   margin: 5px;
+}
+
+.estimatedStateInputHeader {
+  text-align: center;
+  margin: 0;
+  margin-top: -2px;
+}
+
+.estimatedStateInputBox {
+  background-color: var(--primary-light);
+  height: 50px;
+  width: 50px;
+  margin: 8px;
+  padding: 3px;
+  box-shadow: var(--shadow-secondary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.1s all;
+  border-radius: var(--small-radius);
 }

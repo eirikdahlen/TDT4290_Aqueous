@@ -4,7 +4,7 @@
 }
 
 .NFViewRoot > div {
-  background-color: lightsteelblue;
+  background-color: var(--primary-normal);
   margin: 2px;
 }
 

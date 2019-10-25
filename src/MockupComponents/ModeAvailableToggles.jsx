@@ -9,7 +9,6 @@ export default function ModeAvailableToggles() {
   const [dpAvailable, setDpAvailable] = useState(true);
 
   function toggleDPAvailable() {
-    // ipcRenderer.send('rov-mock-up-send-df-available', !dpAvailable);
     setDpAvailable(!dpAvailable);
   }
   useEffect(() => {
@@ -17,7 +16,6 @@ export default function ModeAvailableToggles() {
   }, [dpAvailable]);
 
   function toggleNFAvailable() {
-    // ipcRenderer.send('rov-mock-up-send-nf-available', !nfAvailable);
     setNfAvailable(!nfAvailable);
   }
   useEffect(() => {

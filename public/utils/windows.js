@@ -139,7 +139,7 @@ function createXboxMappingWindow() {
 }
 
 function createMockupWindow() {
-  let mockupWindow = new electron.BrowserWindow({
+  let mockupWindow = new BrowserWindow({
     title: 'Mockup',
     width: widthControlWindow / 1.5,
     height: heightControlWindow,
@@ -149,6 +149,7 @@ function createMockupWindow() {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
+    icon: path.join(__dirname, '../img/logo.png'),
   });
 
   mockupWindow.loadURL(
