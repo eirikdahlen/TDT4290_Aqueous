@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NetFollowingWidget from './NetFollowingWidget';
 import './css/ModeWidget.css';
-import redX from './images/redX.png';
-import greenCheckmark from './images/greenCheckmark.png';
 import ModeEnum from '../constants/modeEnum';
 import { clamp, mapRange } from './js/tools.js';
 import DynPosWidget from './DynPosWidget';
@@ -23,27 +21,11 @@ class ModeWidget extends Component {
 
     this.state = {
       fontSizeMode: 14,
-      fontSizeNFAvail: 14,
-      sizeImgNFAvail: 25,
     };
 
     // Initial variable values
     this.modeLabel = 'INVALID';
-    this.imgsrc = null;
-    this.opacityStyle = null;
     this.widget = null;
-
-    if (this.props.nfAvailable) {
-      // Net following available
-      this.nfLabel = 'NET FOLLOWING AVAILABLE';
-      this.imgsrc = greenCheckmark;
-      this.opacityStyle = 'NFAvailable';
-    } else {
-      // Net following unavailable
-      this.nfLabel = 'NET FOLLOWING UNAVAILABLE';
-      this.imgsrc = redX;
-      this.opacityStyle = 'NFUnavailable';
-    }
 
     this.componentDidMount();
   }
@@ -73,21 +55,8 @@ class ModeWidget extends Component {
         />
       );
     } else {
-      // Show the NF availability widget
-      this.widget = (
-        <div
-          className={'NFAvailability ' + this.opacityStyle}
-          style={{ fontSize: this.state.fontSizeNFAvail + 'px' }}
-        >
-          <img
-            id="ImgNFAvailable"
-            src={this.imgsrc}
-            alt=""
-            style={{ width: this.state.sizeImgNFAvail + 'px' }}
-          ></img>
-          <div>{this.nfLabel}</div>
-        </div>
-      );
+      // Don't show the net following widget
+      this.widget = null;
     }
   }
 
@@ -114,7 +83,6 @@ class ModeWidget extends Component {
   static get propTypes() {
     return {
       currentMode: PropTypes.number,
-      nfAvailable: PropTypes.bool,
     };
   }
 

@@ -24,33 +24,6 @@
   display: block;
 }
 
-.ModeWidget img {
-  opacity: 1;
-  width: 25px;
-  margin-bottom: 5px;
-}
-
-.NFAvailability {
-  font-size: 14px;
-  text-align: center;
-  width: 160px;
-  left: -9999px;
-  right: -9999px;
-  margin: auto;
-}
-
-.NFAvailability img {
-  position: relative;
-}
-
-.NFAvailable {
-  opacity: 0.7;
-}
-
-.NFUnavailable {
-  opacity: 0.4;
-}
-
 #DynPos {
   font-size: 14px;
   left: -9999px;
