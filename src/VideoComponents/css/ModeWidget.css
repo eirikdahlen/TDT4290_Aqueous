@@ -3,8 +3,8 @@
   color: white;
 
   width: 250px;
-  top: 50%;
-  right: 30px;
+  top: 52%;
+  right: 15px;
   transform: translateY(-50%);
 
   font-family: Arial, Helvetica, sans-serif;
@@ -32,10 +32,6 @@
 .NFAvailability {
   font-size: 14px;
   text-align: center;
-  width: 160px;
-  left: -9999px;
-  right: -9999px;
-  margin: auto;
 }
 
 .NFAvailability img {
