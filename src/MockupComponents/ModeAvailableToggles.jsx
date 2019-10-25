@@ -9,20 +9,20 @@ export default function ModeAvailableToggles() {
   const [dpAvailable, setDpAvailable] = useState(true);
 
   function toggleDPAvailable() {
-    ipcRenderer.send('rov-mock-up-send-df-available', !dpAvailable);
+    // ipcRenderer.send('rov-mock-up-send-df-available', !dpAvailable);
     setDpAvailable(!dpAvailable);
   }
+  useEffect(() => {
+    ipcRenderer.send('rov-mock-up-send-df-available', dpAvailable);
+  }, [dpAvailable]);
 
   function toggleNFAvailable() {
-    ipcRenderer.send('rov-mock-up-send-nf-available', !nfAvailable);
+    // ipcRenderer.send('rov-mock-up-send-nf-available', !nfAvailable);
     setNfAvailable(!nfAvailable);
   }
-
   useEffect(() => {
-    // Update the document title using the browser API
-    ipcRenderer.send('rov-mock-up-send-df-available', dpAvailable);
     ipcRenderer.send('rov-mock-up-send-nf-available', nfAvailable);
-  }, []);
+  }, [nfAvailable]);
 
   return (
     <div className="modeToggles">
