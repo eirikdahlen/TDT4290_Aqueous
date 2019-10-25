@@ -31,7 +31,7 @@ export default function FromROV() {
 
   function changeEstimatedState(value, name) {
     let tempState = estimatedStateMessage;
-    tempState[name] = value === '' ? 0 : parseInt(value);
+    tempState[name] = isNaN(parseInt(value)) ? 0 : parseInt(value);
     console.log(tempState);
     setEstimatedStateMessage(tempState);
     ipcRenderer.send('rov-mock-up-send-estimated-state', estimatedStateMessage);
@@ -50,6 +50,7 @@ export default function FromROV() {
               >
                 <h3>{value.name}</h3>
                 <input
+                  type="number"
                   className={`estimatedStateInput${value.name}`}
                   onChange={e =>
                     changeEstimatedState(e.target.value, value.name)
