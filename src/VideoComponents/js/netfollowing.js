@@ -258,7 +258,7 @@ function scaleNetFollowing(context, initialWidth, initialHeight) {
     1000,
     1500,
     0.7,
-    1,
+    0.9,
   );
 }
 
