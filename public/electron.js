@@ -61,7 +61,7 @@ global.bias = {
 global.mode = {
   currentMode: 0,
   nfAvailable: true,
-  dpAvailable: false,
+  dpAvailable: true,
 };
 
 /**
