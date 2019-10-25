@@ -38,8 +38,9 @@ let bias;
 const clearData = () => {
   // Mocks global state
   global.mode = {
-    globalMode: 0,
+    currentMode: 0,
     nfAvailable: true,
+    dpAvailable: false,
   };
   global.toROV = {
     surge: 0.0,
@@ -63,6 +64,12 @@ const clearData = () => {
     surge: 0.0,
     sway: 0.0,
     heave: 0.0,
+  };
+  global.netfollowing = {
+    distance: 0,
+    velocity: 0,
+    degree: 0,
+    depth: 0,
   };
   toROV = {
     surge: 0.0,
@@ -174,6 +181,7 @@ test(prefix + 'heave up', () => {
 });
 
 // Tests bias buttons
+
 test(prefix + 'set multiple biases and reset', () => {
   /*
   L: 'DPadRight', //sway bias+
