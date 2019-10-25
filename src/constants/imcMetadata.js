@@ -1,18 +1,3 @@
-const messages = {
-  estimatedState: 'estimatedState',
-  entityState: 'entityState',
-  desiredControl: 'desiredControl',
-  desiredHeading: 'desiredHeading',
-  desiredZ: 'desiredZ',
-  lowLevelControlManeuver: {
-    desiredHeading: 'lowLevelControlManeuver.desiredHeading',
-    desiredZ: 'lowLevelControlManeuver.desiredZ',
-  },
-  goTo: 'goTo',
-  netFollow: 'netFollow',
-  customNetFollowState: 'customNetFollowState',
-};
-
 const datatypes = {
   uint_8t: {
     name: 'uint_8t',
@@ -23,7 +8,7 @@ const datatypes = {
     length: 2,
   },
   uint_32t: {
-    name: 'uint_32t',
+    name: 'uint_16t',
     length: 4,
   },
   fp32_t: {
@@ -43,9 +28,7 @@ const datatypes = {
   },
 };
 
-const estimatedStateMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Navigation.html#estimated-state
-  name: messages.estimatedState,
+export const estimatedStateMetadata = {
   length: 90,
   id: {
     value: 350,
@@ -75,9 +58,7 @@ const estimatedStateMetadata = {
   ],
 };
 
-const entityStateMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Core.html#entity-state
-  name: messages.entityState,
+export const entityStateMetadata = {
   length: 8,
   id: {
     value: 1,
@@ -98,9 +79,7 @@ const entityStateMetadata = {
   ],
 };
 
-const desiredControlMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Guidance.html#desired-control
-  name: messages.desiredControl,
+export const desiredControlMetadata = {
   length: 51,
   id: {
     value: 407,
@@ -139,9 +118,24 @@ const desiredControlMetadata = {
   ],
 };
 
-const desiredHeadingMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Guidance.html#desired-heading
-  name: messages.desiredHeading,
+export const lowLevelControlManeuverMetadata = {
+  id: {
+    value: 455,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'control',
+      datatype: datatypes.recursive,
+    },
+    {
+      name: 'duration',
+      datatype: datatypes.uint_16t,
+    },
+  ],
+};
+
+export const desiredHeadingMetadata = {
   length: 10,
   id: {
     value: 400,
@@ -155,9 +149,7 @@ const desiredHeadingMetadata = {
   ],
 };
 
-const desiredZMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Guidance.html#desired-z
-  name: messages.desiredZ,
+export const desiredZMetadata = {
   length: 7,
   id: {
     value: 401,
@@ -175,28 +167,7 @@ const desiredZMetadata = {
   ],
 };
 
-const lowLevelControlManeuverMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html#low-level-control-maneuver
-  name: 'lowLevelControlManeuver', // This must be treated seperablely because it encapsulates other messages
-  id: {
-    value: 455,
-    datatype: datatypes.uint_16t,
-  },
-  message: [
-    {
-      name: 'control',
-      datatype: datatypes.recursive,
-    },
-    {
-      name: 'duration',
-      datatype: datatypes.uint_16t,
-    },
-  ],
-};
-
-const goToMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html
-  name: messages.goTo,
+export const goToMetadata = {
   length: 54,
   id: {
     value: 450,
@@ -246,9 +217,7 @@ const goToMetadata = {
   ],
 };
 
-const netFollowMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html#custom-maneuver
-  name: messages.netFollow,
+export const netFollowMetadata = {
   length: 33,
   id: {
     value: 465,
@@ -283,9 +252,7 @@ const netFollowMetadata = {
   ],
 };
 
-const customNetFollowStateMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Custom.html
-  name: messages.customNetFollowState,
+export const customNetFollowStateMetadata = {
   length: 18,
   id: {
     value: 1002,
@@ -305,18 +272,4 @@ const customNetFollowStateMetadata = {
       datatype: datatypes.fp64_t,
     },
   ],
-};
-
-module.exports = {
-  datatypes,
-  messages,
-  estimatedStateMetadata,
-  customNetFollowStateMetadata,
-  entityStateMetadata,
-  desiredControlMetadata,
-  lowLevelControlManeuverMetadata,
-  desiredHeadingMetadata,
-  desiredZMetadata,
-  netFollowMetadata,
-  goToMetadata,
 };

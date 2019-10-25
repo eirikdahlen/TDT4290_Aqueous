@@ -196,6 +196,24 @@ function encodeEntityState(entityState) {
 }
 
 function encodeDesiredControl(desiredControl) {
+  /*
+  const desiredControl = {
+    x: 1.1,
+    y: 2.2,
+    z: 3.3,
+    k: 4.4,
+    m: 5.5,
+    n: 6.6,
+    flags: {
+      x: true,
+      y: true,
+      z: true,
+      k: true,
+      m: true,
+      n: false,
+    },
+  };
+*/
   return encodeIMC(desiredControl, desiredControlMetadata);
 }
 

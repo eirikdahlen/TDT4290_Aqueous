@@ -2,10 +2,12 @@
 
 const electron = require('electron');
 const { app } = electron;
+const { ipcCommunicationTCPServer } = require('../TCP/TCPServerMockUp');
 const { getFileAndLaunch } = require('../launch/chooseFile');
 const {
   createKeyboardMappingWindow,
   createXboxMappingWindow,
+  createMockupWindow,
   createSettingsWindow,
 } = require('./windows');
 const { getConnectedClient } = require('./../TCP/TCPClient');
@@ -38,6 +40,13 @@ const menuTemplate = [
         accelerator: 'CmdOrCtrl+S',
         click() {
           getFileAndLaunch();
+        },
+      },
+      {
+        label: 'Mockup window',
+        click: async () => {
+          createMockupWindow();
+          ipcCommunicationTCPServer();
         },
       },
     ],

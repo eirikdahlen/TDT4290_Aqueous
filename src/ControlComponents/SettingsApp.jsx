@@ -4,12 +4,18 @@ import React, { useState, useEffect } from 'react';
 import './css/SettingsApp.css';
 
 const { remote } = window.require('electron');
+const MessageProtocols = require('../constants/messageProtocols');
 
 export default function SettingsApp() {
-  const { port, host, serialFile } = remote.getGlobal('settings');
+  const { port, host, serialFile, messageProtocol } = remote.getGlobal(
+    'settings',
+  );
   const [portInput, setPortInput] = useState(port);
   const [hostInput, setHostInput] = useState(host);
   const [serialFileInput, setSerialFileInput] = useState(serialFile);
+  const [messageProtocolInput, setMessageProtocolInput] = useState(
+    messageProtocol,
+  );
 
   // Listens to the file-chosen message which is sent with the filename that is chosen
   useEffect(() => {
@@ -22,9 +28,11 @@ export default function SettingsApp() {
   // Listens to enter-click which runs the updateSettings-function
   useEffect(() => {
     document.addEventListener('keydown', e => {
-      const key = e.key.toUpperCase();
-      if (key === 'ENTER') {
-        updateSettings();
+      if (e.key) {
+        const key = e.key.toUpperCase();
+        if (key === 'ENTER') {
+          updateSettings();
+        }
       }
     });
   });
@@ -45,6 +53,7 @@ export default function SettingsApp() {
     remote.getGlobal('settings')['port'] = portInput;
     remote.getGlobal('settings')['host'] = hostInput;
     remote.getGlobal('settings')['serialFile'] = serialFileInput;
+    remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
     closeWindow();
   };
 
@@ -73,6 +82,21 @@ export default function SettingsApp() {
             onChange={e => setSerialFileInput(e.target.value)}
           ></input>
           <button onClick={choseSerialFile}></button>
+        </div>
+      </div>
+      <div className="settingGroup">
+        <div className="MessageProtocolMenu">
+          <label>Message Protocol</label>
+          <select
+            className="MessageProtocolDropdown"
+            value={messageProtocolInput}
+            onChange={e =>
+              setMessageProtocolInput(e.target.value.toUpperCase())
+            }
+          >
+            <option value={MessageProtocols.OLD}>OLD</option>
+            <option value={MessageProtocols.IMC}>IMC</option>
+          </select>
         </div>
       </div>
       <button className="updateSettingsBtn" onClick={updateSettings}>

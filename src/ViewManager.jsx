@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ControlApp from './ControlComponents/ControlApp';
 import VideoApp from './VideoComponents/VideoApp';
+import ROVMockUp from './MockupComponents/ROVMockUp';
 import SettingsApp from './ControlComponents/SettingsApp';
 
 class ViewManager extends Component {
@@ -11,6 +12,7 @@ class ViewManager extends Component {
     return {
       controlWindow: <ControlApp />,
       videoWindow: <VideoApp />,
+      mockupWindow: <ROVMockUp />,
       settingsWindow: <SettingsApp />,
     };
   }

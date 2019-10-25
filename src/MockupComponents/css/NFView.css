@@ -1,0 +1,32 @@
+.NFViewRoot {
+  display: flex;
+  flex-direction: row;
+}
+
+.NFViewRoot > div {
+  background-color: var(--primary-normal);
+  margin: 2px;
+}
+
+.customNfState > h3 {
+  text-align: center;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 5px;
+}
+
+.stateSlot > h3 {
+  text-align: center;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: normal;
+}

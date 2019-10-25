@@ -138,6 +138,35 @@ function createXboxMappingWindow() {
   xboxMappingWindow.setMenu(null);
 }
 
+function createMockupWindow() {
+  let mockupWindow = new BrowserWindow({
+    title: 'Mockup',
+    width: widthControlWindow / 1.5,
+    height: heightControlWindow,
+    x: xControlWindow,
+    y: yControlWindow,
+    webPreferences: {
+      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
+    icon: path.join(__dirname, '../img/logo.png'),
+  });
+
+  mockupWindow.loadURL(
+    isDev
+      ? 'http://localhost:3000?mockupWindow'
+      : `file://${path.join(__dirname, '../../build/index.html?mockupWindow')}`,
+  );
+  mockupWindow.webContents.openDevTools();
+  // Handle garbage collection
+  mockupWindow.on('close', function() {
+    mockupWindow = null;
+  });
+
+  mockupWindow.setMenu(null);
+  global.mockupWindow = mockupWindow;
+}
+
 // Handle add item window
 function createKeyboardMappingWindow() {
   let keyboardMappingWindow = new BrowserWindow({
@@ -193,5 +222,6 @@ module.exports = {
   setWidthAndHeight,
   createXboxMappingWindow,
   createKeyboardMappingWindow,
+  createMockupWindow,
   createSettingsWindow,
 };
