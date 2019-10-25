@@ -32,7 +32,9 @@
 
 #DynPos table {
   border-collapse: separate;
-  border-spacing: 30px 5px;
+  border-spacing: 20px 5px;
+  position: relative;
+  right: 18px;
 }
 
 #DynPos thead {
@@ -45,12 +47,6 @@
 
 #DynPos td:nth-child(1) {
   text-align: right;
-}
-
-#DynPos tbody td:nth-child(2)::after,
-#DynPos tbody td:nth-child(3)::after,
-#DynPos tfoot td:nth-child(3)::after {
-  content: ' m';
 }
 
 #DynPos td:nth-child(3) {
