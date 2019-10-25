@@ -28,9 +28,11 @@ export default function SettingsApp() {
   // Listens to enter-click which runs the updateSettings-function
   useEffect(() => {
     document.addEventListener('keydown', e => {
-      const key = e.key.toUpperCase();
-      if (key === 'ENTER') {
-        updateSettings();
+      if (e.key) {
+        const key = e.key.toUpperCase();
+        if (key === 'ENTER') {
+          updateSettings();
+        }
       }
     });
   });
@@ -83,14 +85,19 @@ export default function SettingsApp() {
         </div>
       </div>
       <div className="settingGroup">
-        <label>Message Protocol</label>
-        <select
-          value={messageProtocolInput}
-          onChange={e => setMessageProtocolInput(e.target.value.toUpperCase())}
-        >
-          <option value={MessageProtocols.OLD}>OLD</option>
-          <option value={MessageProtocols.IMC}>IMC</option>
-        </select>
+        <div className="MessageProtocolMenu">
+          <label>Message Protocol</label>
+          <select
+            className="MessageProtocolDropdown"
+            value={messageProtocolInput}
+            onChange={e =>
+              setMessageProtocolInput(e.target.value.toUpperCase())
+            }
+          >
+            <option value={MessageProtocols.OLD}>OLD</option>
+            <option value={MessageProtocols.IMC}>IMC</option>
+          </select>
+        </div>
       </div>
       <button className="updateSettingsBtn" onClick={updateSettings}>
         UPDATE

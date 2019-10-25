@@ -142,7 +142,7 @@ function createMockupWindow() {
   let mockupWindow = new electron.BrowserWindow({
     title: 'Mockup',
     width: widthControlWindow / 1.5,
-    height: heightControlWindow / 1.5,
+    height: heightControlWindow,
     x: xControlWindow,
     y: yControlWindow,
     webPreferences: {

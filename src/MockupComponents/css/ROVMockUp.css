@@ -1,5 +1,6 @@
 .mockupBox {
   font-family: 'Segoe UI';
+  overflow: scroll;
 }
 
 .startServer {
