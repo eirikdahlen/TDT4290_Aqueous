@@ -78,7 +78,7 @@ class DynPosWidget extends Component {
           </tbody>
           <tfoot>
             <tr>
-              <td>Total</td>
+              <td>Euclidean</td>
               <td></td>
               <td>{this.distance.total.toFixed(2)}</td>
             </tr>
