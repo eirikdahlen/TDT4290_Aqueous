@@ -41,16 +41,16 @@ function printNMEA(line) {
     console.log(JSON.stringify(nmeaData, null, 2));
 
     // Update the global variable with the longitude, latitude and/or heading
-    if ('latitude' in global.boat) {
-      global.boatposition.latitude = parseFloat(nmeaData.latitude);
+    if ('latitude' in nmeaData) {
+      global.boat.latitude = parseFloat(nmeaData.latitude);
     }
 
-    if ('longitude' in global.boat) {
-      global.boatposition.longitude = parseFloat(nmeaData.longitude);
+    if ('longitude' in nmeaData) {
+      global.boat.longitude = parseFloat(nmeaData.longitude);
     }
 
-    if ('heading' in global.boat) {
-      global.boatposition.heading = parseFloat(nmeaData.heading);
+    if ('heading' in nmeaData) {
+      global.boat.heading = nmeaData.heading;
     }
   } catch {
     // Display an error if the serial message could not be NMEA-parsed.
