@@ -16,16 +16,20 @@ const { createWindows, setWidthAndHeight } = require('./utils/windows');
 const { setIPCListeners } = require('./utils/IPC');
 const { closeSimulator } = require('./launch/closeSimulator');
 
+const { openSerialPort } = require('./serial/nmea');
+
 let controlWindow;
 let videoWindow;
 
-// Global settings for TCP port and IP adress, as well as the "start serial port"-file
+// Global settings for TCP port and IP address, the "start serial port"-file, and the boat serial port and baud rate
 global.settings = {
   port: 5000,
   host: '127.0.0.1',
   serialFile:
     'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
   messageProtocol: 'OLD',
+  boatSerialPort: 'COM2',
+  boatSerialBaudRate: 256000,
 };
 
 // Global state objects
@@ -88,6 +92,13 @@ global.dynamicpositioning = {
   heading: 0,
   depth: 0,
 };
+
+global.boatposition = {
+  latitude: 0,
+  longitude: 0,
+};
+
+openSerialPort();
 
 // Functions that are run when the app is ready
 app.on('ready', () => {
