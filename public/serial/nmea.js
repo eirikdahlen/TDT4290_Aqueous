@@ -41,8 +41,4 @@ function printNMEA(line) {
   }
 }
 
-// npm i
-// yarn install
-// yarn electron-rebuild
-
 module.exports = { openSerialPort };
