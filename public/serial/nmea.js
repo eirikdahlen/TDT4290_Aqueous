@@ -41,15 +41,15 @@ function printNMEA(line) {
     console.log(JSON.stringify(nmeaData, null, 2));
 
     // Update the global variable with the longitude, latitude and/or heading
-    if ('latitude' in global.boatposition) {
+    if ('latitude' in global.boat) {
       global.boatposition.latitude = parseFloat(nmeaData.latitude);
     }
 
-    if ('longitude' in global.boatposition) {
+    if ('longitude' in global.boat) {
       global.boatposition.longitude = parseFloat(nmeaData.longitude);
     }
 
-    if ('heading' in global.boatposition) {
+    if ('heading' in global.boat) {
       global.boatposition.heading = parseFloat(nmeaData.heading);
     }
   } catch {

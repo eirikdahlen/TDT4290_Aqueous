@@ -81,7 +81,7 @@ const initGlobals = () => {
   };
 
   // Boat position and heading
-  global.boatposition = {
+  global.boat = {
     latitude: 0,
     longitude: 0,
     heading: 0,

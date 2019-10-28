@@ -1,7 +1,6 @@
 // The App for the VideoWindow. This is where every video-component should go.
 
 import React, { useState, useEffect } from 'react';
-//import openSerialPort from '../utils/nmea';
 import './css/SettingsApp.css';
 
 const { remote } = window.require('electron');
