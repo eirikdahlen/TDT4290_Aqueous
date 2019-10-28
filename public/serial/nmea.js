@@ -4,10 +4,10 @@ const nmea = require('nmea-0183');
 
 class SerialPortObject {
   constructor(port, baudRate) {
-    this.createNewSerialPortObject(port, baudRate);
+    this.openPort(port, baudRate);
   }
 
-  createNewSerialPortObject(port, baudRate) {
+  openPort(port, baudRate) {
     // Create the serial port with port and baud rate from global settings
     this.port = new SerialPort(port, {
       baudRate: baudRate,

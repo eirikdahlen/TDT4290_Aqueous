@@ -75,7 +75,7 @@ export default function SettingsApp() {
     remote.getGlobal('settings')[
       // eslint-disable-next-line no-unexpected-multiline
       'boatSerialPortObject'
-    ].createNewSerialPortObject(boatSerialPortInput, boatSerialBaudRateInput);
+    ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
     closeWindow();
   };
 
