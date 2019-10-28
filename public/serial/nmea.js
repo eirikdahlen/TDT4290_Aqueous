@@ -2,19 +2,30 @@ const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const nmea = require('nmea-0183');
 
-// Function for opening a serial port to listen to boat coordinate messages
-function openSerialPort() {
-  // Create the serial port with port and baud rate from global settings
-  const port = new SerialPort(global.settings.boatSerialPort, {
-    baudRate: global.settings.boatSerialBaudRate,
-  });
+class SerialPortObject {
+  constructor(port, baudRate) {
+    this.createNewSerialPortObject(port, baudRate);
+  }
 
-  // Set up a serial parser
-  const parser = new Readline();
-  port.pipe(parser);
+  createNewSerialPortObject(port, baudRate) {
+    // Create the serial port with port and baud rate from global settings
+    this.port = new SerialPort(port, {
+      baudRate: baudRate,
+    });
 
-  // Run printNMEA every time data is received
-  parser.on('data', printNMEA);
+    // Set up a serial parser
+    this.parser = new Readline();
+    this.port.pipe(this.parser);
+
+    // Run printNMEA every time data is received
+    this.parser.on('data', printNMEA);
+  }
+
+  closePort() {
+    this.port.close();
+    this.port = null;
+    this.parser = null;
+  }
 }
 
 function printNMEA(line) {
@@ -41,4 +52,4 @@ function printNMEA(line) {
   }
 }
 
-module.exports = { openSerialPort };
+module.exports = { SerialPortObject };

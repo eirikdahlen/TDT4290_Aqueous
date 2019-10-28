@@ -16,7 +16,7 @@ const { createWindows, setWidthAndHeight } = require('./utils/windows');
 const { setIPCListeners } = require('./utils/IPC');
 const { closeSimulator } = require('./launch/closeSimulator');
 
-const { openSerialPort } = require('./serial/nmea');
+const { SerialPortObject } = require('./serial/nmea');
 
 let controlWindow;
 let videoWindow;
@@ -30,7 +30,14 @@ global.settings = {
   messageProtocol: 'OLD',
   boatSerialPort: 'COM2',
   boatSerialBaudRate: 256000,
+  boatSerialPortObject: null,
 };
+
+// Initialize a serial object with the port and baud rate given in the global settings
+global.settings.boatSerialPortObject = new SerialPortObject(
+  global.settings.boatSerialPort,
+  global.settings.boatSerialBaudRate,
+);
 
 // Global state objects
 global.toROV = {
@@ -97,8 +104,6 @@ global.boatposition = {
   latitude: 0,
   longitude: 0,
 };
-
-openSerialPort();
 
 // Functions that are run when the app is ready
 app.on('ready', () => {

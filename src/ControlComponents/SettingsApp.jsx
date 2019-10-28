@@ -1,6 +1,7 @@
 // The App for the VideoWindow. This is where every video-component should go.
 
 import React, { useState, useEffect } from 'react';
+//import openSerialPort from '../utils/nmea';
 import './css/SettingsApp.css';
 
 const { remote } = window.require('electron');
@@ -70,6 +71,11 @@ export default function SettingsApp() {
     remote.getGlobal('settings')[
       'boatSerialBaudRate'
     ] = boatSerialBaudRateInput;
+    remote.getGlobal('settings')['boatSerialPortObject'].closePort();
+    remote.getGlobal('settings')[
+      // eslint-disable-next-line no-unexpected-multiline
+      'boatSerialPortObject'
+    ].createNewSerialPortObject(boatSerialPortInput, boatSerialBaudRateInput);
     closeWindow();
   };
 
