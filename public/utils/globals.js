@@ -9,7 +9,7 @@ const initGlobals = () => {
       'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
     messageProtocol: 'OLD',
     boatSerialPort: 'COM2',
-    boatSerialBaudRate: 256000,
+    boatSerialBaudRate: 4800,
     boatSerialPortObject: null,
   };
 
