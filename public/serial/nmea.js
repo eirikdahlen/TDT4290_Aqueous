@@ -40,15 +40,22 @@ function printNMEA(line) {
     // Show the result in console
     console.log(JSON.stringify(nmeaData, null, 2));
 
-    // Update the global variable with the longitude and latitude
-    global.boatposition = {
-      latitude: parseFloat(nmeaData.latitude),
-      longitude: parseFloat(nmeaData.longitude),
-    };
+    // Update the global variable with the longitude, latitude and/or heading
+    if ('latitude' in global.boatposition) {
+      global.boatposition.latitude = parseFloat(nmeaData.latitude);
+    }
+
+    if ('longitude' in global.boatposition) {
+      global.boatposition.longitude = parseFloat(nmeaData.longitude);
+    }
+
+    if ('heading' in global.boatposition) {
+      global.boatposition.heading = parseFloat(nmeaData.heading);
+    }
   } catch {
     // Display an error if the serial message could not be NMEA-parsed.
     // This also ensures that the port stays open, so that listening can continue
-    console.log('Message is not in NMEA183 format');
+    console.log('Message format not recognized');
   }
 }
 
