@@ -11,6 +11,8 @@ const initGlobals = () => {
     boatSerialPort: 'COM2',
     boatSerialBaudRate: 4800,
     boatSerialPortObject: null,
+    manualBoatHeading: 0.0,
+    useManualHeading: false,
   };
 
   // Initialize a serial object with the port and baud rate given in the global settings

@@ -91,6 +91,20 @@
   cursor: pointer;
 }
 
+.headingInputs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.unchecked {
+  background-color: lightgray;
+}
+
+.useManual {
+  width: 35px !important;
+}
+
 .closeSettings {
   width: 20px;
   height: 20px;
