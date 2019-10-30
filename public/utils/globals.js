@@ -68,6 +68,28 @@ const initGlobals = () => {
     heading: 0,
     depth: 0,
   };
+
+  /*
+  Contains IMC messages to ROV
+  */
+  global.toROVIMC = {
+    desiredControl: {
+      x: global.toROV.surge,
+      y: global.toROV.sway,
+      z: global.toROV.autodepth ? 0 : global.toROV.heave,
+      k: 0.0,
+      m: global.toROV.pitch,
+      n: global.toROV.autoheading ? 0 : global.toROV.yaw,
+      flags: {
+        x: false,
+        y: false,
+        z: global.toROV.autodepth,
+        k: true,
+        m: false,
+        n: global.toROV.autoheading,
+      },
+    },
+  };
 };
 
 module.exports = { initGlobals };

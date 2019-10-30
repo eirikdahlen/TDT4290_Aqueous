@@ -140,7 +140,7 @@ function sendIMCData(client) {
   let buf;
   if (global.mode.currentMode === 0) {
     // MANUAL MODE
-    buf = encode.desiredControl({
+    const desiredControl = {
       x: global.toROV.surge,
       y: global.toROV.sway,
       z: global.toROV.autodepth ? 0 : global.toROV.heave,
@@ -155,16 +155,23 @@ function sendIMCData(client) {
         m: false,
         n: global.toROV.autoheading,
       },
-    });
+    };
+    buf = encode.desiredControl(desiredControl);
+    global.toROVIMC = {};
+    global.toROVIMC.desiredControl = desiredControl;
+    let desiredZ;
+    let desiredHeading;
 
     if (global.toROV.autodepth) {
+      desiredZ = {
+        value: global.toROV.heave,
+        z_units: 0,
+      };
+
       /*eslint-disable */
       const lowLevelControlManeuverDesiredZBuf = encode.lowLevelControlManeuver.desiredZ(
         /*eslint-enable */
-        {
-          value: global.toROV.heave,
-          z_units: 0,
-        },
+        desiredZ,
         10,
       );
       buf = Buffer.concat(
@@ -174,17 +181,27 @@ function sendIMCData(client) {
     }
 
     if (global.toROV.autoheading) {
+      desiredHeading = { value: global.toROV.yaw };
       /*eslint-disable */
       const lowLevelControlManeuverDesiredHeadingBuf = encode.lowLevelControlManeuver.desiredHeading(
         /*eslint-enable */
 
-        { value: global.toROV.yaw },
+        desiredHeading,
         10,
       );
       buf = Buffer.concat(
         [buf, lowLevelControlManeuverDesiredHeadingBuf],
         buf.length + lowLevelControlManeuverDesiredHeadingBuf.length,
       );
+    }
+    if (desiredZ || desiredHeading) {
+      global.toROVIMC.lowLevelControlManeuver = {};
+    }
+    if (desiredZ) {
+      global.toROVIMC.lowLevelControlManeuver.desiredZ = desiredZ;
+    }
+    if (desiredHeading) {
+      global.toROVIMC.lowLevelControlManeuver.desiredZ = desiredHeading;
     }
   }
   if (global.mode.currentMode === 1) {

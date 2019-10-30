@@ -36,7 +36,7 @@ class DepthWidget extends CanvasWidget {
         {canvas}
         <LockWidget
           id="LockWidgetDepth"
-          value={this.props.lockedValue.toFixed(2) + ' m'}
+          value={this.props.lockedValue + ' m' || ''}
           isLocked={this.props.isLocked}
         />
       </div>
