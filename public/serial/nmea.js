@@ -13,6 +13,10 @@ class SerialPortObject {
       baudRate: baudRate,
     });
 
+    this.port.on('error', () => {
+      console.log('Could not connect to serial port ' + port);
+    });
+
     // Set up a serial parser
     this.parser = new Readline();
     this.port.pipe(this.parser);
