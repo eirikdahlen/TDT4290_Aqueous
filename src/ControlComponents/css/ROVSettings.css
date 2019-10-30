@@ -1,0 +1,33 @@
+.ROVSettings_root {
+  max-width: 250px;
+  background-color: var(--primary-normal);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-primary);
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.settingsTitle {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 5px;
+  background-color: var(--primary-dark);
+  text-align: center;
+  border-radius: inherit;
+  white-space: nowrap;
+  position: relative;
+}
+
+h4 {
+  font-size: normal;
+  margin-top: 18px;
+  margin-bottom: 2px;
+}
+
+.SettingsFields {
+  margin: 10px;
+  padding: 5px;
+  overflow: hidden;
+}
