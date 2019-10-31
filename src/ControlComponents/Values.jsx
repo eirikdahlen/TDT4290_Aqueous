@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ValueBox from './ValueBox';
 import PropTypes from 'prop-types';
 import './css/Values.css';
