@@ -126,6 +126,7 @@ const initGlobals = () => {
       depth: 0,
       alt: 0,
     },
+  };
 
   // Boat position and heading
   global.boat = {
