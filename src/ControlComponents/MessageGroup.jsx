@@ -4,7 +4,7 @@ import ValueBox from './ValueBox';
 import { fixValue } from '../utils/utils';
 
 const dictionary = {
-  // Values
+  // Desired control Values
   x: 'north',
   y: 'east',
   z: 'down',
@@ -12,11 +12,20 @@ const dictionary = {
   m: 'pitch',
   n: 'yaw',
 
+  // Net following values
+  timeout: 'Time',
+  d: 'Dir.',
+  v: 'Velo.',
+  z_units: 'Down u.',
+
+  // Goto values
+  speed_units: 'Speed u.',
+
   // Messages
   desiredControl: 'Desired Control',
-  'lowLevelControlManeuver.desiredZ': 'LLCM.desiredZ',
-  'lowLevelControlManeuver.desiredHeading': 'LLCM.desiredHeading',
-  netFollow: 'Net Follow',
+  'lowLevelControlManeuver.desiredZ': 'LLCM Desired Depth',
+  'lowLevelControlManeuver.desiredHeading': 'LLCM Desired Heading',
+  netFollow: 'Net Following',
   goTo: 'GoTo',
 };
 

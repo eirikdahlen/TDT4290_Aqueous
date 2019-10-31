@@ -34,3 +34,17 @@ body,
   --big-radius: 5px;
   --small-radius: 2px;
 }
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.219);
+  border-radius: var(--small-radius);
+}

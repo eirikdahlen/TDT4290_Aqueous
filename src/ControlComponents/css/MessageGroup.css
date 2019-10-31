@@ -23,9 +23,5 @@
 .messageGroupName {
   margin: 0;
   margin-bottom: 8px;
-  padding-left: 2px;
   font-weight: 500;
-  border-radius: 2px;
-  padding: 2px 6px 3px 6px;
-  background-color: #67d9ff73;
 }
