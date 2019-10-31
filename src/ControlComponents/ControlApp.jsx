@@ -16,24 +16,30 @@ function ControlApp() {
   const [IMCActive, setIMCActive] = useState(
     remote.getGlobal('settings').messageProtocol === 'IMC',
   );
+  const [toROV, setToROV] = useState(controlValues); // Contains IMC or OLD data
 
-  // Update sensorValues when data is received
+  // make windows listen to ipc-msgs
   useEffect(() => {
+    window.ipcRenderer.on('data-sent', () => {
+      controlUpdate(remote.getGlobal('toROV'));
+      setMode(remote.getGlobal('mode'));
+      setToROV(
+        IMCActive ? remote.getGlobal('toROVIMC') : remote.getGlobal('toROV'),
+      );
+    });
     window.ipcRenderer.on('data-received', () => {
       sensorUpdate(remote.getGlobal('fromROV'));
     });
-  }, []);
-
-  // Update controlValues and mode when data is sent to ROV
-  useEffect(() => {
-    window.ipcRenderer.on('data-sent', () => {
+    window.ipcRenderer.on('settings-updated', () => {
       setIMCActive(remote.getGlobal('settings').messageProtocol === 'IMC');
-      controlUpdate(
-        IMCActive ? remote.getGlobal('toROVIMC') : remote.getGlobal('toROV'),
-      );
-      setMode(remote.getGlobal('mode'));
     });
   }, []);
+
+  useEffect(() => {
+    setToROV(
+      IMCActive ? remote.getGlobal('toROVIMC') : remote.getGlobal('toROV'),
+    );
+  }, [IMCActive]);
 
   return (
     <div className="ControlApp">
@@ -67,7 +73,7 @@ function ControlApp() {
             <Values
               IMCActive={IMCActive}
               title="Sent to ROV"
-              values={controlValues}
+              values={toROV}
               changeEffect={true}
             />
           </div>

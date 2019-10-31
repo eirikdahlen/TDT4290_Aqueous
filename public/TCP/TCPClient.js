@@ -52,8 +52,12 @@ function getConnectedClient() {
       sendData(client, global.toROV);
       sendMessage('data-sent');
     } else if (messageProtocol === messageProtocols.IMC) {
-      decodeImcData(buf);
-      sendIMCData(client);
+      const fromROVIMC = decodeImcData(buf);
+      global.fromROVIMC = fromROVIMC;
+      sendMessage('data-received');
+      const toROVIMC = sendIMCData(client);
+      global.toROVIMC = toROVIMC;
+      sendMessage('data-sent');
     }
   });
 
@@ -121,7 +125,7 @@ function decodeImcData(buf) {
     pitch: estimatedState.theta,
     yaw: estimatedState.psi,
   };
-  sendMessage('data-received');
+  return estimatedState;
 }
 
 function sendIMCData(client) {
@@ -157,10 +161,6 @@ function sendIMCData(client) {
       },
     };
     buf = encode.desiredControl(desiredControl);
-    global.toROVIMC = {};
-    global.toROVIMC.desiredControl = desiredControl;
-    let desiredZ;
-    let desiredHeading;
 
     if (global.toROV.autodepth) {
       desiredZ = {
@@ -193,15 +193,6 @@ function sendIMCData(client) {
         [buf, lowLevelControlManeuverDesiredHeadingBuf],
         buf.length + lowLevelControlManeuverDesiredHeadingBuf.length,
       );
-    }
-    if (desiredZ || desiredHeading) {
-      global.toROVIMC.lowLevelControlManeuver = {};
-    }
-    if (desiredZ) {
-      global.toROVIMC.lowLevelControlManeuver.desiredZ = desiredZ;
-    }
-    if (desiredHeading) {
-      global.toROVIMC.lowLevelControlManeuver.desiredZ = desiredHeading;
     }
   }
   if (global.mode.currentMode === 1) {
@@ -243,7 +234,7 @@ function sendIMCData(client) {
   }
 
   client.write(buf);
-  sendMessage('data-sent');
+  return decode(buf);
 }
 
 module.exports = { getConnectedClient, sendData };

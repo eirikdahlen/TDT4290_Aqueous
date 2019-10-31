@@ -90,6 +90,9 @@ const initGlobals = () => {
       },
     },
   };
+
+  /* Contains IMC messages from ROV */
+  global.fromROVIMC = {};
 };
 
 module.exports = { initGlobals };

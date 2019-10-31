@@ -70,16 +70,11 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
   };
 
   const renderIMC = () => {
-    console.log('imc');
     console.log(values);
-    Object.keys(values).map(msg => {
-      console.log(msg);
-    });
+    return Object.keys(values).map(msg => <p>{msg}</p>);
   };
 
   const renderOld = () => {
-    console.log('old');
-    console.log(values);
     return Object.keys(values).map(key => (
       <ValueBox
         key={key}

@@ -55,6 +55,7 @@ export default function SettingsApp() {
     remote.getGlobal('settings')['serialFile'] = serialFileInput;
     remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
     closeWindow();
+    window.ipcRenderer.send('settings-updated');
   };
 
   return (
