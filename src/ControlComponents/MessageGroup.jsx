@@ -53,6 +53,6 @@ export default function MessageGroup({ msgName, data, flags, changeEffect }) {
 MessageGroup.propTypes = {
   msgName: PropTypes.string,
   data: PropTypes.object,
-  flags: PropTypes.object,
+  flags: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   changeEffect: PropTypes.bool,
 };
