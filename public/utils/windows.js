@@ -193,7 +193,7 @@ function createSettingsWindow(x, y) {
     x: x - 50,
     y: y - 50,
     width: 380,
-    height: 300,
+    height: 450,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),

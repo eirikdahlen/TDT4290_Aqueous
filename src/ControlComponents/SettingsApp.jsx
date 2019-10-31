@@ -7,14 +7,26 @@ const { remote } = window.require('electron');
 const MessageProtocols = require('../constants/messageProtocols');
 
 export default function SettingsApp() {
-  const { port, host, serialFile, messageProtocol } = remote.getGlobal(
-    'settings',
-  );
+  const {
+    port,
+    host,
+    serialFile,
+    messageProtocol,
+    boatSerialPort,
+    boatSerialBaudRate,
+  } = remote.getGlobal('settings');
+
   const [portInput, setPortInput] = useState(port);
   const [hostInput, setHostInput] = useState(host);
   const [serialFileInput, setSerialFileInput] = useState(serialFile);
   const [messageProtocolInput, setMessageProtocolInput] = useState(
     messageProtocol,
+  );
+  const [boatSerialPortInput, setBoatSerialPortInput] = useState(
+    boatSerialPort,
+  );
+  const [boatSerialBaudRateInput, setBoatSerialBaudRateInput] = useState(
+    boatSerialBaudRate,
   );
 
   // Listens to the file-chosen message which is sent with the filename that is chosen
@@ -54,6 +66,15 @@ export default function SettingsApp() {
     remote.getGlobal('settings')['host'] = hostInput;
     remote.getGlobal('settings')['serialFile'] = serialFileInput;
     remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
+    remote.getGlobal('settings')['boatSerialPort'] = boatSerialPortInput;
+    remote.getGlobal('settings')[
+      'boatSerialBaudRate'
+    ] = boatSerialBaudRateInput;
+    remote.getGlobal('settings')['boatSerialPortObject'].closePort();
+    remote.getGlobal('settings')[
+      // eslint-disable-next-line no-unexpected-multiline
+      'boatSerialPortObject'
+    ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
     closeWindow();
     window.ipcRenderer.send('settings-updated');
   };
@@ -67,6 +88,7 @@ export default function SettingsApp() {
           onChange={e => setPortInput(e.target.value)}
         ></input>
       </div>
+
       <div className="settingGroup">
         <label>Host IP address</label>
         <input
@@ -74,6 +96,7 @@ export default function SettingsApp() {
           onChange={e => setHostInput(e.target.value)}
         ></input>
       </div>
+
       <div className="settingGroup">
         <label>Serial file</label>
         <div className="serialInputs">
@@ -85,6 +108,7 @@ export default function SettingsApp() {
           <button onClick={choseSerialFile}></button>
         </div>
       </div>
+
       <div className="settingGroup">
         <div className="MessageProtocolMenu">
           <label>Message Protocol</label>
@@ -100,9 +124,27 @@ export default function SettingsApp() {
           </select>
         </div>
       </div>
+
+      <div className="settingGroup">
+        <label>Boat serial port</label>
+        <input
+          value={boatSerialPortInput}
+          onChange={e => setBoatSerialPortInput(e.target.value)}
+        />
+      </div>
+
+      <div className="settingGroup">
+        <label>Boat serial baud rate</label>
+        <input
+          value={boatSerialBaudRateInput}
+          onChange={e => setBoatSerialBaudRateInput(e.target.value)}
+        />
+      </div>
+
       <button className="updateSettingsBtn" onClick={updateSettings}>
         UPDATE
       </button>
+
       <button className="closeSettings" onClick={closeWindow}></button>
     </div>
   );

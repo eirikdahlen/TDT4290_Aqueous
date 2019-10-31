@@ -9,14 +9,17 @@
     "electron-installer-windows": "^2.0.0",
     "electron-is-dev": "^1.1.0",
     "electron-packager": "^14.0.6",
+    "electron-rebuild": "^1.8.6",
     "electron-winstaller": "^4.0.0",
+    "nmea-0183": "^0.0.7",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-gamepad": "^1.0.3",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
     "react-webcam": "^3.0.1",
-    "responsive-gamepad": "^1.2.1"
+    "responsive-gamepad": "^1.2.1",
+    "serialport": "^8.0.5"
   },
   "main": "public/electron.js",
   "scripts": {

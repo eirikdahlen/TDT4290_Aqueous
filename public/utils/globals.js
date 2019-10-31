@@ -1,3 +1,5 @@
+const { SerialPortObject } = require('../serial/nmea');
+
 const initGlobals = () => {
   // Global settings for TCP port and IP adress, as well as the "start serial port"-file
   global.settings = {
@@ -6,7 +8,16 @@ const initGlobals = () => {
     serialFile:
       'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
     messageProtocol: 'OLD',
+    boatSerialPort: 'COM2',
+    boatSerialBaudRate: 4800,
+    boatSerialPortObject: null,
   };
+
+  // Initialize a serial object with the port and baud rate given in the global settings
+  global.settings.boatSerialPortObject = new SerialPortObject(
+    global.settings.boatSerialPort,
+    global.settings.boatSerialBaudRate,
+  );
 
   // Global state objects
   global.toROV = {
@@ -115,6 +126,12 @@ const initGlobals = () => {
       depth: 0,
       alt: 0,
     },
+
+  // Boat position and heading
+  global.boat = {
+    latitude: 0,
+    longitude: 0,
+    heading: 0,
   };
 };
 
