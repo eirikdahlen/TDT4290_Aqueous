@@ -149,10 +149,14 @@ const startServer = () => {
     socket.on('data', buf => {
       console.log(`[${Date.now()}] Recieved data from client:`);
       const recievedData = decode(buf);
-      global.mockupWindow.webContents.send(
-        'rov-mock-up-send-data',
-        recievedData,
-      );
+      try {
+        global.mockupWindow.webContents.send(
+          'rov-mock-up-send-data',
+          recievedData,
+        );
+      } catch (error) {
+        console.log('Could not send more data');
+      }
       console.log(decode(buf));
       Object.keys(recievedData).map(message => {
         switch (message) {
