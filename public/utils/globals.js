@@ -92,7 +92,30 @@ const initGlobals = () => {
   };
 
   /* Contains IMC messages from ROV */
-  global.fromROVIMC = {};
+  global.fromROVIMC = {
+    estimatedState: {
+      lat: 0.0,
+      lon: 0.0,
+      height: 0.0,
+      x: 0.0,
+      y: 0,
+      z: 0,
+      phi: 0,
+      theta: 0,
+      psi: 0,
+      u: 0,
+      v: 0,
+      w: 0,
+      vx: 0,
+      vy: 0,
+      vz: 0,
+      p: 0,
+      q: 0,
+      r: 0,
+      depth: 0,
+      alt: 0,
+    },
+  };
 };
 
 module.exports = { initGlobals };

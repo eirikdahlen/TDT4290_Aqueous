@@ -6,60 +6,6 @@ import Title from './Title';
 import MessageGroup from './MessageGroup';
 import { fixValue, copyObjectExcept } from '../utils/utils';
 
-/*
-  {
-  "desiredControl": {
-    "flags": {
-      "k": true,
-      "m": false,
-      "n": false,
-      "x": false,
-      "y": false,
-      "z": false
-    },
-    "k": 0,
-    "m": 0,
-    "n": 0,
-    "x": 0,
-    "y": 0,
-    "z": 0
-  }
-}
--------------------------------
-{
-  "desiredControl": {
-    "flags": {
-      "k": true,
-      "m": false,
-      "n": true,
-      "x": false,
-      "y": false,
-      "z": true
-    },
-    "k": 0,
-    "m": 0,
-    "n": 0,
-    "x": 20,
-    "y": 0,
-    "z": 0
-  },
-  "lowLevelControlManeuver.desiredHeading": {
-    "control": {
-      "value": 0.49999999999999994
-    },
-    "duration": 10
-  },
-  "lowLevelControlManeuver.desiredZ": {
-    "control": {
-      "value": 0.20000000298023224,
-      "z_units": 0
-    },
-    "duration": 10
-  }
-}
----------------------
-*/
-
 // A container for ValueBox-components.
 export default function Values({ title, values, changeEffect, IMCActive }) {
   const extractData = (msgData, msgName) => {
@@ -74,6 +20,10 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
       const data = copyObjectExcept(msgData, ['flags']);
       return { flags, data };
     }
+    if (msgName === 'estimatedState') {
+      return { flags: false, data: msgData };
+    }
+    return { flags: false, data: msgData };
   };
 
   const renderIMC = () => {

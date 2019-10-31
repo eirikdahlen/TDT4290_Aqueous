@@ -27,13 +27,13 @@ const dictionary = {
   'lowLevelControlManeuver.desiredHeading': 'LLCM Desired Heading',
   netFollow: 'Net Following',
   goTo: 'GoTo',
+  estimatedState: 'Estimated State',
 };
 
 export default function MessageGroup({ msgName, data, flags, changeEffect }) {
   return (
     <div className="MessageGroup">
       <p className="messageGroupName">{dictionary[msgName] || msgName}</p>
-      {flags ? '' /*<Flags flags={flags} /> */ : ''}
       <div className="messageGroupValues">
         {Object.keys(data).map(key => (
           <ValueBox
@@ -46,20 +46,5 @@ export default function MessageGroup({ msgName, data, flags, changeEffect }) {
         ))}
       </div>
     </div>
-  );
-}
-
-function Flags({ flags }) {
-  return (
-    <>
-      <table>
-        <tr>
-          {console.log(flags)}
-          {Object.keys(flags).map(flag => (
-            <td className="">{dictionary[flag]}</td>
-          ))}
-        </tr>
-      </table>
-    </>
   );
 }
