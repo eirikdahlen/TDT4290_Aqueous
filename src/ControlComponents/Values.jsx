@@ -66,7 +66,11 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
     if (typeof value === 'boolean') {
       return value ? 1 : 0;
     }
-    return Math.abs(value) >= 100 ? value.toFixed(1) : value.toFixed(2);
+    try {
+      return Math.abs(value) >= 100 ? value.toFixed(1) : value.toFixed(2);
+    } catch (error) {
+      return value;
+    }
   };
 
   const renderIMC = () => {
