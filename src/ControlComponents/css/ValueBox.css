@@ -2,7 +2,7 @@
   background-color: var(--primary-light);
   height: 50px;
   width: 50px;
-  margin: 8px;
+  margin: 0 8px 8px 0;
   padding: 3px;
   box-shadow: var(--shadow-secondary);
   display: flex;

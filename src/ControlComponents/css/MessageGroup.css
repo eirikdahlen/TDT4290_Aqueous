@@ -1,0 +1,17 @@
+.MessageGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 5px;
+}
+
+.messageGroupValues {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.messageGroupName {
+  margin: 0;
+}

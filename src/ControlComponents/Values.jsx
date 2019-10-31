@@ -3,6 +3,8 @@ import ValueBox from './ValueBox';
 import PropTypes from 'prop-types';
 import './css/Values.css';
 import Title from './Title';
+import MessageGroup from './MessageGroup';
+import { fixValue, copyObjectExcept } from '../utils/utils';
 
 /*
   {
@@ -57,25 +59,41 @@ import Title from './Title';
 }
 ---------------------
 */
-const { remote } = window.require('electron');
 
 // A container for ValueBox-components.
 export default function Values({ title, values, changeEffect, IMCActive }) {
-  // Handles rounding numbers and converting from boolean to numbers
-  const fixValue = value => {
-    if (typeof value === 'boolean') {
-      return value ? 1 : 0;
+  const extractData = (msgData, msgName) => {
+    if (msgName === 'netFollow' || msgName === 'goTo') {
+      return { flags: false, data: msgData };
     }
-    try {
-      return Math.abs(value) >= 100 ? value.toFixed(1) : value.toFixed(2);
-    } catch (error) {
-      return value;
+    if (msgName.includes('lowLevelControlManeuver')) {
+      return { flags: false, data: { value: msgData.control.value } };
+    }
+    if (msgName === 'desiredControl') {
+      const { flags } = msgData;
+      const data = copyObjectExcept(msgData, ['flags']);
+      return { flags, data };
     }
   };
 
   const renderIMC = () => {
-    console.log(values);
-    return Object.keys(values).map(msg => <p>{msg}</p>);
+    return (
+      <>
+        {Object.keys(values).map(msgName => {
+          let msgData = values[msgName];
+          const { flags, data } = extractData(msgData, msgName);
+          return (
+            <MessageGroup
+              key={msgName}
+              msgName={msgName}
+              data={data}
+              flags={flags}
+              changeEffect={changeEffect}
+            ></MessageGroup>
+          );
+        })}
+      </>
+    );
   };
 
   const renderOld = () => {

@@ -23,4 +23,27 @@ export const radiansToDegrees = radians => {
   return degrees;
 };
 
-export default { normalize, degreesToRadians, radiansToDegrees };
+// Handles rounding numbers and converting from boolean to numbers - used in Values.jsx and MessageGroup.jsx
+export const fixValue = value => {
+  if (typeof value === 'boolean') {
+    return value ? 1 : 0;
+  }
+  try {
+    return Math.abs(value) >= 100 ? value.toFixed(1) : value.toFixed(2);
+  } catch (error) {
+    return value;
+  }
+};
+
+// Copies object and leaves out properties speciefied in exceptProperties-array - used in Values.jsx
+export const copyObjectExcept = (obj, exceptProperties) => {
+  let copy = {};
+  Object.keys(obj).forEach(key => {
+    if (!exceptProperties.includes(key)) {
+      copy[key] = obj[key];
+    }
+  });
+  return copy;
+};
+
+export default { normalize, degreesToRadians, radiansToDegrees, fixValue };
