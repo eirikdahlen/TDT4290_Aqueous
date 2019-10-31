@@ -69,4 +69,5 @@ Values.propTypes = {
   values: PropTypes.object,
   title: PropTypes.string,
   changeEffect: PropTypes.bool,
+  IMCActive: PropTypes.bool,
 };

@@ -163,15 +163,13 @@ function sendIMCData(client) {
     buf = encode.desiredControl(desiredControl);
 
     if (global.toROV.autodepth) {
-      desiredZ = {
-        value: global.toROV.heave,
-        z_units: 0,
-      };
-
       /*eslint-disable */
       const lowLevelControlManeuverDesiredZBuf = encode.lowLevelControlManeuver.desiredZ(
         /*eslint-enable */
-        desiredZ,
+        {
+          value: global.toROV.heave,
+          z_units: 0,
+        },
         10,
       );
       buf = Buffer.concat(
@@ -181,12 +179,11 @@ function sendIMCData(client) {
     }
 
     if (global.toROV.autoheading) {
-      desiredHeading = { value: global.toROV.yaw };
       /*eslint-disable */
       const lowLevelControlManeuverDesiredHeadingBuf = encode.lowLevelControlManeuver.desiredHeading(
         /*eslint-enable */
 
-        desiredHeading,
+        { value: global.toROV.yaw },
         10,
       );
       buf = Buffer.concat(

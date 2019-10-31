@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './css/MessageGroup.css';
 import ValueBox from './ValueBox';
 import { fixValue } from '../utils/utils';
@@ -48,3 +49,10 @@ export default function MessageGroup({ msgName, data, flags, changeEffect }) {
     </div>
   );
 }
+
+MessageGroup.propTypes = {
+  msgName: PropTypes.string,
+  data: PropTypes.object,
+  flags: PropTypes.object,
+  changeEffect: PropTypes.bool,
+};

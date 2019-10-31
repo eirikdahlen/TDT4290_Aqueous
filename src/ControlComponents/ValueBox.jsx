@@ -40,4 +40,5 @@ ValueBox.propTypes = {
   title: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   changeEffect: PropTypes.bool,
+  flag: PropTypes.bool,
 };
