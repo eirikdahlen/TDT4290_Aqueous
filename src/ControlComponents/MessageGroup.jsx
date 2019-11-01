@@ -22,6 +22,8 @@ const dictionary = {
   // Goto values
   speed_units: 'Speed u.',
 
+  // Estimated state values
+
   // Messages
   desiredControl: 'Desired Control',
   'lowLevelControlManeuver.desiredZ': 'LLCM Desired Depth',
@@ -29,6 +31,7 @@ const dictionary = {
   netFollow: 'Net Following',
   goTo: 'GoTo',
   estimatedState: 'Estimated State',
+  entityState: 'Entity State',
 };
 
 export default function MessageGroup({ msgName, data, flags, changeEffect }) {

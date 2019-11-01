@@ -23,6 +23,14 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
     if (msgName === 'estimatedState') {
       return { flags: false, data: msgData };
     }
+    if (msgName === 'entityState') {
+      const data = {
+        state: msgData.state.toFixed(0),
+        DP: msgData.flags.DP,
+        NF: msgData.flags.NF,
+      };
+      return { flags: false, data };
+    }
     return { flags: false, data: msgData };
   };
 

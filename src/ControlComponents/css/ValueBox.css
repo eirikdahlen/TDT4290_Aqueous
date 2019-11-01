@@ -21,8 +21,9 @@
   background-color: #92e4ff;
 }
 
-.ValueBox h4 {
-  font-size: 14px;
+.valueBoxHeader {
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .value,
@@ -60,7 +61,7 @@
     height: 60px;
     margin: 0 10px 10px 0;
   }
-  .ValueBox h4 {
-    font-size: 15px;
+  .valueBoxHeader {
+    font-size: 14px;
   }
 }

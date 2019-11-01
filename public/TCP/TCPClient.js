@@ -53,7 +53,8 @@ function getConnectedClient() {
       sendMessage('data-sent');
     } else if (messageProtocol === messageProtocols.IMC) {
       const fromROVIMC = decodeImcData(buf);
-      global.fromROVIMC = { estimatedState: fromROVIMC };
+      console.log(fromROVIMC);
+      global.fromROVIMC = fromROVIMC;
       sendMessage('data-received');
       const toROVIMC = sendIMCData(client);
       global.toROVIMC = toROVIMC;
@@ -125,7 +126,7 @@ function decodeImcData(buf) {
     pitch: estimatedState.theta,
     yaw: estimatedState.psi,
   };
-  return estimatedState;
+  return recievedData;
 }
 
 function sendIMCData(client) {
