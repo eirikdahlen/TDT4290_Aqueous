@@ -1,0 +1,28 @@
+.MessageGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
+
+.valuesFlex > .MessageGroup:not(:last-of-type) {
+  border-bottom: solid 2px var(--primary-dark);
+}
+
+.valuesFlex > .MessageGroup:not(:first-of-type) {
+  padding: 10px 0;
+}
+
+.messageGroupValues {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.messageGroupName {
+  margin: 0;
+  margin-bottom: 8px;
+  font-weight: 500;
+  text-align: left;
+}

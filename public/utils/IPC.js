@@ -19,6 +19,11 @@ function setIPCListeners() {
   ipcMain.on('run-file-pick', () => {
     getFileAndSend();
   });
+
+  // Listen to update settings
+  ipcMain.on('settings-updated', () => {
+    sendMessage('settings-updated');
+  });
 }
 
 //Sends messages to the two renderers/browser windows

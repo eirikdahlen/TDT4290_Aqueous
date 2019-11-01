@@ -80,6 +80,54 @@ const initGlobals = () => {
     depth: 0,
   };
 
+  /*
+  Contains IMC messages to ROV
+  */
+  global.toROVIMC = {
+    desiredControl: {
+      x: global.toROV.surge,
+      y: global.toROV.sway,
+      z: global.toROV.autodepth ? 0 : global.toROV.heave,
+      k: 0.0,
+      m: global.toROV.pitch,
+      n: global.toROV.autoheading ? 0 : global.toROV.yaw,
+      flags: {
+        x: false,
+        y: false,
+        z: global.toROV.autodepth,
+        k: true,
+        m: false,
+        n: global.toROV.autoheading,
+      },
+    },
+  };
+
+  /* Contains IMC messages from ROV */
+  global.fromROVIMC = {
+    estimatedState: {
+      lat: 0.0,
+      lon: 0.0,
+      height: 0.0,
+      x: 0.0,
+      y: 0,
+      z: 0,
+      phi: 0,
+      theta: 0,
+      psi: 0,
+      u: 0,
+      v: 0,
+      w: 0,
+      vx: 0,
+      vy: 0,
+      vz: 0,
+      p: 0,
+      q: 0,
+      r: 0,
+      depth: 0,
+      alt: 0,
+    },
+  };
+
   // Boat position and heading
   global.boat = {
     latitude: 0,

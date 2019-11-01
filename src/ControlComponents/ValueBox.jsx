@@ -4,7 +4,7 @@ import './css/ValueBox.css';
 
 // A component for a box containing a title, a value, and a optional changeEffect.
 // This is used in Values-component to display different values and show an effect on change.
-export default function ValueBox({ title, value, changeEffect }) {
+export default function ValueBox({ title, value, changeEffect, flag }) {
   const [recentlyChanged, setRecentlyChanged] = useState(false);
   const nameMappings = {
     autoheading: 'AH',
@@ -31,6 +31,7 @@ export default function ValueBox({ title, value, changeEffect }) {
     <div className={'ValueBox ' + (recentlyChanged ? 'changedValueBox' : '')}>
       <h4 className="valueBoxHeader">{fixTitle(title)}</h4>
       <h4 className="value">{value}</h4>
+      {flag ? <div className="valueBoxFlag"></div> : ''}
     </div>
   );
 }
@@ -39,4 +40,5 @@ ValueBox.propTypes = {
   title: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   changeEffect: PropTypes.bool,
+  flag: PropTypes.bool,
 };

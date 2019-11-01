@@ -1,6 +1,7 @@
 .mockupBox {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .startServer {
