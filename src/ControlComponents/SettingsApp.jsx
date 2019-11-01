@@ -70,11 +70,15 @@ export default function SettingsApp() {
     remote.getGlobal('settings')[
       'boatSerialBaudRate'
     ] = boatSerialBaudRateInput;
-    remote.getGlobal('settings')['boatSerialPortObject'].closePort();
-    remote.getGlobal('settings')[
-      // eslint-disable-next-line no-unexpected-multiline
-      'boatSerialPortObject'
-    ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
+    try {
+      remote.getGlobal('settings')['boatSerialPortObject'].closePort();
+      remote.getGlobal('settings')[
+        // eslint-disable-next-line no-unexpected-multiline
+        'boatSerialPortObject'
+      ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
+    } catch (error) {
+      window.ipcRenderer.send('settings-updated');
+    }
     window.ipcRenderer.send('settings-updated');
   };
 
