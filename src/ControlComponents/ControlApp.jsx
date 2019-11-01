@@ -4,7 +4,6 @@ import ManualMode from './ManualMode';
 import NetfollowingMode from './NetFollowingMode';
 import DynamicPositioningMode from './DynamicPositioningMode';
 import './css/ControlApp.css';
-import ROVSettings from './ROVSettings';
 
 const { remote } = window.require('electron');
 
@@ -14,7 +13,6 @@ function ControlApp() {
   const [sensorValues, sensorUpdate] = useState(remote.getGlobal('fromROV'));
   const [controlValues, controlUpdate] = useState(remote.getGlobal('toROV'));
   const [mode, setMode] = useState(remote.getGlobal('mode'));
-  const [settings, setSettings] = useState(remote.getGlobal('settings'));
 
   // Update sensorValues when data is received
   useEffect(() => {
@@ -28,7 +26,6 @@ function ControlApp() {
     window.ipcRenderer.on('data-sent', () => {
       controlUpdate(remote.getGlobal('toROV'));
       setMode(remote.getGlobal('mode'));
-      setSettings(remote.getGlobal('settings'));
     });
   }, []);
 
@@ -36,7 +33,6 @@ function ControlApp() {
     <div className="ControlApp">
       <div className="controlFlex">
         <div className="topWindow">
-          <ROVSettings title="ROV Settings" settings={settings} />
           <ManualMode
             title="Manual Mode"
             toROV={controlValues}

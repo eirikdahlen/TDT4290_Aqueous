@@ -3,6 +3,7 @@ import ValueBox from './ValueBox';
 import PropTypes from 'prop-types';
 import './css/Values.css';
 import Title from './Title';
+import ROVSettings from './ROVSettings';
 
 // A container for ValueBox-components.
 export default function Values({ title, values, changeEffect }) {
@@ -16,7 +17,6 @@ export default function Values({ title, values, changeEffect }) {
 
   return (
     <div className="Values">
-      <Title>{title}</Title>
       <div className="valuesFlex">
         {Object.keys(values).map(value => (
           <ValueBox
@@ -27,6 +27,7 @@ export default function Values({ title, values, changeEffect }) {
           />
         ))}
       </div>
+      {title === 'Sent to ROV' ? <ROVSettings title="ROV Settings" /> : null}
     </div>
   );
 }

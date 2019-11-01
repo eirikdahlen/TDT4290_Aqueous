@@ -1,52 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Title from './Title';
+import React, { useState, useEffect } from 'react';
 
 import './css/ROVSettings.css';
 
-export default function ROVSettings({ title, settings }) {
-  const {
-    port,
-    host,
-    serialFile,
-    messageProtocol,
-    boatSerialPort,
-    boatSerialBaudRate,
-  } = settings;
+const { remote } = window.require('electron');
+
+export default function ROVSettings() {
+  const [settings, setSettings] = useState(remote.getGlobal('settings'));
+
+  useEffect(() => {
+    setSettings(remote.getGlobal('settings'));
+  }, []);
+
   return (
     <div className="ROVSettings_root">
-      <Title className="settingsTitle">{title.toUpperCase()}</Title>
       <div className="SettingsFields">
         <div className="TCPport">
-          <h4>TCP port in use</h4>
-          {port}
+          <h4>TCP</h4>
+          {settings.port}
         </div>
         <div className="IpAdress">
-          <h4>Host IP address</h4>
-          {host}
-        </div>
-        <div className="SerialFile">
-          <h4>Serial File in use</h4>
-          {serialFile}
+          <h4>IP</h4>
+          {settings.host}
         </div>
         <div className="MessageProtocl">
-          <h4>Current Message Protocol</h4>
-          {messageProtocol}
+          <h4>Protocol</h4>
+          {settings.messageProtocol}
         </div>
         <div className="BoatSerialPort">
-          <h4>Boat Serial Port</h4>
-          {boatSerialPort}
+          <h4>S-Port</h4>
+          {settings.boatSerialPort}
         </div>
         <div className="BoatSerialBaudRate">
-          <h4>Boat Serial Baud Rate</h4>
-          {boatSerialBaudRate}
+          <h4>Baud</h4>
+          {settings.boatSerialBaudRate}
         </div>
       </div>
     </div>
   );
 }
-
-ROVSettings.propTypes = {
-  settings: PropTypes.object,
-  title: PropTypes.string,
-};
