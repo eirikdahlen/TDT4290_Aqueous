@@ -29,8 +29,8 @@ export default function ValueBox({ title, value, changeEffect, flag }) {
   };
   return (
     <div className={'ValueBox ' + (recentlyChanged ? 'changedValueBox' : '')}>
-      <h4 className="valueBoxHeader">{fixTitle(title)}</h4>
-      <h4 className="value">{value}</h4>
+      <p className="valueBoxHeader">{fixTitle(title)}</p>
+      <p className="value">{value}</p>
       {flag ? <div className="valueBoxFlag"></div> : ''}
     </div>
   );

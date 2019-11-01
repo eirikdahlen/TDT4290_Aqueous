@@ -126,6 +126,7 @@ const initGlobals = () => {
       depth: 0,
       alt: 0,
     },
+    entityState: { state: 0, flags: { DP: true, NF: true } },
   };
 
   // Boat position and heading
