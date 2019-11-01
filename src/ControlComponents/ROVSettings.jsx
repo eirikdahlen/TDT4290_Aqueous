@@ -16,25 +16,25 @@ export default function ROVSettings() {
   return (
     <div className="ROVSettings_root">
       <div className="SettingsFields">
-        <div className="TCPport">
+        <div className="settingsField">
           <h4>TCP</h4>
-          {settings.port}
+          <span>{settings.port}</span>
         </div>
-        <div className="IpAdress">
+        <div className="settingsField">
           <h4>IP</h4>
-          {settings.host}
+          <span>{settings.host}</span>
         </div>
-        <div className="MessageProtocl">
+        <div className="settingsField">
           <h4>Protocol</h4>
-          {settings.messageProtocol}
+          <span>{settings.messageProtocol}</span>
         </div>
-        <div className="BoatSerialPort">
+        <div className="settingsField">
           <h4>S-Port</h4>
-          {settings.boatSerialPort}
+          <span>{settings.boatSerialPort}</span>
         </div>
-        <div className="BoatSerialBaudRate">
+        <div className="settingsField">
           <h4>Baud</h4>
-          {settings.boatSerialBaudRate}
+          <span>{settings.boatSerialBaudRate}</span>
         </div>
       </div>
     </div>

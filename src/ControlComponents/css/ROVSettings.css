@@ -2,19 +2,40 @@
   background-color: var(--primary-normal);
 }
 
-h4 {
+.settingsField > h4 {
   font-size: normal;
-  margin-bottom: 2px;
+  margin-bottom: 0;
+  margin-top: 0;
+  float: left;
+  margin-right: 5px;
 }
 
 .SettingsFields {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  margin: 6px;
+  margin-bottom: 33px;
 }
 
-.SettingsFields > div {
+.settingsField {
   padding: 10px;
   margin-bottom: 25px;
+  display: inline-block;
+  margin: 0;
+  padding: 0 5px;
+  text-align: left;
+  border: solid 0.5px;
+  margin: 2px;
+  flex-grow: 1;
+  background-color: var(--primary-dark);
+  border-radius: var(--small-radius);
+  display: flex;
+}
+
+@media screen and (max-width: 800px) {
+  .settingsField * {
+    font-size: 12px;
+  }
 }
