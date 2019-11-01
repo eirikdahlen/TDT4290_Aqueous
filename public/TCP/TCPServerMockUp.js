@@ -149,10 +149,16 @@ const startServer = () => {
     socket.on('data', buf => {
       console.log(`[${Date.now()}] Recieved data from client:`);
       const recievedData = decode(buf);
-      global.mockupWindow.webContents.send(
-        'rov-mock-up-send-data',
-        recievedData,
-      );
+      try {
+        global.mockupWindow.webContents.send(
+          'rov-mock-up-send-data',
+          recievedData,
+        );
+      } catch (error) {
+        console.log('Could not send more data');
+        socket.destroy();
+        return;
+      }
       console.log(decode(buf));
       Object.keys(recievedData).map(message => {
         switch (message) {
@@ -227,8 +233,11 @@ const startServer = () => {
           buf.length + customNetFollowBuf.length,
         );
       }
-
-      socket.write(buf);
+      try {
+        socket.write(buf);
+      } catch (error) {
+        clearInterval(sendData);
+      }
     };
 
     setInterval(sendData, 200);

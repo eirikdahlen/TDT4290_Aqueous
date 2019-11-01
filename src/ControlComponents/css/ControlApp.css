@@ -36,6 +36,8 @@
   height: 100%;
   background-color: var(--primary-normal);
   box-shadow: var(--shadow-secondary);
+  overflow: auto;
+  overflow-x: hidden;
 }
 
 .lockFlex {

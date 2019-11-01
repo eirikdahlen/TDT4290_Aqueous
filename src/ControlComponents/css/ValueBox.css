@@ -2,7 +2,7 @@
   background-color: var(--primary-light);
   height: 50px;
   width: 50px;
-  margin: 8px;
+  margin: 0 8px 8px 0;
   padding: 3px;
   box-shadow: var(--shadow-secondary);
   display: flex;
@@ -10,6 +10,10 @@
   justify-content: center;
   transition: 0.1s all;
   border-radius: var(--small-radius);
+  position: relative;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .changedValueBox {
@@ -31,22 +35,32 @@
   font-weight: normal;
 }
 
+.valueBoxFlag {
+  height: 6px;
+  width: 6px;
+  background-color: black;
+  position: absolute;
+  border-radius: 10px;
+  top: 1px;
+  right: 1.5px;
+}
+
 /* Resizing the boxes on different screen sizes */
 @media screen and (max-width: 500px) {
   .ValueBox {
     width: 39px;
     height: 39px;
-    margin: 5px;
+    margin: 0 7px 7px 0;
   }
 }
 
 @media screen and (min-width: 1000px) {
   .ValueBox {
-    width: 65px;
-    height: 65px;
-    margin: 10px;
+    width: 60px;
+    height: 60px;
+    margin: 0 10px 10px 0;
   }
   .ValueBox h4 {
-    font-size: 16px;
+    font-size: 15px;
   }
 }

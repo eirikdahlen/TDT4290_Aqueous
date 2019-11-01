@@ -52,8 +52,12 @@ function getConnectedClient() {
       sendData(client, global.toROV);
       sendMessage('data-sent');
     } else if (messageProtocol === messageProtocols.IMC) {
-      decodeImcData(buf);
-      sendIMCData(client);
+      const fromROVIMC = decodeImcData(buf);
+      global.fromROVIMC = { estimatedState: fromROVIMC };
+      sendMessage('data-received');
+      const toROVIMC = sendIMCData(client);
+      global.toROVIMC = toROVIMC;
+      sendMessage('data-sent');
     }
   });
 
@@ -121,7 +125,7 @@ function decodeImcData(buf) {
     pitch: estimatedState.theta,
     yaw: estimatedState.psi,
   };
-  sendMessage('data-received');
+  return estimatedState;
 }
 
 function sendIMCData(client) {
@@ -140,7 +144,7 @@ function sendIMCData(client) {
   let buf;
   if (global.mode.currentMode === 0) {
     // MANUAL MODE
-    buf = encode.desiredControl({
+    const desiredControl = {
       x: global.toROV.surge,
       y: global.toROV.sway,
       z: global.toROV.autodepth ? 0 : global.toROV.heave,
@@ -155,7 +159,8 @@ function sendIMCData(client) {
         m: false,
         n: global.toROV.autoheading,
       },
-    });
+    };
+    buf = encode.desiredControl(desiredControl);
 
     if (global.toROV.autodepth) {
       /*eslint-disable */
@@ -226,7 +231,7 @@ function sendIMCData(client) {
   }
 
   client.write(buf);
-  sendMessage('data-sent');
+  return decode(buf);
 }
 
 module.exports = { getConnectedClient, sendData };
