@@ -230,7 +230,6 @@ function drawMinimap(
   // Draw the boat
   context.save(); // Save context state so we can draw boat and ROV from different origins and rotate independently
   context.translate(initialWidth / 2, initialWidth / 2); // Draw boat from the middle of the circle
-  //context.rotate(boatAngle[0]); // Rotate the boat drawing around the middle of the circle
   drawBoat(context, boatWidth, boatLength, boatHeading);
   context.restore(); // Restore context state we saved earlier
 
@@ -261,7 +260,6 @@ function drawMinimap(
   }
 
   // Draw the north/east axes
-  //context.translate(boatWidth + rovSize / 2, 0);
   drawNEDframe(context, initialWidth, boatWidth, rovSize);
   context.restore();
 }

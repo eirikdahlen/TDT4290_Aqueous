@@ -66,7 +66,7 @@ function VideoApp() {
         east={sensorValues['east']}
         yaw={sensorValues['yaw']}
         boatHeading={
-         remote.getGlobal('settings')['useManualHeading']
+          remote.getGlobal('settings')['useManualHeading']
             ? remote.getGlobal('settings')['manualBoatHeading']
             : remote.getGlobal('boat')['heading']
         }
