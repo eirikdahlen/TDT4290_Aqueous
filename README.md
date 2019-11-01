@@ -37,8 +37,11 @@ Run these commands from your shell/terminal:
 
 ```bash
 yarn # installs all dependencies
-yarn electron-dev
+yarn electron-rebuild # rebuilds dependencies to be compatible with current electron version
+yarn electron-dev # Starts development server and runs project
 ```
+
+It is sufficient to only run `yarn electron-dev` if the project is already set up and no new dependencies are added.
 
 ## Packaging
 
