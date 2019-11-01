@@ -5,5 +5,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ViewManager from './ViewManager';
 import './index.css';
+import GamepadWrapper from './GamepadWrapper';
 
-ReactDOM.render(<ViewManager />, document.getElementById('root'));
+ReactDOM.render(
+  <div>
+    <ViewManager />
+    <GamepadWrapper className="GamepadWrapper" />
+  </div>,
+  document.getElementById('root'),
+);

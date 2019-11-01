@@ -8,10 +8,9 @@ import './css/VideoApp.css';
 import VideoFeed from './VideoFeed';
 import ModeWidget from './ModeWidget';
 import MiniMapWidget from './MiniMapWidget';
-import GamepadWrapper from './GamepadWrapper';
-import KeyboardWrapper from './KeyboardWrapper';
 import VideoMenu from './VideoMenu';
 import AvailabilityWidget from './AvailabilityWidget';
+import KeyboardWrapper from './KeyboardWrapper';
 
 const { remote } = window.require('electron');
 
@@ -68,9 +67,8 @@ function VideoApp() {
         boatHeading={0}
         maxDistance={5}
       />
-      <GamepadWrapper className="GamepadWrapper" />
-      <KeyboardWrapper className="KeyboardInput" />
       <VideoFeed deviceId={deviceId} hidden={transparent} />
+      <KeyboardWrapper className="KeyboardInput" />
     </div>
   );
 }
