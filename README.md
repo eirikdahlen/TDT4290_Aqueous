@@ -42,12 +42,14 @@ yarn electron-dev
 
 ## Packaging
 
-**Windows**
+### Windows
 Run these commands from your shell/terminal:
 
-`yarn install`
-`yarn package-win`
-`yarn installer-win`
+```bash
+yarn install
+yarn package-win
+yarn installer-win
+```
 
 To install, find the `release-builds` folder that is created, and run `AqeousInstaller.exe` as administrator.
 
