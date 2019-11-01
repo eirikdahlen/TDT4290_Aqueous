@@ -11,11 +11,10 @@ h4 {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  position: relative;
-  bottom: 0;
   flex-wrap: wrap;
 }
 
 .SettingsFields > div {
   padding: 10px;
+  margin-bottom: 25px;
 }

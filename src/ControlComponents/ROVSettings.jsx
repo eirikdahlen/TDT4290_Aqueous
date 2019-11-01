@@ -8,7 +8,9 @@ export default function ROVSettings() {
   const [settings, setSettings] = useState(remote.getGlobal('settings'));
 
   useEffect(() => {
-    setSettings(remote.getGlobal('settings'));
+    window.ipcRenderer.on('settings-updated', () => {
+      setSettings(remote.getGlobal('settings'));
+    });
   }, []);
 
   return (

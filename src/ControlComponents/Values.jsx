@@ -61,8 +61,12 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
   return (
     <div className="Values">
       <Title>{title}</Title>
-      <div className="valuesFlex">{IMCActive ? renderIMC() : renderOld()}</div>
-      {title === 'Sent to ROV' ? <ROVSettings title="ROV Settings" /> : null}
+      <div className="valuesPosition">
+        <div className="valuesFlex">
+          {IMCActive ? renderIMC() : renderOld()}
+        </div>
+        {title === 'Sent to ROV' ? <ROVSettings title="ROV Settings" /> : null}
+      </div>
     </div>
   );
 }
