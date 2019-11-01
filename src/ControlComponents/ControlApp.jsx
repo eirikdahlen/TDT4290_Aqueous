@@ -18,6 +18,7 @@ function ControlApp() {
   );
   const [toIMC, setToIMC] = useState(remote.getGlobal('toROVIMC'));
   const [fromIMC, setFromIMC] = useState(remote.getGlobal('fromROVIMC'));
+  const [settings, setSettings] = useState(remote.getGlobal('settings'));
 
   // make windows listen to ipc-msgs
   useEffect(() => {
@@ -31,7 +32,9 @@ function ControlApp() {
       setFromIMC(remote.getGlobal('fromROVIMC'));
     });
     window.ipcRenderer.on('settings-updated', () => {
-      setIMCActive(remote.getGlobal('settings').messageProtocol === 'IMC');
+      const currentSettings = remote.getGlobal('settings');
+      setIMCActive(currentSettings.messageProtocol === 'IMC');
+      setSettings({ ...currentSettings });
     });
   }, []);
 
@@ -70,6 +73,7 @@ function ControlApp() {
               title="Sent to ROV"
               values={IMCActive ? toIMC : controlValues}
               changeEffect={true}
+              settings={settings}
             />
           </div>
         </div>
