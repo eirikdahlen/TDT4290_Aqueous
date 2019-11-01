@@ -76,7 +76,6 @@ export default function SettingsApp() {
       'boatSerialPortObject'
     ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
     window.ipcRenderer.send('settings-updated');
-    closeWindow();
   };
 
   return (

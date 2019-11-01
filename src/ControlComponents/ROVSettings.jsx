@@ -1,18 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import './css/ROVSettings.css';
 
-const { remote } = window.require('electron');
-
-export default function ROVSettings() {
-  const [settings, setSettings] = useState(remote.getGlobal('settings'));
-
-  useEffect(() => {
-    window.ipcRenderer.on('settings-updated', () => {
-      setSettings(remote.getGlobal('settings'));
-    });
-  }, []);
-
+export default function ROVSettings({ settings }) {
   return (
     <div className="ROVSettings_root">
       <div className="SettingsFields">
@@ -40,3 +31,7 @@ export default function ROVSettings() {
     </div>
   );
 }
+
+ROVSettings.propTypes = {
+  settings: PropTypes.object,
+};

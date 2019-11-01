@@ -8,7 +8,13 @@ import MessageGroup from './MessageGroup';
 import { fixValue, copyObjectExcept } from '../utils/utils';
 
 // A container for ValueBox-components.
-export default function Values({ title, values, changeEffect, IMCActive }) {
+export default function Values({
+  title,
+  values,
+  changeEffect,
+  IMCActive,
+  settings,
+}) {
   const extractData = (msgData, msgName) => {
     if (msgName === 'netFollow' || msgName === 'goTo') {
       return { flags: false, data: msgData };
@@ -65,7 +71,9 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
         <div className="valuesFlex">
           {IMCActive ? renderIMC() : renderOld()}
         </div>
-        {title === 'Sent to ROV' ? <ROVSettings title="ROV Settings" /> : null}
+        {settings ? (
+          <ROVSettings title="ROV Settings" settings={settings} />
+        ) : null}
       </div>
     </div>
   );
@@ -76,4 +84,5 @@ Values.propTypes = {
   title: PropTypes.string,
   changeEffect: PropTypes.bool,
   IMCActive: PropTypes.bool,
+  settings: PropTypes.object,
 };
