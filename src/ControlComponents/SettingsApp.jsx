@@ -75,8 +75,8 @@ export default function SettingsApp() {
       // eslint-disable-next-line no-unexpected-multiline
       'boatSerialPortObject'
     ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
-    closeWindow();
     window.ipcRenderer.send('settings-updated');
+    closeWindow();
   };
 
   return (
