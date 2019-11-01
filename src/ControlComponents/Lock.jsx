@@ -57,7 +57,10 @@ export default function Lock({
     if (manualModeActive) {
       remote.getGlobal('toROV')[title] = active;
       if (active) {
-        remote.getGlobal('toROV')[type] = fixValue(reference, true);
+        const current = remote.getGlobal('toROV')[type];
+        remote.getGlobal('toROV')[type] = current
+          ? current
+          : fixValue(reference, true);
       }
     } else {
       remote.getGlobal('toROV')[title] = false;

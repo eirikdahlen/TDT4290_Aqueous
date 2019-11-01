@@ -51,7 +51,7 @@ function VideoApp() {
       <DepthWidget
         depth={sensorValues['down']}
         isLocked={settingsValues['autodepth']}
-        lockedValue={settingsValues['heave']}
+        lockedValue={parseFloat(settingsValues['heave']).toFixed(2)}
       />
       <AvailabilityWidget
         nfAvailable={remote.getGlobal('mode')['nfAvailable']}
