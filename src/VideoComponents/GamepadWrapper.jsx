@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { useAlert } from 'react-alert';
 import Gamepad from 'react-gamepad';
+
+const { alert } = useAlert();
 
 class GamepadWrapper extends Component {
   connectHandler(gamepadIndex) {
@@ -29,12 +32,24 @@ class GamepadWrapper extends Component {
     window.ipcRenderer.send('button-up-down', { button, down: true });
   }
 
+  // Tanken er at man lager en ekstra funksjon/CustomHook til å kalle på de to andre, og bruke denne ved onConnect
+  // Feilmelding om at "connectHandler is not defined"?
+  useConnection(gamepadIndex) {
+    connectHandler(gamepadIndex);
+    alert.success('XBox Controller is connected!');
+  }
+
+  useDisconnection(gamepadIndex) {
+    disconnectHandler(gamepadIndex);
+    alert.error('Note! XBox Controller disconnected');
+  }
+
   render() {
     return (
       <div>
         <Gamepad
-          onConnect={this.connectHandler}
-          onDisconnect={this.disconnectHandler}
+          onConnect={this.useConnection}
+          onDisconnect={this.useDisconnection}
           onButtonChange={this.buttonChangeHandler}
           onAxisChange={this.axisChangeHandler}
           onButtonDown={this.buttonDownHandler}
