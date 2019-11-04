@@ -1,28 +1,5 @@
 import React, { Component } from 'react';
-
-const validKeys = [
-  'Q',
-  'E',
-  'W',
-  'A',
-  'S',
-  'D',
-  'C',
-  'V',
-  ' ',
-  'I',
-  'J',
-  'K',
-  'L',
-  'TAB',
-  'CAPSLOCK',
-  'SHIFT',
-  'ARROWUP',
-  'ARROWDOWN',
-  'ARROWRIGHT',
-  'ARROWLEFT',
-  'M',
-]; //update this
+import { addButton, removeButton } from '../utils/buttonUtils';
 
 const mapping = {
   W: 'LeftStickY', //forward+
@@ -48,23 +25,27 @@ const mapping = {
   M: 'LS', //set to manual mode and reset bias
 };
 
-// Buttons we dont want to send value:0 when is released
-const toggles = ['C', 'V', 'SHIFT', ' '];
-
 // Buttons we want to send negative values for
 const negatives = ['S', 'A', 'ARROWLEFT'];
 
 class KeyboardWrapper extends Component {
+  constructor(props) {
+    super(props);
+    // activeButtons contains all buttons held down and are sent to controls/mapping
+    this.state = { activeButtons: [] };
+  }
+
+  // Runs when button is pressed or released - adds or removes button in activeButtons
   keyChangeHandler = (e, down) => {
     const key = e.key.toUpperCase();
-    if (!(validKeys.indexOf(key) >= 0)) return;
-    if (toggles.indexOf(key) >= 0 && !down) return;
-    const value = down ? 1.0 : 0.0;
-    const multiplier = negatives.indexOf(key) >= 0 ? -1 : 1;
-    window.ipcRenderer.send('button-click', {
-      button: mapping[key],
-      value: value * multiplier,
-    });
+    const button = mapping[key];
+    if (!button) return;
+    const value = negatives.indexOf(key) >= 0 ? -1 : 1;
+    const updatedActiveButtons = down
+      ? addButton(this.state.activeButtons, button, value)
+      : removeButton(this.state.activeButtons, button);
+    this.setState({ activeButtons: updatedActiveButtons });
+    window.ipcRenderer.send('button-click', this.state.activeButtons);
   };
 
   componentDidMount() {
@@ -76,13 +57,13 @@ class KeyboardWrapper extends Component {
     });
   }
 
-  componentWillUnmount() {
+  componentDidUnmount() {
     document.removeEventListener('keyup', this.keyChangeHandler);
     document.removeEventListener('keydown', this.keyChangeHandler);
   }
 
   render() {
-    return <div></div>;
+    return <span></span>;
   }
 }
 

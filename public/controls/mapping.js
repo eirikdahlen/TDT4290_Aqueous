@@ -1,9 +1,8 @@
 // Function called from IPC.js when xbox-buttons are changed - maps buttons
-
 // Constants
 const maxThruster = 400;
-const biasIncrease = 10;
-const biasIncreaseTimer = 200;
+const biasIncrease = 2;
+const biasIncreaseTimer = 20;
 const maxYaw = 2 * Math.PI;
 const nfIncrease = 0.1;
 const nfMax = 20;
@@ -15,28 +14,26 @@ let bias = {
   heave: 0.0,
 };
 
-// Store biasButtons as object for faster checking if a button is a bias-button
-const biasButtons = {
-  DPadRight: 1,
-  DPadLeft: 1,
-  DPadUp: 1,
-  DPadDown: 1,
-  RB: 1,
-  LB: 1,
+// Variables for bias buttons held down
+const biasButtons = ['DPadRight', 'DPadLeft', 'DPadUp', 'DPadDown', 'RB', 'LB'];
+const hasBiasButton = obj => {
+  return biasButtons.indexOf(obj.button) >= 0;
 };
+let biasButtonsDown = [];
 
 // Auto settings
 let autoDepth = false;
 let depthReference = 0.0; // Depth in meters
 let depthIncrement = 0.05; // Meters
-
 let autoHeading = false;
 let headingReference = 0.0; // Radians
 let headingIncrement = 0.05; // Radians
 
-// Which button is held down
-let buttonDown;
-let prevButtonDown;
+// X is a combination-button, therefore it must be stored if it is pressed
+let xDown = false;
+const hasXButton = obj => {
+  return obj.button === 'X';
+};
 
 //ROV control values
 let controls = {
@@ -52,21 +49,14 @@ let controls = {
 
 //Interval for increasing bias continously
 setInterval(() => {
-  if (biasButtons[buttonDown] && prevButtonDown !== 'X') {
-    handleClick({ button: buttonDown, value: 1 });
-  }
+  biasButtonsDown.forEach(biasButton => {
+    handleButton(biasButton);
+  });
 }, biasIncreaseTimer);
 
-//Function for setting if X or bias-buttons are held down
-function setUpOrDown({ button, down }) {
-  if (button === 'X' || biasButtons[button]) {
-    prevButtonDown = buttonDown;
-    buttonDown = down ? button : '';
-  }
-}
-
 // Converts from button (buttonname) and value (how much pressed) to values for the ROV
-function handleClick({ button, value }) {
+function handleClick(activeButtons) {
+  // Init values
   autoHeading = global.toROV.autoheading;
   autoDepth = global.toROV.autodepth;
   if (autoDepth) {
@@ -86,15 +76,32 @@ function handleClick({ button, value }) {
     autoheading: autoHeading,
   };
 
+  // Set biasButtons and x-down
+  xDown = activeButtons.some(hasXButton);
+  biasButtonsDown = [];
+
+  // Loop through every button down and set bias buttons down and handle button clicks
+  activeButtons.forEach(obj => {
+    if (hasBiasButton(obj)) {
+      biasButtonsDown.push(obj);
+    }
+    handleButton(obj);
+  });
+
+  global.toROV = controls;
+  global.bias = bias;
+}
+
+function handleButton({ button, value }) {
   switch (button) {
     // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
     case 'LeftStickY': // Forward+/Backward-
       controls['surge'] += value * maxThruster;
-      fixMaxThruster('surge', controls);
+      fixMaxThruster('surge');
       break;
     case 'LeftStickX': // Right+/Left-
       controls['sway'] += value * maxThruster;
-      fixMaxThruster('sway', controls);
+      fixMaxThruster('sway');
       break;
     case 'LeftTrigger': // Up
       if (global.mode.currentMode != 0) {
@@ -102,7 +109,7 @@ function handleClick({ button, value }) {
       }
       if (!autoDepth && global.mode.currentMode == 0) {
         controls['heave'] += value * -maxThruster;
-        fixMaxThruster('heave', controls);
+        fixMaxThruster('heave');
       } else {
         depthReference -= value * depthIncrement;
         if (depthReference < 0) {
@@ -117,7 +124,7 @@ function handleClick({ button, value }) {
       }
       if (!autoDepth && global.mode.currentMode == 0) {
         controls['heave'] += value * maxThruster;
-        fixMaxThruster('heave', controls);
+        fixMaxThruster('heave');
       } else {
         depthReference += value * depthIncrement;
         controls['heave'] = depthReference;
@@ -167,20 +174,20 @@ function handleClick({ button, value }) {
 
     // BIAS BUTTONS | INCREASE/DECREASE BIAS
     case 'DPadRight': // positive sway bias
-      setBias('sway', true, controls);
+      setBias('sway', true);
       break;
     case 'DPadLeft': // negative sway bias
-      setBias('sway', false, controls);
+      setBias('sway', false);
       break;
     case 'DPadUp': // positive surge bias
-      setBias('surge', true, controls);
+      setBias('surge', true);
       if (global.mode.currentMode == 2) {
         //Depth (-) if in NF
         setNfParameters('depth', false);
       }
       break;
     case 'DPadDown': // negative surge bias
-      setBias('surge', false, controls);
+      setBias('surge', false);
       if (global.mode.currentMode == 2) {
         //Depth (+) if in NF
         setNfParameters('depth', true);
@@ -191,7 +198,7 @@ function handleClick({ button, value }) {
         setNfParameters('velocity', true); //Velocity (+) if in NF
       }
       if (!autoDepth && global.mode.currentMode == 0) {
-        setBias('heave', true, controls);
+        setBias('heave', true);
       }
       break;
     case 'LB': // negative heave bias (up)
@@ -200,7 +207,7 @@ function handleClick({ button, value }) {
         setNfParameters('velocity', false);
       }
       if (!autoDepth && global.mode.currentMode == 0) {
-        setBias('heave', false, controls);
+        setBias('heave', false);
       }
       break;
 
@@ -224,15 +231,13 @@ function handleClick({ button, value }) {
       resetToManual();
       break;
   }
-  global.toROV = controls;
-  global.bias = bias;
 }
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
-function setBias(type, positive, controls) {
+function setBias(type, positive) {
   if (global.mode.currentMode == 0) {
     // Reset axis if X is held down
-    if (buttonDown === 'X') {
+    if (xDown) {
       bias[type] = 0.0;
       controls[type] = bias[type];
       return;
@@ -248,7 +253,7 @@ function setBias(type, positive, controls) {
 }
 
 //Helper function for making sure thrusting force does not exceed maximum
-function fixMaxThruster(type, controls) {
+function fixMaxThruster(type) {
   let force = controls[type];
   if (force > maxThruster) {
     force = maxThruster;
@@ -260,7 +265,7 @@ function fixMaxThruster(type, controls) {
 
 //Helper function for setting parameters in Netfollowing
 function setNfParameters(type, positive) {
-  if (buttonDown === 'X') {
+  if (xDown) {
     global.netfollowing[type] = 0;
     return;
   }
@@ -278,7 +283,7 @@ function setNfParameters(type, positive) {
 
 //Helper function for resetting to manual mode with parameters set to zero.
 function resetToManual() {
-  if (buttonDown === 'X') {
+  if (xDown) {
     global.mode.currentMode = 0;
     Object.keys(bias).forEach(v => (bias[v] = 0.0));
     ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
@@ -286,4 +291,4 @@ function resetToManual() {
   }
 }
 
-module.exports = { handleClick, setUpOrDown };
+module.exports = { handleClick, handleButton };

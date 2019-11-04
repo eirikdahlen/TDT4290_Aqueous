@@ -25,13 +25,13 @@ const mapping = {
 };
 */
 
-const { handleClick, setUpOrDown } = require('./../controls/mapping');
+const { handleClick } = require('./../controls/mapping');
 const { initGlobals } = require('./../utils/globals');
 
 const prefix = 'controls/mapping: ';
 
 const maxThruster = 400;
-const biasIncrease = 10;
+const biasIncrease = 2;
 
 let toROV;
 let bias;
@@ -62,7 +62,7 @@ beforeEach(() => {
 
 // Tests a click on an unmapped button
 test(prefix + 'invalid click', () => {
-  handleClick({ button: 'none', value: 0.0 });
+  handleClick([{ button: 'none', value: 0.0 }]);
   expect(global.toROV).toStrictEqual(toROV);
 });
 
@@ -70,17 +70,21 @@ test(prefix + 'invalid click', () => {
 test(prefix + 'forward click (2 intensities)', () => {
   let clickIntensity = 1.0;
   const buttonName = 'LeftStickY';
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['surge'] = clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
   clickIntensity = 0.3;
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['surge'] = clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
 });
@@ -89,17 +93,21 @@ test(prefix + 'forward click (2 intensities)', () => {
 test(prefix + 'backward click (2 intensities)', () => {
   let clickIntensity = -1.0;
   const buttonName = 'LeftStickY';
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['surge'] = clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
   clickIntensity = -0.3;
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['surge'] = clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
 });
@@ -108,17 +116,21 @@ test(prefix + 'backward click (2 intensities)', () => {
 test(prefix + 'sway click (2 directions)', () => {
   let clickIntensity = 0.8;
   const buttonName = 'LeftStickX';
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['sway'] = clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
   clickIntensity = -0.3;
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['sway'] = clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
 });
@@ -127,10 +139,12 @@ test(prefix + 'sway click (2 directions)', () => {
 test(prefix + 'heave down', () => {
   let clickIntensity = 0.1;
   const buttonName = 'LeftTrigger';
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['heave'] = -clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
 });
@@ -139,10 +153,12 @@ test(prefix + 'heave down', () => {
 test(prefix + 'heave up', () => {
   let clickIntensity = 0.99;
   const buttonName = 'RightTrigger';
-  handleClick({
-    button: buttonName,
-    value: clickIntensity,
-  });
+  handleClick([
+    {
+      button: buttonName,
+      value: clickIntensity,
+    },
+  ]);
   toROV['heave'] = clickIntensity * maxThruster;
   expect(global.toROV).toStrictEqual(toROV);
 });
@@ -161,10 +177,12 @@ test(prefix + 'set multiple biases and reset', () => {
   const posBiasBtns = ['DPadRight', 'DPadUp', 'RB'];
   // Positives
   posBiasBtns.forEach(btn => {
-    handleClick({
-      button: btn,
-      value: 1.0,
-    });
+    handleClick([
+      {
+        button: btn,
+        value: 1.0,
+      },
+    ]);
   });
   ['heave', 'surge', 'sway'].forEach(type => {
     bias[type] += biasIncrease;
@@ -176,10 +194,12 @@ test(prefix + 'set multiple biases and reset', () => {
   //Negatives
   const negBiasBtns = ['DPadLeft', 'DPadDown', 'LB'];
   negBiasBtns.forEach(btn => {
-    handleClick({
-      button: btn,
-      value: 1.0,
-    });
+    handleClick([
+      {
+        button: btn,
+        value: 1.0,
+      },
+    ]);
   });
   ['heave', 'surge', 'sway'].forEach(type => {
     bias[type] -= biasIncrease;
@@ -190,30 +210,34 @@ test(prefix + 'set multiple biases and reset', () => {
 
   // Reset all
   posBiasBtns.forEach(btn => {
-    handleClick({
-      button: btn,
+    handleClick([
+      {
+        button: btn,
+        value: 1.0,
+      },
+    ]);
+  });
+  handleClick([
+    {
+      button: 'Y',
       value: 1.0,
-    });
-  });
-  handleClick({
-    button: 'Y',
-    value: 1.0,
-  });
+    },
+  ]);
   expect(global.bias).toStrictEqual(bias);
   expect(global.toROV).toStrictEqual(toROV);
 
   // Reset bias axis
   posBiasBtns.forEach(btn => {
-    handleClick({
-      button: btn,
-      value: 1.0,
-    });
+    handleClick([
+      {
+        button: btn,
+        value: 1.0,
+      },
+    ]);
   });
-  setUpOrDown({ button: 'X', value: 1.0 });
-  handleClick({ button: 'LB', value: 1.0 });
-  setUpOrDown({ button: 'X', value: 1.0 });
-  bias['surge'] = 10.0;
-  bias['sway'] = 10.0;
+  handleClick([{ button: 'LB', value: 1.0 }, { button: 'X', value: 1.0 }]);
+  bias['surge'] = biasIncrease;
+  bias['sway'] = biasIncrease;
   expect(global.bias).toStrictEqual(bias);
 });
 
@@ -224,7 +248,7 @@ test(prefix + 'AutoHeading/AutoDepth clicks', () => {
   C: 'A', //autodepth
   */
   ['A', 'B'].forEach(btn => {
-    handleClick({ button: btn, value: 1.0 });
+    handleClick([{ button: btn, value: 1.0 }]);
   });
   toROV['autoheading'] = true;
   toROV['autodepth'] = true;
