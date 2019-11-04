@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 
 const validKeys = [
   'Q',
@@ -54,8 +54,8 @@ const toggles = ['C', 'V', 'SHIFT', ' '];
 // Buttons we want to send negative values for
 const negatives = ['S', 'A', 'ARROWLEFT'];
 
-class KeyboardWrapper extends Component {
-  keyChangeHandler = (e, down) => {
+export default function KeyboardWrapper() {
+  const keyChangeHandler = (e, down) => {
     const key = e.key.toUpperCase();
     if (!(validKeys.indexOf(key) >= 0)) return;
     if (toggles.indexOf(key) >= 0 && !down) return;
@@ -67,23 +67,17 @@ class KeyboardWrapper extends Component {
     });
   };
 
-  componentDidMount() {
+  useEffect(() => {
     document.addEventListener('keydown', e => {
-      this.keyChangeHandler(e, true);
+      keyChangeHandler(e, true);
     });
     document.addEventListener('keyup', e => {
-      this.keyChangeHandler(e, false);
+      keyChangeHandler(e, false);
     });
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keyup', this.keyChangeHandler);
-    document.removeEventListener('keydown', this.keyChangeHandler);
-  }
-
-  render() {
-    return <div></div>;
-  }
+    return () => {
+      document.removeEventListener('keyup', keyChangeHandler);
+      document.removeEventListener('keydown', keyChangeHandler);
+    };
+  }, []);
+  return <span></span>;
 }
-
-export default KeyboardWrapper;
