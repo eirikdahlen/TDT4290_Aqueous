@@ -2,7 +2,7 @@
 // view -> main
 // main -> view
 const { ipcMain } = require('electron');
-const { handleClick, setUpOrDown } = require('./../controls/mapping');
+const { handleClick } = require('./../controls/mapping');
 const { getFileAndSend } = require('./../launch/sendFile');
 
 // Function for setting up listeners between the main process (electron.js) and the renderer process (Components etc.)
@@ -10,7 +10,6 @@ function setIPCListeners() {
   // Listen to click events
   ipcMain.on('button-click', (event, activeButtons) => {
     handleClick(activeButtons);
-    console.log(activeButtons);
   });
 
   //Listen to function requests
