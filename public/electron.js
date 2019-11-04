@@ -7,17 +7,17 @@ const electron = require('electron');
 const { app, Menu } = electron;
 const isDev = require('electron-is-dev');
 
+// Creates the global variables and sets their default values
+const { initGlobals } = require('./utils/globals');
+initGlobals();
+
 const { menuTemplate } = require('./utils/menuTemplate');
 const { createWindows, setWidthAndHeight } = require('./utils/windows');
 const { setIPCListeners } = require('./utils/IPC');
 const { closeSimulator } = require('./launch/closeSimulator');
-const { initGlobals } = require('./utils/globals');
 
 let controlWindow;
 let videoWindow;
-
-// Creates the global variables and sets their default values
-initGlobals();
 
 // Functions that are run when the app is ready
 app.on('ready', () => {
@@ -34,7 +34,7 @@ app.on('ready', () => {
   if (isDev) {
     // BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
     controlWindow.webContents.openDevTools();
-    // videoWindow.webContents.openDevTools(); // Must be off for transparancy
+    videoWindow.webContents.openDevTools(); // Must be off for transparancy
   }
 
   // Close all windows when closing one of then

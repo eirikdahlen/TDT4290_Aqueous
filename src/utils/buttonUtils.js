@@ -13,7 +13,7 @@ The following methods are used on this list
 // Checks if button (name) is in array
 const hasButton = (arr, button) => {
   return arr.some(obj => {
-    return obj.button === button;
+    return obj.button.toLowerCase() === button.toLowerCase();
   });
 };
 
@@ -21,7 +21,7 @@ const hasButton = (arr, button) => {
 const removeButton = (arr, button) => {
   if (hasButton(arr, button)) {
     arr = arr.filter(obj => {
-      return obj.button !== button;
+      return obj.button.toLowerCase() !== button.toLowerCase();
     });
   }
   return arr;

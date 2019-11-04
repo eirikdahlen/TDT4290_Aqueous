@@ -1,28 +1,5 @@
-import React, { useEffect } from 'react';
-
-const validKeys = [
-  'Q',
-  'E',
-  'W',
-  'A',
-  'S',
-  'D',
-  'C',
-  'V',
-  ' ',
-  'I',
-  'J',
-  'K',
-  'L',
-  'TAB',
-  'CAPSLOCK',
-  'SHIFT',
-  'ARROWUP',
-  'ARROWDOWN',
-  'ARROWRIGHT',
-  'ARROWLEFT',
-  'M',
-];
+import React, { Component } from 'react';
+import { addButton, removeButton } from '../utils/buttonUtils';
 
 const mapping = {
   W: 'LeftStickY', //forward+
@@ -48,36 +25,44 @@ const mapping = {
   M: 'LS', //set to manual mode and reset bias
 };
 
-// Buttons we dont want to send value:0 when is released
-const toggles = ['C', 'V', 'SHIFT', ' '];
-
 // Buttons we want to send negative values for
 const negatives = ['S', 'A', 'ARROWLEFT'];
 
-export default function KeyboardWrapper() {
-  const keyChangeHandler = (e, down) => {
+class KeyboardWrapper extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { activeButtons: [] };
+  }
+
+  keyChangeHandler = (e, down) => {
     const key = e.key.toUpperCase();
-    if (!(validKeys.indexOf(key) >= 0)) return;
-    if (toggles.indexOf(key) >= 0 && !down) return;
-    const value = down ? 1.0 : 0.0;
-    const multiplier = negatives.indexOf(key) >= 0 ? -1 : 1;
-    window.ipcRenderer.send('button-click', {
-      button: mapping[key],
-      value: value * multiplier,
-    });
+    const button = mapping[key];
+    if (!button) return;
+    const value = negatives.indexOf(key) >= 0 ? -1 : 1;
+    const newState = down
+      ? addButton(this.state.activeButtons, button, value)
+      : removeButton(this.state.activeButtons, button);
+    this.setState({ activeButtons: newState });
+    //window.ipcRenderer.send('button-click', this.state.activeButtons);
   };
 
-  useEffect(() => {
+  componentDidMount() {
     document.addEventListener('keydown', e => {
-      keyChangeHandler(e, true);
+      this.keyChangeHandler(e, true);
     });
     document.addEventListener('keyup', e => {
-      keyChangeHandler(e, false);
+      this.keyChangeHandler(e, false);
     });
-    return () => {
-      document.removeEventListener('keyup', keyChangeHandler);
-      document.removeEventListener('keydown', keyChangeHandler);
-    };
-  }, []);
-  return <span></span>;
+  }
+
+  componentDidUnmount() {
+    document.removeEventListener('keyup', this.keyChangeHandler);
+    document.removeEventListener('keydown', this.keyChangeHandler);
+  }
+
+  render() {
+    return <span></span>;
+  }
 }
+
+export default KeyboardWrapper;
