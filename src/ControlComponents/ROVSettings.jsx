@@ -3,34 +3,32 @@ import PropTypes from 'prop-types';
 
 import './css/ROVSettings.css';
 
+// Contains which global settings to use (key) and which name it should display (value)
+const showSettings = {
+  port: 'TCP',
+  host: 'IP',
+  messageProtocol: 'Protocol',
+  boatSerialPort: 'S-port',
+  boatSerialBaudRate: 'Baud',
+  manualBoatHeading: 'Boat heading',
+};
+
 export default function ROVSettings({ settings }) {
   return (
     <div className="ROVSettings_root">
       <div className="SettingsFields">
-        <div className="settingsField">
-          <h4>TCP</h4>
-          <span>{settings.port}</span>
-        </div>
-        <div className="settingsField">
-          <h4>IP</h4>
-          <span>{settings.host}</span>
-        </div>
-        <div className="settingsField">
-          <h4>Protocol</h4>
-          <span>{settings.messageProtocol}</span>
-        </div>
-        <div className="settingsField">
-          <h4>S-Port</h4>
-          <span>{settings.boatSerialPort}</span>
-        </div>
-        <div className="settingsField">
-          <h4>Baud</h4>
-          <span>{settings.boatSerialBaudRate}</span>
-        </div>
-        <div className="settingsField">
-          <h4>Manual Boat Heading</h4>
-          <span>{settings.manualBoatHeading}</span>
-        </div>
+        {Object.keys(showSettings).map(key => {
+          if (key in settings) {
+            return (
+              <div key={key} className="settingsField">
+                <h4>{showSettings[key]}</h4>
+                <span>{settings[key]}</span>
+              </div>
+            );
+          } else {
+            return '';
+          }
+        })}
       </div>
     </div>
   );
