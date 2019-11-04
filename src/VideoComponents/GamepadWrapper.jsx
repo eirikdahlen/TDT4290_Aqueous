@@ -15,21 +15,21 @@ export default function GamepadWrapper() {
     alert.error('Note! XBox Controller disconnected');
   };
 
+  // Runs when button is pressed or released - adds or removes button in activeButtons
   const buttonChangeHandler = (button, down) => {
     activeButtons.current = down
       ? addButton(activeButtons.current, button, 1.0)
       : removeButton(activeButtons.current, button);
     window.ipcRenderer.send('button-click', activeButtons.current);
-    console.log(activeButtons.current);
   };
 
+  // Run when axis changes value - adds or removes button in activeButtons
   const axisChangeHandler = (button, value) => {
     activeButtons.current = removeButton(activeButtons.current, button);
     if (Math.abs(value) > 0.0) {
       activeButtons.current = addButton(activeButtons.current, button, value);
     }
     window.ipcRenderer.send('button-click', activeButtons.current);
-    console.log(activeButtons.current);
   };
 
   return (

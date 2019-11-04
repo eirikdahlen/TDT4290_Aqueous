@@ -31,18 +31,20 @@ const negatives = ['S', 'A', 'ARROWLEFT'];
 class KeyboardWrapper extends Component {
   constructor(props) {
     super(props);
+    // activeButtons contains all buttons held down and are sent to controls/mapping
     this.state = { activeButtons: [] };
   }
 
+  // Runs when button is pressed or released - adds or removes button in activeButtons
   keyChangeHandler = (e, down) => {
     const key = e.key.toUpperCase();
     const button = mapping[key];
     if (!button) return;
     const value = negatives.indexOf(key) >= 0 ? -1 : 1;
-    const newState = down
+    const updatedActiveButtons = down
       ? addButton(this.state.activeButtons, button, value)
       : removeButton(this.state.activeButtons, button);
-    this.setState({ activeButtons: newState });
+    this.setState({ activeButtons: updatedActiveButtons });
     window.ipcRenderer.send('button-click', this.state.activeButtons);
   };
 

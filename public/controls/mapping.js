@@ -1,12 +1,11 @@
 // Function called from IPC.js when xbox-buttons are changed - maps buttons
-const {
-  maxThruster,
-  biasIncrease,
-  biasIncreaseTimer,
-  maxYaw,
-  nfIncrease,
-  nfMax,
-} = global.controls;
+// Constants
+const maxThruster = 400;
+const biasIncrease = 2;
+const biasIncreaseTimer = 20;
+const maxYaw = 2 * Math.PI;
+const nfIncrease = 0.1;
+const nfMax = 20;
 
 // Bias values
 let bias = {
