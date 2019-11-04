@@ -291,4 +291,4 @@ function resetToManual() {
   }
 }
 
-module.exports = { handleClick };
+module.exports = { handleClick, handleButton };

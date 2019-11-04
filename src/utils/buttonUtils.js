@@ -18,7 +18,7 @@ const hasButton = (arr, button) => {
 };
 
 // Removes button (by name) from array
-const removeButton = (arr, button) => {
+export const removeButton = (arr, button) => {
   if (hasButton(arr, button)) {
     arr = arr.filter(obj => {
       return obj.button.toLowerCase() !== button.toLowerCase();
@@ -28,11 +28,11 @@ const removeButton = (arr, button) => {
 };
 
 // Adds button (name) with value to array
-const addButton = (arr, button, value) => {
+export const addButton = (arr, button, value) => {
   if (!hasButton(arr, button)) {
     arr.push({ button, value });
   }
   return arr;
 };
 
-module.exports = { addButton, removeButton };
+export default { addButton, removeButton };
