@@ -3,7 +3,6 @@ const { encode, decode, messages } = require('./IMC');
 const { ipcMain } = require('electron');
 
 const port = 5000;
-const host = '127.0.0.1';
 
 // States for IMC ==============================================
 /* eslint-disable no-unused-vars */
@@ -141,7 +140,7 @@ const ipcCommunicationTCPServer = () => {
 };
 
 const startServer = () => {
-  console.log(`Waiting for client to connect to host ${host} port ${port}`);
+  console.log(`Waiting for client to connect to port ${port}`);
 
   const server = new net.createServer(socket => {
     console.log(`TCP Server bound to port ${port}.`);
@@ -243,7 +242,7 @@ const startServer = () => {
     setInterval(sendData, 200);
   });
 
-  server.listen(port, host);
+  server.listen(port);
 };
 
 module.exports = {
