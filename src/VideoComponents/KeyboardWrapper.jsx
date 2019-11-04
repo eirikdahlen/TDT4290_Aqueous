@@ -43,7 +43,7 @@ class KeyboardWrapper extends Component {
       ? addButton(this.state.activeButtons, button, value)
       : removeButton(this.state.activeButtons, button);
     this.setState({ activeButtons: newState });
-    //window.ipcRenderer.send('button-click', this.state.activeButtons);
+    window.ipcRenderer.send('button-click', this.state.activeButtons);
   };
 
   componentDidMount() {

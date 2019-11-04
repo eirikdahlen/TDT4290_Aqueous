@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { useAlert } from 'react-alert';
 import Gamepad from 'react-gamepad';
 import { addButton, removeButton } from '../utils/buttonUtils';
 
 export default function GamepadWrapper() {
   const alert = useAlert();
-  const [activeButtons, setActiveButtons] = useState([]);
+  let activeButtons = useRef([]);
 
   const connectHandler = () => {
     alert.success('XBox Controller is connected!');
@@ -16,20 +16,20 @@ export default function GamepadWrapper() {
   };
 
   const buttonChangeHandler = (button, down) => {
-    setActiveButtons(
-      down
-        ? addButton(activeButtons, button, 1.0)
-        : removeButton(activeButtons, button),
-    );
-    window.ipcRenderer.send('button-click', activeButtons);
+    activeButtons.current = down
+      ? addButton(activeButtons.current, button, 1.0)
+      : removeButton(activeButtons.current, button);
+    window.ipcRenderer.send('button-click', activeButtons.current);
+    console.log(activeButtons.current);
   };
 
   const axisChangeHandler = (button, value) => {
-    setActiveButtons(removeButton(activeButtons, button));
+    activeButtons.current = removeButton(activeButtons.current, button);
     if (Math.abs(value) > 0.0) {
-      setActiveButtons(addButton(activeButtons, button, value));
+      activeButtons.current = addButton(activeButtons.current, button, value);
     }
-    window.ipcRenderer.send('button-click', activeButtons);
+    window.ipcRenderer.send('button-click', activeButtons.current);
+    console.log(activeButtons.current);
   };
 
   return (
