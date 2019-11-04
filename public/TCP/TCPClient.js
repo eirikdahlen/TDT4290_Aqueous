@@ -3,6 +3,8 @@ const { encodeData, decodeData } = require('./coding');
 const { sendMessage } = require('./../utils/IPC');
 const { encode, decode, messages } = require('./IMC');
 
+const messageLength = 256;
+
 const messageProtocols = {
   IMC: 'IMC',
   old: 'OLD',
@@ -223,7 +225,7 @@ function sendIMCData(client) {
       z_units: 0,
     });
   }
-  client.write(encode.combine([buf], 256));
+  client.write(encode.combine([buf], messageLength));
   return decode(buf);
 }
 

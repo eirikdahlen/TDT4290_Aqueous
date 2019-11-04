@@ -5,6 +5,8 @@ const { ipcMain } = require('electron');
 const port = 5000;
 const host = '127.0.0.1';
 
+const messageLength = 256;
+
 // States for IMC ==============================================
 /* eslint-disable no-unused-vars */
 
@@ -229,8 +231,8 @@ const startServer = () => {
         buf = encode.combine([buf, customNetFollowBuf]);
       }
       try {
-        // Ensures that the buffer will be of size 256
-        socket.write(encode.combine([buf], 256));
+        // Ensures that the buffer will be of size
+        socket.write(encode.combine([buf], messageLength));
       } catch (error) {
         clearInterval(sendData);
       }
