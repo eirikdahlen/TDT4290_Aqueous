@@ -137,6 +137,16 @@ const initGlobals = () => {
     longitude: 0,
     heading: 0,
   };
+
+  // Constants for controls
+  global.controls = {
+    maxThruster: 400,
+    biasIncrease: 2,
+    biasIncreaseTimer: 20,
+    maxYaw: 2 * Math.PI,
+    nfIncrease: 0.1,
+    nfMax: 20,
+  };
 };
 
 module.exports = { initGlobals };

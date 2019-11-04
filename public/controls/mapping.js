@@ -1,12 +1,12 @@
 // Function called from IPC.js when xbox-buttons are changed - maps buttons
-
-// Constants
-const maxThruster = 400;
-const biasIncrease = 2;
-const biasIncreaseTimer = 20;
-const maxYaw = 2 * Math.PI;
-const nfIncrease = 0.1;
-const nfMax = 20;
+const {
+  maxThruster,
+  biasIncrease,
+  biasIncreaseTimer,
+  maxYaw,
+  nfIncrease,
+  nfMax,
+} = global.controls;
 
 // Bias values
 let bias = {
@@ -14,6 +14,8 @@ let bias = {
   sway: 0.0,
   heave: 0.0,
 };
+
+// Variables for bias buttons held down
 const biasButtons = ['DPadRight', 'DPadLeft', 'DPadUp', 'DPadDown', 'RB', 'LB'];
 const hasBiasButton = obj => {
   return biasButtons.indexOf(obj.button) >= 0;
@@ -75,9 +77,11 @@ function handleClick(activeButtons) {
     autoheading: autoHeading,
   };
 
+  // Set biasButtons and x-down
   xDown = activeButtons.some(hasXButton);
   biasButtonsDown = [];
 
+  // Loop through every button down and set bias buttons down and handle button clicks
   activeButtons.forEach(obj => {
     if (hasBiasButton(obj)) {
       biasButtonsDown.push(obj);
