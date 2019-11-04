@@ -191,15 +191,20 @@ export default function SettingsApp() {
       <div className="settingGroup">
         <label>Manual Boat Heading</label>
         <div className="headingInputs">
-          <input
-            className={useManualInput ? '' : 'unchecked'}
-            value={headingInput}
-            type="number"
-            step={1}
-            min={0}
-            max={360}
-            onChange={e => setHeadingInput(e.target.value)}
-          />
+          <div className="inputContainer">
+            <input
+              style={{
+                backgroundColor: useManualInput ? 'white' : 'lightgray',
+              }} //using inline style to avoid interference with inputStatus-style
+              value={headingInput}
+              type="number"
+              step={1}
+              min={0}
+              max={360}
+              onChange={e => handleChange(e, setHeadingInput)}
+            />
+            <div className="inputStatus"></div>
+          </div>
           <input
             className="useManual"
             checked={useManualInput}

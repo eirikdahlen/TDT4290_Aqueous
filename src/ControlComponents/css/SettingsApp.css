@@ -97,10 +97,6 @@
   align-items: center;
 }
 
-.unchecked {
-  background-color: lightgray;
-}
-
 .useManual {
   width: 35px !important;
 }
