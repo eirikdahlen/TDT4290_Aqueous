@@ -91,6 +91,16 @@
   cursor: pointer;
 }
 
+.headingInputs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.useManual {
+  width: 35px !important;
+}
+
 .closeSettings {
   width: 20px;
   height: 20px;

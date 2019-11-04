@@ -15,8 +15,6 @@ const rightSpace = initialWidth - boatWidth - rovSize; // Pixels to the right of
 const leftFactor = leftSpace / rightSpace; // Describes how large portion of the map is left of the ROV when N, E = 0, 0
 const rightFactor = rightSpace / leftSpace; // Describes how large portion of the map is right of the ROV when N, E = 0, 0
 
-var boatHeadingOffset = 0;
-
 function drawBoat(context, boatWidth, boatLength, boatHeading) {
   // Set initial variables
   context.fillStyle = '#FFFFFF';
@@ -30,8 +28,6 @@ function drawBoat(context, boatWidth, boatLength, boatHeading) {
   // Draw the boat itself
   context.beginPath();
   context.moveTo(0, -boatLength / 2);
-  context.lineTo(0, (-2 * boatLength) / 3);
-  context.lineTo(0, -boatLength / 2);
   context.lineTo(boatWidth, -boatWidth);
   context.lineTo(boatWidth, boatLength / 2);
   context.lineTo(-boatWidth, boatLength / 2);
@@ -40,7 +36,7 @@ function drawBoat(context, boatWidth, boatLength, boatHeading) {
   context.stroke();
 
   // Draw the text
-  context.fillText(boatDegrees.toFixed(0) + '\xB0', 0, (-2 * boatLength) / 2.5);
+  context.fillText(boatDegrees.toFixed(0) + '\xB0', 0, (2 * boatLength) / 2.5);
 }
 
 function drawROV(context) {
@@ -140,11 +136,6 @@ function drawArrow(context, rovSize, initialWidth) {
   context.closePath();
 }
 
-function initMinimap(boatHeading) {
-  // Only do this when initializing the minimap
-  boatHeadingOffset = boatHeading;
-}
-
 function drawContent(
   // Function for drawing either the ROV or the target (or other future components) at the correct place in the minimap
   context,
@@ -182,7 +173,7 @@ function drawContent(
 
     // Draw the component itself
     context.save();
-    context.translate(boatWidth + mapEast + rovSize / 2, -mapNorth); // Draw square at correct point in the map
+    context.translate(mapEast, -mapNorth); // Draw square at correct point in the map
     context.rotate(yaw);
     drawFunction(context);
     context.restore();
@@ -228,9 +219,6 @@ function drawMinimap(
 
   // Keep degrees between 0 and 360
   boatHeading = wrapDegrees(boatHeading);
-  boatHeadingOffset = wrapDegrees(boatHeadingOffset);
-
-  var boatRotation = boatHeading - boatHeadingOffset; // Set boatHeading to difference in heading since beginning
 
   context.clearRect(0, 0, initialWidth, initialWidth); // Clear canvas to avoid drawing on top of previous canvas
 
@@ -242,13 +230,12 @@ function drawMinimap(
   // Draw the boat
   context.save(); // Save context state so we can draw boat and ROV from different origins and rotate independently
   context.translate(initialWidth / 2, initialWidth / 2); // Draw boat from the middle of the circle
-  //context.rotate(boatAngle[0]); // Rotate the boat drawing around the middle of the circle
   drawBoat(context, boatWidth, boatLength, boatHeading);
   context.restore(); // Restore context state we saved earlier
 
   context.save();
   context.translate(initialWidth / 2, initialWidth / 2);
-  context.rotate(-degreesToRadians(boatRotation)); //rotates ROV around boat when boat rotates
+  context.rotate(-degreesToRadians(boatHeading)); //rotates ROV around boat when boat rotates
 
   // If the ROV is below the target: draw the ROV first, then the target on top
   if (down > DPdown) {
@@ -273,7 +260,6 @@ function drawMinimap(
   }
 
   // Draw the north/east axes
-  context.translate(boatWidth + rovSize / 2, 0);
   drawNEDframe(context, initialWidth, boatWidth, rovSize);
   context.restore();
 }
@@ -304,4 +290,4 @@ function scaleMinimap(context, initialWidth, initialHeight) {
 }
 
 export default drawMinimap;
-export { initMinimap, scaleMinimap };
+export { scaleMinimap };

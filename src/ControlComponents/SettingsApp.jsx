@@ -14,6 +14,8 @@ export default function SettingsApp() {
     messageProtocol,
     boatSerialPort,
     boatSerialBaudRate,
+    manualBoatHeading,
+    useManualHeading,
   } = remote.getGlobal('settings');
 
   const [portInput, setPortInput] = useState(port);
@@ -28,6 +30,8 @@ export default function SettingsApp() {
   const [boatSerialBaudRateInput, setBoatSerialBaudRateInput] = useState(
     boatSerialBaudRate,
   );
+  const [headingInput, setHeadingInput] = useState(manualBoatHeading);
+  const [useManualInput, setUseManualInput] = useState(useManualHeading);
   const [inputsChanged, setInputsChanged] = useState([]);
 
   // Listens to the file-chosen message which is sent with the filename that is chosen
@@ -91,6 +95,8 @@ export default function SettingsApp() {
     remote.getGlobal('settings')[
       'boatSerialBaudRate'
     ] = boatSerialBaudRateInput;
+    remote.getGlobal('settings')['manualBoatHeading'] = headingInput;
+    remote.getGlobal('settings')['useManualHeading'] = useManualInput;
     try {
       remote.getGlobal('settings')['boatSerialPortObject'].closePort();
       remote.getGlobal('settings')[
@@ -179,6 +185,32 @@ export default function SettingsApp() {
             onChange={e => handleChange(e, setBoatSerialBaudRateInput)}
           />
           <div className="inputStatus"></div>
+        </div>
+      </div>
+
+      <div className="settingGroup">
+        <label>Manual Boat Heading</label>
+        <div className="headingInputs">
+          <div className="inputContainer">
+            <input
+              style={{
+                backgroundColor: useManualInput ? 'white' : 'lightgray',
+              }} //using inline style to avoid interference with inputStatus-style
+              value={headingInput}
+              type="number"
+              step={1}
+              min={0}
+              max={360}
+              onChange={e => handleChange(e, setHeadingInput)}
+            />
+            <div className="inputStatus"></div>
+          </div>
+          <input
+            className="useManual"
+            checked={useManualInput}
+            type="checkbox"
+            onChange={() => setUseManualInput(!useManualInput)}
+          ></input>
         </div>
       </div>
 

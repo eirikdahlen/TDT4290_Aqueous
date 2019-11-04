@@ -27,6 +27,10 @@ export default function ROVSettings({ settings }) {
           <h4>Baud</h4>
           <span>{settings.boatSerialBaudRate}</span>
         </div>
+        <div className="settingsField">
+          <h4>Manual Boat Heading</h4>
+          <span>{settings.manualBoatHeading}</span>
+        </div>
       </div>
     </div>
   );
