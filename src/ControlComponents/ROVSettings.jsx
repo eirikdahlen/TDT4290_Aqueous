@@ -17,12 +17,18 @@ export default function ROVSettings({ settings }) {
   return (
     <div className="ROVSettings_root">
       <div className="SettingsFields">
-        {Object.keys(showSettings).map(key => (
-          <div key={key} className="settingsField">
-            <h4>{showSettings[key]}</h4>
-            <span>{settings[key]}</span>
-          </div>
-        ))}
+        {Object.keys(showSettings).map(key => {
+          if (key in settings) {
+            return (
+              <div key={key} className="settingsField">
+                <h4>{showSettings[key]}</h4>
+                <span>{settings[key]}</span>
+              </div>
+            );
+          } else {
+            return '';
+          }
+        })}
       </div>
     </div>
   );
