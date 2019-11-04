@@ -1,37 +1,57 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useAlert } from 'react-alert';
 import Gamepad from 'react-gamepad';
 
-function GamepadWrapper() {
+export default function GamepadWrapper() {
   const alert = useAlert();
 
-  const connectHandler = gamepadIndex => {
-    console.log(`Gamepad ${gamepadIndex} connected!`);
+  let activeButtons = useRef([]);
+
+  const hasButton = (arr, button) => {
+    return arr.some(obj => {
+      return obj.button === button;
+    });
+  };
+
+  const removeButton = (arr, button) => {
+    if (hasButton(activeButtons.current, button)) {
+      arr = arr.filter(obj => {
+        return obj.button !== button;
+      });
+    }
+    return arr;
+  };
+
+  const addButton = (arr, button, value) => {
+    if (!hasButton(activeButtons.current, button)) {
+      arr.push({ button, value });
+    }
+    return arr;
+  };
+
+  const connectHandler = () => {
     alert.success('XBox Controller is connected!');
   };
 
-  const disconnectHandler = gamepadIndex => {
-    console.log(`Gamepad ${gamepadIndex} disconnected!`);
+  const disconnectHandler = () => {
     alert.error('Note! XBox Controller disconnected');
   };
 
   const buttonChangeHandler = (button, down) => {
-    if (down) {
-      // window.ipcRenderer is fetched from preload.js
-      window.ipcRenderer.send('button-click', { button, value: 1.0 });
-    }
+    activeButtons.current = down
+      ? addButton(activeButtons.current, button, 1.0)
+      : removeButton(activeButtons.current, button);
+    window.ipcRenderer.send('button-click', activeButtons.current);
+    console.log(activeButtons.current);
   };
 
   const axisChangeHandler = (button, value) => {
-    window.ipcRenderer.send('button-click', { button, value });
-  };
-
-  const buttonUpHandler = button => {
-    window.ipcRenderer.send('button-up-down', { button, down: false });
-  };
-
-  const buttonDownHandler = button => {
-    window.ipcRenderer.send('button-up-down', { button, down: true });
+    activeButtons.current = removeButton(activeButtons.current, button);
+    if (Math.abs(value) > 0.0) {
+      activeButtons.current = addButton(activeButtons.current, button, value);
+    }
+    window.ipcRenderer.send('button-click', activeButtons.current);
+    console.log(activeButtons.current);
   };
 
   return (
@@ -41,8 +61,6 @@ function GamepadWrapper() {
         onDisconnect={disconnectHandler}
         onButtonChange={buttonChangeHandler}
         onAxisChange={axisChangeHandler}
-        onButtonDown={buttonDownHandler}
-        onButtonUp={buttonUpHandler}
         deadZone={0.3}
       >
         <span></span>
@@ -50,5 +68,3 @@ function GamepadWrapper() {
     </div>
   );
 }
-
-export default GamepadWrapper;

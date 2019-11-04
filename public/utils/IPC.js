@@ -8,11 +8,9 @@ const { getFileAndSend } = require('./../launch/sendFile');
 // Function for setting up listeners between the main process (electron.js) and the renderer process (Components etc.)
 function setIPCListeners() {
   // Listen to click events
-  ipcMain.on('button-click', (event, { button, value }) => {
-    handleClick({ button, value });
-  });
-  ipcMain.on('button-up-down', (event, { button, down }) => {
-    setUpOrDown({ button, down });
+  ipcMain.on('button-click', (event, activeButtons) => {
+    handleClick(activeButtons);
+    console.log(activeButtons);
   });
 
   //Listen to function requests

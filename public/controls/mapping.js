@@ -66,7 +66,8 @@ function setUpOrDown({ button, down }) {
 }
 
 // Converts from button (buttonname) and value (how much pressed) to values for the ROV
-function handleClick({ button, value }) {
+function handleClick(activeButtons) {
+  // Init values
   autoHeading = global.toROV.autoheading;
   autoDepth = global.toROV.autodepth;
   if (autoDepth) {
@@ -86,15 +87,24 @@ function handleClick({ button, value }) {
     autoheading: autoHeading,
   };
 
+  activeButtons.forEach(obj => {
+    const { button, value } = obj;
+    handleButton(button, value);
+  });
+  global.toROV = controls;
+  global.bias = bias;
+}
+
+function handleButton(button, value) {
   switch (button) {
     // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
     case 'LeftStickY': // Forward+/Backward-
       controls['surge'] += value * maxThruster;
-      fixMaxThruster('surge', controls);
+      fixMaxThruster('surge');
       break;
     case 'LeftStickX': // Right+/Left-
       controls['sway'] += value * maxThruster;
-      fixMaxThruster('sway', controls);
+      fixMaxThruster('sway');
       break;
     case 'LeftTrigger': // Up
       if (global.mode.currentMode != 0) {
@@ -102,7 +112,7 @@ function handleClick({ button, value }) {
       }
       if (!autoDepth && global.mode.currentMode == 0) {
         controls['heave'] += value * -maxThruster;
-        fixMaxThruster('heave', controls);
+        fixMaxThruster('heave');
       } else {
         depthReference -= value * depthIncrement;
         if (depthReference < 0) {
@@ -117,7 +127,7 @@ function handleClick({ button, value }) {
       }
       if (!autoDepth && global.mode.currentMode == 0) {
         controls['heave'] += value * maxThruster;
-        fixMaxThruster('heave', controls);
+        fixMaxThruster('heave');
       } else {
         depthReference += value * depthIncrement;
         controls['heave'] = depthReference;
@@ -167,20 +177,20 @@ function handleClick({ button, value }) {
 
     // BIAS BUTTONS | INCREASE/DECREASE BIAS
     case 'DPadRight': // positive sway bias
-      setBias('sway', true, controls);
+      setBias('sway', true);
       break;
     case 'DPadLeft': // negative sway bias
-      setBias('sway', false, controls);
+      setBias('sway', false);
       break;
     case 'DPadUp': // positive surge bias
-      setBias('surge', true, controls);
+      setBias('surge', true);
       if (global.mode.currentMode == 2) {
         //Depth (-) if in NF
         setNfParameters('depth', false);
       }
       break;
     case 'DPadDown': // negative surge bias
-      setBias('surge', false, controls);
+      setBias('surge', false);
       if (global.mode.currentMode == 2) {
         //Depth (+) if in NF
         setNfParameters('depth', true);
@@ -191,7 +201,7 @@ function handleClick({ button, value }) {
         setNfParameters('velocity', true); //Velocity (+) if in NF
       }
       if (!autoDepth && global.mode.currentMode == 0) {
-        setBias('heave', true, controls);
+        setBias('heave', true);
       }
       break;
     case 'LB': // negative heave bias (up)
@@ -200,7 +210,7 @@ function handleClick({ button, value }) {
         setNfParameters('velocity', false);
       }
       if (!autoDepth && global.mode.currentMode == 0) {
-        setBias('heave', false, controls);
+        setBias('heave', false);
       }
       break;
 
@@ -224,12 +234,10 @@ function handleClick({ button, value }) {
       resetToManual();
       break;
   }
-  global.toROV = controls;
-  global.bias = bias;
 }
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
-function setBias(type, positive, controls) {
+function setBias(type, positive) {
   if (global.mode.currentMode == 0) {
     // Reset axis if X is held down
     if (buttonDown === 'X') {
@@ -248,7 +256,7 @@ function setBias(type, positive, controls) {
 }
 
 //Helper function for making sure thrusting force does not exceed maximum
-function fixMaxThruster(type, controls) {
+function fixMaxThruster(type) {
   let force = controls[type];
   if (force > maxThruster) {
     force = maxThruster;
