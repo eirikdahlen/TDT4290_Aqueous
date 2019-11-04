@@ -16,6 +16,8 @@ let yVideoWindow;
 let controlWindow;
 let videoWindow;
 
+let hasExternal = false;
+
 // Function for creating the two windows - controls and video
 function createWindows() {
   // Creates the two windows with positioning, width and height fitting the screen
@@ -77,6 +79,11 @@ function createWindows() {
   global.videoWindow = videoWindow;
   global.controlWindow = controlWindow;
 
+  if (hasExternal) {
+    videoWindow.maximize();
+    controlWindow.maximize();
+  }
+
   return [videoWindow, controlWindow];
 }
 
@@ -92,28 +99,22 @@ function setWidthAndHeight() {
     return display.bounds.x !== 0 || display.bounds.y !== 0;
   });
 
+  // Set the widths of the window to half the width of the screen
+  heightVideoWindow = heightControlWindow = mainDisplay.bounds.height;
+  widthVideoWindow = widthControlWindow = mainDisplay.bounds.width / 2;
+
   // If an external screen is detected:
   if (externalDisplay) {
-    // Set the size if the video window to the full size of the main screen
-    heightVideoWindow = mainDisplay.bounds.height;
-    widthVideoWindow = mainDisplay.bounds.width;
-
-    // Set the size of the control window to the full size of the external screen
-    heightControlWindow = externalDisplay.bounds.height;
-    widthControlWindow = externalDisplay.bounds.width;
-
     // Position the windows on their respective screens
     xVideoWindow = mainDisplay.bounds.x;
     yVideoWindow = mainDisplay.bounds.y;
     xControlWindow = externalDisplay.bounds.x;
     yControlWindow = externalDisplay.bounds.y;
 
+    hasExternal = true;
+
     // If an external screen is *not* detected:
   } else {
-    // Set the widths of the window to half the width of the screen
-    heightVideoWindow = heightControlWindow = mainDisplay.bounds.height;
-    widthVideoWindow = widthControlWindow = mainDisplay.bounds.width / 2;
-
     // Position the video window to the left and the control window to the right
     xVideoWindow = mainDisplay.bounds.x;
     yVideoWindow = yControlWindow = mainDisplay.bounds.y;
@@ -141,7 +142,7 @@ function createXboxMappingWindow() {
 function createMockupWindow() {
   let mockupWindow = new BrowserWindow({
     title: 'Mockup',
-    width: widthControlWindow / 1.5,
+    width: widthControlWindow,
     height: heightControlWindow,
     x: xControlWindow,
     y: yControlWindow,
@@ -193,7 +194,7 @@ function createSettingsWindow(x, y) {
     x: x - 50,
     y: y - 50,
     width: 380,
-    height: 450,
+    height: 525,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),

@@ -51,7 +51,7 @@ function VideoApp() {
       <DepthWidget
         depth={sensorValues['down']}
         isLocked={settingsValues['autodepth']}
-        lockedValue={settingsValues['heave']}
+        lockedValue={parseFloat(settingsValues['heave']).toFixed(2)}
       />
       <AvailabilityWidget
         nfAvailable={remote.getGlobal('mode')['nfAvailable']}
@@ -65,7 +65,11 @@ function VideoApp() {
         north={sensorValues['north']}
         east={sensorValues['east']}
         yaw={sensorValues['yaw']}
-        boatHeading={0}
+        boatHeading={
+          remote.getGlobal('settings')['useManualHeading']
+            ? remote.getGlobal('settings')['manualBoatHeading']
+            : remote.getGlobal('boat')['heading']
+        }
         maxDistance={5}
       />
       <GamepadWrapper className="GamepadWrapper" />

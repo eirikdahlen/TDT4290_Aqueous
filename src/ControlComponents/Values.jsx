@@ -3,11 +3,18 @@ import ValueBox from './ValueBox';
 import PropTypes from 'prop-types';
 import './css/Values.css';
 import Title from './Title';
+import ROVSettings from './ROVSettings';
 import MessageGroup from './MessageGroup';
 import { fixValue, copyObjectExcept } from '../utils/utils';
 
 // A container for ValueBox-components.
-export default function Values({ title, values, changeEffect, IMCActive }) {
+export default function Values({
+  title,
+  values,
+  changeEffect,
+  IMCActive,
+  settings,
+}) {
   const extractData = (msgData, msgName) => {
     if (msgName === 'netFollow' || msgName === 'goTo') {
       return { flags: false, data: msgData };
@@ -22,6 +29,14 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
     }
     if (msgName === 'estimatedState') {
       return { flags: false, data: msgData };
+    }
+    if (msgName === 'entityState') {
+      const data = {
+        state: msgData.state.toFixed(0),
+        DP: msgData.flags.DP,
+        NF: msgData.flags.NF,
+      };
+      return { flags: false, data };
     }
     return { flags: false, data: msgData };
   };
@@ -60,7 +75,14 @@ export default function Values({ title, values, changeEffect, IMCActive }) {
   return (
     <div className="Values">
       <Title>{title}</Title>
-      <div className="valuesFlex">{IMCActive ? renderIMC() : renderOld()}</div>
+      <div className="valuesPosition">
+        <div className="valuesFlex">
+          {IMCActive ? renderIMC() : renderOld()}
+        </div>
+        {settings ? (
+          <ROVSettings title="ROV Settings" settings={settings} />
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -70,4 +92,5 @@ Values.propTypes = {
   title: PropTypes.string,
   changeEffect: PropTypes.bool,
   IMCActive: PropTypes.bool,
+  settings: PropTypes.object,
 };

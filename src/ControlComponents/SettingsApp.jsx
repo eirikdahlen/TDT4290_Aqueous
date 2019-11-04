@@ -14,6 +14,8 @@ export default function SettingsApp() {
     messageProtocol,
     boatSerialPort,
     boatSerialBaudRate,
+    manualBoatHeading,
+    useManualHeading,
   } = remote.getGlobal('settings');
 
   const [portInput, setPortInput] = useState(port);
@@ -28,6 +30,9 @@ export default function SettingsApp() {
   const [boatSerialBaudRateInput, setBoatSerialBaudRateInput] = useState(
     boatSerialBaudRate,
   );
+  const [headingInput, setHeadingInput] = useState(manualBoatHeading);
+  const [useManualInput, setUseManualInput] = useState(useManualHeading);
+  const [inputsChanged, setInputsChanged] = useState([]);
 
   // Listens to the file-chosen message which is sent with the filename that is chosen
   useEffect(() => {
@@ -56,8 +61,28 @@ export default function SettingsApp() {
   };
 
   // Sends a message to the main process to open the file-picker
-  const choseSerialFile = () => {
+  const chooseSerialFile = () => {
     window.ipcRenderer.send('run-file-pick');
+  };
+
+  // Function run when an input field is run - updates its state and sets changed-class
+  const handleChange = (event, setFunction) => {
+    const el = event.target;
+    setFunction(el.value);
+    el.classList.remove('updatedInput');
+    el.classList.add('changedInput');
+    if (inputsChanged.indexOf(el) < 0) {
+      inputsChanged.push(el);
+    }
+  };
+
+  // Adds style to inputs that are updated
+  const updateStyle = () => {
+    inputsChanged.forEach(input => {
+      input.classList.remove('changedInput');
+      input.classList.add('updatedInput');
+    });
+    setInputsChanged([]);
   };
 
   // Function which is run on button click or enter click to update values
@@ -70,12 +95,18 @@ export default function SettingsApp() {
     remote.getGlobal('settings')[
       'boatSerialBaudRate'
     ] = boatSerialBaudRateInput;
-    remote.getGlobal('settings')['boatSerialPortObject'].closePort();
-    remote.getGlobal('settings')[
-      // eslint-disable-next-line no-unexpected-multiline
-      'boatSerialPortObject'
-    ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
-    closeWindow();
+    remote.getGlobal('settings')['manualBoatHeading'] = headingInput;
+    remote.getGlobal('settings')['useManualHeading'] = useManualInput;
+    try {
+      remote.getGlobal('settings')['boatSerialPortObject'].closePort();
+      remote.getGlobal('settings')[
+        // eslint-disable-next-line no-unexpected-multiline
+        'boatSerialPortObject'
+      ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
+    } catch (error) {
+      window.ipcRenderer.send('settings-updated');
+    }
+    updateStyle();
     window.ipcRenderer.send('settings-updated');
   };
 
@@ -83,62 +114,104 @@ export default function SettingsApp() {
     <div className="SettingsApp">
       <div className="settingGroup">
         <label>TCP port</label>
-        <input
-          value={portInput}
-          onChange={e => setPortInput(e.target.value)}
-        ></input>
+        <div className="inputContainer">
+          <input
+            value={portInput}
+            onChange={e => handleChange(e, setPortInput)}
+          ></input>
+          <div className="inputStatus"></div>
+        </div>
       </div>
 
       <div className="settingGroup">
         <label>Host IP address</label>
-        <input
-          value={hostInput}
-          onChange={e => setHostInput(e.target.value)}
-        ></input>
+        <div className="inputContainer">
+          <input
+            value={hostInput}
+            onChange={e => handleChange(e, setHostInput)}
+          ></input>
+          <div className="inputStatus"></div>
+        </div>
       </div>
 
       <div className="settingGroup">
         <label>Serial file</label>
         <div className="serialInputs">
-          <input
-            id="serialField"
-            value={serialFile}
-            onChange={e => setSerialFileInput(e.target.value)}
-          ></input>
-          <button onClick={choseSerialFile}></button>
+          <div className="inputContainer">
+            <input
+              id="serialField"
+              value={serialFile}
+              onChange={e => handleChange(e, setSerialFileInput)}
+            ></input>
+            <div className="inputStatus"></div>
+          </div>
+          <button onClick={chooseSerialFile}></button>
         </div>
       </div>
 
       <div className="settingGroup">
         <div className="MessageProtocolMenu">
           <label>Message Protocol</label>
-          <select
-            className="MessageProtocolDropdown"
-            value={messageProtocolInput}
-            onChange={e =>
-              setMessageProtocolInput(e.target.value.toUpperCase())
-            }
-          >
-            <option value={MessageProtocols.OLD}>OLD</option>
-            <option value={MessageProtocols.IMC}>IMC</option>
-          </select>
+          <div className="inputContainer">
+            <select
+              className="MessageProtocolDropdown"
+              value={messageProtocolInput}
+              onChange={e => handleChange(e, setMessageProtocolInput)}
+            >
+              <option value={MessageProtocols.OLD}>OLD</option>
+              <option value={MessageProtocols.IMC}>IMC</option>
+            </select>
+            <div className="inputStatus"></div>
+          </div>
         </div>
       </div>
 
       <div className="settingGroup">
         <label>Boat serial port</label>
-        <input
-          value={boatSerialPortInput}
-          onChange={e => setBoatSerialPortInput(e.target.value)}
-        />
+        <div className="inputContainer">
+          <input
+            value={boatSerialPortInput}
+            onChange={e => handleChange(e, setBoatSerialPortInput)}
+          />
+          <div className="inputStatus"></div>
+        </div>
       </div>
 
       <div className="settingGroup">
         <label>Boat serial baud rate</label>
-        <input
-          value={boatSerialBaudRateInput}
-          onChange={e => setBoatSerialBaudRateInput(e.target.value)}
-        />
+        <div className="inputContainer">
+          <input
+            value={boatSerialBaudRateInput}
+            onChange={e => handleChange(e, setBoatSerialBaudRateInput)}
+          />
+          <div className="inputStatus"></div>
+        </div>
+      </div>
+
+      <div className="settingGroup">
+        <label>Manual Boat Heading</label>
+        <div className="headingInputs">
+          <div className="inputContainer">
+            <input
+              style={{
+                backgroundColor: useManualInput ? 'white' : 'lightgray',
+              }} //using inline style to avoid interference with inputStatus-style
+              value={headingInput}
+              type="number"
+              step={1}
+              min={0}
+              max={360}
+              onChange={e => handleChange(e, setHeadingInput)}
+            />
+            <div className="inputStatus"></div>
+          </div>
+          <input
+            className="useManual"
+            checked={useManualInput}
+            type="checkbox"
+            onChange={() => setUseManualInput(!useManualInput)}
+          ></input>
+        </div>
       </div>
 
       <button className="updateSettingsBtn" onClick={updateSettings}>

@@ -52,8 +52,8 @@
   height: 40px;
   border: none;
   cursor: pointer;
-  background-color: #03a9f4; /* Change to variable */
-  transition: all 0.2s;
+  background-color: var(--primary-normal);
+  transition: all 0.1s;
   margin: 10px 0;
   font-weight: 500;
   font-size: 15px;
@@ -63,7 +63,11 @@
 
 .updateSettingsBtn:hover,
 .serialInputs button:hover {
-  background-color: #67daff; /* Change to variable */
+  background-color: var(--primary-light);
+}
+
+.updateSettingsBtn:active {
+  background-color: var(--primary-dark);
 }
 
 .serialInputs {
@@ -78,13 +82,23 @@
   height: 35px;
   padding: 0;
   background: url('../img/folder.png');
-  background-color: #03a9f4;
+  background-color: var(--primary-normal);
   background-repeat: no-repeat;
   background-size: 23px;
   background-position: center;
   margin-left: 5px;
   -webkit-app-region: no-drag;
   cursor: pointer;
+}
+
+.headingInputs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.useManual {
+  width: 35px !important;
 }
 
 .closeSettings {
@@ -107,4 +121,27 @@
 
 .closeSettings:hover {
   opacity: 1;
+}
+
+.inputContainer {
+  width: 100%;
+  position: relative;
+}
+
+.inputStatus {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.changedInput ~ .inputStatus {
+  background-color: var(--primary-normal);
+}
+
+.updatedInput ~ .inputStatus {
+  background-color: var(--positive-dark);
 }

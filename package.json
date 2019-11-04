@@ -4,6 +4,8 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.5.2",
+    "@material-ui/icons": "^4.5.1",
     "babel-jest": "^24.9.0",
     "electron-installer-dmg": "^3.0.0",
     "electron-installer-windows": "^2.0.0",
@@ -13,6 +15,8 @@
     "electron-winstaller": "^4.0.0",
     "nmea-0183": "^0.0.7",
     "react": "^16.9.0",
+    "react-alert": "^6.0.0",
+    "react-alert-template-basic": "^1.0.0",
     "react-dom": "^16.9.0",
     "react-gamepad": "^1.0.3",
     "react-router-dom": "^5.0.1",

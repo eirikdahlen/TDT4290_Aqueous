@@ -1,7 +1,7 @@
 import React from 'react';
 import ModeEnum from '../constants/modeEnum.js';
 import { CanvasWidget, PureCanvas } from './CanvasWidget';
-import drawMinimap, { initMinimap, scaleMinimap } from './js/minimap.js';
+import drawMinimap, { scaleMinimap } from './js/minimap.js';
 import './css/MiniMapWidget.css';
 
 const { remote } = window.require('electron');
@@ -24,7 +24,6 @@ class MiniMapWidget extends CanvasWidget {
   }
 
   componentDidMount() {
-    initMinimap(0);
     super.componentDidMount();
   }
 
