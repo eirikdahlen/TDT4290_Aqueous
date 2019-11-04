@@ -22,7 +22,7 @@ const validKeys = [
   'ARROWRIGHT',
   'ARROWLEFT',
   'M',
-]; //update this
+];
 
 const mapping = {
   W: 'LeftStickY', //forward+

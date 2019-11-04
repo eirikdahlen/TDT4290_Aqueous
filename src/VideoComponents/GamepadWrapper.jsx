@@ -1,33 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useAlert } from 'react-alert';
 import Gamepad from 'react-gamepad';
+import { addButton, removeButton } from '../utils/buttonUtils';
 
 export default function GamepadWrapper() {
   const alert = useAlert();
 
   let activeButtons = useRef([]);
-
-  const hasButton = (arr, button) => {
-    return arr.some(obj => {
-      return obj.button === button;
-    });
-  };
-
-  const removeButton = (arr, button) => {
-    if (hasButton(activeButtons.current, button)) {
-      arr = arr.filter(obj => {
-        return obj.button !== button;
-      });
-    }
-    return arr;
-  };
-
-  const addButton = (arr, button, value) => {
-    if (!hasButton(activeButtons.current, button)) {
-      arr.push({ button, value });
-    }
-    return arr;
-  };
 
   const connectHandler = () => {
     alert.success('XBox Controller is connected!');
