@@ -36,10 +36,11 @@
   outline: none;
   height: 28px;
   font-weight: bold;
+  padding: 0;
 }
 .inputs button:hover {
   color: black;
 }
 .inputs button:active {
-  box-shadow: 0 0 1px 1px gray;
+  box-shadow: var(--button-active-shadow);
 }

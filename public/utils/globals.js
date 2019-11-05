@@ -65,7 +65,7 @@ const initGlobals = () => {
    * Direction property is therefore not needed
    */
   global.netfollowing = {
-    distance: 0,
+    distance: 1,
     velocity: 0,
     degree: 0,
     depth: 0,
@@ -76,10 +76,10 @@ const initGlobals = () => {
    * Placeholders for X, Y, Z for now
    */
   global.dynamicpositioning = {
-    latitude: 0,
-    longitude: 0,
-    heading: 0,
-    depth: 0,
+    north: 0,
+    east: 0,
+    down: 0,
+    yaw: 0,
   };
 
   /*
