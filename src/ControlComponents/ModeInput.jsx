@@ -13,9 +13,7 @@ export default function ModeInput({
   inputId,
 }) {
   const handleClick = () => {
-    console.log('click');
     const inputValue = Number(document.getElementById(inputId).value);
-    console.log(inputValue);
     if (header) {
       header = header.toLowerCase();
     }

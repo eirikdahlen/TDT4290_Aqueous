@@ -46,6 +46,22 @@ export default function DynamicPositioningMode({
     return value;
   }
 
+  // Calculates euclidean distance between dp settings and current position
+  // newValue and type is optional if a check is needed with a new value
+  const getEuclideanDistance = (newValue, type) => {
+    const newDP = JSON.parse(
+      JSON.stringify(remote.getGlobal('dynamicpositioning')),
+    ); // Copies object to avoid modifying global state
+    if (newValue && type) {
+      newDP[type] = newValue;
+    }
+    return Math.sqrt(
+      euclideanAttributes.reduce((acc, attribute) => {
+        return acc + Math.pow(newDP[attribute] - fromROV[attribute], 2);
+      }, 0.0),
+    ).toFixed(2);
+  };
+
   // Function that is run when the update-button is clicked - updates the global dp-variable with value
   // Also validates as a safety measure if euclidean distance of proposed NED is small enough
   const updateValue = (value, type) => {
@@ -53,15 +69,7 @@ export default function DynamicPositioningMode({
       return;
     }
     const newValue = fixValue(value, type);
-    const newDP = JSON.parse(
-      JSON.stringify(remote.getGlobal('dynamicpositioning')),
-    ); // Copies object to avoid modifying global state
-    newDP[type] = newValue;
-    const euclideanDistance = Math.sqrt(
-      euclideanAttributes.reduce((acc, attribute) => {
-        return acc + Math.pow(newDP[attribute] - fromROV[attribute], 2);
-      }, 0.0),
-    ).toFixed(2);
+    const euclideanDistance = getEuclideanDistance(newValue, type);
     if (euclideanDistance > maxEuclideanDistance) {
       setErrorInfo({ attribute: type, value: newValue, euclideanDistance });
       setStateValid(false);
@@ -81,6 +89,7 @@ export default function DynamicPositioningMode({
       modeData.currentMode === ModeEnum.MANUAL ||
       modeData.currentMode === ModeEnum.NETFOLLOWING
     ) {
+      setCurrentPosition();
       remote.getGlobal('mode')['currentMode'] = ModeEnum.DYNAMICPOSITIONING;
     } else {
       console.log('Error - unable to change mode');
