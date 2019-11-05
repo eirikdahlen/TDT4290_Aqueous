@@ -65,7 +65,7 @@ const initGlobals = () => {
    * Direction property is therefore not needed
    */
   global.netfollowing = {
-    distance: 0,
+    distance: 1,
     velocity: 0,
     degree: 0,
     depth: 0,

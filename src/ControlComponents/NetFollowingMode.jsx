@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
@@ -52,9 +52,18 @@ export default function NetfollowingMode({ title, modeData, step }) {
       modeData.currentMode === ModeEnum.DYNAMICPOSITIONING
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.NETFOLLOWING;
+      updateInputFields();
     } else {
       console.log('Error - unable to change mode');
     }
+  };
+
+  const updateInputFields = () => {
+    ['velocity', 'distance', 'depth'].forEach(attribute => {
+      const currentValue = remote.getGlobal('netfollowing')[attribute];
+      const inputField = document.getElementById(attribute);
+      inputField.value = currentValue.toFixed(2);
+    });
   };
 
   return (
