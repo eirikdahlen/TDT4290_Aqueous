@@ -15,6 +15,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
   let active = modeData.currentMode === ModeEnum.NETFOLLOWING;
   let available = modeData.nfAvailable;
 
+  // Sets input fields to the global values on mount
   useEffect(() => {
     updateInputFields();
   }, []);
@@ -61,6 +62,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
     }
   };
 
+  // Sets input fields to the global values
   const updateInputFields = () => {
     ['velocity', 'distance', 'depth'].forEach(attribute => {
       const currentValue = remote.getGlobal('netfollowing')[attribute];

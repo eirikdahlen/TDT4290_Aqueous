@@ -13,10 +13,12 @@ export default function ModeInput({
   header,
   inputId,
 }) {
+  // Handles button click by sending value to parent
   const handleClick = () => {
     const inputField = document.getElementById(inputId);
-    const inputValue = roundNumber(Number(inputField.value));
-    inputField.value = inputValue;
+    const inputValue = Number(inputField.value);
+    const prettyValue = roundNumber(inputValue);
+    inputField.value = prettyValue;
     if (header) {
       header = header.toLowerCase();
     }
