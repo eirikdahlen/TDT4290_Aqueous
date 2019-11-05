@@ -44,7 +44,7 @@ const datatypes = {
 };
 
 const customEstimatedStateMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Navigation.html#estimated-state
+  // Based on https://www.lsts.pt/docs/imc/imc-5.4.11/Navigation.html#estimated-state, but relative
   name: messages.customEstimatedState,
   length: 62,
   id: {
