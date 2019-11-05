@@ -76,10 +76,10 @@ const initGlobals = () => {
    * Placeholders for X, Y, Z for now
    */
   global.dynamicpositioning = {
-    latitude: 0,
-    longitude: 0,
-    heading: 0,
+    north: 0,
+    east: 0,
     depth: 0,
+    heading: 0,
   };
 
   /*

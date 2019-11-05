@@ -11,7 +11,7 @@ const { remote } = window.require('electron');
 
 // DP mode component for setting DP-values and toggling DP on and off
 export default function DynamicPositioningMode({ title, modeData, step }) {
-  const attributes = ['latitude', 'longitude', 'heading', 'depth'];
+  const attributes = ['north', 'east', 'depth', 'heading'];
 
   // Active if the current mode of the ROV is DP, available if the dpavailable flag is true
   let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
@@ -19,14 +19,14 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
 
   // Converts value of type withing proper range and format
   function fixValue(value, type) {
-    if (type === 'latitude') {
+    if (type === 'north') {
       // Normalize value somehow here
-    } else if (type === 'longitude') {
+    } else if (type === 'east') {
       // Normalize value somehow here
-    } else if (type === 'heading') {
-      value = degreesToRadians(value);
     } else if (type === 'depth') {
       value = normalize(value, 0, 200);
+    } else if (type === 'heading') {
+      value = degreesToRadians(value);
     }
     return value;
   }
@@ -61,20 +61,13 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
       <Title available={available}>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
-          header="Latitude"
+          header="North"
           step={step}
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
-          header="Longitude"
+          header="East"
           step={step}
-          clickFunction={updateValue}
-        ></ModeInput>
-        <ModeInput
-          header="Heading"
-          step={step}
-          min={0}
-          max={360}
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
@@ -82,6 +75,13 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
           step={step}
           min={0}
           max={200}
+          clickFunction={updateValue}
+        ></ModeInput>
+        <ModeInput
+          header="Heading"
+          step={step}
+          min={0}
+          max={360}
           clickFunction={updateValue}
         ></ModeInput>
       </div>
