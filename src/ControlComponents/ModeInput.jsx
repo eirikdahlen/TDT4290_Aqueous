@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeInput.css';
 import { roundNumber } from '../utils/utils';
@@ -24,17 +24,6 @@ export default function ModeInput({
     }
     clickFunction(inputValue, header);
   };
-
-  // Add eventlistener to the input field for listening to enter-clicks
-  useEffect(() => {
-    const inputField = document.getElementById(inputId);
-    inputField.addEventListener('keyup', event => {
-      if (event.key === 'Enter') {
-        handleClick();
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="ModeInput">
