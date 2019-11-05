@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeInput.css';
 
@@ -12,7 +12,7 @@ export default function ModeInput({
   header,
   inputId,
 }) {
-  const [input, changeInput] = useState(0.0);
+  const inputElement = document.getElementById(inputId);
   return (
     <div className="ModeInput">
       {header ? <h3>{header}</h3> : ''}
@@ -24,14 +24,17 @@ export default function ModeInput({
           step={step}
           min={min}
           max={max}
-          onChange={e => changeInput(Number(e.target.value))}
         />
         <button
           className="updateButton"
           onClick={
             header
-              ? () => clickFunction(input, header.toLowerCase())
-              : () => clickFunction(input)
+              ? () =>
+                  clickFunction(
+                    Number(inputElement.value),
+                    header.toLowerCase(),
+                  )
+              : () => clickFunction(Number(inputElement.value))
           }
         >
           &#10003;

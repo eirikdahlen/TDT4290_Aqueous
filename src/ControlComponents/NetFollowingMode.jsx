@@ -62,6 +62,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
       <Title available={available}>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
+          inputId={'velocity'}
           header={'Velocity'}
           min={-10}
           max={10}
@@ -69,6 +70,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
+          inputId={'distance'}
           header={'Distance'}
           min={0}
           max={10}
@@ -76,6 +78,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
+          inputId={'depth'}
           header={'Depth'}
           min={0}
           max={200}

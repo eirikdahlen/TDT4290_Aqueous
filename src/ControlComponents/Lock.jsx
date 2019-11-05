@@ -91,6 +91,7 @@ export default function Lock({
       <Title small={true}>{nameMapping[title]}</Title>
       <div className="inputFlex">
         <ModeInput
+          inputId={nameMapping[title]}
           min={min}
           max={max}
           step={step}
