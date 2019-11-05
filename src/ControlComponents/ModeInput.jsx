@@ -12,7 +12,15 @@ export default function ModeInput({
   header,
   inputId,
 }) {
-  const inputElement = document.getElementById(inputId);
+  const handleClick = () => {
+    console.log('click');
+    const inputValue = Number(document.getElementById(inputId).value);
+    console.log(inputValue);
+    if (header) {
+      header = header.toLowerCase();
+    }
+    clickFunction(inputValue, header);
+  };
   return (
     <div className="ModeInput">
       {header ? <h3>{header}</h3> : ''}
@@ -24,22 +32,11 @@ export default function ModeInput({
           step={step}
           min={min}
           max={max}
-          onClick={() => {
-            inputElement.select();
+          onClick={event => {
+            event.target.select();
           }}
         />
-        <button
-          className="updateButton"
-          onClick={
-            header
-              ? () =>
-                  clickFunction(
-                    Number(inputElement.value),
-                    header.toLowerCase(),
-                  )
-              : () => clickFunction(Number(inputElement.value))
-          }
-        >
+        <button className="updateButton" onClick={() => handleClick()}>
           &#10003;
         </button>
       </div>

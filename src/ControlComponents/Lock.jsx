@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Title from './Title';
 import Switch from './Switch';
@@ -31,58 +31,44 @@ export default function Lock({
 
   // Normalizes or converts values to correct format and range
   // Wrapped in useCallback to be able to use it in a useEffect
-  const fixValue = useCallback(
-    (value, toRadians) => {
-      switch (title) {
-        case 'autoheading': {
-          if (toRadians) {
-            return degreesToRadians(value);
-          } else {
-            return radiansToDegrees(value);
-          }
-        }
-        case 'autodepth': {
-          return normalize(value, min, max);
-        }
-        default: {
-          console.log('Unrecognized title');
+  const fixValue = (value, toRadians) => {
+    switch (title) {
+      case 'autoheading': {
+        if (toRadians) {
+          return degreesToRadians(value);
+        } else {
+          return radiansToDegrees(value);
         }
       }
-    },
-    [title, max, min],
-  );
-
-  // When manualModeActive (true if manual mode is active) changes, the global lock state is updates to match the Lock-components
-  useEffect(() => {
-    if (manualModeActive) {
-      remote.getGlobal('toROV')[title] = active;
-      if (active) {
-        const current = remote.getGlobal('toROV')[type];
-        remote.getGlobal('toROV')[type] = current
-          ? current
-          : fixValue(reference, true);
+      case 'autodepth': {
+        return normalize(value, min, max);
       }
-    } else {
-      remote.getGlobal('toROV')[title] = false;
-      remote.getGlobal('toROV')[type] = 0.0;
+      default: {
+        console.log('Unrecognized title');
+      }
     }
-  }, [manualModeActive, reference, title, type, min, max, active, fixValue]);
+  };
 
-  // Function that is run when the update-button is clicked - sets the local reference
+  // Turn off lock if manualmode is switched off
+  useEffect(() => {
+    if (!manualModeActive) {
+      remote.getGlobal('toROV')[title] = false;
+    }
+  }, [manualModeActive, title]);
+
+  // Function that is run when the update-button is clicked - sets the local reference and updates global if active
   const updateValue = value => {
     setReference(value);
     if (active && manualModeActive) {
-      remote.getGlobal('toROV')[type] = fixValue(reference, true);
+      remote.getGlobal('toROV')[type] = fixValue(value, true);
     }
   };
 
   // Function that is run when toggle is clicked - toggles the autoheading/depth
   const toggle = () => {
-    remote.getGlobal('toROV')[title] = !remote.getGlobal('toROV')[title];
     if (manualModeActive) {
-      remote.getGlobal('toROV')[type] = active
-        ? 0.0
-        : fixValue(reference, true);
+      remote.getGlobal('toROV')[title] = !remote.getGlobal('toROV')[title];
+      remote.getGlobal('toROV')[type] = fixValue(reference, true);
     }
   };
 
