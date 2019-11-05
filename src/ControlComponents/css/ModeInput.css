@@ -36,6 +36,7 @@
   outline: none;
   height: 28px;
   font-weight: bold;
+  padding: 0;
 }
 .inputs button:hover {
   color: black;

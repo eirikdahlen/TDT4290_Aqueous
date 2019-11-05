@@ -56,6 +56,7 @@ function ControlApp() {
             title="Dynamic Positioning"
             modeData={mode}
             step={0.5}
+            fromROV={sensorValues}
           ></DynamicPositioningMode>
         </div>
         <div className="bottomWindow">
