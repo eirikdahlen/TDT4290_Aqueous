@@ -24,6 +24,9 @@ export default function ModeInput({
           step={step}
           min={min}
           max={max}
+          onClick={() => {
+            inputElement.select();
+          }}
         />
         <button
           className="updateButton"

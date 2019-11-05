@@ -47,6 +47,7 @@ export default function DynamicPositioningMode({
   }
 
   // Function that is run when the update-button is clicked - updates the global dp-variable with value
+  // Also validates as a safety measure if euclidean distance of proposed NED is small enough
   const updateValue = (value, type) => {
     if (attributes.indexOf(type) < 0) {
       return;
@@ -54,14 +55,13 @@ export default function DynamicPositioningMode({
     const newValue = fixValue(value, type);
     const newDP = JSON.parse(
       JSON.stringify(remote.getGlobal('dynamicpositioning')),
-    );
+    ); // Copies object to avoid modifying global state
     newDP[type] = newValue;
     const euclideanDistance = Math.sqrt(
       euclideanAttributes.reduce((acc, attribute) => {
         return acc + Math.pow(newDP[attribute] - fromROV[attribute], 2);
       }, 0.0),
     ).toFixed(2);
-
     if (euclideanDistance > maxEuclideanDistance) {
       setErrorInfo({ attribute: type, value: newValue, euclideanDistance });
       setStateValid(false);
@@ -87,6 +87,7 @@ export default function DynamicPositioningMode({
     }
   };
 
+  // Updates input-fields and the global DP settings to the current position
   const setCurrentPosition = () => {
     attributes.forEach(attribute => {
       const currentPosition = Number(fromROV[attribute]);
