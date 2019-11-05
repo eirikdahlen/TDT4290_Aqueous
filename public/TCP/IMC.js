@@ -23,7 +23,22 @@ const encode = {
   goTo: encodeGoTo,
   netFollow: encodeNetFollow,
   customNetFollow: encodeCustomNetFollowState,
+  combine: encodeCombine,
 };
+
+function encodeCombine(bufArr, length = null) {
+  /**
+   * Combines array of buffer to a new buffer of given length
+   * Example of use: encode.combine([encode.entityState({...}), encode.estimatedState({...})], 256)
+   * This creates a new buffer of length 256 with the buffer from entistyState combined with estimatedState and padded with zeros
+   * If length is ommitted the length will be the combined length of the buffers
+   */
+  if (length === null) {
+    return Buffer.concat(bufArr);
+  } else {
+    return Buffer.concat(bufArr, length);
+  }
+}
 
 function decode(buf) {
   /**
@@ -36,6 +51,7 @@ function decode(buf) {
   let msg, name;
   do {
     [msg, offset, name] = decodeImc(buf, offset);
+    if (offset === -1) break;
     result[name] = msg;
   } while (offset < buf.length);
   return result;
@@ -102,6 +118,10 @@ function decodeImc(buf, offset = 0, name = '') {
 
   // Get information from id
   const id = buf.readUInt16BE(offset);
+
+  // Return offset -1 if buffer has id 0
+  if (id === 0) return [{}, -1, ''];
+
   const imcMessageMetadata = idToMessageMetadata[id];
   if (name) name += '.';
   name += imcMessageMetadata.name;
@@ -230,10 +250,7 @@ function encodeLowLevelControlManeuver(
   let durationBuffer = Buffer.alloc(2);
   durationBuffer.writeInt16BE(duration);
 
-  return Buffer.concat(
-    [idBuffer, desiredHeadingBuf, durationBuffer],
-    idBuffer.length + desiredHeadingBuf.length + durationBuffer.length,
-  );
+  return encode.combine([idBuffer, desiredHeadingBuf, durationBuffer]);
 }
 
 function encodeDesiredHeading(desiredHeading) {

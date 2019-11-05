@@ -3,6 +3,8 @@ const { encodeData, decodeData } = require('./coding');
 const { sendMessage } = require('./../utils/IPC');
 const { encode, decode, messages } = require('./IMC');
 
+const messageLength = 256;
+
 const messageProtocols = {
   IMC: 'IMC',
   old: 'OLD',
@@ -173,10 +175,7 @@ function sendIMCData(client) {
         },
         10,
       );
-      buf = Buffer.concat(
-        [buf, lowLevelControlManeuverDesiredZBuf],
-        buf.length + lowLevelControlManeuverDesiredZBuf.length,
-      );
+      buf = encode.combine([buf, lowLevelControlManeuverDesiredZBuf]);
     }
 
     if (global.toROV.autoheading) {
@@ -187,10 +186,7 @@ function sendIMCData(client) {
         { value: global.toROV.yaw },
         10,
       );
-      buf = Buffer.concat(
-        [buf, lowLevelControlManeuverDesiredHeadingBuf],
-        buf.length + lowLevelControlManeuverDesiredHeadingBuf.length,
-      );
+      buf = encode.combine([buf, lowLevelControlManeuverDesiredHeadingBuf]);
     }
   }
   if (global.mode.currentMode === 1) {
@@ -230,8 +226,7 @@ function sendIMCData(client) {
       z_units: 0,
     });
   }
-
-  client.write(buf);
+  client.write(encode.combine([buf], messageLength));
   return decode(buf);
 }
 

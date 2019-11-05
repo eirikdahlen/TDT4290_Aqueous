@@ -4,6 +4,8 @@ const { ipcMain } = require('electron');
 
 const port = 5000;
 
+const messageLength = 256;
+
 // States for IMC ==============================================
 /* eslint-disable no-unused-vars */
 
@@ -215,25 +217,21 @@ const startServer = () => {
       console.log(estimatedState);
       console.log(entityState);
 
-      let estimatedStateBuf = encode.estimatedState(estimatedState);
-      let entityStateBuf = encode.entityState(entityState);
-      let buf = Buffer.concat(
-        [estimatedStateBuf, entityStateBuf],
-        estimatedStateBuf.length + entityStateBuf.length,
-      );
+      let buf = encode.combine([
+        encode.estimatedState(estimatedState),
+        encode.entityState(entityState),
+      ]);
 
       // Add custom net follow message when mode is NF
       if (entityState.state === states.NF) {
         console.log(customNetFollow);
 
         let customNetFollowBuf = encode.customNetFollow(customNetFollow);
-        buf = Buffer.concat(
-          [buf, customNetFollowBuf],
-          buf.length + customNetFollowBuf.length,
-        );
+        buf = encode.combine([buf, customNetFollowBuf]);
       }
       try {
-        socket.write(buf);
+        // Ensures that the buffer will be of size
+        socket.write(encode.combine([buf], messageLength));
       } catch (error) {
         clearInterval(sendData);
       }
