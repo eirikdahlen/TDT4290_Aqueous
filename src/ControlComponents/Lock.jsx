@@ -53,8 +53,9 @@ export default function Lock({
   useEffect(() => {
     if (!manualModeActive) {
       remote.getGlobal('toROV')[title] = false;
+      remote.getGlobal('toROV')[type] = 0.0;
     }
-  }, [manualModeActive, title]);
+  }, [manualModeActive, title, type]);
 
   // Function that is run when the update-button is clicked - sets the local reference and updates global if active
   const updateValue = value => {
@@ -68,7 +69,9 @@ export default function Lock({
   const toggle = () => {
     if (manualModeActive) {
       remote.getGlobal('toROV')[title] = !remote.getGlobal('toROV')[title];
-      remote.getGlobal('toROV')[type] = fixValue(reference, true);
+      remote.getGlobal('toROV')[type] = !active
+        ? fixValue(reference, true)
+        : 0.0;
     }
   };
 
