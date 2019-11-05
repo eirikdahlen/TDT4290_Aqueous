@@ -56,16 +56,11 @@ const desiredControl = {
   },
 };
 
-const goTo = {
+const customGoTo = {
   timeout: 132,
-  lat: 1.1,
-  lon: 2.2,
+  x: 1.1,
+  y: 2.2,
   z: 3.3,
-  z_units: 3,
-  speed: 4.4,
-  speed_units: 0,
-  roll: 5.5,
-  pitch: 6.6,
   yaw: 7.7,
 };
 
@@ -154,9 +149,12 @@ describe('test IMC encode and decode', () => {
     );
   });
 
-  test('goTo', () => {
-    const encoded = decode(encode.goTo(goTo));
-    expect(goTo).toBeDeepCloseTo(encoded[messages.goTo], decimalError);
+  test('customGoTo', () => {
+    const encoded = decode(encode.customGoTo(customGoTo));
+    expect(customGoTo).toBeDeepCloseTo(
+      encoded[messages.customGoTo],
+      decimalError,
+    );
   });
 
   test('netFollow', () => {

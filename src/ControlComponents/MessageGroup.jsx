@@ -19,17 +19,14 @@ const dictionary = {
   v: 'Velo.',
   z_units: 'Down u.',
 
-  // Goto values
-  speed_units: 'Speed u.',
-
-  // Estimated state values
+  // Custom Estimated state values
 
   // Messages
   desiredControl: 'Desired Control',
   'lowLevelControlManeuver.desiredZ': 'LLCM Desired Depth',
   'lowLevelControlManeuver.desiredHeading': 'LLCM Desired Heading',
   netFollow: 'Net Following',
-  goTo: 'GoTo',
+  customGoTo: 'Custom GoTo',
   estimatedState: 'Estimated State',
   entityState: 'Entity State',
 };

@@ -8,7 +8,7 @@ const messages = {
     desiredHeading: 'lowLevelControlManeuver.desiredHeading',
     desiredZ: 'lowLevelControlManeuver.desiredZ',
   },
-  goTo: 'goTo',
+  customGoTo: 'customGoTo',
   netFollow: 'netFollow',
   customNetFollowState: 'customNetFollowState',
 };
@@ -194,12 +194,12 @@ const lowLevelControlManeuverMetadata = {
   ],
 };
 
-const goToMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html
-  name: messages.goTo,
-  length: 54,
+const customGoToMetadata = {
+  // Based on https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html, but relative
+  name: messages.customGoTo,
+  length: 28,
   id: {
-    value: 450,
+    value: 1004,
     datatype: datatypes.uint_16t,
   },
   message: [
@@ -208,36 +208,16 @@ const goToMetadata = {
       datatype: datatypes.uint_16t,
     },
     {
-      name: 'lat',
-      datatype: datatypes.fp64_t,
+      name: 'x',
+      datatype: datatypes.fp32_t,
     },
     {
-      name: 'lon',
-      datatype: datatypes.fp64_t,
+      name: 'y',
+      datatype: datatypes.fp32_t,
     },
     {
       name: 'z',
       datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'z_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'speed',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'speed_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'roll',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'pitch',
-      datatype: datatypes.fp64_t,
     },
     {
       name: 'yaw',
@@ -318,5 +298,5 @@ module.exports = {
   desiredHeadingMetadata,
   desiredZMetadata,
   netFollowMetadata,
-  goToMetadata,
+  customGoToMetadata,
 };
