@@ -8,10 +8,7 @@ expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 
 const decimalError = 5;
 
-const estimatedState = {
-  lat: 0.0,
-  lon: 0.0,
-  height: 0.0,
+const customEstimatedState = {
   x: 0.0,
   y: 0,
   z: 0,
@@ -27,8 +24,6 @@ const estimatedState = {
   p: 0,
   q: 0,
   r: 0,
-  depth: 0,
-  alt: 0,
 };
 
 const entityState = {
@@ -84,11 +79,11 @@ const customNetFollow = {
 };
 
 describe('test IMC encode and decode', () => {
-  test('estimatedState', () => {
-    const encoded = decode(encode.estimatedState(estimatedState));
+  test('customEstimatedState', () => {
+    const encoded = decode(encode.customEstimatedState(customEstimatedState));
 
-    expect(estimatedState).toBeDeepCloseTo(
-      encoded[messages.estimatedState],
+    expect(customEstimatedState).toBeDeepCloseTo(
+      encoded[messages.customEstimatedState],
       decimalError,
     );
   });
@@ -179,24 +174,29 @@ describe('test IMC encode and decode', () => {
 });
 
 test('encode.combine', () => {
-  const estimatedStateBuf = encode.estimatedState(estimatedState);
+  const customEstimatedStateBuf = encode.customEstimatedState(
+    customEstimatedState,
+  );
   const entityStateBuf = encode.entityState(entityState);
 
-  const bufDynamicLength = encode.combine([estimatedStateBuf, entityStateBuf]);
+  const bufDynamicLength = encode.combine([
+    customEstimatedStateBuf,
+    entityStateBuf,
+  ]);
   expect(bufDynamicLength.length).toStrictEqual(
-    estimatedStateBuf.length + entityStateBuf.length,
+    customEstimatedStateBuf.length + entityStateBuf.length,
   );
 
   const length = 256;
   const bufFixedLength = encode.combine(
-    [estimatedStateBuf, entityStateBuf],
+    [customEstimatedStateBuf, entityStateBuf],
     length,
   );
   expect(bufFixedLength.length).toStrictEqual(length);
 
-  // Check if decoding with too long messages works
+  // Check if decoding with zero padding works (longer that the combined length)
   const decoded = decode(bufFixedLength);
   expect(Object.keys(decoded).sort()).toStrictEqual(
-    [messages.entityState, messages.estimatedState].sort(),
+    [messages.entityState, messages.customEstimatedState].sort(),
   );
 });
