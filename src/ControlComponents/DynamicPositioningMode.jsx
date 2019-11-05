@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
@@ -31,6 +31,13 @@ export default function DynamicPositioningMode({
   // Active if the current mode of the ROV is DP, available if the dpavailable flag is true
   let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
   let available = modeData.dpAvailable;
+
+  useEffect(() => {
+    if (active) {
+      setCurrentPosition();
+    }
+    // eslint-disable-next-line
+  }, [active]);
 
   // Converts value of type withing proper range and format
   function fixValue(value, type) {
