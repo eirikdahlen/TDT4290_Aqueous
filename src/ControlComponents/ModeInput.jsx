@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeInput.css';
+import { roundNumber } from '../utils/utils';
 
 // Component for the inputs used in the different modes. Contains a header, a input field and a button
 // It uses the prop clickFunction to set the state of its parent to the input-value
@@ -13,12 +14,15 @@ export default function ModeInput({
   inputId,
 }) {
   const handleClick = () => {
-    const inputValue = Number(document.getElementById(inputId).value);
+    const inputField = document.getElementById(inputId);
+    const inputValue = roundNumber(Number(inputField.value));
+    inputField.value = inputValue;
     if (header) {
       header = header.toLowerCase();
     }
     clickFunction(inputValue, header);
   };
+
   return (
     <div className="ModeInput">
       {header ? <h3>{header}</h3> : ''}

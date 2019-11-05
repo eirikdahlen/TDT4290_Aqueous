@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
 import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
 import ModeInput from './ModeInput';
-import { normalize } from './../utils/utils';
+import { normalize, roundNumber } from './../utils/utils';
 
 const { remote } = window.require('electron');
 
@@ -14,6 +14,10 @@ export default function NetfollowingMode({ title, modeData, step }) {
   // Active is set if the current global mode is NF, and available is set from the global state
   let active = modeData.currentMode === ModeEnum.NETFOLLOWING;
   let available = modeData.nfAvailable;
+
+  useEffect(() => {
+    updateInputFields();
+  }, []);
 
   // Normalises a value to the correct ranges
   function fixValue(value, type) {
@@ -52,7 +56,6 @@ export default function NetfollowingMode({ title, modeData, step }) {
       modeData.currentMode === ModeEnum.DYNAMICPOSITIONING
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.NETFOLLOWING;
-      updateInputFields();
     } else {
       console.log('Error - unable to change mode');
     }
@@ -62,7 +65,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
     ['velocity', 'distance', 'depth'].forEach(attribute => {
       const currentValue = remote.getGlobal('netfollowing')[attribute];
       const inputField = document.getElementById(attribute);
-      inputField.value = currentValue.toFixed(2);
+      inputField.value = roundNumber(currentValue);
     });
   };
 

@@ -4,7 +4,7 @@ import Switch from './Switch';
 import Title from './Title';
 import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
-import { normalize, degreesToRadians } from './../utils/utils';
+import { normalize, degreesToRadians, roundNumber } from './../utils/utils';
 import ModeInput from './ModeInput';
 
 const { remote } = window.require('electron');
@@ -101,7 +101,7 @@ export default function DynamicPositioningMode({
     attributes.forEach(attribute => {
       const currentPosition = Number(fromROV[attribute]);
       const inputField = document.getElementById(attribute);
-      inputField.value = currentPosition.toFixed(2);
+      inputField.value = roundNumber(currentPosition);
       remote.getGlobal('dynamicpositioning')[attribute] = currentPosition;
     });
     setStateValid(true);
