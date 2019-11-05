@@ -84,6 +84,7 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
           max={360}
           clickFunction={updateValue}
         ></ModeInput>
+        <button className="DPCurrentBtn">Use current position</button>
       </div>
       <div className="checkSwitch">
         <Switch

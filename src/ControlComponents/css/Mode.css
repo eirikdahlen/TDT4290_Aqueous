@@ -29,3 +29,24 @@
   position: absolute;
   width: 100%;
 }
+
+.DPCurrentBtn {
+  height: 30px;
+  margin-top: 15px;
+  border: none;
+  background-color: var(--primary-light);
+  cursor: pointer;
+  transition: 0.2s all;
+  border: 0.5px solid black;
+  outline: none;
+  border-radius: var(--small-radius);
+}
+
+.DPCurrentBtn:hover {
+  background-color: var(--primary-dark);
+}
+
+.DPCurrentBtn:active {
+  box-shadow: var(--button-active-shadow);
+  background-color: var(--primary-normal);
+}
