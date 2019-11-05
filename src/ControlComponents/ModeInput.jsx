@@ -47,4 +47,5 @@ ModeInput.propTypes = {
   step: PropTypes.number,
   clickFunction: PropTypes.func,
   header: PropTypes.string,
+  inputId: PropTypes.string,
 };

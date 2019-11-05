@@ -160,4 +160,5 @@ DynamicPositioningMode.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
   modeData: PropTypes.object,
+  fromROV: PropTypes.object,
 };
