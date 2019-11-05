@@ -17,6 +17,7 @@ export default function DynamicPositioningMode({
   fromROV,
 }) {
   const attributes = ['north', 'east', 'down', 'yaw'];
+  const euclideanAttributes = ['north', 'east', 'down'];
 
   // Attributes to ensure valid state - not too big DP distance set
   const [isStateValid, setStateValid] = useState(true);
@@ -51,16 +52,16 @@ export default function DynamicPositioningMode({
       return;
     }
     const newValue = fixValue(value, type);
-    const euclideanAttributes = attributes.slice(0, -1);
     const newDP = JSON.parse(
       JSON.stringify(remote.getGlobal('dynamicpositioning')),
     );
     newDP[type] = newValue;
-    let acc = 0.0;
-    euclideanAttributes.forEach(attribute => {
-      acc += Math.pow(newDP[attribute] - fromROV[attribute], 2);
-    });
-    const euclideanDistance = Math.sqrt(acc).toFixed(2);
+    const euclideanDistance = Math.sqrt(
+      euclideanAttributes.reduce((acc, attribute) => {
+        return acc + Math.pow(newDP[attribute] - fromROV[attribute], 2);
+      }, 0.0),
+    ).toFixed(2);
+
     if (euclideanDistance > maxEuclideanDistance) {
       setErrorInfo({ attribute: type, value: newValue, euclideanDistance });
       setStateValid(false);
@@ -89,8 +90,8 @@ export default function DynamicPositioningMode({
   const setCurrentPosition = () => {
     attributes.forEach(attribute => {
       const currentPosition = Number(fromROV[attribute]);
-      const field = document.getElementById(attribute);
-      field.value = currentPosition.toFixed(2);
+      const inputField = document.getElementById(attribute);
+      inputField.value = currentPosition.toFixed(2);
       remote.getGlobal('dynamicpositioning')[attribute] = currentPosition;
     });
     setStateValid(true);
