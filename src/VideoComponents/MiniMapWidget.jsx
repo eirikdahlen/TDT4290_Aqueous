@@ -42,9 +42,9 @@ class MiniMapWidget extends CanvasWidget {
       this.props.boatHeading,
       this.maxDistance,
       dpEnabled,
-      dpSettings.latitude,
-      dpSettings.longitude,
-      dpSettings.depth,
+      dpSettings.north,
+      dpSettings.east,
+      dpSettings.down,
       initialWidth,
       initialHeight,
     );

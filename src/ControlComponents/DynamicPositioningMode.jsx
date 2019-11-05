@@ -11,7 +11,7 @@ const { remote } = window.require('electron');
 
 // DP mode component for setting DP-values and toggling DP on and off
 export default function DynamicPositioningMode({ title, modeData, step }) {
-  const attributes = ['north', 'east', 'depth', 'heading'];
+  const attributes = ['north', 'east', 'down', 'yaw'];
 
   // Active if the current mode of the ROV is DP, available if the dpavailable flag is true
   let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
@@ -23,9 +23,9 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
       // Normalize value somehow here
     } else if (type === 'east') {
       // Normalize value somehow here
-    } else if (type === 'depth') {
+    } else if (type === 'down') {
       value = normalize(value, 0, 200);
-    } else if (type === 'heading') {
+    } else if (type === 'yaw') {
       value = degreesToRadians(value);
     }
     return value;
@@ -38,7 +38,6 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
     }
     remote.getGlobal('dynamicpositioning')[type] = fixValue(value, type);
   };
-
   // Function that is run when toggle is clicked - sets to DP if dp is not current mode, sets to manual if dp is current
   const toggle = () => {
     if (!available) {
@@ -56,35 +55,51 @@ export default function DynamicPositioningMode({ title, modeData, step }) {
     }
   };
 
+  const setCurrentPosition = () => {
+    const fromROV = remote.getGlobal('fromROV');
+    attributes.forEach(attribute => {
+      const currentPosition = Number(fromROV[attribute]);
+      const field = document.getElementById(attribute);
+      field.value = currentPosition.toFixed(2);
+      remote.getGlobal('dynamicpositioning')[attribute] = currentPosition;
+    });
+  };
+
   return (
     <div className={'Mode ' + (active ? 'activeMode' : '')}>
       <Title available={available}>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
+          inputId="north"
           header="North"
           step={step}
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
+          inputId="east"
           header="East"
           step={step}
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
-          header="Depth"
+          inputId="down"
+          header="Down"
           step={step}
           min={0}
           max={200}
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
-          header="Heading"
+          inputId="yaw"
+          header="Yaw"
           step={step}
           min={0}
           max={360}
           clickFunction={updateValue}
         ></ModeInput>
-        <button className="DPCurrentBtn">Use current position</button>
+        <button onClick={() => setCurrentPosition()} className="DPCurrentBtn">
+          Use current position
+        </button>
       </div>
       <div className="checkSwitch">
         <Switch

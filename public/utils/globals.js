@@ -78,8 +78,8 @@ const initGlobals = () => {
   global.dynamicpositioning = {
     north: 0,
     east: 0,
-    depth: 0,
-    heading: 0,
+    down: 0,
+    yaw: 0,
   };
 
   /*
