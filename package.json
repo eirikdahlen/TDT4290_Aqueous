@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.5.2",
     "@material-ui/icons": "^4.5.1",
     "babel-jest": "^24.9.0",
+    "crc": "^3.8.0",
     "electron-installer-dmg": "^3.0.0",
     "electron-installer-windows": "^2.0.0",
     "electron-is-dev": "^1.1.0",
