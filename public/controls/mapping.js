@@ -95,18 +95,18 @@ function handleClick(activeButtons) {
 
 // Maps a button to the correct mode-switch
 function handleButton({ button, value }) {
-  const { currentMode } = global.mode;
-  if (currentMode === 0) {
+  const { currentMode, manual, dp, nf } = global.mode;
+  if (currentMode === manual) {
     handleManual({ button, value });
-  } else if (currentMode === 1) {
+  } else if (currentMode === dp) {
     handleDP({ button, value });
-  } else if (currentMode === 2) {
+  } else if (currentMode === nf) {
     handleNF({ button, value });
   } else {
     console.log(
       `Invalid mode ${currentMode} - Button ${button} not registered. Switches to manual mode.`,
     );
-    switchToMode(0);
+    switchToMode('manual');
   }
 }
 
@@ -201,18 +201,19 @@ function handleManual({ button, value }) {
     // BACK AND START BUTTONS | SWITCH MODE and reset bias
     case 'Back': // turn NF on if available
       if (global.mode.nfAvailable) {
-        switchToMode(2);
+        switchToMode('nf');
       }
       break;
     case 'Start': // turn DP on if available
       if (global.mode.dpAvailable) {
-        switchToMode(1);
+        switchToMode('dp');
         setDPToCurrentPosition();
       }
       break;
   }
 }
 
+// Handles NF mode controls
 function handleNF({ button, value }) {
   switch (button) {
     case 'LeftTrigger': // - distance
@@ -243,32 +244,42 @@ function handleNF({ button, value }) {
       setNfParameters('velocity', false);
       break;
 
-    // BACK AND START BUTTONS |
-    // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
-    case 'Back': // sets to manual
-      switchToMode(0);
+    // GLOABLSSSSS
+
+    // BACK AND START BUTTONS | TURN ON MANUAL MODE
+    // Sets to manual if any of the mode buttons are clicked
+    case 'Back':
+      switchToMode('manual');
+      break;
+    case 'Start':
+      switchToMode('manual');
       break;
     case 'LS': // combo with X - sets to manual
       if (xDown) {
-        switchToMode(0);
+        switchToMode('manual');
       }
       break;
   }
 }
 
+// Handles DP mode controls
 function handleDP({ button, value }) {
   switch (button) {
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
-    case 'Start': // turn on manual mode
-      switchToMode(0);
+    // Sets to manual if any of the mode buttons are clicked
+    case 'Back':
+      switchToMode('manual');
+    case 'Start':
+      switchToMode('manual');
       break;
     case 'LS': // combo with X - turn on manual mode
       if (xDown) {
-        switchToMode(0);
+        switchToMode('manual');
       }
   }
 }
 
+// Resets all bias
 function resetAllBias() {
   Object.keys(bias).forEach(v => (bias[v] = 0.0));
   ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
@@ -277,7 +288,7 @@ function resetAllBias() {
 
 // Helper function for checking bias-buttons for combination with X and setting biases.
 function setBias(type, positive) {
-  if (global.mode.currentMode == 0) {
+  if (global.mode.currentMode === global.mode.manual) {
     // Reset axis if X is held down
     if (xDown) {
       bias[type] = 0.0;
@@ -324,9 +335,13 @@ function setNfParameters(type, positive) {
 }
 
 //Sets global mode to modeNumber and resets all bias
-// 0: Manual  1: DP   2: NF
-function switchToMode(modeNumber) {
-  global.mode.currentMode = modeNumber;
+// Manual/DP/NF
+function switchToMode(modeName) {
+  if (Object.keys(global.mode).indexOf(modeName) < 0) {
+    console.log(`Could not switch to invalid mode ${modeName}`);
+    return;
+  }
+  global.mode.currentMode = global.mode[modeName];
   resetAllBias();
 }
 
