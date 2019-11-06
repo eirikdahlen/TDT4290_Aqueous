@@ -16,7 +16,7 @@ export default function Values({
   settings,
 }) {
   const extractData = (msgData, msgName) => {
-    if (msgName === 'netFollow' || msgName === 'goTo') {
+    if (msgName === 'netFollow' || msgName === 'customGoTo') {
       return { flags: false, data: msgData };
     }
     if (msgName.includes('lowLevelControlManeuver')) {

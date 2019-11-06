@@ -7,7 +7,7 @@ const {
   lowLevelControlManeuverMetadata,
   desiredHeadingMetadata,
   desiredZMetadata,
-  goToMetadata,
+  customGoToMetadata,
   netFollowMetadata,
   messages,
 } = require('./IMCMetadata');
@@ -20,7 +20,7 @@ const encode = {
     desiredHeading: encodeLowLevelControlManeuverDesiredHeading,
     desiredZ: encodeLowLevelControlManeuverDesiredZ,
   },
-  goTo: encodeGoTo,
+  customGoTo: encodeCustomGoTo,
   netFollow: encodeNetFollow,
   customNetFollow: encodeCustomNetFollowState,
   combine: encodeCombine,
@@ -273,8 +273,8 @@ function encodeLowLevelControlManeuverDesiredZ(desiredZ, duration) {
   return encodeLowLevelControlManeuver(encodeDesiredZ, desiredZ, duration);
 }
 
-function encodeGoTo(goTo) {
-  return encodeIMC(goTo, goToMetadata);
+function encodeCustomGoTo(customGoTo) {
+  return encodeIMC(customGoTo, customGoToMetadata);
 }
 
 function encodeNetFollow(netFollow) {
@@ -292,7 +292,7 @@ const idToMessageMetadata = {
   400: desiredHeadingMetadata,
   401: desiredZMetadata,
   455: lowLevelControlManeuverMetadata,
-  450: goToMetadata,
+  1004: customGoToMetadata,
   465: netFollowMetadata,
   1002: customNetFollowStateMetadata,
 };

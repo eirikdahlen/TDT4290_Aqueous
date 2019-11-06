@@ -82,16 +82,11 @@ let lowLevelControlManeuver = {
 // MANUAL MODE END
 
 // DP MODE
-let goTo = {
+let customGoTo = {
   timeout: 0,
-  lat: 0,
-  lon: 0,
+  x: 0,
+  y: 0,
   z: 0,
-  z_units: 0,
-  speed: 0,
-  speed_units: 0,
-  roll: 0,
-  pitch: 0,
   yaw: 0,
 };
 // DP MODE END
@@ -181,7 +176,7 @@ const startServer = () => {
             lowLevelControlManeuver.desiredZ = recievedData[message];
             // TODO: SEND IPC message?
             break;
-          case messages.goTo:
+          case messages.customGoTo:
             if (entityState.state !== states.DP) {
               entityState.state = states.DP;
               global.mockupWindow.webContents.send(
@@ -189,7 +184,7 @@ const startServer = () => {
                 states.DP,
               );
             }
-            goTo = recievedData[message];
+            customGoTo = recievedData[message];
             // TODO: SEND IPC message?
             break;
           case messages.netFollow:
