@@ -36,7 +36,7 @@ const menuTemplate = [
     label: 'Simulator',
     submenu: [
       {
-        label: 'Open File and Run',
+        label: 'Open Simulator',
         accelerator: 'CmdOrCtrl+S',
         click() {
           getFileAndLaunch();
@@ -44,6 +44,7 @@ const menuTemplate = [
       },
       {
         label: 'IMC-ROV Mockup',
+        accelerator: 'CmdOrCtrl+M',
         click: async () => {
           createMockupWindow();
           ipcCommunicationTCPServer();
@@ -56,21 +57,23 @@ const menuTemplate = [
     submenu: [
       {
         label: 'Connect to TCP',
+        accelerator: 'CmdOrCtrl+T',
         click() {
           getConnectedClient();
         },
       },
       {
         label: 'Start ROV Serial Port',
+        accelerator: 'CmdOrCtrl+C',
         click() {
           getFileAndLaunch(global.settings.serialFile);
         },
       },
       {
         label: 'Settings',
+        accelerator: 'CmdOrCtrl+I',
         click() {
-          const { x, y } = electron.screen.getCursorScreenPoint();
-          createSettingsWindow(x, y);
+          createSettingsWindow();
         },
       },
     ],
@@ -97,12 +100,14 @@ const menuTemplate = [
     submenu: [
       {
         label: 'Gamepad Controls',
+        accelerator: 'CmdOrCtrl+G',
         click: async () => {
           createXboxMappingWindow();
         },
       },
       {
         label: 'Keyboard Controls',
+        accelerator: 'CmdOrCtrl+K',
         click: async () => {
           createKeyboardMappingWindow();
         },

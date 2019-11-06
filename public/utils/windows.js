@@ -185,14 +185,14 @@ function createKeyboardMappingWindow() {
   keyboardMappingWindow.setMenu(null);
 }
 
-function createSettingsWindow(x, y) {
+function createSettingsWindow() {
   let settingsWindow = new BrowserWindow({
     title: 'Settings',
     modal: true,
     frame: false,
     parent: controlWindow,
-    x: x - 50,
-    y: y - 50,
+    x: xControlWindow + 10,
+    y: yControlWindow + 50,
     width: 380,
     height: 525,
     webPreferences: {
