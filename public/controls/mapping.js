@@ -35,7 +35,7 @@ const hasXButton = obj => {
   return obj.button === 'X';
 };
 
-//ROV control values
+//ROV control values - used to update global.toROV
 let controls = {
   surge: 0,
   sway: 0,
@@ -88,10 +88,12 @@ function handleClick(activeButtons) {
     handleButton(obj);
   });
 
+  // Updates global values which is sent to the ROV
   global.toROV = controls;
   global.bias = bias;
 }
 
+// Maps a button to the correct mode-switch
 function handleButton({ button, value }) {
   const { currentMode } = global.mode;
   if (currentMode === 0) {
@@ -104,10 +106,11 @@ function handleButton({ button, value }) {
     console.log(
       `Invalid mode ${currentMode} - Button ${button} not registered. Switches to manual mode.`,
     );
-    global.mode.currentMode = 0;
+    switchToMode(0);
   }
 }
 
+// Handles manual mode controls
 function handleManual({ button, value }) {
   switch (button) {
     // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
@@ -152,7 +155,7 @@ function handleManual({ button, value }) {
       }
       break;
 
-    // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
+    // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEADING
     case 'Y': // Reset all bias'
       resetAllBias();
       break;
@@ -172,56 +175,50 @@ function handleManual({ button, value }) {
       break;
 
     // BIAS BUTTONS | INCREASE/DECREASE BIAS
-    case 'DPadRight': // positive sway bias
+    case 'DPadRight': // + sway bias
       setBias('sway', true);
       break;
-    case 'DPadLeft': // negative sway bias
+    case 'DPadLeft': // - sway bias
       setBias('sway', false);
       break;
-    case 'DPadUp': // positive surge bias
+    case 'DPadUp': // + surge bias
       setBias('surge', true);
       break;
-    case 'DPadDown': // negative surge bias
+    case 'DPadDown': // - surge bias
       setBias('surge', false);
       break;
-    case 'RB': // positive heave bias (down)
+    case 'RB': // + heave bias (down)
       if (!autoDepth) {
         setBias('heave', true);
       }
       break;
-    case 'LB': // negative heave bias (up)
+    case 'LB': // - heave bias (up)
       if (!autoDepth) {
         setBias('heave', false);
       }
       break;
 
-    // BACK AND START BUTTONS |
-    // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
-    case 'Back': // toggle NF
+    // BACK AND START BUTTONS | SWITCH MODE and reset bias
+    case 'Back': // turn NF on if available
       if (global.mode.nfAvailable) {
-        resetAllBias();
-        global.mode.currentMode = 2;
+        switchToMode(2);
       }
       break;
-    case 'Start': // toggle DP
+    case 'Start': // turn DP on if available
       if (global.mode.dpAvailable) {
-        global.mode.currentMode = 1;
-        resetAllBias();
+        switchToMode(1);
         setDPToCurrentPosition();
       }
-      break;
-    case 'LS': //turn on manual mode, turn off DP/NF and reset bias
-      resetToManual();
       break;
   }
 }
 
 function handleNF({ button, value }) {
   switch (button) {
-    case 'LeftTrigger': // Up
+    case 'LeftTrigger': // - distance
       setNfParameters('distance', false);
       break;
-    case 'RightTrigger': // Down
+    case 'RightTrigger': // + distance
       setNfParameters('distance', true);
       break;
 
@@ -249,24 +246,26 @@ function handleNF({ button, value }) {
     // BACK AND START BUTTONS |
     // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
     case 'Back': // sets to manual
-      global.mode.currentMode = 0;
+      switchToMode(0);
       break;
-    case 'LS': //turn on manual mode, turn off DP/NF and reset bias
-      resetToManual();
+    case 'LS': // combo with X - sets to manual
+      if (xDown) {
+        switchToMode(0);
+      }
       break;
   }
 }
 
 function handleDP({ button, value }) {
   switch (button) {
-    // BACK AND START BUTTONS |
-    // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
-    case 'Start': // toggle DP
-      global.mode.currentMode = 0;
+    // BACK AND START BUTTONS | TURN ON MANUAL MODE
+    case 'Start': // turn on manual mode
+      switchToMode(0);
       break;
-    case 'LS': //turn on manual mode, turn off DP/NF and reset bias
-      resetToManual();
-      break;
+    case 'LS': // combo with X - turn on manual mode
+      if (xDown) {
+        switchToMode(0);
+      }
   }
 }
 
@@ -324,12 +323,11 @@ function setNfParameters(type, positive) {
   }
 }
 
-//Helper function for resetting to manual mode with parameters set to zero.
-function resetToManual() {
-  if (xDown) {
-    global.mode.currentMode = 0;
-    resetAllBias();
-  }
+//Sets global mode to modeNumber and resets all bias
+// 0: Manual  1: DP   2: NF
+function switchToMode(modeNumber) {
+  global.mode.currentMode = modeNumber;
+  resetAllBias();
 }
 
 // Sets global DP to current position (fromROV)
