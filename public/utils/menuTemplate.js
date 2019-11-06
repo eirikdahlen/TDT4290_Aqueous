@@ -43,7 +43,7 @@ const menuTemplate = [
         },
       },
       {
-        label: 'Mockup window',
+        label: 'IMC-ROV Mockup',
         click: async () => {
           createMockupWindow();
           ipcCommunicationTCPServer();
@@ -61,7 +61,7 @@ const menuTemplate = [
         },
       },
       {
-        label: 'Start ROV serial port',
+        label: 'Start ROV Serial Port',
         click() {
           getFileAndLaunch(global.settings.serialFile);
         },
@@ -96,13 +96,13 @@ const menuTemplate = [
     role: 'help',
     submenu: [
       {
-        label: 'Xbox Controller Mappings',
+        label: 'Gamepad Controls',
         click: async () => {
           createXboxMappingWindow();
         },
       },
       {
-        label: 'Keyboard Mappings',
+        label: 'Keyboard Controls',
         click: async () => {
           createKeyboardMappingWindow();
         },
