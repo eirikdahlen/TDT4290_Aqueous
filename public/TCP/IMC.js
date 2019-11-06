@@ -1,7 +1,7 @@
 const {
   datatypes,
   customNetFollowStateMetadata,
-  estimatedStateMetadata,
+  customEstimatedStateMetadata,
   entityStateMetadata,
   desiredControlMetadata,
   lowLevelControlManeuverMetadata,
@@ -13,7 +13,7 @@ const {
 } = require('./IMCMetadata');
 
 const encode = {
-  estimatedState: encodeEstimatedState,
+  customEstimatedState: encodeCustomEstimatedState,
   entityState: encodeEntityState,
   desiredControl: encodeDesiredControl,
   lowLevelControlManeuver: {
@@ -29,8 +29,8 @@ const encode = {
 function encodeCombine(bufArr, length = null) {
   /**
    * Combines array of buffer to a new buffer of given length
-   * Example of use: encode.combine([encode.entityState({...}), encode.estimatedState({...})], 256)
-   * This creates a new buffer of length 256 with the buffer from entistyState combined with estimatedState and padded with zeros
+   * Example of use: encode.combine([encode.entityState({...}), encode.customEstimatedState({...})], 256)
+   * This creates a new buffer of length 256 with the buffer from entistyState combined with customEstimatedState and padded with zeros
    * If length is ommitted the length will be the combined length of the buffers
    */
   if (length === null) {
@@ -44,7 +44,7 @@ function decode(buf) {
   /**
    * Decodes a Buffer with possibly multiple IMC messages
    *
-   * Return an object of this type: {'entityState': {...}, 'estimatedState': ...}
+   * Return an object of this type: {'entityState': {...}, 'customEstimatedState': ...}
    */
   let result = {};
   let offset = 0;
@@ -207,8 +207,8 @@ function lenImcMessage(message) {
   }, 0);
 }
 
-function encodeEstimatedState(estimatedState) {
-  return encodeIMC(estimatedState, estimatedStateMetadata);
+function encodeCustomEstimatedState(customEstimatedState) {
+  return encodeIMC(customEstimatedState, customEstimatedStateMetadata);
 }
 
 function encodeEntityState(entityState) {
@@ -286,7 +286,7 @@ function encodeCustomNetFollowState(customNetFollowState) {
 }
 
 const idToMessageMetadata = {
-  350: estimatedStateMetadata,
+  1003: customEstimatedStateMetadata,
   1: entityStateMetadata,
   407: desiredControlMetadata,
   400: desiredHeadingMetadata,
