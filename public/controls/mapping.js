@@ -103,9 +103,7 @@ function handleButton({ button, value }) {
   } else if (currentMode === nf) {
     handleNF({ button, value });
   } else {
-    console.log(
-      `Invalid mode ${currentMode} - Button ${button} not registered. Switches to manual mode.`,
-    );
+    console.log(`Invalid mode ${currentMode}. Switches to manual mode.`);
     switchToMode('manual');
   }
 }
@@ -214,7 +212,7 @@ function handleManual({ button, value }) {
 }
 
 // Handles NF mode controls
-function handleNF({ button, value }) {
+function handleNF({ button }) {
   switch (button) {
     case 'LeftTrigger': // - distance
       setNfParameters('distance', false);
@@ -254,28 +252,20 @@ function handleNF({ button, value }) {
     case 'Start':
       switchToMode('manual');
       break;
-    case 'LS': // combo with X - sets to manual
-      if (xDown) {
-        switchToMode('manual');
-      }
-      break;
   }
 }
 
 // Handles DP mode controls
-function handleDP({ button, value }) {
+function handleDP({ button }) {
   switch (button) {
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
     // Sets to manual if any of the mode buttons are clicked
     case 'Back':
       switchToMode('manual');
+      break;
     case 'Start':
       switchToMode('manual');
       break;
-    case 'LS': // combo with X - turn on manual mode
-      if (xDown) {
-        switchToMode('manual');
-      }
   }
 }
 
