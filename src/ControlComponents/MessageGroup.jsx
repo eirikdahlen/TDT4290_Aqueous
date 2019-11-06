@@ -27,7 +27,7 @@ const dictionary = {
   'lowLevelControlManeuver.desiredHeading': 'LLCM Desired Heading',
   netFollow: 'Net Following',
   customGoTo: 'Custom GoTo',
-  estimatedState: 'Estimated State',
+  customEstimatedState: 'Custom Estimated State',
   entityState: 'Entity State',
 };
 

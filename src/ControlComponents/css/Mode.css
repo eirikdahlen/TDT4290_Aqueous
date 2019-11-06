@@ -23,9 +23,57 @@
   margin-top: 4px;
 }
 
+.modeInputRow {
+  display: flex;
+}
+
+.modeInputRow .ModeInput:first-child {
+  margin-right: 15px;
+}
+
 .checkSwitch {
   text-align: center;
   bottom: 0;
   position: absolute;
   width: 100%;
+}
+
+.DPCurrentBtn {
+  height: 30px;
+  margin-top: 25px;
+  border: none;
+  background-color: var(--primary-light);
+  cursor: pointer;
+  transition: 0.1s all;
+  border: 0.5px solid black;
+  outline: none;
+  border-radius: var(--small-radius);
+}
+
+.DPCurrentBtn > span {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+}
+
+.DPCurrentBtn:hover {
+  background-color: var(--primary-dark);
+}
+
+.DPCurrentBtn:active {
+  box-shadow: var(--button-active-shadow);
+  background-color: var(--primary-normal);
+}
+
+.DPWarning {
+  display: none;
+  color: var(--negative-normal);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.DPWarningShow {
+  display: block !important;
 }

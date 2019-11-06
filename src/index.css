@@ -33,6 +33,8 @@ body,
 
   --big-radius: 5px;
   --small-radius: 2px;
+
+  --button-active-shadow: 0 0 1px 1px var(--primary-dark);
 }
 
 /* Custom scrollbar */

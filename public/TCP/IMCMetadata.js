@@ -1,5 +1,5 @@
 const messages = {
-  estimatedState: 'estimatedState',
+  customEstimatedState: 'customEstimatedState',
   entityState: 'entityState',
   desiredControl: 'desiredControl',
   desiredHeading: 'desiredHeading',
@@ -43,18 +43,15 @@ const datatypes = {
   },
 };
 
-const estimatedStateMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Navigation.html#estimated-state
-  name: messages.estimatedState,
-  length: 90,
+const customEstimatedStateMetadata = {
+  // Based on https://www.lsts.pt/docs/imc/imc-5.4.11/Navigation.html#estimated-state, but relative
+  name: messages.customEstimatedState,
+  length: 62,
   id: {
-    value: 350,
+    value: 1003,
     datatype: datatypes.uint_16t,
   },
   message: [
-    { name: 'lat', datatype: datatypes.fp64_t },
-    { name: 'lon', datatype: datatypes.fp64_t },
-    { name: 'height', datatype: datatypes.fp32_t },
     { name: 'x', datatype: datatypes.fp32_t },
     { name: 'y', datatype: datatypes.fp32_t },
     { name: 'z', datatype: datatypes.fp32_t },
@@ -70,8 +67,6 @@ const estimatedStateMetadata = {
     { name: 'p', datatype: datatypes.fp32_t },
     { name: 'q', datatype: datatypes.fp32_t },
     { name: 'r', datatype: datatypes.fp32_t },
-    { name: 'depth', datatype: datatypes.fp32_t },
-    { name: 'alt', datatype: datatypes.fp32_t },
   ],
 };
 
@@ -290,7 +285,7 @@ const customNetFollowStateMetadata = {
 module.exports = {
   datatypes,
   messages,
-  estimatedStateMetadata,
+  customEstimatedStateMetadata,
   customNetFollowStateMetadata,
   entityStateMetadata,
   desiredControlMetadata,

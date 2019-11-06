@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { estimatedStateMetadata } from '../constants/imcMetadata';
+import { customEstimatedStateMetadata } from '../constants/imcMetadata';
 
 import './css/FromROV.css';
 
 const { ipcRenderer } = require('electron');
 
 export default function FromROV() {
-  const [estimatedStateMessage, setEstimatedStateMessage] = useState({
-    lat: 0,
-    lon: 0,
-    height: 0,
+  const [
+    customEstimatedStateMessage,
+    setCustomEstimatedStateMessage,
+  ] = useState({
     x: 0,
     y: 0,
     z: 0,
@@ -25,37 +25,40 @@ export default function FromROV() {
     p: 0,
     q: 0,
     r: 0,
-    depth: 0,
-    alt: 0,
   });
 
-  function changeEstimatedState(value, name) {
-    let tempState = estimatedStateMessage;
+  function changeCustomEstimatedState(value, name) {
+    let tempState = customEstimatedStateMessage;
     tempState[name] = isNaN(parseInt(value)) ? 0 : parseInt(value);
     console.log(tempState);
-    setEstimatedStateMessage(tempState);
-    ipcRenderer.send('rov-mock-up-send-estimated-state', estimatedStateMessage);
+    setCustomEstimatedStateMessage(tempState);
+    ipcRenderer.send(
+      'rov-mock-up-send-custom-estimated-state',
+      customEstimatedStateMessage,
+    );
   }
 
   return (
     <div className="fromROV">
-      <div className="estimatedStateSettings">
-        <h3>Estimated state</h3>
+      <div className="customEstimatedStateSettings">
+        <h3>Custom Estimated state</h3>
         <div className="settings">
-          {estimatedStateMetadata.message.map(value => {
+          {customEstimatedStateMetadata.message.map(value => {
             return (
               <div
-                className="estimatedStateInputBox"
-                key={`estimatedStateInput${value.name}`}
+                className="customEstimatedStateInputBox"
+                key={`customEstimatedStateInput${value.name}`}
               >
-                <h4 className="estimatedStateInputHeader">{value.name}</h4>
+                <h4 className="customEstimatedStateInputHeader">
+                  {value.name}
+                </h4>
                 <input
                   type="number"
-                  className={`estimatedStateInput${value.name}`}
+                  className={`customEstimatedStateInput${value.name}`}
                   onChange={e =>
-                    changeEstimatedState(e.target.value, value.name)
+                    changeCustomEstimatedState(e.target.value, value.name)
                   }
-                  placeholder={`${estimatedStateMessage[value.name]}`}
+                  placeholder={`${customEstimatedStateMessage[value.name]}`}
                 ></input>
               </div>
             );

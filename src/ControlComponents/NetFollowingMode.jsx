@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Switch from './Switch';
 import Title from './Title';
 import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
 import ModeInput from './ModeInput';
-import { normalize } from './../utils/utils';
+import { normalize, roundNumber } from './../utils/utils';
 
 const { remote } = window.require('electron');
 
@@ -14,6 +14,11 @@ export default function NetfollowingMode({ title, modeData, step }) {
   // Active is set if the current global mode is NF, and available is set from the global state
   let active = modeData.currentMode === ModeEnum.NETFOLLOWING;
   let available = modeData.nfAvailable;
+
+  // Sets input fields to the global values on mount
+  useEffect(() => {
+    updateInputFields();
+  }, []);
 
   // Normalises a value to the correct ranges
   function fixValue(value, type) {
@@ -57,11 +62,21 @@ export default function NetfollowingMode({ title, modeData, step }) {
     }
   };
 
+  // Sets input fields to the global values
+  const updateInputFields = () => {
+    ['velocity', 'distance', 'depth'].forEach(attribute => {
+      const currentValue = remote.getGlobal('netfollowing')[attribute];
+      const inputField = document.getElementById(attribute);
+      inputField.value = roundNumber(currentValue);
+    });
+  };
+
   return (
     <div className={'Mode ' + (active ? 'activeMode' : '')}>
       <Title available={available}>{title.toUpperCase()}</Title>
       <div className="modeInputFlex">
         <ModeInput
+          inputId={'velocity'}
           header={'Velocity'}
           min={-10}
           max={10}
@@ -69,6 +84,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
+          inputId={'distance'}
           header={'Distance'}
           min={0}
           max={10}
@@ -76,6 +92,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
           clickFunction={updateValue}
         ></ModeInput>
         <ModeInput
+          inputId={'depth'}
           header={'Depth'}
           min={0}
           max={200}

@@ -12,9 +12,9 @@ class DynPosWidget extends Component {
   }
 
   calculateDistance(dataDP, fromROV) {
-    this.distance.north = dataDP.latitude - fromROV.north;
-    this.distance.east = dataDP.longitude - fromROV.east;
-    this.distance.down = dataDP.depth - fromROV.down;
+    this.distance.north = dataDP.north - fromROV.north;
+    this.distance.east = dataDP.east - fromROV.east;
+    this.distance.down = dataDP.down - fromROV.down;
     this.distance.total = Math.sqrt(
       Math.pow(this.distance.north, 2) +
         Math.pow(this.distance.east, 2) +
@@ -62,17 +62,17 @@ class DynPosWidget extends Component {
           <tbody>
             <tr>
               <td>North</td>
-              <td>{dataDP.latitude.toFixed(2)}</td>
+              <td>{dataDP.north.toFixed(2)}</td>
               <td>{this.distance.north.toFixed(2)}</td>
             </tr>
             <tr>
               <td>East</td>
-              <td>{dataDP.longitude.toFixed(2)}</td>
+              <td>{dataDP.east.toFixed(2)}</td>
               <td>{this.distance.east.toFixed(2)}</td>
             </tr>
             <tr>
               <td>Down</td>
-              <td>{dataDP.depth.toFixed(2)}</td>
+              <td>{dataDP.down.toFixed(2)}</td>
               <td>{this.distance.down.toFixed(2)}</td>
             </tr>
           </tbody>
