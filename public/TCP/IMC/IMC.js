@@ -1,13 +1,13 @@
 const {
   datatypes,
   customNetFollowStateMetadata,
-  estimatedStateMetadata,
+  customEstimatedStateMetadata,
   entityStateMetadata,
   desiredControlMetadata,
   lowLevelControlManeuverMetadata,
   desiredHeadingMetadata,
   desiredZMetadata,
-  goToMetadata,
+  customGoToMetadata,
   netFollowMetadata,
   messages,
 } = require('./IMCMetadata');
@@ -15,59 +15,98 @@ const {
 const { HEADER_LENGTH } = require('./constants');
 const {
   uIntBEToBitfield,
-  addFooter,
   encodeAqeousHeader,
   decodeHeader,
   encodeImcMessage,
+  getBufferWithFooterAppended,
+  getIdBuffer,
 } = require('./utils');
 
 const encode = {
-  estimatedState: encodeEstimatedState,
+  customEstimatedState: encodeCustomEstimatedState,
   entityState: encodeEntityState,
   desiredControl: encodeDesiredControl,
   lowLevelControlManeuver: {
     desiredHeading: encodeLowLevelControlManeuverDesiredHeading,
     desiredZ: encodeLowLevelControlManeuverDesiredZ,
   },
-  goTo: encodeGoTo,
+  customGoTo: encodeCustomGoTo,
   netFollow: encodeNetFollow,
   customNetFollow: encodeCustomNetFollowState,
   combine: Buffer.concat,
 };
 
-function encodeIMC(imcMessage, imcMessageMetadata, addFooterAndHeader = true) {
-  /**
-   * Main function for encoding IMC messages. If `addFooterAndHeader` header and footer will be added.
-   * It if is false, just the id of the message is added.
-   */
+/**
+ * Encodes and IMC message with header and footer to a `Buffer`.
+ * The buffer will be of length of the encoded message (i.e. no values will be padded).
+ *
+ * Combining several messages and padding must be made with the `encode.combine` function.
+ *
+ * @param {{[key: string]: number | {[key: string]: boolean}}} imcMessage IMC message to encode
+ * @param {Object} imcMessageMetadata Metadata of message to encode
+ *
+ * @returns {Buffer} Buffer
+ */
+function encodeImcPackage(imcMessage, imcMessageMetadata) {
   let dataBuf = encodeImcMessage(imcMessage, imcMessageMetadata);
-  if (addFooterAndHeader) {
-    let headerBuf = encodeAqeousHeader(
-      imcMessageMetadata.id.value,
-      dataBuf.length,
-    );
-    let resultBuf = Buffer.concat([headerBuf, dataBuf]);
-    return addFooter(resultBuf);
-  } else {
-    let idBuf = Buffer.alloc(2);
-    idBuf.writeUInt16BE(imcMessageMetadata.id.value);
-    return Buffer.concat([idBuf, dataBuf]);
-  }
+  let headerBuf = encodeAqeousHeader(
+    imcMessageMetadata.id.value,
+    dataBuf.length,
+  );
+  let resultBuf = Buffer.concat([headerBuf, dataBuf]);
+  return getBufferWithFooterAppended(resultBuf);
 }
 
+/**
+ * Since a Low LevelControl Maneuver message encapsulates other messages it has to be handeled differently.
+ *
+ * @param {{[key: string]: number | {[key: string]: boolean}}} controlManeuver Values of message
+ * @param {Object} controlManeuverMetadata Metadata of message to encode
+ * @param {number} duration Duration of control maneuver
+ *
+ * @returns {Buffer} Buffer of encoded IMC message
+ */
+function encodeLowLevelControlManeuver(
+  controlManeuver,
+  controlManeuverMetadata,
+  duration,
+) {
+  let controlManeuverId = getIdBuffer(controlManeuverMetadata.id.value);
+  let controlBuf = encodeImcMessage(controlManeuver, controlManeuverMetadata);
+
+  // Add duration
+  let durationBuf = Buffer.alloc(2);
+  durationBuf.writeInt16BE(duration, 0);
+
+  let resultBuf = Buffer.concat([controlManeuverId, controlBuf, durationBuf]);
+
+  // Add header
+  let headerBuf = encodeAqeousHeader(
+    lowLevelControlManeuverMetadata.id.value,
+    resultBuf.length,
+  );
+  resultBuf = Buffer.concat([headerBuf, resultBuf]);
+
+  return getBufferWithFooterAppended(resultBuf);
+}
+
+/**
+ * Main entry point for decoding buffer containing and IMC message package (including header and buffer).
+ *
+ * This function will decode possiblely multiple messages as long as they are concatinated without spacing.
+ * It will handle padding of the buffer as long as the padding consist of zeros.
+ * @param {Buffer} buf Buffer to decode
+ *
+ * @returns {{[key: string]: Object}} Object with IMC message as key (use `messages` to recieve the messages)
+ */
 function decode(buf) {
-  /**
-   * Decodes a Buffer with possibly multiple IMC messages
-   *
-   * Return an object of this type: {'entityState': {...}, 'estimatedState': ...}
-   */
   let result = {};
   let offset = 0;
   let msg, name;
   do {
     // No more messages
     if (buf.readUInt16BE(offset) === 0) break;
-    [msg, offset, name] = decodeImc(buf, offset);
+    [msg, offset, name] = decodeImcMessage(buf, offset);
     // Add two bytes for footer
     offset += 2;
     result[name] = msg;
@@ -75,7 +114,7 @@ function decode(buf) {
   return result;
 }
 
-function decodeImc(buf, offset = 0, name = '', hasHeader = true) {
+function decodeImcMessage(buf, offset = 0, name = '', hasHeader = true) {
   let result = {};
   let id;
 
@@ -88,9 +127,6 @@ function decodeImc(buf, offset = 0, name = '', hasHeader = true) {
     id = buf.readUInt16BE(offset);
     offset += 2;
   }
-
-  // // Return offset -1 if buffer has id 0
-  // if (id === 0) return [{}, -1, ''];
 
   const imcMessageMetadata = idToMessageMetadata[id];
   if (name) name += '.';
@@ -124,7 +160,7 @@ function decodeImc(buf, offset = 0, name = '', hasHeader = true) {
           );
           break;
         case datatypes.recursive:
-          [result[imcEntity.name], offset, name] = decodeImc(
+          [result[imcEntity.name], offset, name] = decodeImcMessage(
             buf,
             offset,
             name,
@@ -142,81 +178,50 @@ function decodeImc(buf, offset = 0, name = '', hasHeader = true) {
   return [result, offset, name];
 }
 
-function encodeEstimatedState(estimatedState) {
-  return encodeIMC(estimatedState, estimatedStateMetadata);
+function encodeCustomEstimatedState(estimatedState) {
+  return encodeImcPackage(estimatedState, customEstimatedStateMetadata);
 }
 
 function encodeEntityState(entityState) {
-  return encodeIMC(entityState, entityStateMetadata);
+  return encodeImcPackage(entityState, entityStateMetadata);
 }
 
 function encodeDesiredControl(desiredControl) {
-  return encodeIMC(desiredControl, desiredControlMetadata);
-}
-
-function encodeLowLevelControlManeuver(
-  encodeControlManeuver,
-  controlManeuver,
-  duration,
-) {
-  let controlBuf = encodeControlManeuver(controlManeuver);
-
-  // Add duration
-  let durationBuf = Buffer.alloc(2);
-  durationBuf.writeInt16BE(duration, 0);
-
-  let resultBuf = Buffer.concat([controlBuf, durationBuf]);
-
-  // Add header
-  let headerBuf = encodeAqeousHeader(
-    lowLevelControlManeuverMetadata.id.value,
-    resultBuf.length,
-  );
-  resultBuf = Buffer.concat([headerBuf, resultBuf]);
-
-  return addFooter(resultBuf);
-}
-
-function encodeDesiredHeading(desiredHeading, addFooterAndHeader = false) {
-  return encodeIMC(desiredHeading, desiredHeadingMetadata, addFooterAndHeader);
+  return encodeImcPackage(desiredControl, desiredControlMetadata);
 }
 
 function encodeLowLevelControlManeuverDesiredHeading(desiredHeading, duration) {
   return encodeLowLevelControlManeuver(
-    encodeDesiredHeading,
     desiredHeading,
+    desiredHeadingMetadata,
     duration,
   );
 }
 
-function encodeDesiredZ(desiredZ, addFooterAndHeader = false) {
-  return encodeIMC(desiredZ, desiredZMetadata, addFooterAndHeader);
-}
-
 function encodeLowLevelControlManeuverDesiredZ(desiredZ, duration) {
-  return encodeLowLevelControlManeuver(encodeDesiredZ, desiredZ, duration);
+  return encodeLowLevelControlManeuver(desiredZ, desiredZMetadata, duration);
 }
 
-function encodeGoTo(goTo) {
-  return encodeIMC(goTo, goToMetadata);
+function encodeCustomGoTo(goTo) {
+  return encodeImcPackage(goTo, customGoToMetadata);
 }
 
 function encodeNetFollow(netFollow) {
-  return encodeIMC(netFollow, netFollowMetadata);
+  return encodeImcPackage(netFollow, netFollowMetadata);
 }
 
 function encodeCustomNetFollowState(customNetFollowState) {
-  return encodeIMC(customNetFollowState, customNetFollowStateMetadata);
+  return encodeImcPackage(customNetFollowState, customNetFollowStateMetadata);
 }
 
 const idToMessageMetadata = {
-  350: estimatedStateMetadata,
+  1003: customEstimatedStateMetadata,
   1: entityStateMetadata,
   407: desiredControlMetadata,
   400: desiredHeadingMetadata,
   401: desiredZMetadata,
   455: lowLevelControlManeuverMetadata,
-  450: goToMetadata,
+  1004: customGoToMetadata,
   465: netFollowMetadata,
   1002: customNetFollowStateMetadata,
 };

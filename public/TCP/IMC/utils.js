@@ -100,20 +100,6 @@ function writeToBuf(buf, offset, value, datatype, fields = []) {
 }
 
 /**
- * Adds footer to buffer by calculating the crc16 checksum and appending a uint16 to the buffer.
- *
- * @param {Buffer} buf Buffer with IMC package
- * @returns {Buffer} New buffer with footer appended at the end
- */
-function addFooter(buf) {
-  let crcValue = crc16(buf);
-
-  let footerBuf = Buffer.alloc(2);
-  footerBuf.writeUInt16BE(crcValue);
-  return Buffer.concat([buf, footerBuf]);
-}
-
-/**
  * A IMC header object.
  * @typedef {Object<string, number>} ImcHeader
  * @property {number} sync The synchronization number marks the beginning of a packet
@@ -216,7 +202,7 @@ function decodeHeader(buf, offset) {
 
 /**
  * Encodes an IMC message to a buffer by using an IMC message matadata object and the corresponding values form the `imcMessage`.
- * This function only encodes the data part of the message (i.e. is does not include header and footer)
+ * This function only encodes the data part of the message (i.e. it does not include header and footer)
  *
  * @param {{[key: string]: number | {[key: string]: boolean}}} imcMessage The message to encode
  * @param {Object} imcMessageMetadata Metadata object of IMC message to encode
@@ -243,14 +229,42 @@ function encodeImcMessage(imcMessage, imcMessageMetadata) {
   return buf;
 }
 
+/**
+ * Returns a new buffer with footer appended.
+ * The footer contains a crc16 checksum (uint_16t) calculated on the incomming buffer.
+ *
+ * @param {Buffer} buf Buffer with IMC package
+ * @returns {Buffer} New buffer with footer appended at the end
+ */
+function getBufferWithFooterAppended(buf) {
+  let crcValue = crc16(buf);
+
+  let footerBuf = Buffer.alloc(2);
+  footerBuf.writeUInt16BE(crcValue);
+  return Buffer.concat([buf, footerBuf]);
+}
+
+/**
+ * Get a buffer containing id of IMC message
+ * @param {number} mgid Id of IMC message
+ *
+ * @returns {Buffer} Buffer with message id
+ */
+function getIdBuffer(mgid) {
+  let buf = Buffer.alloc(2);
+  buf.writeUInt16BE(mgid);
+  return buf;
+}
+
 module.exports = {
   bitfieldToUIntBE,
   uIntBEToBitfield,
-  addFooter,
+  getBufferWithFooterAppended,
   encodeHeader,
   encodeAqeousHeader,
   decodeHeader,
   datatypes,
   writeToBuf,
   encodeImcMessage,
+  getIdBuffer,
 };
