@@ -18,7 +18,7 @@ const {
   addFooter,
   encodeAqeousHeader,
   decodeHeader,
-  writeToBuf,
+  encodeImcMessage,
 } = require('./utils');
 
 const encode = {
@@ -32,20 +32,26 @@ const encode = {
   goTo: encodeGoTo,
   netFollow: encodeNetFollow,
   customNetFollow: encodeCustomNetFollowState,
-  combine: encodeCombine,
+  combine: Buffer.concat,
 };
 
-function encodeCombine(bufArr, length = null) {
+function encodeIMC(imcMessage, imcMessageMetadata, addFooterAndHeader = true) {
   /**
-   * Combines array of buffer to a new buffer of given length
-   * Example of use: encode.combine([encode.entityState({...}), encode.estimatedState({...})], 256)
-   * This creates a new buffer of length 256 with the buffer from entistyState combined with estimatedState and padded with zeros
-   * If length is ommitted the length will be the combined length of the buffers
+   * Main function for encoding IMC messages. If `addFooterAndHeader` header and footer will be added.
+   * It if is false, just the id of the message is added.
    */
-  if (length === null) {
-    return Buffer.concat(bufArr);
+  let dataBuf = encodeImcMessage(imcMessage, imcMessageMetadata);
+  if (addFooterAndHeader) {
+    let headerBuf = encodeAqeousHeader(
+      imcMessageMetadata.id.value,
+      dataBuf.length,
+    );
+    let resultBuf = Buffer.concat([headerBuf, dataBuf]);
+    return addFooter(resultBuf);
   } else {
-    return Buffer.concat(bufArr, length);
+    let idBuf = Buffer.alloc(2);
+    idBuf.writeUInt16BE(imcMessageMetadata.id.value);
+    return Buffer.concat([idBuf, dataBuf]);
   }
 }
 
@@ -67,46 +73,6 @@ function decode(buf) {
     result[name] = msg;
   } while (offset < buf.length);
   return result;
-}
-
-function encodeIMC(imcMessage, imcMessageMetadata, addFooterAndHeader = true) {
-  /**
-   * Main function for encoding IMC messages. If `addFooterAndHeader` header and footer will be added.
-   * It if is false, just the id of the message is added.
-   */
-  let dataBuf = encodeIMCData(imcMessage, imcMessageMetadata);
-  if (addFooterAndHeader) {
-    let headerBuf = encodeAqeousHeader(
-      imcMessageMetadata.id.value,
-      dataBuf.length,
-    );
-    let resultBuf = Buffer.concat([headerBuf, dataBuf]);
-    return addFooter(resultBuf);
-  } else {
-    let idBuf = Buffer.alloc(2);
-    idBuf.writeUInt16BE(imcMessageMetadata.id.value);
-    return Buffer.concat([idBuf, dataBuf]);
-  }
-}
-
-function encodeIMCData(imcMessage, imcMessageMetadata) {
-  let buf = Buffer.alloc(
-    imcMessageMetadata.length - imcMessageMetadata.id.datatype.length,
-  );
-  let offset = 0;
-  imcMessageMetadata.message.map(imcEntity => {
-    let imcValue = Object.prototype.hasOwnProperty.call(imcEntity, 'value')
-      ? imcEntity.value
-      : imcMessage[imcEntity['name']];
-    offset = writeToBuf(
-      buf,
-      offset,
-      imcValue,
-      imcEntity.datatype,
-      imcEntity.datatype.name === 'bitfield' ? imcEntity.fields : [],
-    );
-  });
-  return buf;
 }
 
 function decodeImc(buf, offset = 0, name = '', hasHeader = true) {

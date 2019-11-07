@@ -1,7 +1,6 @@
 const { crc16 } = require('crc');
 const {
   HEADER_LENGTH,
-  FOOTER_LENGTH,
   ROV_IMC_ADDRESS,
   ROV_IMC_ENTITY,
   OUR_IMC_ADDRESS,
@@ -101,7 +100,7 @@ function writeToBuf(buf, offset, value, datatype, fields = []) {
 }
 
 /**
- * Adds footer to buffer by calculation the crc16 checksum and appending a uint16 to the buffer.
+ * Adds footer to buffer by calculating the crc16 checksum and appending a uint16 to the buffer.
  *
  * @param {Buffer} buf Buffer with IMC package
  * @returns {Buffer} New buffer with footer appended at the end
@@ -215,6 +214,35 @@ function decodeHeader(buf, offset) {
   return header;
 }
 
+/**
+ * Encodes an IMC message to a buffer by using an IMC message matadata object and the corresponding values form the `imcMessage`.
+ * This function only encodes the data part of the message (i.e. is does not include header and footer)
+ *
+ * @param {{[key: string]: number | {[key: string]: boolean}}} imcMessage The message to encode
+ * @param {Object} imcMessageMetadata Metadata object of IMC message to encode
+ *
+ * @returns {Buffer} Buffer with the encoded IMC message
+ */
+function encodeImcMessage(imcMessage, imcMessageMetadata) {
+  let buf = Buffer.alloc(
+    imcMessageMetadata.length - imcMessageMetadata.id.datatype.length,
+  );
+  let offset = 0;
+  imcMessageMetadata.message.map(imcEntity => {
+    let imcValue = Object.prototype.hasOwnProperty.call(imcEntity, 'value')
+      ? imcEntity.value
+      : imcMessage[imcEntity['name']];
+    offset = writeToBuf(
+      buf,
+      offset,
+      imcValue,
+      imcEntity.datatype,
+      imcEntity.datatype.name === 'bitfield' ? imcEntity.fields : [],
+    );
+  });
+  return buf;
+}
+
 module.exports = {
   bitfieldToUIntBE,
   uIntBEToBitfield,
@@ -224,4 +252,5 @@ module.exports = {
   decodeHeader,
   datatypes,
   writeToBuf,
+  encodeImcMessage,
 };
