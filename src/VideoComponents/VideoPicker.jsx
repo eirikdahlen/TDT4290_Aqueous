@@ -69,23 +69,38 @@ class VideoPicker extends Component {
     });
   };
 
-  // Creates buttons inside the dropdown menu based on the devices-state
-  populateDropdown = () => {
-    const dropdown = document.getElementById('video-dropdown-content');
-    dropdown.innerHTML = '';
-    Object.keys(this.state.devices).forEach(key => {
-      const btn = document.createElement('button');
+  createButton = (label, clickable) => {
+    const btn = document.createElement('button');
+    if (clickable) {
       btn.onclick = event => {
         this.switchFeed(event);
         this.props.handleClick(this.state.currentID);
       };
-      btn.innerHTML = key;
-      btn.classList.add('videoButton');
-      if (key === this.state.currentLabel) {
-        btn.classList.add('selectedFeed');
-      }
-      dropdown.appendChild(btn);
-    });
+    } else {
+      btn.classList.add('noVideoFoundBtn');
+    }
+    btn.innerHTML = label;
+    btn.classList.add('videoButton');
+    if (label === this.state.currentLabel) {
+      btn.classList.add('selectedFeed');
+    }
+    return btn;
+  };
+
+  // Creates buttons inside the dropdown menu based on the devices-state
+  populateDropdown = () => {
+    const dropdown = document.getElementById('video-dropdown-content');
+    dropdown.innerHTML = '';
+    const deviceKeys = Object.keys(this.state.devices);
+    if (deviceKeys.length > 0) {
+      deviceKeys.forEach(key => {
+        const btn = this.createButton(key, true);
+        dropdown.appendChild(btn);
+      });
+    } else {
+      const btn = this.createButton('No video device found');
+      dropdown.appendChild(btn, false);
+    }
   };
 
   // componentDidMount is built-in function that is called after the inital rendering of the component

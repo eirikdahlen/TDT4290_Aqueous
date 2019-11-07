@@ -86,3 +86,8 @@
   font-weight: bold;
   font-size: 20px;
 }
+
+.noVideoFoundBtn:hover {
+  cursor: default !important;
+  background-color: rgb(68, 68, 68) !important;
+}
