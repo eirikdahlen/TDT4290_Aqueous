@@ -154,18 +154,21 @@ function handleManual({ button, value }) {
       break;
 
     // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEADING
-    case 'Y': // Reset all bias'
+    case 'Y': // Reset all bias
+      sendVibrationRequest(true);
       resetAllBias();
       break;
     case 'X': // Used in combination with bias buttons
       break;
     case 'A': // Toggle autodepth
+      sendVibrationRequest(true);
       autoDepth = !autoDepth;
       controls['autodepth'] = autoDepth;
       depthReference = global.fromROV.down;
       controls['heave'] = autoDepth ? depthReference : 0.0;
       break;
     case 'B': // Toggle autoheading
+      sendVibrationRequest(true);
       autoHeading = !autoHeading;
       controls['autoheading'] = autoHeading;
       headingReference = global.fromROV.yaw;
@@ -199,13 +202,19 @@ function handleManual({ button, value }) {
     // BACK AND START BUTTONS | SWITCH MODE and reset bias
     case 'Back': // turn NF on if available
       if (global.mode.nfAvailable) {
+        sendVibrationRequest(true);
         switchToMode('nf');
+      } else {
+        sendVibrationRequest(false);
       }
       break;
     case 'Start': // turn DP on if available
       if (global.mode.dpAvailable) {
+        sendVibrationRequest(true);
         switchToMode('dp');
         setDPToCurrentPosition();
+      } else {
+        sendVibrationRequest(false);
       }
       break;
   }
@@ -223,6 +232,7 @@ function handleNF({ button }) {
 
     // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
     case 'Y': //Resets distance, velocity and depth, if in NetFollowing mode
+      sendVibrationRequest(true);
       global.netfollowing.distance = 0;
       global.netfollowing.velocity = 0;
       global.netfollowing.depth = 0;
@@ -242,14 +252,14 @@ function handleNF({ button }) {
       setNfParameters('velocity', false);
       break;
 
-    // GLOABLSSSSS
-
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
     // Sets to manual if any of the mode buttons are clicked
     case 'Back':
+      sendVibrationRequest(true);
       switchToMode('manual');
       break;
     case 'Start':
+      sendVibrationRequest(true);
       switchToMode('manual');
       break;
   }
@@ -261,9 +271,11 @@ function handleDP({ button }) {
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
     // Sets to manual if any of the mode buttons are clicked
     case 'Back':
+      sendVibrationRequest(true);
       switchToMode('manual');
       break;
     case 'Start':
+      sendVibrationRequest(true);
       switchToMode('manual');
       break;
   }
@@ -340,6 +352,16 @@ function setDPToCurrentPosition() {
   Object.keys(global.dynamicpositioning).forEach(attribute => {
     global.dynamicpositioning[attribute] = global.fromROV[attribute];
   });
+}
+
+// Tells the gamepad to vibrate
+function sendVibrationRequest(positive) {
+  const { videoWindow } = global;
+  try {
+    videoWindow.webContents.send('vibrate-gamepad', positive);
+  } catch (error) {
+    console.log('Video window is closed');
+  }
 }
 
 module.exports = { handleClick, handleButton };

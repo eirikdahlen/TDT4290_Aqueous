@@ -57,7 +57,7 @@ class KeyboardWrapper extends Component {
     });
   }
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     document.removeEventListener('keyup', this.keyChangeHandler);
     document.removeEventListener('keydown', this.keyChangeHandler);
   }
