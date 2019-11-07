@@ -2,8 +2,6 @@ const { encode, decode, messages } = require('../IMC');
 const { decodeHeader } = require('../utils');
 const {
   SYNC,
-  HEADER_LENGTH,
-  FOOTER_LENGTH,
   OUR_IMC_ADDRESS,
   OUR_IMC_ENTITY,
   ROV_IMC_ADDRESS,
