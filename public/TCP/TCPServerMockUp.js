@@ -1,5 +1,5 @@
 const net = require('net');
-const { encode, decode, messages } = require('./IMC');
+const { encode, decode, messages } = require('./IMC/IMC');
 const { ipcMain } = require('electron');
 
 const port = 5000;
