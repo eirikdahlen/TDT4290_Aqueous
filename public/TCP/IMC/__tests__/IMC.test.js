@@ -18,10 +18,7 @@ expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 
 const decimalError = 5;
 
-const estimatedState = {
-  lat: 0.0,
-  lon: 0.0,
-  height: 0.0,
+const customEstimatedState = {
   x: 0.0,
   y: 0,
   z: 0,
@@ -37,8 +34,6 @@ const estimatedState = {
   p: 0,
   q: 0,
   r: 0,
-  depth: 0,
-  alt: 0,
 };
 
 const entityState = {
@@ -66,16 +61,11 @@ const desiredControl = {
   },
 };
 
-const goTo = {
+const customGoTo = {
   timeout: 132,
-  lat: 1.1,
-  lon: 2.2,
+  x: 1.1,
+  y: 2.2,
   z: 3.3,
-  z_units: 3,
-  speed: 4.4,
-  speed_units: 0,
-  roll: 5.5,
-  pitch: 6.6,
   yaw: 7.7,
 };
 
@@ -115,11 +105,11 @@ describe('test IMC encoding', () => {
 });
 
 describe('test IMC encode and decode', () => {
-  test('estimatedState', () => {
-    const encoded = decode(encode.estimatedState(estimatedState));
+  test('customEstimatedState', () => {
+    const encoded = decode(encode.customEstimatedState(customEstimatedState));
 
-    expect(encoded[messages.estimatedState]).toBeDeepCloseTo(
-      estimatedState,
+    expect(encoded[messages.customEstimatedState]).toBeDeepCloseTo(
+      customEstimatedState,
       decimalError,
     );
   });
@@ -184,9 +174,12 @@ describe('test IMC encode and decode', () => {
     );
   });
 
-  test('goTo', () => {
-    const encoded = decode(encode.goTo(goTo));
-    expect(encoded[messages.goTo]).toBeDeepCloseTo(goTo, decimalError);
+  test('customGoTo', () => {
+    const encoded = decode(encode.customGoTo(customGoTo));
+    expect(encoded[messages.customGoTo]).toBeDeepCloseTo(
+      customGoTo,
+      decimalError,
+    );
   });
 
   test('netFollow', () => {
@@ -209,24 +202,29 @@ describe('test IMC encode and decode', () => {
 });
 
 test('encode.combine', () => {
-  const estimatedStateBuf = encode.estimatedState(estimatedState);
+  const customEstimatedStateBuf = encode.customEstimatedState(
+    customEstimatedState,
+  );
   const entityStateBuf = encode.entityState(entityState);
 
-  const bufDynamicLength = encode.combine([estimatedStateBuf, entityStateBuf]);
+  const bufDynamicLength = encode.combine([
+    customEstimatedStateBuf,
+    entityStateBuf,
+  ]);
   expect(bufDynamicLength.length).toStrictEqual(
-    estimatedStateBuf.length + entityStateBuf.length,
+    customEstimatedStateBuf.length + entityStateBuf.length,
   );
 
   const length = 256;
   const bufFixedLength = encode.combine(
-    [estimatedStateBuf, entityStateBuf],
+    [customEstimatedStateBuf, entityStateBuf],
     length,
   );
   expect(bufFixedLength.length).toStrictEqual(length);
 
-  // Check if decoding with too long messages works
+  // Check if decoding with zero padding works (longer that the combined length)
   const decoded = decode(bufFixedLength);
   expect(Object.keys(decoded).sort()).toStrictEqual(
-    [messages.entityState, messages.estimatedState].sort(),
+    [messages.entityState, messages.customEstimatedState].sort(),
   );
 });

@@ -28,16 +28,13 @@ const datatypes = {
   },
 };
 
-export const estimatedStateMetadata = {
-  length: 90,
+export const customEstimatedStateMetadata = {
+  length: 62,
   id: {
-    value: 350,
+    value: 1003,
     datatype: datatypes.uint_16t,
   },
   message: [
-    { name: 'lat', datatype: datatypes.fp64_t },
-    { name: 'lon', datatype: datatypes.fp64_t },
-    { name: 'height', datatype: datatypes.fp32_t },
     { name: 'x', datatype: datatypes.fp32_t },
     { name: 'y', datatype: datatypes.fp32_t },
     { name: 'z', datatype: datatypes.fp32_t },
@@ -53,8 +50,6 @@ export const estimatedStateMetadata = {
     { name: 'p', datatype: datatypes.fp32_t },
     { name: 'q', datatype: datatypes.fp32_t },
     { name: 'r', datatype: datatypes.fp32_t },
-    { name: 'depth', datatype: datatypes.fp32_t },
-    { name: 'alt', datatype: datatypes.fp32_t },
   ],
 };
 
@@ -167,10 +162,11 @@ export const desiredZMetadata = {
   ],
 };
 
-export const goToMetadata = {
-  length: 54,
+export const customGoToMetadata = {
+  // Based on https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html, but relative
+  length: 28,
   id: {
-    value: 450,
+    value: 1004,
     datatype: datatypes.uint_16t,
   },
   message: [
@@ -179,36 +175,16 @@ export const goToMetadata = {
       datatype: datatypes.uint_16t,
     },
     {
-      name: 'lat',
-      datatype: datatypes.fp64_t,
+      name: 'x',
+      datatype: datatypes.fp32_t,
     },
     {
-      name: 'lon',
-      datatype: datatypes.fp64_t,
+      name: 'y',
+      datatype: datatypes.fp32_t,
     },
     {
       name: 'z',
       datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'z_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'speed',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'speed_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'roll',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'pitch',
-      datatype: datatypes.fp64_t,
     },
     {
       name: 'yaw',

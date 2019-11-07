@@ -1,5 +1,5 @@
 const messages = {
-  estimatedState: 'estimatedState',
+  customEstimatedState: 'customEstimatedState',
   entityState: 'entityState',
   desiredControl: 'desiredControl',
   desiredHeading: 'desiredHeading',
@@ -8,7 +8,7 @@ const messages = {
     desiredHeading: 'lowLevelControlManeuver.desiredHeading',
     desiredZ: 'lowLevelControlManeuver.desiredZ',
   },
-  goTo: 'goTo',
+  customGoTo: 'customGoTo',
   netFollow: 'netFollow',
   customNetFollowState: 'customNetFollowState',
 };
@@ -43,18 +43,15 @@ const datatypes = {
   },
 };
 
-const estimatedStateMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Navigation.html#estimated-state
-  name: messages.estimatedState,
-  length: 90,
+const customEstimatedStateMetadata = {
+  // Based on https://www.lsts.pt/docs/imc/imc-5.4.11/Navigation.html#estimated-state, but relative
+  name: messages.customEstimatedState,
+  length: 62,
   id: {
-    value: 350,
+    value: 1003,
     datatype: datatypes.uint_16t,
   },
   message: [
-    { name: 'lat', datatype: datatypes.fp64_t },
-    { name: 'lon', datatype: datatypes.fp64_t },
-    { name: 'height', datatype: datatypes.fp32_t },
     { name: 'x', datatype: datatypes.fp32_t },
     { name: 'y', datatype: datatypes.fp32_t },
     { name: 'z', datatype: datatypes.fp32_t },
@@ -70,8 +67,6 @@ const estimatedStateMetadata = {
     { name: 'p', datatype: datatypes.fp32_t },
     { name: 'q', datatype: datatypes.fp32_t },
     { name: 'r', datatype: datatypes.fp32_t },
-    { name: 'depth', datatype: datatypes.fp32_t },
-    { name: 'alt', datatype: datatypes.fp32_t },
   ],
 };
 
@@ -194,12 +189,12 @@ const lowLevelControlManeuverMetadata = {
   ],
 };
 
-const goToMetadata = {
-  // https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html
-  name: messages.goTo,
-  length: 54,
+const customGoToMetadata = {
+  // Based on https://www.lsts.pt/docs/imc/imc-5.4.11/Maneuvering.html, but relative
+  name: messages.customGoTo,
+  length: 28,
   id: {
-    value: 450,
+    value: 1004,
     datatype: datatypes.uint_16t,
   },
   message: [
@@ -208,36 +203,16 @@ const goToMetadata = {
       datatype: datatypes.uint_16t,
     },
     {
-      name: 'lat',
-      datatype: datatypes.fp64_t,
+      name: 'x',
+      datatype: datatypes.fp32_t,
     },
     {
-      name: 'lon',
-      datatype: datatypes.fp64_t,
+      name: 'y',
+      datatype: datatypes.fp32_t,
     },
     {
       name: 'z',
       datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'z_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'speed',
-      datatype: datatypes.fp32_t,
-    },
-    {
-      name: 'speed_units',
-      datatype: datatypes.uint_8t,
-    },
-    {
-      name: 'roll',
-      datatype: datatypes.fp64_t,
-    },
-    {
-      name: 'pitch',
-      datatype: datatypes.fp64_t,
     },
     {
       name: 'yaw',
@@ -310,7 +285,7 @@ const customNetFollowStateMetadata = {
 module.exports = {
   datatypes,
   messages,
-  estimatedStateMetadata,
+  customEstimatedStateMetadata,
   customNetFollowStateMetadata,
   entityStateMetadata,
   desiredControlMetadata,
@@ -318,5 +293,5 @@ module.exports = {
   desiredHeadingMetadata,
   desiredZMetadata,
   netFollowMetadata,
-  goToMetadata,
+  customGoToMetadata,
 };

@@ -46,4 +46,20 @@ export const copyObjectExcept = (obj, exceptProperties) => {
   return copy;
 };
 
-export default { normalize, degreesToRadians, radiansToDegrees, fixValue };
+// Rounds numbers by how big it is
+export const roundNumber = number => {
+  const absNum = Math.abs(number);
+  if (absNum >= 100) {
+    return number.toFixed(0);
+  } else {
+    return number.toFixed(1);
+  }
+};
+
+export default {
+  normalize,
+  degreesToRadians,
+  radiansToDegrees,
+  fixValue,
+  roundNumber,
+};

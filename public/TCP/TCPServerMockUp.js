@@ -25,10 +25,7 @@ let entityState = {
   },
 };
 
-let estimatedState = {
-  lat: 0.0,
-  lon: 0.0,
-  height: 0.0,
+let customEstimatedState = {
   x: 0.0,
   y: 0,
   z: 0,
@@ -44,8 +41,6 @@ let estimatedState = {
   p: 0,
   q: 0,
   r: 0,
-  depth: 0,
-  alt: 0,
 };
 
 let customNetFollow = {
@@ -87,16 +82,11 @@ let lowLevelControlManeuver = {
 // MANUAL MODE END
 
 // DP MODE
-let goTo = {
+let customGoTo = {
   timeout: 0,
-  lat: 0,
-  lon: 0,
+  x: 0,
+  y: 0,
   z: 0,
-  z_units: 0,
-  speed: 0,
-  speed_units: 0,
-  roll: 0,
-  pitch: 0,
   yaw: 0,
 };
 // DP MODE END
@@ -118,9 +108,12 @@ let netFollow = {
 const ipcCommunicationTCPServer = () => {
   console.log('Starting ipcCommunicationTCPServer');
 
-  ipcMain.on('rov-mock-up-send-estimated-state', (event, arg) => {
-    estimatedState = arg;
-    console.log('Received rov-mock-up-send-estimated-state:', estimatedState);
+  ipcMain.on('rov-mock-up-send-custom-estimated-state', (event, arg) => {
+    customEstimatedState = arg;
+    console.log(
+      'Received rov-mock-up-send-custom-estimated-state:',
+      customEstimatedState,
+    );
   });
 
   ipcMain.on('rov-mock-up-send-custom-nf-state', (event, arg) => {
@@ -183,7 +176,7 @@ const startServer = () => {
             lowLevelControlManeuver.desiredZ = recievedData[message];
             // TODO: SEND IPC message?
             break;
-          case messages.goTo:
+          case messages.customGoTo:
             if (entityState.state !== states.DP) {
               entityState.state = states.DP;
               global.mockupWindow.webContents.send(
@@ -191,7 +184,7 @@ const startServer = () => {
                 states.DP,
               );
             }
-            goTo = recievedData[message];
+            customGoTo = recievedData[message];
             // TODO: SEND IPC message?
             break;
           case messages.netFollow:
@@ -214,11 +207,11 @@ const startServer = () => {
     const sendData = () => {
       // Create IMC message with estimated state and entity state
       console.log(`[${Date.now()}] Sending IMC message:`);
-      console.log(estimatedState);
+      console.log(customEstimatedState);
       console.log(entityState);
 
       let buf = encode.combine([
-        encode.estimatedState(estimatedState),
+        encode.customEstimatedState(customEstimatedState),
         encode.entityState(entityState),
       ]);
 

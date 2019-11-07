@@ -16,7 +16,7 @@ export default function Values({
   settings,
 }) {
   const extractData = (msgData, msgName) => {
-    if (msgName === 'netFollow' || msgName === 'goTo') {
+    if (msgName === 'netFollow' || msgName === 'customGoTo') {
       return { flags: false, data: msgData };
     }
     if (msgName.includes('lowLevelControlManeuver')) {
@@ -27,7 +27,7 @@ export default function Values({
       const data = copyObjectExcept(msgData, ['flags']);
       return { flags, data };
     }
-    if (msgName === 'estimatedState') {
+    if (msgName === 'customEstimatedState') {
       return { flags: false, data: msgData };
     }
     if (msgName === 'entityState') {

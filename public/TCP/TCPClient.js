@@ -121,14 +121,14 @@ function decodeImcData(buf) {
   global.mode.dpAvailable = entityState.flags.DP;
   // TODO: Handle when ROV tells state is MANUAL
 
-  const estimatedState = recievedData[messages.estimatedState];
+  const customEstimatedState = recievedData[messages.customEstimatedState];
   global.fromROV = {
-    north: estimatedState.x,
-    east: estimatedState.y,
-    down: estimatedState.z,
-    roll: estimatedState.phi,
-    pitch: estimatedState.theta,
-    yaw: estimatedState.psi,
+    north: customEstimatedState.x,
+    east: customEstimatedState.y,
+    down: customEstimatedState.z,
+    roll: customEstimatedState.phi,
+    pitch: customEstimatedState.theta,
+    yaw: customEstimatedState.psi,
   };
   return recievedData;
 }
@@ -195,16 +195,11 @@ function sendIMCData(client) {
     // DYNAMIC POSITIONING
 
     // TODO: Get proper value from global state
-    buf = encode.goTo({
+    buf = encode.customGoTo({
       timeout: 10,
-      lat: 1.1,
-      lon: 2.2,
+      x: 1.1,
+      y: 2.2,
       z: global.toROV.heave,
-      z_units: 0,
-      speed: 0.1,
-      speed_units: 0,
-      roll: 0,
-      pitch: global.toROV.pitch,
       yaw: global.toROV.yaw,
     });
   }

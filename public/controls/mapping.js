@@ -225,6 +225,7 @@ function handleButton({ button, value }) {
         global.mode.currentMode = 0;
       } else if (global.mode.dpAvailable) {
         global.mode.currentMode = 1;
+        setDPToCurrentPosition();
       }
       break;
     case 'LS': //turn on manual mode, turn off DP/NF and reset bias
@@ -289,6 +290,13 @@ function resetToManual() {
     ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
     controls['heave'] = autoDepth ? depthReference : 0.0;
   }
+}
+
+// Sets global DP to current position (fromROV)
+function setDPToCurrentPosition() {
+  Object.keys(global.dynamicpositioning).forEach(attribute => {
+    global.dynamicpositioning[attribute] = global.fromROV[attribute];
+  });
 }
 
 module.exports = { handleClick, handleButton };

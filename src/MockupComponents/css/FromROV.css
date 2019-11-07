@@ -8,7 +8,7 @@
   margin: 2px;
 }
 
-.estimatedStateSettings > h3 {
+.customEstimatedStateSettings > h3 {
   text-align: center;
   margin-block-start: 0px;
   margin-block-end: 0px;
@@ -16,7 +16,7 @@
   margin-inline-end: 0px;
 }
 
-.entityStateSettings > h3 {
+.customEntityStateSettings > h3 {
   text-align: center;
   margin-block-start: 0px;
   margin-block-end: 0px;
@@ -24,7 +24,7 @@
   margin-inline-end: 0px;
 }
 
-.entityStateSettings {
+.customEntityStateSettings {
   width: 40%;
 }
 
@@ -62,13 +62,13 @@ input[type='entityStateInputdescription'] {
   margin: 5px;
 }
 
-.estimatedStateInputHeader {
+.customEstimatedStateInputHeader {
   text-align: center;
   margin: 0;
   margin-top: -2px;
 }
 
-.estimatedStateInputBox {
+.customEstimatedStateInputBox {
   background-color: var(--primary-light);
   height: 50px;
   width: 50px;

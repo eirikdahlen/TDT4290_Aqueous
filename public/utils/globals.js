@@ -65,7 +65,7 @@ const initGlobals = () => {
    * Direction property is therefore not needed
    */
   global.netfollowing = {
-    distance: 0,
+    distance: 1,
     velocity: 0,
     degree: 0,
     depth: 0,
@@ -76,10 +76,10 @@ const initGlobals = () => {
    * Placeholders for X, Y, Z for now
    */
   global.dynamicpositioning = {
-    latitude: 0,
-    longitude: 0,
-    heading: 0,
-    depth: 0,
+    north: 0,
+    east: 0,
+    down: 0,
+    yaw: 0,
   };
 
   /*
@@ -106,10 +106,7 @@ const initGlobals = () => {
 
   /* Contains IMC messages from ROV */
   global.fromROVIMC = {
-    estimatedState: {
-      lat: 0.0,
-      lon: 0.0,
-      height: 0.0,
+    customEstimatedState: {
       x: 0.0,
       y: 0,
       z: 0,
@@ -125,8 +122,6 @@ const initGlobals = () => {
       p: 0,
       q: 0,
       r: 0,
-      depth: 0,
-      alt: 0,
     },
     entityState: { state: 0, flags: { DP: true, NF: true } },
   };
