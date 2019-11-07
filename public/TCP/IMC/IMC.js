@@ -1,5 +1,3 @@
-const { crc16 } = require('crc');
-
 const {
   datatypes,
   customNetFollowStateMetadata,
@@ -14,6 +12,15 @@ const {
   messages,
 } = require('./IMCMetadata');
 
+const { HEADER_LENGTH } = require('./constants');
+const {
+  uIntBEToBitfield,
+  addFooter,
+  encodeAqeousHeader,
+  decodeHeader,
+  writeToBuf,
+} = require('./utils');
+
 const encode = {
   estimatedState: encodeEstimatedState,
   entityState: encodeEntityState,
@@ -27,16 +34,6 @@ const encode = {
   customNetFollow: encodeCustomNetFollowState,
   combine: encodeCombine,
 };
-
-// Length of header and footer in number of bytes
-const headerLength = 20;
-const footerLength = 2;
-
-// Hard coded and inveted with Sintef
-const rovImcAddress = 0x03c0;
-const rovImcEntity = 0x07;
-const ourImcAddress = 0x0007;
-const ourImcEntity = 0x0a;
 
 function encodeCombine(bufArr, length = null) {
   /**
@@ -72,78 +69,6 @@ function decode(buf) {
   return result;
 }
 
-function decodeHeader(buf, offset) {
-  const header = {
-    sync: null,
-    mgid: null,
-    size: null,
-    timestamp: null,
-    src: null,
-    src_ent: null,
-    dst: null,
-    dst_ent: null,
-  };
-  // Synchronization Number uint16_t
-  header.sync = buf.readUInt16BE(offset);
-  offset += 2;
-  // Message Identification Number uint16_t
-  header.mgid = buf.readUInt16BE(offset);
-  offset += 2;
-  // Message size uint16_t
-  header.size = buf.readUInt16BE(offset);
-  offset += 2;
-  // Time stamp fp64_t
-  header.timestamp = buf.readDoubleBE(offset);
-  offset += 8;
-  // Source Address uint16_t
-  header.src = buf.readUInt16BE(offset);
-  offset += 2;
-  // Source Entity uint8_t
-  header.src_ent = buf.readUIntBE(offset, 1);
-  offset += 1;
-  // Destination Address uint16_t
-  header.dst = buf.readUInt16BE(offset);
-  offset += 2;
-  // Destination Entity uint8_t
-  header.dst_ent = buf.readUIntBE(offset, 1);
-  return header;
-}
-
-function createHeader(imcMessageMetadata, messageLength) {
-  /**
-   * Creates the header for the IMC package. Followed specification here: https://www.lsts.pt/docs/imc/imc-5.4.11/Message%20Format.html#header
-   * `messageLength` does not include length of header and footer
-   */
-
-  const headerBuf = Buffer.alloc(headerLength);
-  let offset = 0;
-  // Synchronization Number uint16_t
-  headerBuf.writeUInt16BE(0xfe54, offset);
-  offset += 2;
-  // Message Identification Number uint16_t
-  headerBuf.writeUInt16BE(imcMessageMetadata.id.value, offset);
-  offset += 2;
-  // Message size uint16_t
-  headerBuf.writeUInt16BE(headerLength + messageLength + footerLength, offset);
-  offset += 2;
-  // Time stamp fp64_t
-  headerBuf.writeDoubleBE(new Date() / 1000, offset);
-  offset += 8;
-  // Source Address uint16_t
-  headerBuf.writeUInt16BE(ourImcAddress, offset);
-  offset += 2;
-  // Source Entity uint8_t
-  headerBuf.writeUIntBE(ourImcEntity, offset, 1);
-  offset += 1;
-  // Destination Address uint16_t
-  headerBuf.writeUInt16BE(rovImcAddress, offset);
-  offset += 2;
-  // Destination Entity uint8_t
-  headerBuf.writeUIntBE(rovImcEntity, offset, 1);
-  offset += 1;
-  return headerBuf;
-}
-
 function encodeIMC(imcMessage, imcMessageMetadata, addFooterAndHeader = true) {
   /**
    * Main function for encoding IMC messages. If `addFooterAndHeader` header and footer will be added.
@@ -151,7 +76,10 @@ function encodeIMC(imcMessage, imcMessageMetadata, addFooterAndHeader = true) {
    */
   let dataBuf = encodeIMCData(imcMessage, imcMessageMetadata);
   if (addFooterAndHeader) {
-    let headerBuf = createHeader(imcMessageMetadata, dataBuf.length);
+    let headerBuf = encodeAqeousHeader(
+      imcMessageMetadata.id.value,
+      dataBuf.length,
+    );
     let resultBuf = Buffer.concat([headerBuf, dataBuf]);
     return addFooter(resultBuf);
   } else {
@@ -161,34 +89,7 @@ function encodeIMC(imcMessage, imcMessageMetadata, addFooterAndHeader = true) {
   }
 }
 
-function addFooter(buf) {
-  let crcValue = crc16(buf);
-
-  let footerBuf = Buffer.alloc(2);
-  footerBuf.writeUInt16BE(crcValue);
-  // console.log(`crcValue: ${crcValue}`);
-  return Buffer.concat([buf, footerBuf]);
-}
-
 function encodeIMCData(imcMessage, imcMessageMetadata) {
-  /**
-   * Encodes the data of an IMC message. This does not include id, footer and header
-   */
-
-  // Check if assumed length is corret
-  // if (
-  //   imcMessageMetadata.length !==
-  //   imcMessageMetadata.id.datatype.length +
-  //     lenImcMessage(imcMessageMetadata.message)
-  // ) {
-  //   console.log(
-  //     `WARNING: Length not equal to calculated length. Assumed length: ${
-  //       imcMessageMetadata.length
-  //     } calculated length: ${imcMessageMetadata.id.datatype.length +
-  //       lenImcMessage(imcMessageMetadata.message)}`,
-  //   );
-  // }
-
   let buf = Buffer.alloc(
     imcMessageMetadata.length - imcMessageMetadata.id.datatype.length,
   );
@@ -197,33 +98,13 @@ function encodeIMCData(imcMessage, imcMessageMetadata) {
     let imcValue = Object.prototype.hasOwnProperty.call(imcEntity, 'value')
       ? imcEntity.value
       : imcMessage[imcEntity['name']];
-    switch (imcEntity.datatype) {
-      case datatypes.uint_8t:
-        buf.writeUIntBE(imcValue, offset, imcEntity.datatype.length);
-        break;
-      case datatypes.uint_16t:
-        buf.writeUInt16BE(imcValue, offset);
-        break;
-      case datatypes.uint_32t:
-        buf.writeUInt32BE(imcValue, offset);
-        break;
-      case datatypes.fp32_t:
-        buf.writeFloatBE(imcValue, offset);
-        break;
-      case datatypes.fp64_t:
-        buf.writeDoubleBE(imcValue, offset);
-        break;
-      case datatypes.bitfield:
-        buf.writeUIntBE(
-          bitfieldToUIntBE(imcValue, imcEntity.fields),
-          offset,
-          datatypes.bitfield.length,
-        );
-        break;
-      default:
-        break;
-    }
-    offset += imcEntity.datatype.length;
+    offset = writeToBuf(
+      buf,
+      offset,
+      imcValue,
+      imcEntity.datatype,
+      imcEntity.datatype.name === 'bitfield' ? imcEntity.fields : [],
+    );
   });
   return buf;
 }
@@ -236,7 +117,7 @@ function decodeImc(buf, offset = 0, name = '', hasHeader = true) {
   if (hasHeader) {
     const header = decodeHeader(buf, offset);
     id = header.mgid;
-    offset += headerLength;
+    offset += HEADER_LENGTH;
   } else {
     id = buf.readUInt16BE(offset);
     offset += 2;
@@ -271,7 +152,7 @@ function decodeImc(buf, offset = 0, name = '', hasHeader = true) {
           result[imcEntity.name] = buf.readDoubleBE(offset);
           break;
         case datatypes.bitfield:
-          result[imcEntity.name] = UIntBEToBitfield(
+          result[imcEntity.name] = uIntBEToBitfield(
             buf.readUIntBE(offset, datatypes.bitfield.length),
             imcEntity.fields,
           );
@@ -295,45 +176,6 @@ function decodeImc(buf, offset = 0, name = '', hasHeader = true) {
   return [result, offset, name];
 }
 
-function bitfieldToUIntBE(values, metadataFieldsArray) {
-  /**
-   * `values` is a object with booleans. I.e. {NF: true, DP: false}
-   * `metadataFieldsArray` is an array with name of field. I.e. ['NF', 'DP, '', ...]
-   */
-  let bitfield = 0x00000000;
-  Object.keys(values).map(key => {
-    if (values[key]) {
-      let idx =
-        metadataFieldsArray.length - (metadataFieldsArray.indexOf(key) + 1);
-      bitfield = (1 << idx) ^ bitfield;
-    }
-  });
-  return bitfield;
-}
-
-function UIntBEToBitfield(uint, metadataFieldsArray) {
-  /**
-   * `uint` should be an integer between 0 and 255 (8 bits)
-   * `metadataFieldsArray` is an array with name of field. I.e. ['NF', 'DP, '', ...]
-   *
-   * Returns an object of this type: {'NF': true, 'DP': false}
-   */
-  let result = {};
-  metadataFieldsArray.map((feild, i) => {
-    if (feild) {
-      result[feild] =
-        ((1 << (metadataFieldsArray.length - (i + 1))) & uint) !== 0;
-    }
-  });
-  return result;
-}
-
-function lenImcMessage(message) {
-  return message.reduce((acc, field) => {
-    return acc + field.datatype.length;
-  }, 0);
-}
-
 function encodeEstimatedState(estimatedState) {
   return encodeIMC(estimatedState, estimatedStateMetadata);
 }
@@ -343,44 +185,25 @@ function encodeEntityState(entityState) {
 }
 
 function encodeDesiredControl(desiredControl) {
-  /*
-  const desiredControl = {
-    x: 1.1,
-    y: 2.2,
-    z: 3.3,
-    k: 4.4,
-    m: 5.5,
-    n: 6.6,
-    flags: {
-      x: true,
-      y: true,
-      z: true,
-      k: true,
-      m: true,
-      n: false,
-    },
-  };
-*/
   return encodeIMC(desiredControl, desiredControlMetadata);
 }
 
 function encodeLowLevelControlManeuver(
   encodeControlManeuver,
   controlManeuver,
-  controlManeuverMetadata,
   duration,
 ) {
   let controlBuf = encodeControlManeuver(controlManeuver);
 
   // Add duration
   let durationBuf = Buffer.alloc(2);
-  durationBuf.writeInt16BE(duration);
+  durationBuf.writeInt16BE(duration, 0);
 
   let resultBuf = Buffer.concat([controlBuf, durationBuf]);
 
   // Add header
-  let headerBuf = createHeader(
-    lowLevelControlManeuverMetadata,
+  let headerBuf = encodeAqeousHeader(
+    lowLevelControlManeuverMetadata.id.value,
     resultBuf.length,
   );
   resultBuf = Buffer.concat([headerBuf, resultBuf]);
@@ -396,7 +219,6 @@ function encodeLowLevelControlManeuverDesiredHeading(desiredHeading, duration) {
   return encodeLowLevelControlManeuver(
     encodeDesiredHeading,
     desiredHeading,
-    desiredHeadingMetadata,
     duration,
   );
 }
@@ -406,12 +228,7 @@ function encodeDesiredZ(desiredZ, addFooterAndHeader = false) {
 }
 
 function encodeLowLevelControlManeuverDesiredZ(desiredZ, duration) {
-  return encodeLowLevelControlManeuver(
-    encodeDesiredZ,
-    desiredZ,
-    desiredZMetadata,
-    duration,
-  );
+  return encodeLowLevelControlManeuver(encodeDesiredZ, desiredZ, duration);
 }
 
 function encodeGoTo(goTo) {

@@ -1,4 +1,14 @@
-const { encode, decode, messages } = require('../TCP/IMC');
+const { encode, decode, messages } = require('../IMC');
+const { decodeHeader } = require('../utils');
+const {
+  SYNC,
+  HEADER_LENGTH,
+  FOOTER_LENGTH,
+  OUR_IMC_ADDRESS,
+  OUR_IMC_ENTITY,
+  ROV_IMC_ADDRESS,
+  ROV_IMC_ENTITY,
+} = require('../constants');
 
 const {
   toBeDeepCloseTo,
@@ -83,12 +93,33 @@ const customNetFollow = {
   angle: 2.2,
 };
 
+describe('test IMC encoding', () => {
+  test('netFollow header', () => {
+    const netFollowBuf = encode.netFollow(netFollow);
+    const header = decodeHeader(netFollowBuf, 0);
+
+    // check timestamp seperately since this changes
+    expect(header.timestamp / 100).toMatchCloseTo(new Date() / 1000 / 100, 1); // Tolerance of 100 seconds
+
+    delete header.timestamp;
+    expect(header).toBeDeepCloseTo({
+      sync: SYNC,
+      mgid: 465,
+      size: 33 - 2,
+      src: OUR_IMC_ADDRESS,
+      src_ent: OUR_IMC_ENTITY,
+      dst: ROV_IMC_ADDRESS,
+      dst_ent: ROV_IMC_ENTITY,
+    });
+  });
+});
+
 describe('test IMC encode and decode', () => {
   test('estimatedState', () => {
     const encoded = decode(encode.estimatedState(estimatedState));
 
-    expect(estimatedState).toBeDeepCloseTo(
-      encoded[messages.estimatedState],
+    expect(encoded[messages.estimatedState]).toBeDeepCloseTo(
+      estimatedState,
       decimalError,
     );
   });
@@ -96,8 +127,8 @@ describe('test IMC encode and decode', () => {
   test('entityState', () => {
     const encoded = decode(encode.entityState(entityState));
 
-    expect(entityState).toBeDeepCloseTo(
-      encoded[messages.entityState],
+    expect(encoded[messages.entityState]).toBeDeepCloseTo(
+      entityState,
       decimalError,
     );
   });
@@ -105,8 +136,8 @@ describe('test IMC encode and decode', () => {
   test('desiredControl', () => {
     const encoded = decode(encode.desiredControl(desiredControl));
 
-    expect(desiredControl).toBeDeepCloseTo(
-      encoded[messages.desiredControl],
+    expect(encoded[messages.desiredControl]).toBeDeepCloseTo(
+      desiredControl,
       decimalError,
     );
   });
@@ -126,10 +157,9 @@ describe('test IMC encode and decode', () => {
       encode.lowLevelControlManeuver.desiredHeading(desiredHeading, duration),
     );
 
-    expect(expected).toBeDeepCloseTo(
+    expect(
       encoded[messages.lowLevelControlManeuver.desiredHeading],
-      decimalError,
-    );
+    ).toBeDeepCloseTo(expected, decimalError);
   });
 
   test('desiredZ', () => {
@@ -148,22 +178,22 @@ describe('test IMC encode and decode', () => {
       encode.lowLevelControlManeuver.desiredZ(desiredZ, duration),
     );
 
-    expect(expected).toBeDeepCloseTo(
-      encoded[messages.lowLevelControlManeuver.desiredZ],
+    expect(encoded[messages.lowLevelControlManeuver.desiredZ]).toBeDeepCloseTo(
+      expected,
       decimalError,
     );
   });
 
   test('goTo', () => {
     const encoded = decode(encode.goTo(goTo));
-    expect(goTo).toBeDeepCloseTo(encoded[messages.goTo], decimalError);
+    expect(encoded[messages.goTo]).toBeDeepCloseTo(goTo, decimalError);
   });
 
   test('netFollow', () => {
     const encoded = decode(encode.netFollow(netFollow));
 
-    expect(netFollow).toBeDeepCloseTo(
-      encoded[messages.netFollow],
+    expect(encoded[messages.netFollow]).toBeDeepCloseTo(
+      netFollow,
       decimalError,
     );
   });
@@ -171,8 +201,8 @@ describe('test IMC encode and decode', () => {
   test('customNetFollow', () => {
     const encoded = decode(encode.customNetFollow(customNetFollow));
 
-    expect(customNetFollow).toBeDeepCloseTo(
-      encoded[messages.customNetFollowState],
+    expect(encoded[messages.customNetFollowState]).toBeDeepCloseTo(
+      customNetFollow,
       decimalError,
     );
   });

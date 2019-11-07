@@ -1,7 +1,7 @@
 const net = require('net');
 const { encodeData, decodeData } = require('./coding');
 const { sendMessage } = require('./../utils/IPC');
-const { encode, decode, messages } = require('./IMC');
+const { encode, decode, messages } = require('./IMC/IMC');
 
 const messageLength = 256;
 
@@ -40,6 +40,8 @@ function getConnectedClient() {
         autodepth: false,
         autoheading: false,
       });
+    } else {
+      sendIMCData(client);
     }
   });
 
