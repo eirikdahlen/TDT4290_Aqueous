@@ -41,6 +41,9 @@ class VideoPicker extends Component {
   setDefaultID = () => {
     let { devices } = this.state;
     const keys = Object.keys(devices);
+    if (keys.length === 0) {
+      return;
+    }
     let ID = devices[keys[0]].currentID;
     let label = keys[0];
     keys.forEach(key => {
