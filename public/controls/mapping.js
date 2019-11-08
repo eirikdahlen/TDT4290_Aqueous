@@ -293,6 +293,7 @@ function setBias(type, positive) {
   if (global.mode.currentMode === global.mode.manual) {
     // Reset axis if X is held down
     if (xDown) {
+      sendVibrationRequest(true);
       bias[type] = 0.0;
       controls[type] = bias[type];
       return;
