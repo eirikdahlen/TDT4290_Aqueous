@@ -40,7 +40,7 @@ git clone https://github.com/eirikdahlen/TDT4290_Aqeous.git
 cd TDT4290_Aqeous
 ```
 
-Run these commands from your shell/terminal:
+Then run these commands from your shell/terminal:
 
 ```bash
 yarn install # installs all dependencies
@@ -65,6 +65,26 @@ yarn installer-win
 To install, find the `release-builds` folder that is created, and run `AqeousInstaller.exe` as administrator.
 
 After the installation, the application is located at `C:\Users\<username>\AppData\Local\aqeous`.
+
+### Installation
+
+To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqeous/releases) in the Github repository.
+Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
+
+Simply download the `AqeousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
+
+### Connecting two computers together via Ethernet
+
+It is possible to test the solution by connecting two computers together via Ethernet.
+By doing the following steps, two computers can communicate over TCP by using the IMC message protocol.
+
+1. Follow the first four steps in [this guide](https://www.maketecheasier.com/connect-two-windows-computer-on-lan/). Be sure to use different IP-adresses for the two computers.
+2. You could test your connection by following [these steps](http://www.verizon.com/support/smallbusiness/internet/fiosinternet/networking/troubleshooting/questionsone/122594.htm) to ensure that step 1 was successful.
+3. Open the Aqeous-program on both computers.
+4. Computer 1 opens the tab named `Simulator` --> `IMC-ROV Mockup` and clicks `Start Server` in the popup-window. Computer 1 now represents the ROV.
+5. Computer 2 opens the tab named `ROV` --> `Settings` and under `Message Protocol` chooses `IMC`. Click `Update`.
+6. Computer 2 opens the tab named `ROV` and click `Connect to TCP`. Computer 2 now represents the ROV-operator.
+7. The connection is now established and the ROV-operator can control the mocked ROV.
 
 ## Contributing
 
