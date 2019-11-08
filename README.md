@@ -79,7 +79,10 @@ It is possible to test the solution by connecting two computers together via Eth
 By doing the following steps, two computers can communicate over TCP by using the IMC message protocol.
 
 1. Follow the first four steps in [this guide](https://www.maketecheasier.com/connect-two-windows-computer-on-lan/). Be sure to use different IP-adresses for the two computers.
-2. You could test your connection by following [these steps](http://www.verizon.com/support/smallbusiness/internet/fiosinternet/networking/troubleshooting/questionsone/122594.htm) to ensure that step 1 was successful.
+2. To test that step 1 was successful:
+   1. Click `Start` and enter `cmd` in the Start Search field
+   2. Enter `ping 192.168.0.x`, where x depends on what IP-address you want to communicate with. Press `Enter`.
+   3. If `Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)` displays, the connection is good and the signal successfully reached the other computer over TCP.
 3. Open the Aqeous-program on both computers.
 4. Computer 1 opens the tab named `Simulator` --> `IMC-ROV Mockup` and clicks `Start Server` in the popup-window. Computer 1 now represents the ROV.
 5. Computer 2 opens the tab named `ROV` --> `Settings` and under `Message Protocol` chooses `IMC`. Click `Update`.
