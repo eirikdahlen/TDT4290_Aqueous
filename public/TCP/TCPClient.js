@@ -147,7 +147,8 @@ function sendIMCData(client) {
   };
   */
   let buf;
-  if (global.mode.currentMode === 0) {
+  const { currentMode, manual, dp, nf } = global.mode;
+  if (currentMode === manual) {
     // MANUAL MODE
     const desiredControl = {
       x: global.toROV.surge,
@@ -191,7 +192,7 @@ function sendIMCData(client) {
       buf = encode.combine([buf, lowLevelControlManeuverDesiredHeadingBuf]);
     }
   }
-  if (global.mode.currentMode === 1) {
+  if (currentMode === dp) {
     // DYNAMIC POSITIONING
 
     // TODO: Get proper value from global state
@@ -204,7 +205,7 @@ function sendIMCData(client) {
     });
   }
 
-  if (global.mode.currentMode === 2) {
+  if (currentMode === nf) {
     // NET FOLLOWING
 
     /*

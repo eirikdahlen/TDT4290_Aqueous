@@ -56,6 +56,9 @@ const initGlobals = () => {
     currentMode: 0,
     nfAvailable: true,
     dpAvailable: true,
+    manual: 0,
+    dp: 1,
+    nf: 2,
   };
 
   /**
