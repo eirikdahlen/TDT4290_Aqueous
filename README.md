@@ -35,7 +35,7 @@ brew install yarn
 
 First you need to clone this repository using Git:
 
-```bash
+```
 git clone https://github.com/eirikdahlen/TDT4290_Aqeous.git
 cd TDT4290_Aqeous
 ```
@@ -66,14 +66,14 @@ To install, find the `release-builds` folder that is created, and run `AqeousIns
 
 After the installation, the application is located at `C:\Users\<username>\AppData\Local\aqeous`.
 
-### Installation
+## Installation
 
 To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqeous/releases) in the Github repository.
 Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
 
 Simply download the `AqeousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
 
-### Connecting two computers together via Ethernet
+## Connecting two computers via Ethernet
 
 It is possible to test the solution by connecting two computers together via Ethernet.
 By doing the following steps, two computers can communicate over TCP by using the IMC message protocol.
