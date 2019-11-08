@@ -5,6 +5,7 @@ import Title from './Title';
 import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
 import { normalize, degreesToRadians, roundNumber } from './../utils/utils';
+import { resetAllBias } from './../utils/IPCutils';
 import ModeInput from './ModeInput';
 
 const { remote } = window.require('electron');
@@ -97,6 +98,7 @@ export default function DynamicPositioningMode({
       modeData.currentMode === ModeEnum.NETFOLLOWING
     ) {
       setCurrentPosition();
+      resetAllBias();
       remote.getGlobal('mode')['currentMode'] = ModeEnum.DYNAMICPOSITIONING;
     } else {
       console.log('Error - unable to change mode');
