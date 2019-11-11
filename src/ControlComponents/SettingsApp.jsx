@@ -12,8 +12,8 @@ export default function SettingsApp() {
     host,
     serialFile,
     messageProtocol,
-    boatSerialPort,
-    boatSerialBaudRate,
+    /*boatSerialPort,
+    boatSerialBaudRate,*/
     manualBoatHeading,
     useManualHeading,
   } = remote.getGlobal('settings');
@@ -24,12 +24,12 @@ export default function SettingsApp() {
   const [messageProtocolInput, setMessageProtocolInput] = useState(
     messageProtocol,
   );
-  const [boatSerialPortInput, setBoatSerialPortInput] = useState(
+  /*const [boatSerialPortInput, setBoatSerialPortInput] = useState(
     boatSerialPort,
   );
   const [boatSerialBaudRateInput, setBoatSerialBaudRateInput] = useState(
     boatSerialBaudRate,
-  );
+  );*/
   const [headingInput, setHeadingInput] = useState(manualBoatHeading);
   const [useManualInput, setUseManualInput] = useState(useManualHeading);
   const [inputsChanged, setInputsChanged] = useState([]);
@@ -91,7 +91,7 @@ export default function SettingsApp() {
     remote.getGlobal('settings')['host'] = hostInput;
     remote.getGlobal('settings')['serialFile'] = serialFileInput;
     remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
-    remote.getGlobal('settings')['boatSerialPort'] = boatSerialPortInput;
+    /*remote.getGlobal('settings')['boatSerialPort'] = boatSerialPortInput;
     remote.getGlobal('settings')[
       'boatSerialBaudRate'
     ] = boatSerialBaudRateInput;
@@ -105,7 +105,7 @@ export default function SettingsApp() {
       ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
     } catch (error) {
       window.ipcRenderer.send('settings-updated');
-    }
+    }*/
     updateStyle();
     window.ipcRenderer.send('settings-updated');
   };
@@ -166,7 +166,7 @@ export default function SettingsApp() {
         </div>
       </div>
 
-      <div className="settingGroup">
+      {/*<div className="settingGroup">
         <label>Boat serial port</label>
         <div className="inputContainer">
           <input
@@ -186,7 +186,7 @@ export default function SettingsApp() {
           />
           <div className="inputStatus"></div>
         </div>
-      </div>
+  </div>*/}
 
       <div className="settingGroup">
         <label>Manual Boat Heading</label>

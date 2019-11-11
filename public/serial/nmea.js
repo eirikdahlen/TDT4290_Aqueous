@@ -1,4 +1,4 @@
-const SerialPort = require('serialport');
+/*const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const nmea = require('nmea-0183');
 
@@ -64,3 +64,4 @@ function printNMEA(line) {
 }
 
 module.exports = { SerialPortObject };
+*/
