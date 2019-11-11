@@ -5,7 +5,11 @@ const biasIncrease = 2;
 const biasIncreaseTimer = 20;
 const maxYaw = 2 * Math.PI;
 const nfIncrease = 0.1;
-const nfMax = 20;
+const nfLimits = {
+  velocity: [-3, 3],
+  distance: [0, 3],
+  depth: [0, 200],
+};
 
 // Bias values
 let bias = {
@@ -325,16 +329,20 @@ function setNfParameters(type, positive) {
     global.netfollowing[type] = 0;
     return;
   }
-  const typeDistanceOrDepth =
-    type == 'distance' || type == 'depth' ? true : false;
-  const minus = typeDistanceOrDepth ? 0 : -1;
+  const [min, max] = nfLimits[type];
+  let nfValue = global.netfollowing[type];
   if (positive) {
-    global.netfollowing[type] +=
-      global.netfollowing[type] < nfMax ? nfIncrease : 0.0;
+    nfValue += nfIncrease;
+    if (nfValue > max) {
+      nfValue = max;
+    }
   } else {
-    global.netfollowing[type] -=
-      global.netfollowing[type] > minus * nfMax ? nfIncrease : 0.0;
+    nfValue -= nfIncrease;
+    if (nfValue < min) {
+      nfValue = min;
+    }
   }
+  global.netfollowing[type] = nfValue;
 }
 
 //Sets global mode to modeNumber and resets all bias
