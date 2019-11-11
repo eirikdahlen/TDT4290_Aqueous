@@ -13,16 +13,15 @@ const mapping = {
   V: 'B', //autoheading
   C: 'A', //autodepth
   TAB: 'Y', //reset bias
-  CAPSLOCK: 'X', //reset axis bias
-  SHIFT: 'Back', //netfollowing
-  ' ': 'Start', //dp
+  CONTROL: 'X', //reset axis bias
+  X: 'Back', //netfollowing
+  B: 'Start', //dp
   L: 'DPadRight', //sway bias+
   J: 'DPadLeft', //sway bias-
   I: 'DPadUp', //surge bias+
   K: 'DPadDown', //surge bias-
   Q: 'LB', //heave bias (down) +
   E: 'RB', //negative heave bias (up) -
-  M: 'LS', //set to manual mode and reset bias
 };
 
 // Buttons we want to send negative values for

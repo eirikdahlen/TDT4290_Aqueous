@@ -175,7 +175,7 @@ function createKeyboardMappingWindow() {
     icon: path.join(__dirname, '../img/logo.png'),
   });
   keyboardMappingWindow.loadURL(
-    `file://${path.join(__dirname, '../img/keyboard-mappings.jpg')}`,
+    `file://${path.join(__dirname, '../img/keyboard-mappings.png')}`,
   );
   // Handle garbage collection
   keyboardMappingWindow.on('close', function() {
