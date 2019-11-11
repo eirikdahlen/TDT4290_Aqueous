@@ -6,6 +6,7 @@ import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
 import ModeInput from './ModeInput';
 import { normalize, roundNumber } from './../utils/utils';
+import { resetAllBias } from './../utils/IPCutils';
 
 const { remote } = window.require('electron');
 
@@ -57,6 +58,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
       modeData.currentMode === ModeEnum.DYNAMICPOSITIONING
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.NETFOLLOWING;
+      resetAllBias();
     } else {
       console.log('Error - unable to change mode');
     }
