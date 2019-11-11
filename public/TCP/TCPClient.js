@@ -66,7 +66,13 @@ function getConnectedClient() {
       }
     } catch (error) {
       console.log('Unable to decode message:');
-      console.log(buf);
+      console.log(
+        `Buffer: ${buf
+          .toString('hex')
+          .match(/../g)
+          .join(' ')}`,
+      );
+      console.log(`Buffer length: ${buf.length}`);
     }
   });
 
