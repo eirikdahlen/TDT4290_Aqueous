@@ -71,6 +71,7 @@ function VideoApp() {
             : remote.getGlobal('boat')['heading']
         }
         maxDistance={5}
+        mapRotation={remote.getGlobal('settings')['mapRotation']}
       />
       <GamepadWrapper className="GamepadWrapper" />
       <KeyboardWrapper className="KeyboardInput" />

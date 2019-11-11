@@ -47,6 +47,7 @@ class MiniMapWidget extends CanvasWidget {
       dpSettings.down,
       initialWidth,
       initialHeight,
+      this.props.mapRotation,
     );
   }
 

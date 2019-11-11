@@ -212,6 +212,7 @@ function drawMinimap(
   DPdown,
   initialWidth,
   initialHeight,
+  mapRotation,
 ) {
   context.strokeStyle = '#FFFFFF';
   context.fillStyle = '#FFFFFF';
@@ -230,13 +231,17 @@ function drawMinimap(
   // Draw the boat
   context.save(); // Save context state so we can draw boat and ROV from different origins and rotate independently
   context.translate(initialWidth / 2, initialWidth / 2); // Draw boat from the middle of the circle
+  if (mapRotation) {
+    context.rotate(degreesToRadians(boatHeading)); //rotate the boat
+  }
   drawBoat(context, boatWidth, boatLength, boatHeading);
   context.restore(); // Restore context state we saved earlier
 
   context.save();
   context.translate(initialWidth / 2, initialWidth / 2);
-  context.rotate(-degreesToRadians(boatHeading)); //rotates ROV around boat when boat rotates
-
+  if (!mapRotation) {
+    context.rotate(-degreesToRadians(boatHeading)); //rotates ROV around boat when boat rotates
+  }
   // If the ROV is below the target: draw the ROV first, then the target on top
   if (down > DPdown) {
     drawContent(context, maxDistance, yaw, north, east, drawROV, '#00FF00');
