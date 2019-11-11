@@ -1,6 +1,6 @@
 ## Commit message format
 
-Types = {feature, docs, bugfix, test, refactor, chore, style}
+Types = {feat, docs, bugfix, test, refactor, chore, style}
 
 Example of commit:
 `#5 style: add style to component x`
