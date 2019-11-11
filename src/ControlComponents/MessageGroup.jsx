@@ -15,8 +15,7 @@ const dictionary = {
 
   // Net following values
   timeout: 'Time',
-  d: 'Dir.',
-  v: 'Velo.',
+  d: 'Dist.',
   z_units: 'Down u.',
 
   // Custom Estimated state values
