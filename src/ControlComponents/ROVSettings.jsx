@@ -8,8 +8,8 @@ const showSettings = {
   port: 'TCP',
   host: 'IP',
   messageProtocol: 'Protocol',
-  boatSerialPort: 'S-port',
-  boatSerialBaudRate: 'Baud',
+  /*boatSerialPort: 'S-port',
+  boatSerialBaudRate: 'Baud',*/
   manualBoatHeading: 'Boat heading',
 };
 
