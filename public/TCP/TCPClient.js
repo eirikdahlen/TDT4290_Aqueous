@@ -73,6 +73,8 @@ function getConnectedClient() {
           .join(' ')}`,
       );
       console.log(`Buffer length: ${buf.length}`);
+
+      console.log(error.message);
     }
   });
 
