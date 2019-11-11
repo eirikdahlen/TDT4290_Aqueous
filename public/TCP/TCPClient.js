@@ -47,22 +47,26 @@ function getConnectedClient() {
 
   // Handles receiving data
   client.on('data', function(buf) {
-    if (messageProtocol === messageProtocols.old) {
-      let data = decodeData(buf);
-      // console.log(`\n[${Date.now()}] Recieved data from server:`);
-      // console.log(data);
-      global.fromROV = data;
-      sendMessage('data-received');
-      sendData(client, global.toROV);
-      sendMessage('data-sent');
-    } else if (messageProtocol === messageProtocols.IMC) {
-      const fromROVIMC = decodeImcData(buf);
-      console.log(fromROVIMC);
-      global.fromROVIMC = fromROVIMC;
-      sendMessage('data-received');
-      const toROVIMC = sendIMCData(client);
-      global.toROVIMC = toROVIMC;
-      sendMessage('data-sent');
+    console.log(`\n[${Date.now()}] Recieved data from server:`);
+    try {
+      if (messageProtocol === messageProtocols.old) {
+        let data = decodeData(buf);
+        global.fromROV = data;
+        sendMessage('data-received');
+        sendData(client, global.toROV);
+        sendMessage('data-sent');
+      } else if (messageProtocol === messageProtocols.IMC) {
+        const fromROVIMC = decodeImcData(buf);
+        console.log(fromROVIMC);
+        global.fromROVIMC = fromROVIMC;
+        sendMessage('data-received');
+        const toROVIMC = sendIMCData(client);
+        global.toROVIMC = toROVIMC;
+        sendMessage('data-sent');
+      }
+    } catch (error) {
+      console.log('Unable to decode message:');
+      console.log(buf);
     }
   });
 
