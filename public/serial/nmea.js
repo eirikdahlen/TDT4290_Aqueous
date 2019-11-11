@@ -13,8 +13,10 @@ class SerialPortObject {
       baudRate: baudRate,
     });
 
+    // In case of errors: Allow the program to keep running!
+    // Optional error message, disabled for now because tests will complain
     this.port.on('error', () => {
-      console.log('Could not connect to serial port ' + port);
+      //console.log('Could not connect to serial port ' + port);
     });
 
     // Set up a serial parser
@@ -36,6 +38,11 @@ function printNMEA(line) {
   console.log(`> ${line}`);
 
   try {
+    if (line.startsWith('$GPHDT')) {
+      const heading = line.split(',')[1];
+      global.boat.heading = parseFloat(heading);
+      return;
+    }
     // Parse the serial data with an NMEA0183 parser.
     // NMEA-0183 example message:
     // '$GPGGA,123519,4807.038,N,01131.324,E,1,08,0.9,545.4,M,46.9,M, , *42'
