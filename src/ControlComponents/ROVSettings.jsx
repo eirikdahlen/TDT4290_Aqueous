@@ -11,6 +11,7 @@ const showSettings = {
   /*boatSerialPort: 'S-port',
   boatSerialBaudRate: 'Baud',*/
   manualBoatHeading: 'Boat heading',
+  mapRotation: 'Rotate boat',
 };
 
 export default function ROVSettings({ settings }) {
@@ -22,7 +23,7 @@ export default function ROVSettings({ settings }) {
             return (
               <div key={key} className="settingsField">
                 <h4>{showSettings[key]}</h4>
-                <span>{settings[key]}</span>
+                <span>{settings[key].toString()}</span>
               </div>
             );
           } else {

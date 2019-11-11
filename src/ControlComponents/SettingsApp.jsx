@@ -16,6 +16,7 @@ export default function SettingsApp() {
     boatSerialBaudRate,*/
     manualBoatHeading,
     useManualHeading,
+    mapRotation,
   } = remote.getGlobal('settings');
 
   const [portInput, setPortInput] = useState(port);
@@ -32,6 +33,7 @@ export default function SettingsApp() {
   );*/
   const [headingInput, setHeadingInput] = useState(manualBoatHeading);
   const [useManualInput, setUseManualInput] = useState(useManualHeading);
+  const [mapRotationInput, setMapRotationInput] = useState(mapRotation);
   const [inputsChanged, setInputsChanged] = useState([]);
 
   // Listens to the file-chosen message which is sent with the filename that is chosen
@@ -97,6 +99,7 @@ export default function SettingsApp() {
     ] = boatSerialBaudRateInput;
     remote.getGlobal('settings')['manualBoatHeading'] = headingInput;
     remote.getGlobal('settings')['useManualHeading'] = useManualInput;
+    remote.getGlobal('settings')['mapRotation'] = mapRotationInput;
     try {
       remote.getGlobal('settings')['boatSerialPortObject'].closePort();
       remote.getGlobal('settings')[
@@ -189,7 +192,7 @@ export default function SettingsApp() {
   </div>*/}
 
       <div className="settingGroup">
-        <label>Manual Boat Heading</label>
+        <label>Manual boat heading</label>
         <div className="headingInputs">
           <div className="inputContainer">
             <input
@@ -212,6 +215,16 @@ export default function SettingsApp() {
             onChange={() => setUseManualInput(!useManualInput)}
           ></input>
         </div>
+      </div>
+
+      <div className="settingGroup">
+        <label>Rotate boat (minimap rotation):</label>
+        <input
+          className="mapRotation"
+          checked={mapRotationInput}
+          type="checkbox"
+          onChange={() => setMapRotationInput(!mapRotationInput)}
+        ></input>
       </div>
 
       <button className="updateSettingsBtn" onClick={updateSettings}>

@@ -13,6 +13,7 @@ const initGlobals = () => {
     boatSerialPortObject: null,*/
     manualBoatHeading: 0.0,
     useManualHeading: false,
+    mapRotation: true,
   };
 
   // Initialize a serial object with the port and baud rate given in the global settings
