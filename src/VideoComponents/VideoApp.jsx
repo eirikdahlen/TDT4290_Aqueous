@@ -23,11 +23,11 @@ function VideoApp() {
   const [deviceId, setDeviceId] = useState('');
 
   useEffect(() => {
-    window.ipcRenderer.on('data-received', () => {
+    setInterval(() => {
       settingsUpdate(remote.getGlobal('toROV'));
       sensorUpdate(remote.getGlobal('fromROV'));
       biasUpdate(remote.getGlobal('bias'));
-    });
+    }, 300);
   }, []);
 
   return (

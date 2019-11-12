@@ -19,25 +19,25 @@ function ControlApp() {
   const [toIMC, setToIMC] = useState(remote.getGlobal('toROVIMC'));
   const [fromIMC, setFromIMC] = useState(remote.getGlobal('fromROVIMC'));
   const [settings, setSettings] = useState(remote.getGlobal('settings'));
-  console.log('control app render');
 
   // make windows listen to ipc-msgs
   useEffect(() => {
-    window.ipcRenderer.on('data-sent', () => {
-      console.log('hei');
-      controlUpdate(remote.getGlobal('toROV'));
+    setInterval(() => {
+      if (IMCActive) {
+        setToIMC(remote.getGlobal('toROVIMC'));
+        setFromIMC(remote.getGlobal('fromROVIMC'));
+      } else {
+        controlUpdate(remote.getGlobal('toROV'));
+        sensorUpdate(remote.getGlobal('fromROV'));
+      }
       setMode(remote.getGlobal('mode'));
-      setToIMC(remote.getGlobal('toROVIMC'));
-    });
-    window.ipcRenderer.on('data-received', () => {
-      sensorUpdate(remote.getGlobal('fromROV'));
-      setFromIMC(remote.getGlobal('fromROVIMC'));
-    });
+    }, 300);
     window.ipcRenderer.on('settings-updated', () => {
       const currentSettings = remote.getGlobal('settings');
       setIMCActive(currentSettings.messageProtocol === 'IMC');
       setSettings({ ...currentSettings });
     });
+    // eslint-disable-next-line
   }, []);
 
   return (
