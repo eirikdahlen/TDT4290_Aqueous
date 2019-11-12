@@ -21,6 +21,6 @@ function getInstallerConfig() {
     outputDirectory: path.join(outPath, 'windows-installer'),
     exe: 'Aqeous.exe',
     setupExe: 'AqeousInstaller.exe',
-    // setupIcon: path.join(rootPath, 'assets', 'icons', 'win', 'icon.ico'),
+    setupIcon: path.join(rootPath, 'assets', 'icons', 'icon.ico'),
   });
 }
