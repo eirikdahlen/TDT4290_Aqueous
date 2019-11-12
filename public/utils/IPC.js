@@ -2,7 +2,7 @@
 // view -> main
 // main -> view
 const { ipcMain } = require('electron');
-const { handleClick } = require('./../controls/mapping');
+const { handleClick, resetAllBias } = require('./../controls/mapping');
 const { getFileAndSend } = require('./../launch/sendFile');
 
 // Function for setting up listeners between the main process (electron.js) and the renderer process (Components etc.)
@@ -10,6 +10,11 @@ function setIPCListeners() {
   // Listen to click events
   ipcMain.on('button-click', (event, activeButtons) => {
     handleClick(activeButtons);
+  });
+
+  // Listen to reset bias requests
+  ipcMain.on('reset-all-bias', () => {
+    resetAllBias();
   });
 
   //Listen to function requests
@@ -31,6 +36,7 @@ function sendMessage(msg) {
     controlWindow.webContents.send(msg);
   } catch (error) {
     console.log('Windows are closed');
+    return false;
   }
 }
 

@@ -12,10 +12,11 @@ export default function SettingsApp() {
     host,
     serialFile,
     messageProtocol,
-    boatSerialPort,
-    boatSerialBaudRate,
+    /*boatSerialPort,
+    boatSerialBaudRate,*/
     manualBoatHeading,
     useManualHeading,
+    mapRotation,
   } = remote.getGlobal('settings');
 
   const [portInput, setPortInput] = useState(port);
@@ -24,14 +25,15 @@ export default function SettingsApp() {
   const [messageProtocolInput, setMessageProtocolInput] = useState(
     messageProtocol,
   );
-  const [boatSerialPortInput, setBoatSerialPortInput] = useState(
+  /*const [boatSerialPortInput, setBoatSerialPortInput] = useState(
     boatSerialPort,
   );
   const [boatSerialBaudRateInput, setBoatSerialBaudRateInput] = useState(
     boatSerialBaudRate,
-  );
+  );*/
   const [headingInput, setHeadingInput] = useState(manualBoatHeading);
   const [useManualInput, setUseManualInput] = useState(useManualHeading);
+  const [mapRotationInput, setMapRotationInput] = useState(mapRotation);
   const [inputsChanged, setInputsChanged] = useState([]);
 
   // Listens to the file-chosen message which is sent with the filename that is chosen
@@ -91,12 +93,13 @@ export default function SettingsApp() {
     remote.getGlobal('settings')['host'] = hostInput;
     remote.getGlobal('settings')['serialFile'] = serialFileInput;
     remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
-    remote.getGlobal('settings')['boatSerialPort'] = boatSerialPortInput;
+    /*remote.getGlobal('settings')['boatSerialPort'] = boatSerialPortInput;
     remote.getGlobal('settings')[
       'boatSerialBaudRate'
     ] = boatSerialBaudRateInput;
     remote.getGlobal('settings')['manualBoatHeading'] = headingInput;
     remote.getGlobal('settings')['useManualHeading'] = useManualInput;
+    remote.getGlobal('settings')['mapRotation'] = mapRotationInput;
     try {
       remote.getGlobal('settings')['boatSerialPortObject'].closePort();
       remote.getGlobal('settings')[
@@ -105,7 +108,7 @@ export default function SettingsApp() {
       ].openPort(boatSerialPortInput, boatSerialBaudRateInput);
     } catch (error) {
       window.ipcRenderer.send('settings-updated');
-    }
+    }*/
     updateStyle();
     window.ipcRenderer.send('settings-updated');
   };
@@ -166,7 +169,7 @@ export default function SettingsApp() {
         </div>
       </div>
 
-      <div className="settingGroup">
+      {/*<div className="settingGroup">
         <label>Boat serial port</label>
         <div className="inputContainer">
           <input
@@ -186,10 +189,10 @@ export default function SettingsApp() {
           />
           <div className="inputStatus"></div>
         </div>
-      </div>
+  </div>*/}
 
       <div className="settingGroup">
-        <label>Manual Boat Heading</label>
+        <label>Manual boat heading</label>
         <div className="headingInputs">
           <div className="inputContainer">
             <input
@@ -212,6 +215,16 @@ export default function SettingsApp() {
             onChange={() => setUseManualInput(!useManualInput)}
           ></input>
         </div>
+      </div>
+
+      <div className="settingGroup">
+        <label>Rotate boat (minimap rotation):</label>
+        <input
+          className="mapRotation"
+          checked={mapRotationInput}
+          type="checkbox"
+          onChange={() => setMapRotationInput(!mapRotationInput)}
+        ></input>
       </div>
 
       <button className="updateSettingsBtn" onClick={updateSettings}>

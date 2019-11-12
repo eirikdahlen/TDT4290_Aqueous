@@ -198,10 +198,10 @@ function sendIMCData(client) {
     // TODO: Get proper value from global state
     buf = encode.customGoTo({
       timeout: 10,
-      x: 1.1,
-      y: 2.2,
-      z: global.toROV.heave,
-      yaw: global.toROV.yaw,
+      x: global.dynamicpositioning.north,
+      y: global.dynamicpositioning.east,
+      z: global.dynamicpositioning.down,
+      yaw: global.dynamicpositioning.yaw,
     });
   }
 
@@ -228,4 +228,4 @@ function sendIMCData(client) {
   return decode(buf);
 }
 
-module.exports = { getConnectedClient, sendData };
+module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData };
