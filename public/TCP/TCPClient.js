@@ -228,4 +228,4 @@ function sendIMCData(client) {
   return decode(buf);
 }
 
-module.exports = { getConnectedClient, sendData };
+module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData };

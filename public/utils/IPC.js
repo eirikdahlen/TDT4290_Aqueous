@@ -36,6 +36,7 @@ function sendMessage(msg) {
     controlWindow.webContents.send(msg);
   } catch (error) {
     console.log('Windows are closed');
+    return false;
   }
 }
 
