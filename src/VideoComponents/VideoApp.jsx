@@ -23,11 +23,14 @@ function VideoApp() {
   const [deviceId, setDeviceId] = useState('');
 
   useEffect(() => {
-    setInterval(() => {
+    let interval = setInterval(() => {
       settingsUpdate(remote.getGlobal('toROV'));
       sensorUpdate(remote.getGlobal('fromROV'));
       biasUpdate(remote.getGlobal('bias'));
     }, 300);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (

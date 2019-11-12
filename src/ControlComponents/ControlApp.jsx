@@ -22,7 +22,7 @@ function ControlApp() {
 
   // make windows listen to ipc-msgs
   useEffect(() => {
-    setInterval(() => {
+    let interval = setInterval(() => {
       if (IMCActive) {
         setToIMC(remote.getGlobal('toROVIMC'));
         setFromIMC(remote.getGlobal('fromROVIMC'));
@@ -37,6 +37,9 @@ function ControlApp() {
       setIMCActive(currentSettings.messageProtocol === 'IMC');
       setSettings({ ...currentSettings });
     });
+    return () => {
+      clearInterval(interval);
+    };
     // eslint-disable-next-line
   }, []);
 
