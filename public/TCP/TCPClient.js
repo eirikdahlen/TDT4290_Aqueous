@@ -4,6 +4,7 @@ const { sendMessage } = require('./../utils/IPC');
 const { encode, decode, messages } = require('./IMC/IMC');
 
 const messageLength = 256;
+let msgCount = 0;
 
 const messageProtocols = {
   IMC: 'IMC',

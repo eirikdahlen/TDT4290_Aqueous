@@ -7,7 +7,7 @@ const initGlobals = () => {
     host: '127.0.0.1',
     serialFile:
       'C:/_work/FhSim/sfhdev/FhSimPlayPen_vs14_amd64/bin/aquaculturerobotics/runrtvisrunROV_ILOS_1.bat',
-    messageProtocol: 'OLD',
+    messageProtocol: 'IMC',
     /*boatSerialPort: 'COM2',
     boatSerialBaudRate: 4800,
     boatSerialPortObject: null,*/

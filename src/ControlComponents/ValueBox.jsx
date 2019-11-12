@@ -11,14 +11,6 @@ export default function ValueBox({ title, value, changeEffect, flag }) {
     autodepth: 'AD',
   };
 
-  // Sets a recentlyChanged-state which is used to add a temporary style when a value is changed
-  useEffect(() => {
-    if (changeEffect) {
-      setRecentlyChanged(true);
-      setTimeout(() => setRecentlyChanged(false), 500);
-    }
-  }, [value, changeEffect]);
-
   // Properly formats titles
   const fixTitle = title => {
     if (nameMappings[title]) {

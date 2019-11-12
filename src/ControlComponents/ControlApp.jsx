@@ -19,10 +19,12 @@ function ControlApp() {
   const [toIMC, setToIMC] = useState(remote.getGlobal('toROVIMC'));
   const [fromIMC, setFromIMC] = useState(remote.getGlobal('fromROVIMC'));
   const [settings, setSettings] = useState(remote.getGlobal('settings'));
+  console.log('control app render');
 
   // make windows listen to ipc-msgs
   useEffect(() => {
     window.ipcRenderer.on('data-sent', () => {
+      console.log('hei');
       controlUpdate(remote.getGlobal('toROV'));
       setMode(remote.getGlobal('mode'));
       setToIMC(remote.getGlobal('toROVIMC'));
