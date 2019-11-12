@@ -4,8 +4,6 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.5.2",
-    "@material-ui/icons": "^4.5.1",
     "babel-jest": "^24.9.0",
     "crc": "^3.8.0",
     "electron-installer-dmg": "^3.0.0",
@@ -20,8 +18,7 @@
     "react-gamepad": "^1.0.3",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
-    "react-webcam": "^3.0.1",
-    "responsive-gamepad": "^1.2.1"
+    "react-webcam": "^3.0.1"
   },
   "main": "public/electron.js",
   "scripts": {
