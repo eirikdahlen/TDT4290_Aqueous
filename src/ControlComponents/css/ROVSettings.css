@@ -29,7 +29,7 @@
   border: solid 0.5px;
   margin: 2px;
   flex-grow: 1;
-  background-color: var(--primary-dark);
+  background-color: white;
   border-radius: var(--small-radius);
   display: flex;
 }

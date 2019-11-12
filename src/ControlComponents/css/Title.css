@@ -25,7 +25,7 @@
 }
 
 .available {
-  background-color: var(--positive-light);
+  background-color: var(--positive-normal);
 }
 .notAvailable {
   background-color: var(--negative-light);

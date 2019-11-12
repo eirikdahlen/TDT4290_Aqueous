@@ -69,8 +69,13 @@ const menuTemplate = [
           getFileAndLaunch(global.settings.serialFile);
         },
       },
+    ],
+  },
+  {
+    label: 'Settings',
+    submenu: [
       {
-        label: 'Settings',
+        label: 'Program settings',
         accelerator: 'CmdOrCtrl+I',
         click() {
           createSettingsWindow();
@@ -96,7 +101,7 @@ const menuTemplate = [
   },
   // { role: 'editMenu' }
   {
-    role: 'help',
+    label: 'Controls',
     submenu: [
       {
         label: 'Gamepad Controls',

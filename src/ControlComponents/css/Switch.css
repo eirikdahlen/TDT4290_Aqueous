@@ -33,7 +33,7 @@
 .switch-checkbox:checked + .switch-label .switch-button {
   left: calc(100% - 2px);
   transform: translateX(-100%);
-  background-color: var(--positive-light);
+  background-color: white;
 }
 
 .switch-label:hover .switch-button {
