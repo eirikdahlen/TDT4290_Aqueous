@@ -24,9 +24,9 @@ export default function NetfollowingMode({ title, modeData, step }) {
   // Normalises a value to the correct ranges
   function fixValue(value, type) {
     if (type === 'velocity') {
-      value = normalize(value, -10, 10);
+      value = normalize(value, -3, 3);
     } else if (type === 'distance') {
-      value = normalize(value, 0, 10);
+      value = normalize(value, 0, 3);
     } else {
       value = normalize(value, 0, 200);
     }
