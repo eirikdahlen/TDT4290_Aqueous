@@ -54,7 +54,8 @@ let controls = {
 //Interval for increasing bias continously
 setInterval(() => {
   biasButtonsDown.forEach(biasButton => {
-    handleButton(biasButton);
+    if (global.mode.currentMode === global.mode.manual)
+      handleButton(biasButton);
   });
 }, biasIncreaseTimer);
 
