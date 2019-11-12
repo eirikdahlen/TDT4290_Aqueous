@@ -23,13 +23,10 @@ function ControlApp() {
   // make windows listen to ipc-msgs
   useEffect(() => {
     let interval = setInterval(() => {
-      if (IMCActive) {
-        setToIMC(remote.getGlobal('toROVIMC'));
-        setFromIMC(remote.getGlobal('fromROVIMC'));
-      } else {
-        controlUpdate(remote.getGlobal('toROV'));
-        sensorUpdate(remote.getGlobal('fromROV'));
-      }
+      setToIMC(remote.getGlobal('toROVIMC'));
+      setFromIMC(remote.getGlobal('fromROVIMC'));
+      controlUpdate(remote.getGlobal('toROV'));
+      sensorUpdate(remote.getGlobal('fromROV'));
       setMode(remote.getGlobal('mode'));
     }, 300);
     window.ipcRenderer.on('settings-updated', () => {
@@ -40,7 +37,6 @@ function ControlApp() {
     return () => {
       clearInterval(interval);
     };
-    // eslint-disable-next-line
   }, []);
 
   return (
