@@ -235,7 +235,10 @@ test(prefix + 'set multiple biases and reset', () => {
       },
     ]);
   });
-  handleClick([{ button: 'LB', value: 1.0 }, { button: 'X', value: 1.0 }]);
+  handleClick([
+    { button: 'LB', value: 1.0 },
+    { button: 'X', value: 1.0 },
+  ]);
   bias['surge'] = biasIncrease;
   bias['sway'] = biasIncrease;
   expect(global.bias).toStrictEqual(bias);
