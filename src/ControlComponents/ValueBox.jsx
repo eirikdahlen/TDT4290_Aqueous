@@ -13,10 +13,14 @@ export default function ValueBox({ title, value, changeEffect, flag }) {
 
   // Sets a recentlyChanged-state which is used to add a temporary style when a value is changed
   useEffect(() => {
+    let timeoutFn;
     if (changeEffect) {
       setRecentlyChanged(true);
-      setTimeout(() => setRecentlyChanged(false), 500);
+      timeoutFn = setTimeout(() => setRecentlyChanged(false), 500);
     }
+    return () => {
+      clearTimeout(timeoutFn);
+    };
   }, [value, changeEffect]);
 
   // Properly formats titles

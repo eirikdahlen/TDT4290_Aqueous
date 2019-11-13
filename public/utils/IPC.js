@@ -24,16 +24,22 @@ function setIPCListeners() {
 
   // Listen to update settings
   ipcMain.on('settings-updated', () => {
-    sendMessage('settings-updated');
+    sendMessage('settings-updated', 'control');
   });
 }
 
 //Sends messages to the two renderers/browser windows
-function sendMessage(msg) {
+function sendMessage(msg, window) {
   const { videoWindow, controlWindow } = global;
   try {
-    videoWindow.webContents.send(msg);
-    controlWindow.webContents.send(msg);
+    if (window === 'video') {
+      videoWindow.webContents.send(msg);
+    } else if (window === 'control') {
+      controlWindow.webContents.send(msg);
+    } else {
+      videoWindow.webContents.send(msg);
+      controlWindow.webContents.send(msg);
+    }
   } catch (error) {
     console.log('Windows are closed');
     return false;

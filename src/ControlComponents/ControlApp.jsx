@@ -22,20 +22,21 @@ function ControlApp() {
 
   // make windows listen to ipc-msgs
   useEffect(() => {
-    window.ipcRenderer.on('data-sent', () => {
-      controlUpdate(remote.getGlobal('toROV'));
-      setMode(remote.getGlobal('mode'));
+    let interval = setInterval(() => {
       setToIMC(remote.getGlobal('toROVIMC'));
-    });
-    window.ipcRenderer.on('data-received', () => {
-      sensorUpdate(remote.getGlobal('fromROV'));
       setFromIMC(remote.getGlobal('fromROVIMC'));
-    });
+      controlUpdate(remote.getGlobal('toROV'));
+      sensorUpdate(remote.getGlobal('fromROV'));
+      setMode(remote.getGlobal('mode'));
+    }, 300);
     window.ipcRenderer.on('settings-updated', () => {
       const currentSettings = remote.getGlobal('settings');
       setIMCActive(currentSettings.messageProtocol === 'IMC');
       setSettings({ ...currentSettings });
     });
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (
