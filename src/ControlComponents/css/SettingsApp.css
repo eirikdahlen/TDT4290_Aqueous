@@ -19,6 +19,11 @@
   outline: none;
 }
 
+.SettingsApp > h2 {
+  margin: 15px 0;
+  font-weight: 500;
+}
+
 .SettingsApp .settingGroup {
   width: 90%;
 }
@@ -64,7 +69,7 @@
 }
 
 .updateSettingsBtn:hover,
-.serialInputs button:hover {
+.twoInputs button:hover {
   background-color: var(--primary-light);
   color: black;
 }
@@ -73,12 +78,13 @@
   background-color: var(--primary-normal);
 }
 
-.serialInputs {
+.twoInputs {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
-.serialInputs button {
+.twoInputs button {
   border: none;
   margin: 0;
   width: 40px;
@@ -94,14 +100,8 @@
   cursor: pointer;
 }
 
-.headingInputs {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .useManual {
-  width: 35px !important;
+  margin-left: 5px !important;
 }
 
 .closeSettings {
@@ -147,4 +147,15 @@
 
 .updatedInput ~ .inputStatus {
   background-color: var(--positive-dark);
+}
+
+.SettingsApp input[type='checkbox'] {
+  width: 38px !important;
+  height: 38px !important;
+  margin: 0;
+}
+
+#mapRotation {
+  height: 35px !important;
+  width: 35px !important;
 }
