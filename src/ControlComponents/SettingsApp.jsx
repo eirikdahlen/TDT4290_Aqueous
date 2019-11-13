@@ -93,13 +93,14 @@ export default function SettingsApp() {
     remote.getGlobal('settings')['host'] = hostInput;
     remote.getGlobal('settings')['serialFile'] = serialFileInput;
     remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
+    remote.getGlobal('settings')['manualBoatHeading'] = headingInput;
+    remote.getGlobal('settings')['useManualHeading'] = useManualInput;
+    remote.getGlobal('settings')['mapRotation'] = mapRotationInput;
     /*remote.getGlobal('settings')['boatSerialPort'] = boatSerialPortInput;
     remote.getGlobal('settings')[
       'boatSerialBaudRate'
     ] = boatSerialBaudRateInput;
-    remote.getGlobal('settings')['manualBoatHeading'] = headingInput;
-    remote.getGlobal('settings')['useManualHeading'] = useManualInput;
-    remote.getGlobal('settings')['mapRotation'] = mapRotationInput;
+    
     try {
       remote.getGlobal('settings')['boatSerialPortObject'].closePort();
       remote.getGlobal('settings')[
@@ -115,8 +116,9 @@ export default function SettingsApp() {
 
   return (
     <div className="SettingsApp">
+      <h2>SETTINGS</h2>
       <div className="settingGroup">
-        <label>TCP port</label>
+        <label>TCP Port</label>
         <div className="inputContainer">
           <input
             value={portInput}
@@ -127,7 +129,7 @@ export default function SettingsApp() {
       </div>
 
       <div className="settingGroup">
-        <label>Host IP address</label>
+        <label>Host IP Address</label>
         <div className="inputContainer">
           <input
             value={hostInput}
@@ -138,8 +140,8 @@ export default function SettingsApp() {
       </div>
 
       <div className="settingGroup">
-        <label>Serial file</label>
-        <div className="serialInputs">
+        <label>Serial File</label>
+        <div className="twoInputs">
           <div className="inputContainer">
             <input
               id="serialField"
@@ -192,12 +194,12 @@ export default function SettingsApp() {
   </div>*/}
 
       <div className="settingGroup">
-        <label>Manual boat heading</label>
-        <div className="headingInputs">
+        <label>Manual Boat Heading</label>
+        <div className="twoInputs">
           <div className="inputContainer">
             <input
               style={{
-                backgroundColor: useManualInput ? 'white' : 'lightgray',
+                backgroundColor: useManualInput ? 'white' : '#eaeaea',
               }} //using inline style to avoid interference with inputStatus-style
               value={headingInput}
               type="number"
@@ -218,13 +220,15 @@ export default function SettingsApp() {
       </div>
 
       <div className="settingGroup">
-        <label>Rotate boat (minimap rotation):</label>
-        <input
-          className="mapRotation"
-          checked={mapRotationInput}
-          type="checkbox"
-          onChange={() => setMapRotationInput(!mapRotationInput)}
-        ></input>
+        <label>Rotate Minimap Boat:</label>
+        <div>
+          <input
+            id="mapRotation"
+            checked={mapRotationInput}
+            type="checkbox"
+            onChange={() => setMapRotationInput(!mapRotationInput)}
+          ></input>
+        </div>
       </div>
 
       <button className="updateSettingsBtn" onClick={updateSettings}>
