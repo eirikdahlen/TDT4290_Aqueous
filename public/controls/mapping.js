@@ -209,6 +209,7 @@ function handleManual({ button, value }) {
       if (global.mode.nfAvailable) {
         sendVibrationRequest(true);
         switchToMode('nf');
+        setNFToCurrentDepth();
       } else {
         sendVibrationRequest(false);
       }
@@ -362,6 +363,10 @@ function setDPToCurrentPosition() {
   Object.keys(global.dynamicpositioning).forEach(attribute => {
     global.dynamicpositioning[attribute] = global.fromROV[attribute];
   });
+}
+
+function setNFToCurrentDepth() {
+  global.netfollowing.depth = global.fromROV.down;
 }
 
 // Tells the gamepad to vibrate
