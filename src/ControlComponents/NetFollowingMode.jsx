@@ -58,6 +58,9 @@ export default function NetfollowingMode({ title, modeData, step }) {
       modeData.currentMode === ModeEnum.DYNAMICPOSITIONING
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.NETFOLLOWING;
+      remote.getGlobal('netfollowing')['depth'] = remote.getGlobal('fromROV')[
+        'down'
+      ];
       resetAllBias();
     } else {
       console.log('Error - unable to change mode');
