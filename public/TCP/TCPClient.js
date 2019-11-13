@@ -133,7 +133,7 @@ function decodeImcData(buf) {
   global.mode.dpAvailable = entityState.flags.DP;
   // TODO: Handle when ROV tells state is MANUAL
   if (currentModeUnavailable()) {
-    global.mode.currentMode = 0;
+    setSafetyControls();
   }
 
   const customEstimatedState = recievedData[messages.customEstimatedState];
@@ -249,6 +249,15 @@ function currentModeUnavailable() {
   return (
     (currentMode === 1 && !dpAvailable) || (currentMode === 2 && !nfAvailable)
   );
+}
+
+// Sets to manual and locks autoheading and autodepth at current depth and heading
+function setSafetyControls() {
+  global.mode.currentMode = 0; // Switch to manual
+  global.toROV.autodepth = true; // Start autodepth
+  global.toROV.autoheading = true; // Start autoheading
+  global.toROV.heave = global.fromROV.down; // Sets heave to current down - heave is used by autodepth
+  global.toROV.yaw = global.fromROV.yaw; // Sets yaw to current yaw - yaw is used by autoheading
 }
 
 module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData };
