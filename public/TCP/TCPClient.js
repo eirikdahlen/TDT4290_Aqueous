@@ -46,7 +46,6 @@ function getConnectedClient() {
 
   // Handles receiving data
   client.on('data', function(buf) {
-    console.log(`\n[${Date.now()}] Recieved data from server:`);
     try {
       if (messageProtocol === messageProtocols.old) {
         let data = decodeData(buf);
