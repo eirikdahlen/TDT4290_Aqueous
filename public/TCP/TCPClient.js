@@ -132,6 +132,9 @@ function decodeImcData(buf) {
   global.mode.nfAvailable = entityState.flags.NF;
   global.mode.dpAvailable = entityState.flags.DP;
   // TODO: Handle when ROV tells state is MANUAL
+  if (currentModeUnavailable()) {
+    global.mode.currentMode = 0;
+  }
 
   const customEstimatedState = recievedData[messages.customEstimatedState];
   global.fromROV = {
@@ -238,6 +241,14 @@ function sendIMCData(client) {
   }
   client.write(encode.combine([buf], messageLength));
   return decode(buf);
+}
+
+// Checks if currentmode is available
+function currentModeUnavailable() {
+  const { currentMode, dpAvailable, nfAvailable } = global.mode;
+  return (
+    (currentMode === 1 && !dpAvailable) || (currentMode === 2 && !nfAvailable)
+  );
 }
 
 module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData };
