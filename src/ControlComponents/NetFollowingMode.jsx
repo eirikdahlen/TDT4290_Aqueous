@@ -40,7 +40,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
     } else if (type === 'distance') {
       remote.getGlobal('netfollowing')['distance'] = fixValue(value, type);
     } else if (type === 'depth') {
-      //remote.getGlobal('netfollowing')['depth'] = fixValue(value, type); TODO (IMC DEPENDENT)
+      remote.getGlobal('netfollowing')['depth'] = fixValue(value, type);
     } else {
       console.log('Type not recognized');
     }

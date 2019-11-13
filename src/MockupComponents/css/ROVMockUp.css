@@ -5,7 +5,7 @@
 }
 
 .startServer {
-  background-color: var(--primary-normal);
+  background-color: var(--primary-dark);
   color: white;
   cursor: pointer;
   text-align: center;
@@ -16,4 +16,8 @@
 input[type='modeInput'] {
   padding: 10px;
   font-size: medium;
+}
+
+.recievedData {
+  color: black;
 }
