@@ -3,6 +3,7 @@ import modeEnum from '../constants/modeEnum';
 import ModeAvailableToggles from './ModeAvailableToggles';
 import FromROV from './FromROV';
 import NFView from './NFView';
+import Values from './../ControlComponents/Values';
 
 import './css/ROVMockUp.css';
 
@@ -37,10 +38,8 @@ export default function ROVMockUp() {
   useEffect(() => {
     window.ipcRenderer.on('rov-mock-up-send-mode', (event, arg) => {
       setMode(arg);
-      console.log(`Recieved data ${arg}`);
     });
     window.ipcRenderer.on('rov-mock-up-send-data', (event, arg) => {
-      console.log(`Recieved data ${arg}`);
       setRecievedData(arg);
     });
   }, []);
@@ -55,9 +54,21 @@ export default function ROVMockUp() {
       <ModeAvailableToggles />
       <NFView />
       <div>
-        Revieced data:
-        <div>
-          <pre>{JSON.stringify(recievedData, null, 2)}</pre>
+        <Values
+          IMCActive={true}
+          title="From GUI"
+          values={recievedData ? recievedData : {}}
+          changeEffect={false}
+        />
+        <div className="recievedData">
+          Revieced data
+          {recievedData ? (
+            <div>
+              <pre>{JSON.stringify(recievedData, null, 2)}</pre>
+            </div>
+          ) : (
+            <div>No data recieved</div>
+          )}
         </div>
       </div>
     </div>
