@@ -19,15 +19,11 @@ class ModeWidget extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      fontSizeMode: 14,
-    };
+    this.state = this.calculateDimensions();
 
     // Initial variable values
     this.modeLabel = 'INVALID';
     this.widget = null;
-
-    this.componentDidMount();
   }
 
   componentDidMount() {
@@ -65,22 +61,20 @@ class ModeWidget extends Component {
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  updateDimensions = () => {
+  calculateDimensions() {
     const width = window.innerWidth;
 
-    // Scale text of the mode label
-    this.setState({
+    return {
       fontSizeMode: clamp(mapRange(width, 1000, 1500, 12, 20), 12, 20),
-    });
-    this.setState({
       fontSizeNFAvail: clamp(mapRange(width, 1000, 1500, 12, 14), 12, 14),
-    });
-    this.setState({
       sizeImgNFAvail: clamp(mapRange(width, 1000, 1500, 15, 25), 15, 25),
-    });
-    this.setState({
       divWidth: clamp(mapRange(width, 1000, 1500, 200, 250), 200, 250),
-    });
+    };
+  }
+
+  updateDimensions = () => {
+    // Scale text of the mode label
+    this.setState(this.calculateDimensions());
   };
 
   static get propTypes() {
