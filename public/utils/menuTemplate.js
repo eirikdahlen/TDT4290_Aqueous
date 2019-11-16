@@ -33,10 +33,10 @@ const menuTemplate = [
       ]
     : []),
   {
-    label: 'Simulator',
+    label: 'File',
     submenu: [
       {
-        label: 'Open Simulator',
+        label: 'Run Inputfile',
         accelerator: 'CmdOrCtrl+S',
         click() {
           getFileAndLaunch();
@@ -48,6 +48,13 @@ const menuTemplate = [
         click: async () => {
           createMockupWindow();
           ipcCommunicationTCPServer();
+        },
+      },
+      {
+        label: 'Settings',
+        accelerator: 'CmdOrCtrl+I',
+        click() {
+          createSettingsWindow();
         },
       },
     ],
@@ -62,25 +69,14 @@ const menuTemplate = [
           getConnectedClient();
         },
       },
-      {
+      // This button really doesn't do anything?
+      /* {
         label: 'Start ROV Serial Port',
         accelerator: 'CmdOrCtrl+C',
         click() {
           getFileAndLaunch(global.settings.serialFile);
         },
-      },
-    ],
-  },
-  {
-    label: 'Settings',
-    submenu: [
-      {
-        label: 'Program settings',
-        accelerator: 'CmdOrCtrl+I',
-        click() {
-          createSettingsWindow();
-        },
-      },
+      }, */
     ],
   },
   // { role: 'viewMenu' }
