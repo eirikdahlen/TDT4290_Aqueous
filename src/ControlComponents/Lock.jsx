@@ -16,6 +16,7 @@ const { remote } = window.require('electron');
 export default function Lock({
   title,
   active,
+  currentValue,
   min,
   max,
   step,
@@ -85,6 +86,7 @@ export default function Lock({
           max={max}
           step={step}
           clickFunction={updateValue}
+          externalValue={active ? currentValue : undefined}
         ></ModeInput>
       </div>
       <div className="check">
@@ -108,4 +110,5 @@ Lock.propTypes = {
   step: PropTypes.number,
   active: PropTypes.bool,
   manualModeActive: PropTypes.bool,
+  currentValue: PropTypes.number,
 };

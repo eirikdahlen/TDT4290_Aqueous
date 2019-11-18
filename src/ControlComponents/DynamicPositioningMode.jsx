@@ -16,6 +16,7 @@ export default function DynamicPositioningMode({
   modeData,
   step,
   fromROV,
+  values,
 }) {
   const attributes = ['north', 'east', 'down', 'yaw'];
   const euclideanAttributes = ['north', 'east', 'down'];
@@ -126,12 +127,14 @@ export default function DynamicPositioningMode({
             header="North [m]"
             step={step}
             clickFunction={updateValue}
+            externalValue={values.north}
           ></ModeInput>
           <ModeInput
             inputId="east"
             header="East [m]"
             step={step}
             clickFunction={updateValue}
+            externalValue={values.east}
           ></ModeInput>
         </div>
         <div className="modeInputRow">
@@ -142,6 +145,7 @@ export default function DynamicPositioningMode({
             min={0}
             max={200}
             clickFunction={updateValue}
+            externalValue={values.down}
           ></ModeInput>
           <ModeInput
             inputId="yaw"
@@ -150,6 +154,7 @@ export default function DynamicPositioningMode({
             min={0}
             max={360}
             clickFunction={updateValue}
+            externalValue={values.yaw}
           ></ModeInput>
         </div>
         <button onClick={() => setCurrentPosition()} className="DPCurrentBtn">
@@ -180,4 +185,5 @@ DynamicPositioningMode.propTypes = {
   step: PropTypes.number,
   modeData: PropTypes.object,
   fromROV: PropTypes.object,
+  values: PropTypes.object,
 };

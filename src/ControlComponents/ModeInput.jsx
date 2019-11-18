@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './css/ModeInput.css';
 import { roundNumber } from '../utils/utils';
@@ -12,7 +12,18 @@ export default function ModeInput({
   clickFunction,
   header,
   inputId,
+  externalValue,
 }) {
+  useEffect(() => {
+    const inputField = document.getElementById(inputId);
+    const inputValue = Number(inputField.value);
+    const prettyExternalValue = roundNumber(externalValue);
+    if (prettyExternalValue !== inputValue) {
+      inputField.value = prettyExternalValue;
+    }
+    // eslint-disable-next-line
+  }, [externalValue]);
+
   // Handles button click by sending value to parent
   const handleClick = () => {
     const inputField = document.getElementById(inputId);
@@ -55,4 +66,5 @@ ModeInput.propTypes = {
   clickFunction: PropTypes.func,
   header: PropTypes.string,
   inputId: PropTypes.string,
+  externalValue: PropTypes.number,
 };

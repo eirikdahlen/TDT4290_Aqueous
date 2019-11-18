@@ -5,6 +5,7 @@ import Title from './Title';
 import Switch from './Switch';
 import './css/ManualMode.css';
 import ModeEnum from '../constants/modeEnum';
+import { radiansToDegrees } from './../utils/utils';
 
 const { remote } = window.require('electron');
 
@@ -31,6 +32,7 @@ export default function ManualMode({ title, toROV, modeData }) {
         <Lock
           title="autoheading"
           active={toROV.autoheading}
+          currentValue={radiansToDegrees(toROV.yaw)}
           min={0}
           max={360}
           step={0.5}
@@ -39,6 +41,7 @@ export default function ManualMode({ title, toROV, modeData }) {
         <Lock
           title="autodepth"
           active={toROV.autodepth}
+          currentValue={toROV.heave}
           min={0}
           max={200}
           step={0.2}

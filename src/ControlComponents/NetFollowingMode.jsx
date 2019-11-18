@@ -11,7 +11,7 @@ import { resetAllBias } from './../utils/IPCutils';
 const { remote } = window.require('electron');
 
 // Component for the net following mode, handles its values and toggling it on and off.
-export default function NetfollowingMode({ title, modeData, step }) {
+export default function NetfollowingMode({ title, modeData, step, values }) {
   // Active is set if the current global mode is NF, and available is set from the global state
   let active = modeData.currentMode === ModeEnum.NETFOLLOWING;
   let available = modeData.nfAvailable;
@@ -87,6 +87,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
           max={10}
           step={step}
           clickFunction={updateValue}
+          externalValue={values.velocity}
         ></ModeInput>
         <ModeInput
           inputId={'distance'}
@@ -95,6 +96,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
           max={10}
           step={step}
           clickFunction={updateValue}
+          externalValue={values.distance}
         ></ModeInput>
         <ModeInput
           inputId={'depth'}
@@ -103,6 +105,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
           max={200}
           step={step}
           clickFunction={updateValue}
+          externalValue={values.depth}
         ></ModeInput>
       </div>
       <div className="checkSwitch">
@@ -122,4 +125,5 @@ NetfollowingMode.propTypes = {
   title: PropTypes.string,
   step: PropTypes.number,
   modeData: PropTypes.object,
+  values: PropTypes.object,
 };

@@ -48,6 +48,9 @@ export const copyObjectExcept = (obj, exceptProperties) => {
 
 // Rounds numbers by how big it is
 export const roundNumber = number => {
+  if (!number) {
+    return 0.0;
+  }
   const absNum = Math.abs(number);
   if (absNum >= 100) {
     return number.toFixed(0);

@@ -19,6 +19,10 @@ function ControlApp() {
   const [toIMC, setToIMC] = useState(remote.getGlobal('toROVIMC'));
   const [fromIMC, setFromIMC] = useState(remote.getGlobal('fromROVIMC'));
   const [settings, setSettings] = useState(remote.getGlobal('settings'));
+  const [NFValues, setNFValues] = useState(remote.getGlobal('netfollowing'));
+  const [DPValues, setDPValues] = useState(
+    remote.getGlobal('dynamicpositioning'),
+  );
 
   // make windows listen to ipc-msgs
   useEffect(() => {
@@ -28,6 +32,8 @@ function ControlApp() {
       controlUpdate(remote.getGlobal('toROV'));
       sensorUpdate(remote.getGlobal('fromROV'));
       setMode(remote.getGlobal('mode'));
+      setNFValues(remote.getGlobal('netfollowing'));
+      setDPValues(remote.getGlobal('dynamicpositioning'));
     }, 300);
     window.ipcRenderer.on('settings-updated', () => {
       const currentSettings = remote.getGlobal('settings');
@@ -52,12 +58,14 @@ function ControlApp() {
             title="Net Following"
             modeData={mode}
             step={0.05}
+            values={NFValues}
           ></NetfollowingMode>
           <DynamicPositioningMode
             title="Dynamic Positioning"
             modeData={mode}
             step={0.1}
             fromROV={sensorValues}
+            values={DPValues}
           ></DynamicPositioningMode>
         </div>
         <div className="bottomWindow">
