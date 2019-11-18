@@ -229,10 +229,10 @@ function handleManual({ button, value }) {
 // Handles NF mode controls
 function handleNF({ button }) {
   switch (button) {
-    case 'LeftTrigger': // - distance
+    case 'DPadLeft': // - distance
       setNfParameters('distance', false);
       break;
-    case 'RightTrigger': // + distance
+    case 'DPadRight': // + distance
       setNfParameters('distance', true);
       break;
 
@@ -245,17 +245,17 @@ function handleNF({ button }) {
       break;
 
     // SET NF PARAMETERS
-    case 'DPadUp': //Depth (-)
-      setNfParameters('depth', false);
-      break;
-    case 'DPadDown': //Depth (+)
-      setNfParameters('depth', true);
-      break;
-    case 'RB': //Velocity (+)
+    case 'DPadUp': //Velocity (+)
       setNfParameters('velocity', true);
       break;
-    case 'LB': //Velocity (-)
+    case 'DPadDown': //Velocity (-)
       setNfParameters('velocity', false);
+      break;
+    case 'RB': //Depth (+)
+      setNfParameters('depth', true);
+      break;
+    case 'LB': //Depth (-)
+      setNfParameters('depth', false);
       break;
 
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
