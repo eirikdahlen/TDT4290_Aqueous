@@ -40,7 +40,7 @@ function VideoApp() {
   if (mode === ModeEnum.MANUAL) {
     depth = parseFloat(settingsValues['heave']).toFixed(2);
   } else if (mode === ModeEnum.NETFOLLOWING) {
-    depth = parseFloat(settingsValues['depth']).toFixed(2);
+    depth = parseFloat(remote.getGlobal('netfollowing')['depth']).toFixed(2);
   } else {
     depth = 0;
   }
