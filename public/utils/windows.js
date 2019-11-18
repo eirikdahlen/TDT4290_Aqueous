@@ -160,7 +160,10 @@ function createMockupWindow() {
       ? 'http://localhost:3000?mockupWindow'
       : `file://${path.join(__dirname, '../../build/index.html?mockupWindow')}`,
   );
-  mockupWindow.webContents.openDevTools();
+  if (isDev) {
+    mockupWindow.webContents.openDevTools();
+  }
+
   // Handle garbage collection
   mockupWindow.on('close', function() {
     mockupWindow = null;
