@@ -12,6 +12,7 @@ import GamepadWrapper from './GamepadWrapper';
 import KeyboardWrapper from './KeyboardWrapper';
 import VideoMenu from './VideoMenu';
 import AvailabilityWidget from './AvailabilityWidget';
+import ModeEnum from '../constants/modeEnum';
 
 const { remote } = window.require('electron');
 
@@ -33,6 +34,17 @@ function VideoApp() {
     };
   }, []);
 
+  const mode = remote.getGlobal('mode').currentMode;
+  var depth;
+
+  if (mode === ModeEnum.MANUAL) {
+    depth = parseFloat(settingsValues['heave']).toFixed(2);
+  } else if (mode === ModeEnum.NETFOLLOWING) {
+    depth = parseFloat(settingsValues['depth']).toFixed(2);
+  } else {
+    depth = 0;
+  }
+
   return (
     <div className={transparent ? 'transparentVideoApp' : 'VideoApp'}>
       <VideoMenu
@@ -53,8 +65,8 @@ function VideoApp() {
       />
       <DepthWidget
         depth={sensorValues['down']}
-        isLocked={settingsValues['autodepth']}
-        lockedValue={parseFloat(settingsValues['heave']).toFixed(2)}
+        isLocked={settingsValues['autodepth'] || mode === ModeEnum.NETFOLLOWING}
+        lockedValue={depth}
       />
       <AvailabilityWidget
         nfAvailable={remote.getGlobal('mode')['nfAvailable']}
