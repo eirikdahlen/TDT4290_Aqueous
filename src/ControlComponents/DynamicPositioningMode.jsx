@@ -4,7 +4,12 @@ import Switch from './Switch';
 import Title from './Title';
 import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
-import { normalize, degreesToRadians, roundNumber } from './../utils/utils';
+import {
+  normalize,
+  degreesToRadians,
+  roundNumber,
+  radiansToDegrees,
+} from './../utils/utils';
 import { resetAllBias } from './../utils/IPCutils';
 import ModeInput from './ModeInput';
 
@@ -108,7 +113,10 @@ export default function DynamicPositioningMode({
   // Updates input-fields and the global DP settings to the current position
   const setCurrentPosition = () => {
     attributes.forEach(attribute => {
-      const currentPosition = Number(fromROV[attribute]);
+      const currentPosition =
+        attribute === 'yaw'
+          ? radiansToDegrees(Number(fromROV[attribute]))
+          : Number(fromROV[attribute]);
       const inputField = document.getElementById(attribute);
       inputField.value = roundNumber(currentPosition);
       remote.getGlobal('dynamicpositioning')[attribute] = currentPosition;
