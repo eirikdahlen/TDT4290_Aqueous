@@ -113,10 +113,10 @@ export default function DynamicPositioningMode({
   // Updates input-fields and the global DP settings to the current position
   const setCurrentPosition = () => {
     attributes.forEach(attribute => {
-      let currentPosition;
-      attribute === 'yaw'
-        ? (currentPosition = radiansToDegrees(Number(fromROV[attribute])))
-        : (currentPosition = Number(fromROV[attribute]));
+      const currentPosition =
+        attribute === 'yaw'
+          ? radiansToDegrees(Number(fromROV[attribute]))
+          : Number(fromROV[attribute]);
       const inputField = document.getElementById(attribute);
       inputField.value = roundNumber(currentPosition);
       remote.getGlobal('dynamicpositioning')[attribute] = currentPosition;
