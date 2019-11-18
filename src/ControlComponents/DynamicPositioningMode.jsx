@@ -114,7 +114,6 @@ export default function DynamicPositioningMode({
   const setCurrentPosition = () => {
     attributes.forEach(attribute => {
       let currentPosition;
-      console.log(fromROV[attribute]);
       attribute === 'yaw'
         ? (currentPosition = radiansToDegrees(Number(fromROV[attribute])))
         : (currentPosition = Number(fromROV[attribute]));
