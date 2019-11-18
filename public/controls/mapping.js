@@ -374,6 +374,7 @@ function setNfParameters(type, positive) {
 
 // Setting parameters of global dp variable
 function setDPParameters(type, positive, value) {
+  const euclideanAttributes = ['north', 'east', 'down'];
   const [min, max] = dpLimits[type];
   let dpValue = global.dynamicpositioning[type];
   if (type !== 'yaw') {
@@ -392,7 +393,23 @@ function setDPParameters(type, positive, value) {
     dpValue += value * dpIncrease;
     dpValue = dpValue % maxYaw;
   }
-  global.dynamicpositioning[type] = dpValue;
+  let newDP = {};
+  let currentPosition = {};
+  euclideanAttributes.forEach(key => {
+    newDP[key] = global.dynamicpositioning[key];
+    currentPosition[key] = global.fromROV[key];
+  });
+  newDP[type] = dpValue;
+  const euclideanDistance = Math.sqrt(
+    euclideanAttributes.reduce((acc, attribute) => {
+      return acc + Math.pow(newDP[attribute] - currentPosition[attribute], 2);
+    }, 0.0),
+  );
+  if (euclideanDistance <= global.mode.maxDPDistance) {
+    global.dynamicpositioning[type] = dpValue;
+  } else {
+    sendVibrationRequest(false);
+  }
 }
 
 //Sets global mode to modeNumber and resets all bias

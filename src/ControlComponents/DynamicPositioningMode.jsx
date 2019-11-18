@@ -32,7 +32,7 @@ export default function DynamicPositioningMode({
     value: 0.0,
     euclideanDistance: 0.0,
   });
-  const maxEuclideanDistance = 2;
+  const maxEuclideanDistance = remote.getGlobal('mode')['maxDPDistance'];
 
   // Active if the current mode of the ROV is DP, available if the dpavailable flag is true
   let active = modeData.currentMode === ModeEnum.DYNAMICPOSITIONING;
