@@ -206,22 +206,10 @@ function handleManual({ button, value }) {
 
     // BACK AND START BUTTONS | SWITCH MODE and reset bias
     case 'Back': // turn NF on if available
-      if (global.mode.nfAvailable) {
-        sendVibrationRequest(true);
-        switchToMode('nf');
-        setNFToCurrentDepth();
-      } else {
-        sendVibrationRequest(false);
-      }
+      switchToMode('nf');
       break;
     case 'Start': // turn DP on if available
-      if (global.mode.dpAvailable) {
-        sendVibrationRequest(true);
-        switchToMode('dp');
-        setDPToCurrentPosition();
-      } else {
-        sendVibrationRequest(false);
-      }
+      switchToMode('dp');
       break;
   }
 }
@@ -261,12 +249,10 @@ function handleNF({ button }) {
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
     // Sets to manual if any of the mode buttons are clicked
     case 'Back':
-      sendVibrationRequest(true);
       switchToMode('manual');
       break;
     case 'Start':
-      sendVibrationRequest(true);
-      switchToMode('manual');
+      switchToMode('dp');
       break;
   }
 }
@@ -277,11 +263,9 @@ function handleDP({ button }) {
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
     // Sets to manual if any of the mode buttons are clicked
     case 'Back':
-      sendVibrationRequest(true);
-      switchToMode('manual');
+      switchToMode('nf');
       break;
     case 'Start':
-      sendVibrationRequest(true);
       switchToMode('manual');
       break;
   }
@@ -350,12 +334,20 @@ function setNfParameters(type, positive) {
 //Sets global mode to modeNumber and resets all bias
 // Manual/DP/NF
 function switchToMode(modeName) {
-  if (Object.keys(global.mode).indexOf(modeName) < 0) {
-    console.log(`Could not switch to invalid mode ${modeName}`);
-    return;
+  const availabilityKey = modeName + 'Available';
+  const available = modeName === 'manual' || global.mode[availabilityKey];
+  if (available) {
+    resetAllBias();
+    global.mode.currentMode = global.mode[modeName];
+    sendVibrationRequest(true);
+    if (modeName === 'dp') {
+      setDPToCurrentPosition();
+    } else if (modeName === 'nf') {
+      setNFToCurrentDepth();
+    }
+  } else {
+    sendVibrationRequest(false);
   }
-  global.mode.currentMode = global.mode[modeName];
-  resetAllBias();
 }
 
 // Sets global DP to current position (fromROV)
