@@ -379,4 +379,9 @@ function sendVibrationRequest(positive) {
   }
 }
 
-module.exports = { handleClick, handleButton, resetAllBias };
+module.exports = {
+  handleClick,
+  handleButton,
+  resetAllBias,
+  sendVibrationRequest,
+};
