@@ -288,7 +288,7 @@ function handleDP({ button, value }) {
     case 'DPadUp':
       setDPParameters('north', true);
       break;
-    case 'DPadUp':
+    case 'DPadDown':
       setDPParameters('north', false);
       break;
 
@@ -303,6 +303,11 @@ function handleDP({ button, value }) {
     // Yaw
     case 'RightStickX':
       setDPParameters('yaw', true, value);
+      break;
+
+    // Use current position
+    case 'A':
+      setDPToCurrentPosition();
       break;
   }
 }
@@ -384,7 +389,7 @@ function setDPParameters(type, positive, value) {
       }
     }
   } else {
-    dpValue += value * dpIncrease * 10;
+    dpValue += value * dpIncrease;
     dpValue = dpValue % maxYaw;
   }
   global.dynamicpositioning[type] = dpValue;
