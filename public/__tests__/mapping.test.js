@@ -262,23 +262,24 @@ test(prefix + 'AutoHeading/AutoDepth clicks', () => {
 // NF
 test(prefix + 'NF clicks', () => {
   global.mode.currentMode = 2;
-  handleClick([{ button: 'LeftTrigger' }]);
+  handleClick([{ button: 'DPadLeft' }]);
   expect(global.netfollowing.distance).toBe(0.9);
-  handleClick([{ button: 'RightTrigger' }, { button: 'RightTrigger' }]);
+  handleClick([{ button: 'DPadRight' }, { button: 'DPadRight' }]);
   expect(global.netfollowing.distance).toBe(1.1);
   handleClick([{ button: 'Y' }]);
   expect(global.netfollowing.distance).toBe(0);
   expect(global.netfollowing.velocity).toBe(0);
   handleClick([
     { button: 'DPadUp' },
+    { button: 'DPadUp' },
     { button: 'DPadDown' },
-    { button: 'RB' },
     { button: 'LB' },
+    { button: 'RB' },
   ]);
-  expect(global.netfollowing.velocity).toBe(0);
+  expect(global.netfollowing.velocity).toBe(0.1);
   expect(global.netfollowing.depth).toBe(0.1);
   handleClick([{ button: 'Start' }]);
-  expect(global.mode.currentMode).toBe(0);
+  expect(global.mode.currentMode).toBe(1);
   handleClick([{ button: 'Back' }]);
   expect(global.mode.currentMode).toBe(2);
   handleClick([{ button: 'Back' }]);
@@ -290,7 +291,7 @@ test(prefix + 'DP clicks', () => {
   handleClick([{ button: 'Start' }]);
   expect(global.mode.currentMode).toBe(1);
   handleClick([{ button: 'Back' }]);
-  expect(global.mode.currentMode).toBe(0);
+  expect(global.mode.currentMode).toBe(2);
   handleClick([{ button: 'Start' }]);
   expect(global.mode.currentMode).toBe(1);
   handleClick([{ button: 'Start' }]);
