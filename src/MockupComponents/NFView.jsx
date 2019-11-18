@@ -12,7 +12,7 @@ export default function NFView() {
 
   function changeCustomNfState(value, name) {
     let tempState = customNfStateMessage;
-    tempState[name] = isNaN(parseInt(value)) ? 0 : parseInt(value);
+    tempState[name] = isNaN(Number(value)) ? 0 : Number(value);
     console.log(tempState);
     setcustomNfStateMessage(tempState);
     ipcRenderer.send('rov-mock-up-send-custom-nf-state', tempState);
