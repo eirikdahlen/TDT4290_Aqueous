@@ -29,7 +29,7 @@ export default function FromROV() {
 
   function changeCustomEstimatedState(value, name) {
     let tempState = customEstimatedStateMessage;
-    tempState[name] = isNaN(parseInt(value)) ? 0 : parseInt(value);
+    tempState[name] = isNaN(Number(value)) ? 0 : Number(value);
     console.log(tempState);
     setCustomEstimatedStateMessage(tempState);
     ipcRenderer.send(
