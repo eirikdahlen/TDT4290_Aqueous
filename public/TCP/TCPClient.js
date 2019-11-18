@@ -1,6 +1,7 @@
 const net = require('net');
 const { encodeData, decodeData } = require('./coding');
 const { encode, decode, messages } = require('./IMC/IMC');
+const { sendVibrationRequest } = require('./../controls/mapping');
 
 const messageLength = 256;
 
@@ -251,6 +252,7 @@ function setSafetyControls() {
   global.toROV.autoheading = true; // Start autoheading
   global.toROV.heave = global.fromROV.down; // Sets heave to current down - heave is used by autodepth
   global.toROV.yaw = global.fromROV.yaw; // Sets yaw to current yaw - yaw is used by autoheading
+  sendVibrationRequest(false); // Sends hard vibration to gamepad
 }
 
 module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData };

@@ -28,22 +28,13 @@
   width: 90%;
 }
 
-.SettingsApp input {
-  width: 100%;
-  padding: 0;
-  font-size: 14px;
-  box-sizing: border-box;
-  border: 0.5px solid black;
-  padding-left: 5px;
-  height: 35px;
-  -webkit-app-region: no-drag;
-}
-
+.SettingsApp input,
 .MessageProtocolDropdown {
   width: 100%;
   padding: 0;
   font-size: 14px;
   box-sizing: border-box;
+  border: 0.5px solid black;
   padding-left: 5px;
   height: 35px;
   -webkit-app-region: no-drag;
