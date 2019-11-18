@@ -10,6 +10,13 @@ const nfLimits = {
   distance: [0, 3],
   depth: [0, 200],
 };
+const dpIncrease = 0.05;
+const dpLimits = {
+  north: [-200, 200],
+  east: [-200, 200],
+  down: [0, 200],
+  yaw: [-maxYaw, maxYaw],
+};
 
 // Bias values
 let bias = {
@@ -258,7 +265,7 @@ function handleNF({ button }) {
 }
 
 // Handles DP mode controls
-function handleDP({ button }) {
+function handleDP({ button, value }) {
   switch (button) {
     // BACK AND START BUTTONS | TURN ON MANUAL MODE
     // Sets to manual if any of the mode buttons are clicked
@@ -267,6 +274,35 @@ function handleDP({ button }) {
       break;
     case 'Start':
       switchToMode('manual');
+      break;
+
+    // Depth
+    case 'RB':
+      setDPParameters('down', true);
+      break;
+    case 'LB':
+      setDPParameters('down', false);
+      break;
+
+    // North
+    case 'DPadUp':
+      setDPParameters('north', true);
+      break;
+    case 'DPadUp':
+      setDPParameters('north', false);
+      break;
+
+    // East
+    case 'DPadRight':
+      setDPParameters('east', true);
+      break;
+    case 'DPadLeft':
+      setDPParameters('east', false);
+      break;
+
+    // Yaw
+    case 'RightStickX':
+      setDPParameters('yaw', true, value);
       break;
   }
 }
@@ -329,6 +365,29 @@ function setNfParameters(type, positive) {
     }
   }
   global.netfollowing[type] = nfValue;
+}
+
+// Setting parameters of global dp variable
+function setDPParameters(type, positive, value) {
+  const [min, max] = dpLimits[type];
+  let dpValue = global.dynamicpositioning[type];
+  if (type !== 'yaw') {
+    if (positive) {
+      dpValue += dpIncrease;
+      if (dpValue > max) {
+        dpValue = max;
+      }
+    } else {
+      dpValue -= dpIncrease;
+      if (dpValue < min) {
+        dpValue = min;
+      }
+    }
+  } else {
+    dpValue += value * dpIncrease * 10;
+    dpValue = dpValue % maxYaw;
+  }
+  global.dynamicpositioning[type] = dpValue;
 }
 
 //Sets global mode to modeNumber and resets all bias
