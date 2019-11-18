@@ -63,7 +63,7 @@ function ControlApp() {
         <div className="bottomWindow">
           <div className="bottomLeft">
             <Values
-              title="sensor values"
+              title="MESSAGES RECEIVED"
               values={IMCActive ? fromIMC : sensorValues}
               changeEffect={false}
               IMCActive={IMCActive}
@@ -72,7 +72,7 @@ function ControlApp() {
           <div className="bottomRight">
             <Values
               IMCActive={IMCActive}
-              title="Sent to ROV"
+              title="MESSAGES SENT"
               values={IMCActive ? toIMC : controlValues}
               changeEffect={true}
               settings={settings}

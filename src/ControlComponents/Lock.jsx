@@ -25,8 +25,8 @@ export default function Lock({
 
   const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
   const nameMapping = {
-    autoheading: 'Auto Heading',
-    autodepth: 'Auto Depth',
+    autoheading: 'AUTO HEADING [°]',
+    autodepth: 'AUTO DEPTH [m]',
   };
 
   // Normalizes or converts values to correct format and range

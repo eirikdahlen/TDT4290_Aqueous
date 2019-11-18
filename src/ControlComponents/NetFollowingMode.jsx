@@ -82,7 +82,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
       <div className="modeInputFlex">
         <ModeInput
           inputId={'velocity'}
-          header={'Velocity'}
+          header={'Velocity [m/s]'}
           min={-10}
           max={10}
           step={step}
@@ -90,7 +90,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
         ></ModeInput>
         <ModeInput
           inputId={'distance'}
-          header={'Distance'}
+          header={'Distance [m]'}
           min={0}
           max={10}
           step={step}
@@ -98,7 +98,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
         ></ModeInput>
         <ModeInput
           inputId={'depth'}
-          header={'Depth'}
+          header={'Depth [m]'}
           min={0}
           max={200}
           step={step}

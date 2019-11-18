@@ -123,13 +123,13 @@ export default function DynamicPositioningMode({
         <div className="modeInputRow">
           <ModeInput
             inputId="north"
-            header="North"
+            header="North [m]"
             step={step}
             clickFunction={updateValue}
           ></ModeInput>
           <ModeInput
             inputId="east"
-            header="East"
+            header="East [m]"
             step={step}
             clickFunction={updateValue}
           ></ModeInput>
@@ -137,7 +137,7 @@ export default function DynamicPositioningMode({
         <div className="modeInputRow">
           <ModeInput
             inputId="down"
-            header="Down"
+            header="Down [m]"
             step={step}
             min={0}
             max={200}
@@ -145,7 +145,7 @@ export default function DynamicPositioningMode({
           ></ModeInput>
           <ModeInput
             inputId="yaw"
-            header="Yaw"
+            header="Yaw [°]"
             step={step}
             min={0}
             max={360}
