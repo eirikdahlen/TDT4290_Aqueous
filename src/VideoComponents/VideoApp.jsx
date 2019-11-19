@@ -73,7 +73,7 @@ function VideoApp() {
             ? remote.getGlobal('settings')['manualBoatHeading']
             : remote.getGlobal('boat')['heading']
         }
-        maxDistance={5}
+        maxDistance={20}
         mapRotation={remote.getGlobal('settings')['mapRotation']}
       />
       <GamepadWrapper className="GamepadWrapper" />
