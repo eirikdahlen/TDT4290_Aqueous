@@ -39,7 +39,7 @@ export default function ModeInput({
     const prettyValue = roundNumber(inputVal);
     inputField.value = prettyValue;
     if (header) {
-      header = header.toLowerCase();
+      header = header.split(' ')[0].toLowerCase(); // Removes unit from type
     }
     setCurrentValue(inputVal);
     clickFunction(inputVal, header);
