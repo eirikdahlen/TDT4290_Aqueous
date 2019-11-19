@@ -1,6 +1,6 @@
 // Function called from IPC.js when xbox-buttons are changed - maps buttons
 // Constants
-const maxThruster = 400;
+const maxThruster = 200;
 const biasIncrease = 2;
 const biasIncreaseTimer = 20;
 const maxYaw = 2 * Math.PI;
