@@ -162,7 +162,7 @@ export default function DynamicPositioningMode({
             min={0}
             max={360}
             clickFunction={updateValue}
-            externalValue={values.yaw}
+            externalValue={radiansToDegrees(values.yaw)}
           ></ModeInput>
         </div>
         <button onClick={() => setCurrentPosition()} className="DPCurrentBtn">

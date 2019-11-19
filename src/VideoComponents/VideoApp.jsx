@@ -36,11 +36,18 @@ function VideoApp() {
 
   const mode = remote.getGlobal('mode').currentMode;
   var depth;
+  var yaw;
 
   if (mode === ModeEnum.MANUAL) {
     depth = parseFloat(settingsValues['heave']).toFixed(2);
+    yaw = parseFloat(settingsValues['yaw']);
   } else if (mode === ModeEnum.NETFOLLOWING) {
     depth = parseFloat(remote.getGlobal('netfollowing')['depth']).toFixed(2);
+  } else if (mode === ModeEnum.DYNAMICPOSITIONING) {
+    yaw = parseFloat(remote.getGlobal('dynamicpositioning')['yaw']);
+    depth = parseFloat(remote.getGlobal('dynamicpositioning')['down']).toFixed(
+      2,
+    );
   } else {
     depth = 0;
   }
@@ -60,12 +67,14 @@ function VideoApp() {
       />
       <HeadingWidget
         heading={sensorValues['yaw']}
-        isLocked={settingsValues['autoheading']}
-        lockedValue={settingsValues['yaw']}
+        isLocked={
+          settingsValues['autoheading'] || mode === ModeEnum.DYNAMICPOSITIONING
+        }
+        lockedValue={yaw}
       />
       <DepthWidget
         depth={sensorValues['down']}
-        isLocked={settingsValues['autodepth'] || mode === ModeEnum.NETFOLLOWING}
+        isLocked={settingsValues['autodepth'] || mode !== ModeEnum.MANUAL}
         lockedValue={depth}
       />
       <AvailabilityWidget
