@@ -19,9 +19,15 @@ const menuTemplate = [
         {
           label: app.getName(),
           submenu: [
-            { role: 'about' },
+            { type: 'about' },
             { type: 'separator' },
-            { role: 'services' },
+            {
+              label: 'Settings',
+              accelerator: 'CmdOrCtrl+,',
+              click() {
+                createSettingsWindow();
+              },
+            },
             { type: 'separator' },
             { role: 'hide' },
             { role: 'hideothers' },
@@ -36,27 +42,21 @@ const menuTemplate = [
     label: 'File',
     submenu: [
       {
-        label: 'Run Inputfile',
-        accelerator: 'CmdOrCtrl+S',
+        label: 'Run file...',
+        accelerator: 'CmdOrCtrl+O',
         click() {
           getFileAndLaunch();
         },
       },
-      {
-        label: 'IMC-ROV Mockup',
-        accelerator: 'CmdOrCtrl+M',
-        click: async () => {
-          createMockupWindow();
-          ipcCommunicationTCPServer();
-        },
-      },
-      {
-        label: 'Settings',
-        accelerator: 'CmdOrCtrl+I',
-        click() {
-          createSettingsWindow();
-        },
-      },
+      process.platform === 'darwin'
+        ? []
+        : {
+            label: 'Settings',
+            accelerator: 'CmdOrCtrl+,',
+            click() {
+              createSettingsWindow();
+            },
+          },
     ],
   },
   {
@@ -83,6 +83,15 @@ const menuTemplate = [
   {
     label: 'View',
     submenu: [
+      {
+        label: 'Show IMC-ROV Mockup',
+        accelerator: 'CmdOrCtrl+M',
+        click: async () => {
+          createMockupWindow();
+          ipcCommunicationTCPServer();
+        },
+      },
+      { type: 'separator' },
       { role: 'reload' },
       { role: 'forcereload' },
       { role: 'toggledevtools' },
@@ -100,14 +109,14 @@ const menuTemplate = [
     label: 'Controls',
     submenu: [
       {
-        label: 'Gamepad Controls',
+        label: 'Show Gamepad Controls',
         accelerator: 'CmdOrCtrl+G',
         click: async () => {
           createXboxMappingWindow();
         },
       },
       {
-        label: 'Keyboard Controls',
+        label: 'Show Keyboard Controls',
         accelerator: 'CmdOrCtrl+K',
         click: async () => {
           createKeyboardMappingWindow();
