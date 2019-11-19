@@ -55,8 +55,8 @@ const initGlobals = () => {
    */
   global.mode = {
     currentMode: 0,
-    nfAvailable: true,
-    dpAvailable: true,
+    nfAvailable: false,
+    dpAvailable: false,
     manual: 0,
     dp: 1,
     nf: 2,

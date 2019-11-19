@@ -13,7 +13,7 @@ let messageProtocol = messageProtocols.IMC;
 
 // How many times the TCP has tried to connect and how many times it can try before quitting.
 let connectionAttempts = 0;
-const limitAttempts = 3;
+const limitAttempts = 5;
 
 // Creates a client that receives and sends data to port 5000
 function getConnectedClient() {
