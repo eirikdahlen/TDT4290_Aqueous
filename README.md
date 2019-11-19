@@ -65,29 +65,6 @@ After the installation, the application is located at `C:\Users\<username>\AppDa
 
 ## Installation
 
-To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqeous/releases) in the Github repository.
-Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
-
-Simply download the `AqueousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
-
-## Connecting two computers via Ethernet
-
-It is possible to test the solution by connecting two computers together via Ethernet.
-By doing the following steps, two computers can communicate over TCP by using the IMC message protocol.
-
-1. Follow the first four steps in [this guide](https://www.maketecheasier.com/connect-two-windows-computer-on-lan/). Be sure to use different IP-adresses for the two computers.
-2. To test that step 1 was successful:
-   1. Click `Start` and enter `cmd` in the Start Search field
-   2. Enter `ping 192.168.0.x`, where x depends on what IP-address you want to communicate with. Press `Enter`.
-   3. If `Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)` displays, the connection is good and the signal successfully reached the other computer over TCP.
-3. Open the Aqueous-program on both computers.
-4. Computer 1 opens the tab named `Simulator` --> `IMC-ROV Mockup` and clicks `Start Server` in the popup-window. Computer 1 now represents the ROV.
-5. Computer 2 opens the tab named `ROV` --> `Settings` and under `Message Protocol` chooses `IMC`. Click `Update`.
-6. Computer 2 opens the tab named `ROV` and click `Connect to TCP`. Computer 2 now represents the ROV-operator.
-7. The connection is now established and the ROV-operator can control the mocked ROV.
-
-## Installation
-
 To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqueous/releases) in the Github repository.
 Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
 
