@@ -60,6 +60,7 @@ const initGlobals = () => {
     manual: 0,
     dp: 1,
     nf: 2,
+    maxDPDistance: 3,
   };
 
   /**
