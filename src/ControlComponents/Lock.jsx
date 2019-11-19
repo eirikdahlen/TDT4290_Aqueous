@@ -86,7 +86,7 @@ export default function Lock({
           max={max}
           step={step}
           clickFunction={updateValue}
-          externalValue={active ? currentValue : undefined}
+          externalValue={active ? currentValue : reference}
         ></ModeInput>
       </div>
       <div className="check">
