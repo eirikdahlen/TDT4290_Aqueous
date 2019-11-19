@@ -261,6 +261,8 @@ test(prefix + 'AutoHeading/AutoDepth clicks', () => {
 
 // NF
 test(prefix + 'NF clicks', () => {
+  global.mode.dpAvailable = true;
+  global.mode.nfAvailable = true;
   global.mode.currentMode = 2;
   handleClick([{ button: 'DPadLeft' }]);
   expect(global.netfollowing.distance).toBe(0.9);
@@ -288,6 +290,8 @@ test(prefix + 'NF clicks', () => {
 
 // DP
 test(prefix + 'DP clicks', () => {
+  global.mode.dpAvailable = true;
+  global.mode.nfAvailable = true;
   handleClick([{ button: 'Start' }]);
   expect(global.mode.currentMode).toBe(1);
   handleClick([{ button: 'Back' }]);
