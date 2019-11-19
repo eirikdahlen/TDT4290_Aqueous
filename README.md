@@ -59,7 +59,7 @@ yarn package-win
 yarn installer-win
 ```
 
-To install, find the `release-builds` folder that is created, and run `AqeousInstaller.exe` as administrator.
+To install, find the `release-builds` folder that is created, and run `AqueousInstaller.exe` as administrator.
 
 After the installation, the application is located at `C:\Users\<username>\AppData\Local\aqueous`.
 
@@ -68,7 +68,7 @@ After the installation, the application is located at `C:\Users\<username>\AppDa
 To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqeous/releases) in the Github repository.
 Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
 
-Simply download the `AqeousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
+Simply download the `AqueousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
 
 ## Connecting two computers via Ethernet
 
@@ -88,10 +88,10 @@ By doing the following steps, two computers can communicate over TCP by using th
 
 ## Installation
 
-To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqeous/releases) in the Github repository.
+To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqueous/releases) in the Github repository.
 Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
 
-Simply download the `AqeousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
+Simply download the `AqueousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
 
 ## Connecting two computers via Ethernet
 
@@ -103,7 +103,7 @@ By doing the following steps, two computers can communicate over TCP by using th
    1. Click `Start` and enter `cmd` in the Start Search field
    2. Enter `ping 192.168.0.x`, where x depends on what IP-address you want to communicate with. Press `Enter`.
    3. If `Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)` displays, the connection is good and the signal successfully reached the other computer over TCP.
-3. Open the Aqeous-program on both computers.
+3. Open the Aqueous-program on both computers.
 4. Computer 1 opens the tab named `Simulator` --> `IMC-ROV Mockup` and clicks `Start Server` in the popup-window. Computer 1 now represents the ROV.
 5. Computer 2 opens the tab named `ROV` --> `Settings` and under `Message Protocol` chooses `IMC`. Click `Update`.
 6. Computer 2 opens the tab named `ROV` and click `Connect to TCP`. Computer 2 now represents the ROV-operator.
