@@ -12,7 +12,7 @@ const {
   messages,
 } = require('./IMCMetadata');
 
-const { HEADER_LENGTH } = require('./constants');
+const { HEADER_LENGTH, FOOTER_LENGTH } = require('./constants');
 const {
   uIntBEToBitfield,
   encodeAqeousHeader,
@@ -110,7 +110,7 @@ function decode(buf) {
     // Add two bytes for footer
     offset += 2;
     result[name] = msg;
-  } while (offset < buf.length);
+  } while (offset + HEADER_LENGTH + FOOTER_LENGTH < buf.length);
   return result;
 }
 

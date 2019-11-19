@@ -5,7 +5,11 @@ const biasIncrease = 2;
 const biasIncreaseTimer = 20;
 const maxYaw = 2 * Math.PI;
 const nfIncrease = 0.1;
-const nfMax = 20;
+const nfLimits = {
+  velocity: [-3, 3],
+  distance: [0, 3],
+  depth: [0, 200],
+};
 
 // Bias values
 let bias = {
@@ -35,7 +39,7 @@ const hasXButton = obj => {
   return obj.button === 'X';
 };
 
-//ROV control values
+//ROV control values - used to update global.toROV
 let controls = {
   surge: 0,
   sway: 0,
@@ -50,7 +54,8 @@ let controls = {
 //Interval for increasing bias continously
 setInterval(() => {
   biasButtonsDown.forEach(biasButton => {
-    handleButton(biasButton);
+    if (global.mode.currentMode === global.mode.manual)
+      handleButton(biasButton);
   });
 }, biasIncreaseTimer);
 
@@ -88,11 +93,28 @@ function handleClick(activeButtons) {
     handleButton(obj);
   });
 
+  // Updates global values which is sent to the ROV
   global.toROV = controls;
   global.bias = bias;
 }
 
+// Maps a button to the correct mode-switch
 function handleButton({ button, value }) {
+  const { currentMode, manual, dp, nf } = global.mode;
+  if (currentMode === manual) {
+    handleManual({ button, value });
+  } else if (currentMode === dp) {
+    handleDP({ button, value });
+  } else if (currentMode === nf) {
+    handleNF({ button, value });
+  } else {
+    console.log(`Invalid mode ${currentMode}. Switches to manual mode.`);
+    switchToMode('manual');
+  }
+}
+
+// Handles manual mode controls
+function handleManual({ button, value }) {
   switch (button) {
     // LEFT STICK + TRIGGERS | SURGE, HEAVE, SWAY
     case 'LeftStickY': // Forward+/Backward-
@@ -104,10 +126,7 @@ function handleButton({ button, value }) {
       fixMaxThruster('sway');
       break;
     case 'LeftTrigger': // Up
-      if (global.mode.currentMode != 0) {
-        setNfParameters('distance', false);
-      }
-      if (!autoDepth && global.mode.currentMode == 0) {
+      if (!autoDepth) {
         controls['heave'] += value * -maxThruster;
         fixMaxThruster('heave');
       } else {
@@ -119,10 +138,7 @@ function handleButton({ button, value }) {
       }
       break;
     case 'RightTrigger': // Down
-      if (global.mode.currentMode != 0) {
-        setNfParameters('distance', true);
-      }
-      if (!autoDepth && global.mode.currentMode == 0) {
+      if (!autoDepth) {
         controls['heave'] += value * maxThruster;
         fixMaxThruster('heave');
       } else {
@@ -142,30 +158,22 @@ function handleButton({ button, value }) {
       }
       break;
 
-    // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
-    case 'Y': // Reset all bias'
-      if (global.mode.currentMode == 2) {
-        //Resets distance, velocity and depth, if in NetFollowing mode
-        global.netfollowing.distance = 0;
-        global.netfollowing.velocity = 0;
-        global.netfollowing.depth = 0;
-        break;
-      }
-      Object.keys(bias).forEach(v => (bias[v] = 0.0));
-      ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
-      controls['heave'] = autoDepth ? depthReference : 0.0;
+    // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEADING
+    case 'Y': // Reset all bias
+      sendVibrationRequest(true);
+      resetAllBias();
       break;
-    case 'X': // Used in combination with
-      // - bias button to reset axis bias
-      // - reset to manual
+    case 'X': // Used in combination with bias buttons
       break;
     case 'A': // Toggle autodepth
+      sendVibrationRequest(true);
       autoDepth = !autoDepth;
       controls['autodepth'] = autoDepth;
       depthReference = global.fromROV.down;
       controls['heave'] = autoDepth ? depthReference : 0.0;
       break;
     case 'B': // Toggle autoheading
+      sendVibrationRequest(true);
       autoHeading = !autoHeading;
       controls['autoheading'] = autoHeading;
       headingReference = global.fromROV.yaw;
@@ -173,72 +181,109 @@ function handleButton({ button, value }) {
       break;
 
     // BIAS BUTTONS | INCREASE/DECREASE BIAS
-    case 'DPadRight': // positive sway bias
+    case 'DPadRight': // + sway bias
       setBias('sway', true);
       break;
-    case 'DPadLeft': // negative sway bias
+    case 'DPadLeft': // - sway bias
       setBias('sway', false);
       break;
-    case 'DPadUp': // positive surge bias
+    case 'DPadUp': // + surge bias
       setBias('surge', true);
-      if (global.mode.currentMode == 2) {
-        //Depth (-) if in NF
-        setNfParameters('depth', false);
-      }
       break;
-    case 'DPadDown': // negative surge bias
+    case 'DPadDown': // - surge bias
       setBias('surge', false);
-      if (global.mode.currentMode == 2) {
-        //Depth (+) if in NF
-        setNfParameters('depth', true);
-      }
       break;
-    case 'RB': // positive heave bias (down)
-      if (global.mode.currentMode != 0) {
-        setNfParameters('velocity', true); //Velocity (+) if in NF
-      }
-      if (!autoDepth && global.mode.currentMode == 0) {
+    case 'RB': // + heave bias (down)
+      if (!autoDepth) {
         setBias('heave', true);
       }
       break;
-    case 'LB': // negative heave bias (up)
-      if (global.mode.currentMode != 0) {
-        //Velocity (-) if in NF
-        setNfParameters('velocity', false);
-      }
-      if (!autoDepth && global.mode.currentMode == 0) {
+    case 'LB': // - heave bias (up)
+      if (!autoDepth) {
         setBias('heave', false);
       }
       break;
 
-    // BACK AND START BUTTONS |
-    // NETFOLLOWING (NF) AND DYNAMIC POSITIONING (DP)
-    case 'Back': // toggle NF
-      if (global.mode.currentMode == 2) {
-        global.mode.currentMode = 0;
-      } else if (global.mode.nfAvailable) {
-        global.mode.currentMode = 2;
-      }
+    // BACK AND START BUTTONS | SWITCH MODE and reset bias
+    case 'Back': // turn NF on if available
+      switchToMode('nf');
       break;
-    case 'Start': // toggle DP
-      if (global.mode.currentMode == 1) {
-        global.mode.currentMode = 0;
-      } else if (global.mode.dpAvailable) {
-        global.mode.currentMode = 1;
-        setDPToCurrentPosition();
-      }
-      break;
-    case 'LS': //turn on manual mode, turn off DP/NF and reset bias
-      resetToManual();
+    case 'Start': // turn DP on if available
+      switchToMode('dp');
       break;
   }
 }
 
+// Handles NF mode controls
+function handleNF({ button }) {
+  switch (button) {
+    case 'DPadLeft': // - distance
+      setNfParameters('distance', false);
+      break;
+    case 'DPadRight': // + distance
+      setNfParameters('distance', true);
+      break;
+
+    // RIGHT BUTTONS X,Y,A,B | RESET BIAS, AUTODEPTH/AUTOHEIGHT
+    case 'Y': //Resets distance, velocity and depth, if in NetFollowing mode
+      sendVibrationRequest(true);
+      global.netfollowing.distance = 0;
+      global.netfollowing.velocity = 0;
+      global.netfollowing.depth = 0;
+      break;
+
+    // SET NF PARAMETERS
+    case 'DPadUp': //Velocity (+)
+      setNfParameters('velocity', true);
+      break;
+    case 'DPadDown': //Velocity (-)
+      setNfParameters('velocity', false);
+      break;
+    case 'RB': //Depth (+)
+      setNfParameters('depth', true);
+      break;
+    case 'LB': //Depth (-)
+      setNfParameters('depth', false);
+      break;
+
+    // BACK AND START BUTTONS | TURN ON MANUAL MODE
+    // Sets to manual if any of the mode buttons are clicked
+    case 'Back':
+      switchToMode('manual');
+      break;
+    case 'Start':
+      switchToMode('dp');
+      break;
+  }
+}
+
+// Handles DP mode controls
+function handleDP({ button }) {
+  switch (button) {
+    // BACK AND START BUTTONS | TURN ON MANUAL MODE
+    // Sets to manual if any of the mode buttons are clicked
+    case 'Back':
+      switchToMode('nf');
+      break;
+    case 'Start':
+      switchToMode('manual');
+      break;
+  }
+}
+
+// Resets all bias
+function resetAllBias() {
+  Object.keys(bias).forEach(v => (bias[v] = 0.0));
+  ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
+  controls['heave'] = autoDepth ? depthReference : 0.0;
+}
+
 // Helper function for checking bias-buttons for combination with X and setting biases.
 function setBias(type, positive) {
-  if (global.mode.currentMode == 0) {
+  if (global.mode.currentMode === global.mode.manual) {
     // Reset axis if X is held down
     if (xDown) {
+      sendVibrationRequest(true);
       bias[type] = 0.0;
       controls[type] = bias[type];
       return;
@@ -270,25 +315,38 @@ function setNfParameters(type, positive) {
     global.netfollowing[type] = 0;
     return;
   }
-  const typeDistanceOrDepth =
-    type == 'distance' || type == 'depth' ? true : false;
-  const minus = typeDistanceOrDepth ? 0 : -1;
+  const [min, max] = nfLimits[type];
+  let nfValue = global.netfollowing[type];
   if (positive) {
-    global.netfollowing[type] +=
-      global.netfollowing[type] < nfMax ? nfIncrease : 0.0;
+    nfValue += nfIncrease;
+    if (nfValue > max) {
+      nfValue = max;
+    }
   } else {
-    global.netfollowing[type] -=
-      global.netfollowing[type] > minus * nfMax ? nfIncrease : 0.0;
+    nfValue -= nfIncrease;
+    if (nfValue < min) {
+      nfValue = min;
+    }
   }
+  global.netfollowing[type] = nfValue;
 }
 
-//Helper function for resetting to manual mode with parameters set to zero.
-function resetToManual() {
-  if (xDown) {
-    global.mode.currentMode = 0;
-    Object.keys(bias).forEach(v => (bias[v] = 0.0));
-    ['surge', 'sway'].forEach(v => (controls[v] = 0.0));
-    controls['heave'] = autoDepth ? depthReference : 0.0;
+//Sets global mode to modeNumber and resets all bias
+// Manual/DP/NF
+function switchToMode(modeName) {
+  const availabilityKey = modeName + 'Available';
+  const available = modeName === 'manual' || global.mode[availabilityKey];
+  if (available) {
+    resetAllBias();
+    global.mode.currentMode = global.mode[modeName];
+    sendVibrationRequest(true);
+    if (modeName === 'dp') {
+      setDPToCurrentPosition();
+    } else if (modeName === 'nf') {
+      setNFToCurrentDepth();
+    }
+  } else {
+    sendVibrationRequest(false);
   }
 }
 
@@ -299,4 +357,23 @@ function setDPToCurrentPosition() {
   });
 }
 
-module.exports = { handleClick, handleButton };
+function setNFToCurrentDepth() {
+  global.netfollowing.depth = global.fromROV.down;
+}
+
+// Tells the gamepad to vibrate
+function sendVibrationRequest(positive) {
+  const { videoWindow } = global;
+  try {
+    videoWindow.webContents.send('vibrate-gamepad', positive);
+  } catch (error) {
+    console.log('Video window is closed');
+  }
+}
+
+module.exports = {
+  handleClick,
+  handleButton,
+  resetAllBias,
+  sendVibrationRequest,
+};

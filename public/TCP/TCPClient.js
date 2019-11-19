@@ -1,7 +1,7 @@
 const net = require('net');
 const { encodeData, decodeData } = require('./coding');
-const { sendMessage } = require('./../utils/IPC');
 const { encode, decode, messages } = require('./IMC/IMC');
+const { sendVibrationRequest } = require('./../controls/mapping');
 
 const messageLength = 256;
 
@@ -47,22 +47,28 @@ function getConnectedClient() {
 
   // Handles receiving data
   client.on('data', function(buf) {
-    if (messageProtocol === messageProtocols.old) {
-      let data = decodeData(buf);
-      // console.log(`\n[${Date.now()}] Recieved data from server:`);
-      // console.log(data);
-      global.fromROV = data;
-      sendMessage('data-received');
-      sendData(client, global.toROV);
-      sendMessage('data-sent');
-    } else if (messageProtocol === messageProtocols.IMC) {
-      const fromROVIMC = decodeImcData(buf);
-      console.log(fromROVIMC);
-      global.fromROVIMC = fromROVIMC;
-      sendMessage('data-received');
-      const toROVIMC = sendIMCData(client);
-      global.toROVIMC = toROVIMC;
-      sendMessage('data-sent');
+    try {
+      if (messageProtocol === messageProtocols.old) {
+        let data = decodeData(buf);
+        global.fromROV = data;
+        sendData(client, global.toROV);
+      } else if (messageProtocol === messageProtocols.IMC) {
+        const fromROVIMC = decodeImcData(buf);
+        global.fromROVIMC = fromROVIMC;
+        const toROVIMC = sendIMCData(client);
+        global.toROVIMC = toROVIMC;
+      }
+    } catch (error) {
+      console.log('Unable to decode message:');
+      console.log(
+        `Buffer: ${buf
+          .toString('hex')
+          .match(/../g)
+          .join(' ')}`,
+      );
+      console.log(`Buffer length: ${buf.length}`);
+
+      console.log(error.message);
     }
   });
 
@@ -120,6 +126,9 @@ function decodeImcData(buf) {
   global.mode.nfAvailable = entityState.flags.NF;
   global.mode.dpAvailable = entityState.flags.DP;
   // TODO: Handle when ROV tells state is MANUAL
+  if (currentModeUnavailable()) {
+    setSafetyControls();
+  }
 
   const customEstimatedState = recievedData[messages.customEstimatedState];
   global.fromROV = {
@@ -147,7 +156,8 @@ function sendIMCData(client) {
   };
   */
   let buf;
-  if (global.mode.currentMode === 0) {
+  const { currentMode, manual, dp, nf } = global.mode;
+  if (currentMode === manual) {
     // MANUAL MODE
     const desiredControl = {
       x: global.toROV.surge,
@@ -191,20 +201,20 @@ function sendIMCData(client) {
       buf = encode.combine([buf, lowLevelControlManeuverDesiredHeadingBuf]);
     }
   }
-  if (global.mode.currentMode === 1) {
+  if (currentMode === dp) {
     // DYNAMIC POSITIONING
 
     // TODO: Get proper value from global state
     buf = encode.customGoTo({
       timeout: 10,
-      x: 1.1,
-      y: 2.2,
-      z: global.toROV.heave,
-      yaw: global.toROV.yaw,
+      x: global.dynamicpositioning.north,
+      y: global.dynamicpositioning.east,
+      z: global.dynamicpositioning.down,
+      yaw: global.dynamicpositioning.yaw,
     });
   }
 
-  if (global.mode.currentMode === 2) {
+  if (currentMode === nf) {
     // NET FOLLOWING
 
     /*
@@ -227,4 +237,22 @@ function sendIMCData(client) {
   return decode(buf);
 }
 
-module.exports = { getConnectedClient, sendData };
+// Checks if currentmode is available
+function currentModeUnavailable() {
+  const { currentMode, dpAvailable, nfAvailable } = global.mode;
+  return (
+    (currentMode === 1 && !dpAvailable) || (currentMode === 2 && !nfAvailable)
+  );
+}
+
+// Sets to manual and locks autoheading and autodepth at current depth and heading
+function setSafetyControls() {
+  global.mode.currentMode = 0; // Switch to manual
+  global.toROV.autodepth = true; // Start autodepth
+  global.toROV.autoheading = true; // Start autoheading
+  global.toROV.heave = global.fromROV.down; // Sets heave to current down - heave is used by autodepth
+  global.toROV.yaw = global.fromROV.yaw; // Sets yaw to current yaw - yaw is used by autoheading
+  sendVibrationRequest(false); // Sends hard vibration to gamepad
+}
+
+module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData };

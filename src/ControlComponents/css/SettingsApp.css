@@ -6,7 +6,7 @@
   justify-content: space-evenly;
   align-items: center;
   font-family: 'Segoe UI';
-  background-color: rgba(255, 255, 255, 0.96);
+  background-color: rgba(255, 255, 255, 0.95);
   -webkit-user-select: none;
   -webkit-app-region: drag;
   border-radius: 5px;
@@ -15,28 +15,26 @@
 .SettingsApp * {
   border-radius: 2px; /* Change to variable */
   font-family: 'Segoe UI';
+  color: black;
+  outline: none;
+}
+
+.SettingsApp > h2 {
+  margin: 15px 0;
+  font-weight: 500;
 }
 
 .SettingsApp .settingGroup {
   width: 90%;
 }
 
-.SettingsApp input {
-  width: 100%;
-  padding: 0;
-  font-size: 14px;
-  box-sizing: border-box;
-  border: 0.5px solid black;
-  padding-left: 5px;
-  height: 35px;
-  -webkit-app-region: no-drag;
-}
-
+.SettingsApp input,
 .MessageProtocolDropdown {
   width: 100%;
   padding: 0;
   font-size: 14px;
   box-sizing: border-box;
+  border: 0.5px solid black;
   padding-left: 5px;
   height: 35px;
   -webkit-app-region: no-drag;
@@ -62,20 +60,22 @@
 }
 
 .updateSettingsBtn:hover,
-.serialInputs button:hover {
+.twoInputs button:hover {
   background-color: var(--primary-light);
+  color: black;
 }
 
 .updateSettingsBtn:active {
-  background-color: var(--primary-dark);
+  background-color: var(--primary-normal);
 }
 
-.serialInputs {
+.twoInputs {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
-.serialInputs button {
+.twoInputs button {
   border: none;
   margin: 0;
   width: 40px;
@@ -91,14 +91,8 @@
   cursor: pointer;
 }
 
-.headingInputs {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .useManual {
-  width: 35px !important;
+  margin-left: 5px !important;
 }
 
 .closeSettings {
@@ -144,4 +138,15 @@
 
 .updatedInput ~ .inputStatus {
   background-color: var(--positive-dark);
+}
+
+.SettingsApp input[type='checkbox'] {
+  width: 38px !important;
+  height: 38px !important;
+  margin: 0;
+}
+
+#mapRotation {
+  height: 35px !important;
+  width: 35px !important;
 }

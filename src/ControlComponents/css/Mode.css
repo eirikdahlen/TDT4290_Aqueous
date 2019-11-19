@@ -5,7 +5,7 @@
   flex-direction: column;
   position: relative;
   box-shadow: var(--shadow-primary);
-  opacity: 0.8;
+  opacity: 0.5;
   transition: all 0.2s;
 }
 
@@ -21,6 +21,7 @@
   flex-direction: column;
   padding: 0 15px;
   margin-top: 4px;
+  color: black;
 }
 
 .modeInputRow {
@@ -59,7 +60,7 @@
 }
 
 .DPCurrentBtn:hover {
-  background-color: var(--primary-dark);
+  background-color: white;
 }
 
 .DPCurrentBtn:active {

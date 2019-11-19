@@ -6,6 +6,7 @@ import './css/Mode.css';
 import ModeEnum from '../constants/modeEnum';
 import ModeInput from './ModeInput';
 import { normalize, roundNumber } from './../utils/utils';
+import { resetAllBias } from './../utils/IPCutils';
 
 const { remote } = window.require('electron');
 
@@ -23,9 +24,9 @@ export default function NetfollowingMode({ title, modeData, step }) {
   // Normalises a value to the correct ranges
   function fixValue(value, type) {
     if (type === 'velocity') {
-      value = normalize(value, -10, 10);
+      value = normalize(value, -3, 3);
     } else if (type === 'distance') {
-      value = normalize(value, 0, 10);
+      value = normalize(value, 0, 3);
     } else {
       value = normalize(value, 0, 200);
     }
@@ -39,7 +40,7 @@ export default function NetfollowingMode({ title, modeData, step }) {
     } else if (type === 'distance') {
       remote.getGlobal('netfollowing')['distance'] = fixValue(value, type);
     } else if (type === 'depth') {
-      //remote.getGlobal('netfollowing')['depth'] = fixValue(value, type); TODO (IMC DEPENDENT)
+      remote.getGlobal('netfollowing')['depth'] = fixValue(value, type);
     } else {
       console.log('Type not recognized');
     }
@@ -57,6 +58,10 @@ export default function NetfollowingMode({ title, modeData, step }) {
       modeData.currentMode === ModeEnum.DYNAMICPOSITIONING
     ) {
       remote.getGlobal('mode')['currentMode'] = ModeEnum.NETFOLLOWING;
+      remote.getGlobal('netfollowing')['depth'] = remote.getGlobal('fromROV')[
+        'down'
+      ];
+      resetAllBias();
     } else {
       console.log('Error - unable to change mode');
     }

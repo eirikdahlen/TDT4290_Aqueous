@@ -235,7 +235,10 @@ test(prefix + 'set multiple biases and reset', () => {
       },
     ]);
   });
-  handleClick([{ button: 'LB', value: 1.0 }, { button: 'X', value: 1.0 }]);
+  handleClick([
+    { button: 'LB', value: 1.0 },
+    { button: 'X', value: 1.0 },
+  ]);
   bias['surge'] = biasIncrease;
   bias['sway'] = biasIncrease;
   expect(global.bias).toStrictEqual(bias);
@@ -254,4 +257,43 @@ test(prefix + 'AutoHeading/AutoDepth clicks', () => {
   toROV['autodepth'] = true;
   expect(global.toROV['autoheading']).toStrictEqual(toROV['autoheading']);
   expect(global.toROV['autodepth']).toStrictEqual(toROV['autodepth']);
+});
+
+// NF
+test(prefix + 'NF clicks', () => {
+  global.mode.currentMode = 2;
+  handleClick([{ button: 'DPadLeft' }]);
+  expect(global.netfollowing.distance).toBe(0.9);
+  handleClick([{ button: 'DPadRight' }, { button: 'DPadRight' }]);
+  expect(global.netfollowing.distance).toBe(1.1);
+  handleClick([{ button: 'Y' }]);
+  expect(global.netfollowing.distance).toBe(0);
+  expect(global.netfollowing.velocity).toBe(0);
+  handleClick([
+    { button: 'DPadUp' },
+    { button: 'DPadUp' },
+    { button: 'DPadDown' },
+    { button: 'LB' },
+    { button: 'RB' },
+  ]);
+  expect(global.netfollowing.velocity).toBe(0.1);
+  expect(global.netfollowing.depth).toBe(0.1);
+  handleClick([{ button: 'Start' }]);
+  expect(global.mode.currentMode).toBe(1);
+  handleClick([{ button: 'Back' }]);
+  expect(global.mode.currentMode).toBe(2);
+  handleClick([{ button: 'Back' }]);
+  expect(global.mode.currentMode).toBe(0);
+});
+
+// DP
+test(prefix + 'DP clicks', () => {
+  handleClick([{ button: 'Start' }]);
+  expect(global.mode.currentMode).toBe(1);
+  handleClick([{ button: 'Back' }]);
+  expect(global.mode.currentMode).toBe(2);
+  handleClick([{ button: 'Start' }]);
+  expect(global.mode.currentMode).toBe(1);
+  handleClick([{ button: 'Start' }]);
+  expect(global.mode.currentMode).toBe(0);
 });

@@ -23,11 +23,14 @@ function VideoApp() {
   const [deviceId, setDeviceId] = useState('');
 
   useEffect(() => {
-    window.ipcRenderer.on('data-received', () => {
+    let interval = setInterval(() => {
       settingsUpdate(remote.getGlobal('toROV'));
       sensorUpdate(remote.getGlobal('fromROV'));
       biasUpdate(remote.getGlobal('bias'));
-    });
+    }, 300);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -71,6 +74,7 @@ function VideoApp() {
             : remote.getGlobal('boat')['heading']
         }
         maxDistance={5}
+        mapRotation={remote.getGlobal('settings')['mapRotation']}
       />
       <GamepadWrapper className="GamepadWrapper" />
       <KeyboardWrapper className="KeyboardInput" />
