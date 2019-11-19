@@ -35,13 +35,14 @@ export default function ModeInput({
 
   // Handles button click by sending value to parent
   const handleClick = () => {
-    setCurrentValue(inputField.value);
-    const prettyValue = roundNumber(currentValue);
+    const inputVal = Number(inputField.value);
+    const prettyValue = roundNumber(inputVal);
     inputField.value = prettyValue;
     if (header) {
       header = header.toLowerCase();
     }
-    clickFunction(currentValue, header);
+    setCurrentValue(inputVal);
+    clickFunction(inputVal, header);
   };
 
   return (
