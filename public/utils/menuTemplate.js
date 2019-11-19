@@ -21,7 +21,13 @@ const menuTemplate = [
           submenu: [
             { role: 'about' },
             { type: 'separator' },
-            { role: 'services' },
+            {
+              label: 'Settings',
+              accelerator: 'CmdOrCtrl+,',
+              click() {
+                createSettingsWindow();
+              },
+            },
             { type: 'separator' },
             { role: 'hide' },
             { role: 'hideothers' },
@@ -33,23 +39,26 @@ const menuTemplate = [
       ]
     : []),
   {
-    label: 'Simulator',
+    label: 'File',
     submenu: [
       {
-        label: 'Open Simulator',
-        accelerator: 'CmdOrCtrl+S',
+        label: 'Run file...',
+        accelerator: 'CmdOrCtrl+O',
         click() {
           getFileAndLaunch();
         },
       },
-      {
-        label: 'IMC-ROV Mockup',
-        accelerator: 'CmdOrCtrl+M',
-        click: async () => {
-          createMockupWindow();
-          ipcCommunicationTCPServer();
-        },
-      },
+      ...(process.platform === 'darwin'
+        ? []
+        : [
+            {
+              label: 'Settings',
+              accelerator: 'CmdOrCtrl+,',
+              click() {
+                createSettingsWindow();
+              },
+            },
+          ]),
     ],
   },
   {
@@ -62,31 +71,29 @@ const menuTemplate = [
           getConnectedClient();
         },
       },
-      {
+      // This button really doesn't do anything?
+      /* {
         label: 'Start ROV Serial Port',
         accelerator: 'CmdOrCtrl+C',
         click() {
           getFileAndLaunch(global.settings.serialFile);
         },
-      },
-    ],
-  },
-  {
-    label: 'Settings',
-    submenu: [
-      {
-        label: 'Program settings',
-        accelerator: 'CmdOrCtrl+I',
-        click() {
-          createSettingsWindow();
-        },
-      },
+      }, */
     ],
   },
   // { role: 'viewMenu' }
   {
     label: 'View',
     submenu: [
+      {
+        label: 'Show IMC-ROV Mockup',
+        accelerator: 'CmdOrCtrl+M',
+        click: async () => {
+          createMockupWindow();
+          ipcCommunicationTCPServer();
+        },
+      },
+      { type: 'separator' },
       { role: 'reload' },
       { role: 'forcereload' },
       { role: 'toggledevtools' },
@@ -104,14 +111,14 @@ const menuTemplate = [
     label: 'Controls',
     submenu: [
       {
-        label: 'Gamepad Controls',
+        label: 'Show Gamepad Controls',
         accelerator: 'CmdOrCtrl+G',
         click: async () => {
           createXboxMappingWindow();
         },
       },
       {
-        label: 'Keyboard Controls',
+        label: 'Show Keyboard Controls',
         accelerator: 'CmdOrCtrl+K',
         click: async () => {
           createKeyboardMappingWindow();
