@@ -28,6 +28,7 @@ const dictionary = {
   customGoTo: 'Custom GoTo',
   customEstimatedState: 'Custom Estimated State',
   entityState: 'Entity State',
+  customNetFollowState: 'Custom Net Follow State',
 };
 
 export default function MessageGroup({ msgName, data, flags, changeEffect }) {
