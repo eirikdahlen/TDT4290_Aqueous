@@ -15,12 +15,12 @@ function getInstallerConfig() {
   const outPath = path.join(rootPath, 'release-builds');
 
   return Promise.resolve({
-    appDirectory: path.join(outPath, 'Aqeous-win32-ia32/'),
+    appDirectory: path.join(outPath, 'Aqueous-win32-ia32/'),
     authors: 'Gruppe 11',
     noMsi: true,
     outputDirectory: path.join(outPath, 'windows-installer'),
-    exe: 'Aqeous.exe',
-    setupExe: 'AqeousInstaller.exe',
+    exe: 'Aqueous.exe',
+    setupExe: 'AqueousInstaller.exe',
     setupIcon: path.join(rootPath, 'assets', 'icons', 'icon.ico'),
   });
 }
