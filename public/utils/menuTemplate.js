@@ -19,7 +19,7 @@ const menuTemplate = [
         {
           label: app.getName(),
           submenu: [
-            { type: 'about' },
+            { role: 'about' },
             { type: 'separator' },
             {
               label: 'Settings',
@@ -48,15 +48,17 @@ const menuTemplate = [
           getFileAndLaunch();
         },
       },
-      process.platform === 'darwin'
+      ...(process.platform === 'darwin'
         ? []
-        : {
-            label: 'Settings',
-            accelerator: 'CmdOrCtrl+,',
-            click() {
-              createSettingsWindow();
+        : [
+            {
+              label: 'Settings',
+              accelerator: 'CmdOrCtrl+,',
+              click() {
+                createSettingsWindow();
+              },
             },
-          },
+          ]),
     ],
   },
   {
