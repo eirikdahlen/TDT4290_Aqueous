@@ -16,6 +16,7 @@ const { remote } = window.require('electron');
 export default function Lock({
   title,
   active,
+  currentValue,
   min,
   max,
   step,
@@ -25,8 +26,8 @@ export default function Lock({
 
   const type = { autoheading: 'yaw', autodepth: 'heave' }[title];
   const nameMapping = {
-    autoheading: 'Auto Heading',
-    autodepth: 'Auto Depth',
+    autoheading: 'AUTO HEADING [°]',
+    autodepth: 'AUTO DEPTH [m]',
   };
 
   // Normalizes or converts values to correct format and range
@@ -85,6 +86,7 @@ export default function Lock({
           max={max}
           step={step}
           clickFunction={updateValue}
+          externalValue={active ? currentValue : undefined}
         ></ModeInput>
       </div>
       <div className="check">
@@ -108,4 +110,5 @@ Lock.propTypes = {
   step: PropTypes.number,
   active: PropTypes.bool,
   manualModeActive: PropTypes.bool,
+  currentValue: PropTypes.number,
 };

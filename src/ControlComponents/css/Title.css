@@ -1,6 +1,6 @@
 .Title {
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 500;
   padding: 5px;
   background-color: var(--primary-dark);
   text-align: center;
@@ -12,7 +12,8 @@
 }
 
 .smallTitle {
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 13px;
 }
 
 .availableMark {
