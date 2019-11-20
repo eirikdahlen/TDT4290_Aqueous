@@ -140,7 +140,7 @@ function encodeHeader(imcHeader) {
  *
  * @returns {Buffer} Buffer with header values
  */
-function encodeAqeousHeader(mgid, size) {
+function encodeAqueousHeader(mgid, size) {
   /** @type {ImcHeader} */
   const header = {
     sync: 0xfe54,
@@ -261,7 +261,7 @@ module.exports = {
   uIntBEToBitfield,
   getBufferWithFooterAppended,
   encodeHeader,
-  encodeAqeousHeader,
+  encodeAqueousHeader,
   decodeHeader,
   datatypes,
   writeToBuf,

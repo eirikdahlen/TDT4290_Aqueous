@@ -15,7 +15,7 @@ const {
 const { HEADER_LENGTH, FOOTER_LENGTH } = require('./constants');
 const {
   uIntBEToBitfield,
-  encodeAqeousHeader,
+  encodeAqueousHeader,
   decodeHeader,
   encodeImcMessage,
   getBufferWithFooterAppended,
@@ -49,7 +49,7 @@ const encode = {
  */
 function encodeImcPackage(imcMessage, imcMessageMetadata) {
   let dataBuf = encodeImcMessage(imcMessage, imcMessageMetadata);
-  let headerBuf = encodeAqeousHeader(
+  let headerBuf = encodeAqueousHeader(
     imcMessageMetadata.id.value,
     dataBuf.length,
   );
@@ -81,7 +81,7 @@ function encodeLowLevelControlManeuver(
   let resultBuf = Buffer.concat([controlManeuverId, controlBuf, durationBuf]);
 
   // Add header
-  let headerBuf = encodeAqeousHeader(
+  let headerBuf = encodeAqueousHeader(
     lowLevelControlManeuverMetadata.id.value,
     resultBuf.length,
   );
