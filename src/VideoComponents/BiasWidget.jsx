@@ -5,6 +5,7 @@ import './css/BiasWidget.css';
 
 const initialWidth = 360;
 const initialHeight = 360;
+const maxBias = 200.0;
 
 class BiasWidget extends CanvasWidget {
   constructor(props) {
@@ -20,9 +21,9 @@ class BiasWidget extends CanvasWidget {
     var { u, v, w } = this.props;
 
     // Normalize bias values
-    u = mapRange(u, -400.0, 400.0, -1.0, 1.0);
-    v = mapRange(v, -400.0, 400.0, -1.0, 1.0);
-    w = mapRange(w, -400.0, 400.0, -1.0, 1.0);
+    u = mapRange(u, -maxBias, maxBias, -1.0, 1.0);
+    v = mapRange(v, -maxBias, maxBias, -1.0, 1.0);
+    w = mapRange(w, -maxBias, maxBias, -1.0, 1.0);
 
     drawBias(this.ctx, u, v, w, initialWidth, initialHeight);
   }
