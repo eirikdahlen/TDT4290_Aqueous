@@ -28,7 +28,7 @@ const mapping = {
 const { handleClick } = require('./../controls/mapping');
 const { initGlobals } = require('./../utils/globals');
 
-const prefix = 'controls/mapping: ';
+const prefix = 'controls/mapping:  ';
 
 const maxThruster = 200;
 const biasIncrease = 2;
