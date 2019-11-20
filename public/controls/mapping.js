@@ -38,7 +38,7 @@ let depthReference = 0.0; // Depth in meters
 let depthIncrement = 0.05; // Meters
 let autoHeading = false;
 let headingReference = 0.0; // Radians
-let headingIncrement = 0.05; // Radians
+let headingIncrement = 0.01; // Radians
 
 // X is a combination-button, therefore it must be stored if it is pressed
 let xDown = false;
@@ -390,7 +390,7 @@ function setDPParameters(type, positive, value) {
       }
     }
   } else {
-    dpValue += value * dpIncrease;
+    dpValue += value * headingIncrement;
     dpValue = dpValue % maxYaw;
   }
   let newDP = {};
