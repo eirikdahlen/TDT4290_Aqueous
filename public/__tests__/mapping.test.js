@@ -30,7 +30,7 @@ const { initGlobals } = require('./../utils/globals');
 
 const prefix = 'controls/mapping: ';
 
-const maxThruster = 200;
+const maxThruster = 10;
 const biasIncrease = 2;
 
 let toROV;
