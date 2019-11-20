@@ -390,7 +390,7 @@ function setDPParameters(type, positive, value) {
       }
     }
   } else {
-    dpValue += value * dpIncrease;
+    dpValue += value * headingIncrement;
     dpValue = dpValue % maxYaw;
   }
   let newDP = {};
