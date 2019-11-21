@@ -4,6 +4,8 @@
 
 _The project is a part of the course TDT4290 Customer driven project in the autumn of 2019._
 
+![GIF of the finished product](assets/demo/aqueous_demo_4x.gif)
+
 During this project, we will build a graphical user interface for controlling a [ROV](https://en.wikipedia.org/wiki/Remotely_operated_underwater_vehicle) with an XBOX controller built on web technologies ([Electron](https://electronjs.org/), Node, [React](https://reactjs.org/)).
 
 The GUI will incorporate a videofeed, ability to connect to a ROV simulation and use a subset of the [IMC protocol](https://www.lsts.pt/toolchain/imc) for communication.
