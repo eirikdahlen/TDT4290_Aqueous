@@ -21,7 +21,7 @@ Every release of the product is available here as an installable `.exe` file (fo
 
 Simply download the `AqueousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
 
-If you are on any other operation system you will have to build the project your self. It is eary (se below).
+If you are on any other operation system you will have to build the project yourself. It is easy (see section _How to run locally_).
 
 ## Prerequisites
 
@@ -92,21 +92,21 @@ By doing the following steps, two computers can communicate over TCP by using th
 6. Computer 2 opens the tab named `ROV` and click `Connect to TCP`. Computer 2 now represents the ROV-operator.
 7. The connection is now established and the ROV-operator can control the mocked ROV.
 
-## Contributing
-
-Follow the conventions specified in [CONTRIBUTION](./CONTRIBUTING.md).
-
 ## The IMC message protocol
 
 We use the IMC message protocol to communicate with the ROV. Documentation for our custom messages, and much more, can be found [in this document](./assets/IMC-protocol/IMC-Proposition.pdf).
 
 ## Running the project without the simulator
 
-The simulator we used in the GIF above were provided by SINTEF Ocean and it not publically avaliable. It it however possible to try this GUI with a mockup we provided.
+The simulator we used in the GIF above were provided by SINTEF Ocean and it not publically avaliable. It is it however possible to try this GUI with a mockup we provided.
 
 1. Go go `View -> Show IMC-ROV Mockup -> Click "Start Server"`
    _This starts the ROV server and it now waits for a connection. It should now display "Server is running..."_
 2. Make sure that the message protocol is set to `IMC`. This can be done by going to `File -> Settings -> Change protocol to IMC (not OLD)`.
 3. Click `Rov -> Connect to TCP`.
 
-You should now see vales in the bottum of the mockup window. If you activate the video window you should also be able to send values by using the keyboard mappings (which can be shown by `Control -> Show keyboard controls`).
+You should now see values in the bottom of the mockup window. If you activate the video window you should also be able to send values by using the keyboard mappings (which can be shown by `Control -> Show keyboard controls`).
+
+## Contributing
+
+Follow the conventions specified in [CONTRIBUTION](./CONTRIBUTING.md).
