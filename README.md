@@ -5,7 +5,7 @@
 _The project is a part of the course TDT4290 Customer driven project in the autumn of 2019._
 
 ![GIF of the finished product in x4 speed](assets/demo/aqueous_demo_4x.gif)
-_GIF of the finished product in x4 speed_
+_Animation of the finished product in x4 speed_
 
 During this project, we will build a graphical user interface for controlling an [ROV](https://en.wikipedia.org/wiki/Remotely_operated_underwater_vehicle) with an XBOX controller built on web technologies ([Electron](https://electronjs.org/), Node, [React](https://reactjs.org/)).
 
