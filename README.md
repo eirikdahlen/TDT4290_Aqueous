@@ -98,7 +98,7 @@ We use the IMC message protocol to communicate with the ROV. Documentation for o
 
 ## Running the project without the simulator
 
-The simulator we used in the animation above was provided by SINTEF Ocean, and is not publically available. It is it, however, possible to try this GUI with a mockup we provided.
+The simulator we used in the animation above was provided by SINTEF Ocean, and is not publically available. It is, however, possible to try the GUI with a mockup we provided.
 
 1. Go to `View -> Show IMC-ROV Mockup -> Click "Start Server"`
    _This starts the ROV server, and it now waits for a connection. It should now display "Server is running..."_
