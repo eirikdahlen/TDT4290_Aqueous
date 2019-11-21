@@ -97,4 +97,15 @@ Follow the conventions specified in [CONTRIBUTION](./CONTRIBUTING.md).
 
 ## The IMC message protocol
 
-We use the IMC message protocol to communicate with the ROV. Documentation for our custom messages and more can be found [here](assets/IMC-protocol/IMC Proposition.pdf).
+We use the IMC message protocol to communicate with the ROV. Documentation for our custom messages, and much more, can be found [in this document](./assets/IMC-protocol/IMC-Proposition.pdf).
+
+## Running the project without the simulator
+
+The simulator we used in the GIF above were provided by SINTEF Ocean and it not publically avaliable. It it however possible to try this GUI with a mockup we provided.
+
+1. Go go `View -> Show IMC-ROV Mockup -> Click "Start Server"`
+   _This starts the ROV server and it now waits for a connection. It should now display "Server is running..."_
+2. Make sure that the message protocol is set to `IMC`. This can be done by going to `File -> Settings -> Change protocol to IMC (not OLD)`.
+3. Click `Rov -> Connect to TCP`.
+
+You should now see vales in the bottum of the mockup window. If you activate the video window you should also be able to send values by using the keyboard mappings (which can be shown by `Control -> Show keyboard controls`).
