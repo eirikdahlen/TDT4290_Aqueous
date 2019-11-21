@@ -12,6 +12,16 @@ The GUI will incorporate a videofeed, ability to connect to a ROV simulation and
 
 ###### This project is a continuation of a customer-driven project from last year, which can be found [here](https://github.com/Kpro11/Aqeous), however rewritten with web technologies.
 
+## Installation
+
+If you just want to run the project, go to the [release tab](https://github.com/eirikdahlen/TDT4290_Aqueous/releases) in this GitHub repository and it should be plug and play.
+
+Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
+
+Simply download the `AqueousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
+
+If you are on any other operation system you will have to build the project your self. It is eary (se below).
+
 ## Prerequisites
 
 We recommend [Visual Studio Code](https://code.visualstudio.com/) as IDE/text editor.
@@ -65,13 +75,6 @@ To install, find the `release-builds` folder that is created, and run `AqueousIn
 
 After the installation, the application is located at `C:\Users\<username>\AppData\Local\aqueous`.
 
-## Installation
-
-To install the software, go to [releases](https://github.com/eirikdahlen/TDT4290_Aqueous/releases) in the Github repository.
-Every release of the product is available here as an installable `.exe` file (for Windows), along with the features included in each release.
-
-Simply download the `AqueousInstaller.exe` file, run as Administrator and run the program as any other desktop application.
-
 ## Connecting two computers via Ethernet
 
 It is possible to test the solution by connecting two computers together via Ethernet.
@@ -91,3 +94,7 @@ By doing the following steps, two computers can communicate over TCP by using th
 ## Contributing
 
 Follow the conventions specified in [CONTRIBUTION](./CONTRIBUTING.md).
+
+## The IMC message protocol
+
+We use the IMC message protocol to communicate with the ROV. Documentation for our custom messages and more can be found [here](assets/IMC-protocol/IMC Proposition.pdf).
